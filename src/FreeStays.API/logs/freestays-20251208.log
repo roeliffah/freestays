@@ -1,0 +1,101 @@
+2025-12-08 22:52:34.893 +03:00 [INF] Checking database connectivity...
+2025-12-08 22:52:35.562 +03:00 [INF] Ensuring database schema exists...
+2025-12-08 22:52:36.034 +03:00 [INF] Database is ready.
+2025-12-08 22:52:36.159 +03:00 [INF] Admin user already exists, skipping...
+2025-12-08 22:52:36.181 +03:00 [INF] Email templates already exist, skipping...
+2025-12-08 22:52:36.323 +03:00 [INF] Site settings seeded: 9 settings
+2025-12-08 22:52:36.324 +03:00 [INF] Database seeding completed successfully.
+2025-12-08 22:52:36.326 +03:00 [INF] FreeStays API started at "2025-12-08T19:52:36.3266060Z"
+2025-12-08 22:52:36.372 +03:00 [INF] Starting Hangfire Server using job storage: 'In-Memory Storage'
+2025-12-08 22:52:36.372 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-08 22:52:36.379 +03:00 [INF] Server macbookair:72235:e687a725 successfully announced in 0,6775 ms
+2025-12-08 22:52:36.380 +03:00 [INF] Server macbookair:72235:e687a725 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-08 22:52:36.383 +03:00 [INF] Server macbookair:72235:e687a725 all the dispatchers started
+2025-12-08 22:53:08.685 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-12-08 22:53:08.720 +03:00 [INF] HTTP GET / responded 404 in 35.1938 ms
+2025-12-08 22:53:10.464 +03:00 [INF] HTTP GET /favicon.ico responded 404 in 1.2839 ms
+2025-12-08 22:54:23.261 +03:00 [INF] HTTP GET /apple-touch-icon.png responded 404 in 6.9054 ms
+2025-12-08 22:54:23.261 +03:00 [INF] HTTP GET /favicon.ico responded 404 in 6.9699 ms
+2025-12-08 22:54:23.261 +03:00 [INF] HTTP GET /apple-touch-icon-precomposed.png responded 404 in 6.9054 ms
+2025-12-08 22:56:02.265 +03:00 [INF] FreeStays Request: LoginCommand {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-08 22:56:02.911 +03:00 [WRN] FreeStays Long Running Request: LoginCommand (643 ms) {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-08 22:56:02.918 +03:00 [INF] HTTP POST /api/v1/Auth/login responded 200 in 697.8488 ms
+2025-12-08 22:59:35.050 +03:00 [INF] FreeStays Request: GetFeaturedHotelsQuery {"Count":10,"$type":"GetFeaturedHotelsQuery"}
+2025-12-08 22:59:35.453 +03:00 [INF] HTTP GET /api/v1/hotels/featured responded 200 in 416.9836 ms
+2025-12-08 22:59:47.107 +03:00 [INF] FreeStays Request: GetFeaturedHotelsQuery {"Count":10,"$type":"GetFeaturedHotelsQuery"}
+2025-12-08 22:59:47.111 +03:00 [INF] HTTP GET /api/v1/hotels/featured responded 200 in 7.6462 ms
+2025-12-08 23:00:13.427 +03:00 [INF] FreeStays Request: GetFeaturedHotelsQuery {"Count":10,"$type":"GetFeaturedHotelsQuery"}
+2025-12-08 23:00:13.442 +03:00 [INF] HTTP GET /api/v1/hotels/featured responded 200 in 20.1950 ms
+2025-12-08 23:00:30.791 +03:00 [INF] FreeStays Request: GetFeaturedHotelsQuery {"Count":10,"$type":"GetFeaturedHotelsQuery"}
+2025-12-08 23:00:30.795 +03:00 [INF] HTTP GET /api/v1/hotels/featured responded 200 in 8.5088 ms
+2025-12-08 23:02:19.179 +03:00 [INF] FreeStays Request: GetFeaturedHotelsQuery {"Count":10,"$type":"GetFeaturedHotelsQuery"}
+2025-12-08 23:02:19.223 +03:00 [INF] HTTP GET /api/v1/hotels/featured responded 200 in 56.2084 ms
+2025-12-08 23:02:19.865 +03:00 [INF] FreeStays Request: GetFeaturedHotelsQuery {"Count":10,"$type":"GetFeaturedHotelsQuery"}
+2025-12-08 23:02:19.869 +03:00 [INF] HTTP GET /api/v1/hotels/featured responded 200 in 9.1294 ms
+2025-12-08 23:03:06.529 +03:00 [INF] FreeStays Request: GetFeaturedHotelsQuery {"Count":10,"$type":"GetFeaturedHotelsQuery"}
+2025-12-08 23:03:06.527 +03:00 [INF] FreeStays Request: GetFeaturedHotelsQuery {"Count":10,"$type":"GetFeaturedHotelsQuery"}
+2025-12-08 23:03:06.546 +03:00 [INF] HTTP GET /api/v1/hotels/featured responded 200 in 24.2267 ms
+2025-12-08 23:03:06.547 +03:00 [INF] HTTP GET /api/v1/hotels/featured responded 200 in 24.7363 ms
+2025-12-08 23:04:04.928 +03:00 [INF] FreeStays Request: GetFeaturedHotelsQuery {"Count":10,"$type":"GetFeaturedHotelsQuery"}
+2025-12-08 23:04:04.963 +03:00 [INF] FreeStays Request: GetFeaturedHotelsQuery {"Count":10,"$type":"GetFeaturedHotelsQuery"}
+2025-12-08 23:04:04.963 +03:00 [INF] HTTP GET /api/v1/hotels/featured responded 200 in 41.3655 ms
+2025-12-08 23:04:04.968 +03:00 [INF] HTTP GET /api/v1/hotels/featured responded 200 in 6.0698 ms
+2025-12-08 23:13:35.188 +03:00 [INF] FreeStays Request: GetFeaturedHotelsQuery {"Count":10,"$type":"GetFeaturedHotelsQuery"}
+2025-12-08 23:13:35.197 +03:00 [INF] HTTP GET /api/v1/hotels/featured responded 200 in 13.6574 ms
+2025-12-08 23:13:46.149 +03:00 [INF] FreeStays Request: GetFeaturedHotelsQuery {"Count":10,"$type":"GetFeaturedHotelsQuery"}
+2025-12-08 23:13:46.149 +03:00 [INF] FreeStays Request: GetFeaturedHotelsQuery {"Count":10,"$type":"GetFeaturedHotelsQuery"}
+2025-12-08 23:13:46.155 +03:00 [INF] HTTP GET /api/v1/hotels/featured responded 200 in 15.0350 ms
+2025-12-08 23:13:46.155 +03:00 [INF] HTTP GET /api/v1/hotels/featured responded 200 in 15.4662 ms
+2025-12-08 23:16:27.449 +03:00 [INF] Server macbookair:72235:e687a725 caught stopping signal...
+2025-12-08 23:16:27.466 +03:00 [INF] Server macbookair:72235:e687a725 All dispatchers stopped
+2025-12-08 23:16:27.477 +03:00 [INF] Server macbookair:72235:e687a725 successfully reported itself as stopped in 5,6687 ms
+2025-12-08 23:16:27.477 +03:00 [INF] Server macbookair:72235:e687a725 has been stopped in total 25,8635 ms
+2025-12-08 23:17:37.061 +03:00 [INF] Checking database connectivity...
+2025-12-08 23:17:37.741 +03:00 [INF] Ensuring database schema exists...
+2025-12-08 23:17:38.164 +03:00 [INF] Database is ready.
+2025-12-08 23:17:38.314 +03:00 [INF] Admin user already exists, skipping...
+2025-12-08 23:17:38.336 +03:00 [INF] Email templates already exist, skipping...
+2025-12-08 23:17:38.356 +03:00 [INF] Site settings already exist, skipping...
+2025-12-08 23:17:38.356 +03:00 [INF] Database seeding completed successfully.
+2025-12-08 23:17:38.359 +03:00 [INF] FreeStays API started at "2025-12-08T20:17:38.3587770Z"
+2025-12-08 23:17:38.399 +03:00 [INF] Starting Hangfire Server using job storage: 'In-Memory Storage'
+2025-12-08 23:17:38.400 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-08 23:17:38.406 +03:00 [INF] Server macbookair:73524:a24a6dc6 successfully announced in 0,6062 ms
+2025-12-08 23:17:38.407 +03:00 [INF] Server macbookair:73524:a24a6dc6 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-08 23:17:38.409 +03:00 [INF] Server macbookair:73524:a24a6dc6 all the dispatchers started
+2025-12-08 23:24:31.766 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-12-08 23:24:31.894 +03:00 [INF] FreeStays Request: GetFeaturedHotelsQuery {"Count":10,"$type":"GetFeaturedHotelsQuery"}
+2025-12-08 23:24:32.306 +03:00 [INF] HTTP GET /api/v1/hotels/featured responded 200 in 542.6263 ms
+2025-12-08 23:26:35.284 +03:00 [INF] FreeStays Request: GetFeaturedHotelsQuery {"Count":10,"$type":"GetFeaturedHotelsQuery"}
+2025-12-08 23:26:35.386 +03:00 [INF] HTTP GET /api/v1/hotels/featured responded 200 in 137.1753 ms
+2025-12-08 23:29:05.510 +03:00 [INF] HTTP GET /api/v1/sunhotels/statistics responded 200 in 482.3618 ms
+2025-12-08 23:30:47.531 +03:00 [INF] HTTP POST /api/v1/admin/jobs/sunhotels/sync-all responded 401 in 23.9503 ms
+2025-12-08 23:34:30.138 +03:00 [INF] FreeStays Request: LoginCommand {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-08 23:34:30.938 +03:00 [WRN] FreeStays Long Running Request: LoginCommand (799 ms) {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-08 23:34:30.941 +03:00 [INF] HTTP POST /api/v1/Auth/login responded 200 in 866.9449 ms
+2025-12-08 23:34:37.259 +03:00 [INF] HTTP GET /api/v1/sunhotels/statistics responded 200 in 14.1983 ms
+2025-12-08 23:34:37.260 +03:00 [INF] HTTP GET /api/v1/sunhotels/statistics responded 200 in 13.8154 ms
+2025-12-08 23:34:41.189 +03:00 [INF] HTTP POST /api/v1/admin/jobs/sunhotels/sync-all responded 401 in 4.2178 ms
+2025-12-08 23:41:14.447 +03:00 [INF] FreeStays Request: LoginCommand {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-08 23:41:15.012 +03:00 [WRN] FreeStays Long Running Request: LoginCommand (564 ms) {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-08 23:41:15.013 +03:00 [INF] HTTP POST /api/v1/Auth/login responded 200 in 604.3054 ms
+2025-12-08 23:41:15.981 +03:00 [INF] FreeStays Request: LoginCommand {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-08 23:41:16.370 +03:00 [INF] HTTP POST /api/v1/Auth/login responded 200 in 393.2828 ms
+2025-12-08 23:41:22.119 +03:00 [INF] FreeStays Request: LoginCommand {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-08 23:41:22.475 +03:00 [INF] HTTP POST /api/v1/Auth/login responded 200 in 360.7007 ms
+2025-12-08 23:49:10.063 +03:00 [INF] FreeStays Request: LoginCommand {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-08 23:49:10.610 +03:00 [WRN] FreeStays Long Running Request: LoginCommand (540 ms) {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-08 23:49:10.611 +03:00 [INF] HTTP POST /api/v1/Auth/login responded 200 in 578.3775 ms
+2025-12-08 23:52:44.384 +03:00 [INF] FreeStays Request: LoginCommand {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-08 23:52:44.854 +03:00 [INF] HTTP POST /api/v1/Auth/login responded 200 in 480.0510 ms
+2025-12-08 23:58:41.189 +03:00 [INF] FreeStays Request: LoginCommand {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-08 23:58:41.752 +03:00 [WRN] FreeStays Long Running Request: LoginCommand (560 ms) {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-08 23:58:41.753 +03:00 [INF] HTTP POST /api/v1/Auth/login responded 200 in 599.3019 ms

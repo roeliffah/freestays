@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "FTEUBZm4iEE=",
+  "success": true,
+  "projectFilePath": "/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Domain/FreeStays.Domain.csproj",
+  "expectedPackageFiles": [
+    "/Users/halityilmaz/.nuget/packages/microsoft.netcore.app.ref/8.0.14/microsoft.netcore.app.ref.8.0.14.nupkg.sha512",
+    "/Users/halityilmaz/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.14/microsoft.aspnetcore.app.ref.8.0.14.nupkg.sha512"
+  ],
+  "logs": []
+}

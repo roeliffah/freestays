@@ -1,0 +1,541 @@
+2025-12-06 01:46:54.361 +03:00 [ERR] An error occurred while seeding the database
+Npgsql.NpgsqlException (0x80004005): Failed to connect to 127.0.0.1:5432
+ ---> System.Net.Sockets.SocketException (61): Connection refused
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at Npgsql.TaskTimeoutAndCancellation.ExecuteAsync(Func`2 getTaskFunc, NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.RawOpen(SslMode sslMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken, Boolean isFirstAttempt)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|213_1(NpgsqlConnector conn, SslMode sslMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken, Boolean isFirstAttempt)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.UnpooledDataSource.Get(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlDatabaseCreator.Exists(Boolean async, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlDatabaseCreator.Exists(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.HistoryRepository.ExistsAsync(CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.HistoryRepository.GetAppliedMigrationsAsync(CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Migrations.Internal.NpgsqlMigrator.MigrateAsync(String targetMigration, CancellationToken cancellationToken)
+   at FreeStays.API.Data.DatabaseSeeder.SeedAsync(IServiceProvider serviceProvider) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Data/DatabaseSeeder.cs:line 21
+2025-12-06 01:50:17.851 +03:00 [ERR] Failed executing DbCommand (158ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "SiteSettings" (
+    "Id" uuid NOT NULL,
+    "Key" character varying(200) NOT NULL,
+    "Value" jsonb NOT NULL,
+    "Group" character varying(50) NOT NULL,
+    "CreatedAt" timestamp with time zone NOT NULL,
+    "UpdatedAt" timestamp with time zone,
+    CONSTRAINT "PK_SiteSettings" PRIMARY KEY ("Id")
+);
+2025-12-06 01:50:18.041 +03:00 [ERR] An error occurred while seeding the database
+Npgsql.PostgresException (0x80004005): 42P07: relation "SiteSettings" already exists
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQueryAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQueryAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQueryAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQueryAsync(IEnumerable`1 migrationCommands, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQueryAsync(IEnumerable`1 migrationCommands, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQueryAsync(IEnumerable`1 migrationCommands, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQueryAsync(IEnumerable`1 migrationCommands, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.MigrateAsync(String targetMigration, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Migrations.Internal.NpgsqlMigrator.MigrateAsync(String targetMigration, CancellationToken cancellationToken)
+   at FreeStays.API.Data.DatabaseSeeder.SeedAsync(IServiceProvider serviceProvider) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Data/DatabaseSeeder.cs:line 21
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P07
+    MessageText: relation "SiteSettings" already exists
+    File: heap.c
+    Line: 1150
+    Routine: heap_create_with_catalog
+2025-12-06 01:58:00.773 +03:00 [INF] Applying 2 pending migrations...
+2025-12-06 01:58:06.345 +03:00 [ERR] Failed executing DbCommand (171ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "SiteSettings" (
+    "Id" uuid NOT NULL,
+    "Key" character varying(200) NOT NULL,
+    "Value" jsonb NOT NULL,
+    "Group" character varying(50) NOT NULL,
+    "CreatedAt" timestamp with time zone NOT NULL,
+    "UpdatedAt" timestamp with time zone,
+    CONSTRAINT "PK_SiteSettings" PRIMARY KEY ("Id")
+);
+2025-12-06 01:58:06.516 +03:00 [ERR] An error occurred while seeding the database
+Npgsql.PostgresException (0x80004005): 42P07: relation "SiteSettings" already exists
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQueryAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQueryAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQueryAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQueryAsync(IEnumerable`1 migrationCommands, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQueryAsync(IEnumerable`1 migrationCommands, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQueryAsync(IEnumerable`1 migrationCommands, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQueryAsync(IEnumerable`1 migrationCommands, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.MigrateAsync(String targetMigration, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Migrations.Internal.NpgsqlMigrator.MigrateAsync(String targetMigration, CancellationToken cancellationToken)
+   at FreeStays.API.Data.DatabaseSeeder.SeedAsync(IServiceProvider serviceProvider) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Data/DatabaseSeeder.cs:line 25
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P07
+    MessageText: relation "SiteSettings" already exists
+    File: heap.c
+    Line: 1150
+    Routine: heap_create_with_catalog
+2025-12-06 01:58:56.770 +03:00 [INF] Database connection successful, skipping automatic migrations.
+2025-12-06 01:58:58.543 +03:00 [ERR] Failed executing DbCommand (188ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM users AS u
+    WHERE u.email = 'bilgi@teybilisim.com')
+2025-12-06 01:58:58.565 +03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'FreeStays.Infrastructure.Persistence.Context.FreeStaysDbContext'.
+Npgsql.PostgresException (0x80004005): 42P01: relation "users" does not exist
+
+POSITION: 39
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "users" does not exist
+    Position: 39
+    File: parse_relation.c
+    Line: 1449
+    Routine: parserOpenTable
+Npgsql.PostgresException (0x80004005): 42P01: relation "users" does not exist
+
+POSITION: 39
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "users" does not exist
+    Position: 39
+    File: parse_relation.c
+    Line: 1449
+    Routine: parserOpenTable
+2025-12-06 01:58:58.568 +03:00 [ERR] An error occurred while seeding the database
+Npgsql.PostgresException (0x80004005): 42P01: relation "users" does not exist
+
+POSITION: 39
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at FreeStays.API.Data.DatabaseSeeder.SeedAdminUserAsync(FreeStaysDbContext context, IPasswordHasher passwordHasher, ILogger logger) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Data/DatabaseSeeder.cs:line 56
+   at FreeStays.API.Data.DatabaseSeeder.SeedAsync(IServiceProvider serviceProvider) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Data/DatabaseSeeder.cs:line 32
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "users" does not exist
+    Position: 39
+    File: parse_relation.c
+    Line: 1449
+    Routine: parserOpenTable
+2025-12-06 01:58:58.576 +03:00 [INF] FreeStays API started at "2025-12-05T22:58:58.5762410Z"
+2025-12-06 01:58:58.634 +03:00 [INF] Starting Hangfire Server using job storage: 'In-Memory Storage'
+2025-12-06 01:58:58.634 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-06 01:58:58.642 +03:00 [INF] Server macbookair:24290:1a4eb287 successfully announced in 1,3705 ms
+2025-12-06 01:58:58.643 +03:00 [INF] Server macbookair:24290:1a4eb287 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-06 01:58:58.645 +03:00 [INF] Server macbookair:24290:1a4eb287 all the dispatchers started
+2025-12-06 02:00:58.461 +03:00 [INF] Server macbookair:24290:1a4eb287 caught stopping signal...
+2025-12-06 02:00:58.471 +03:00 [INF] Server macbookair:24290:1a4eb287 All dispatchers stopped
+2025-12-06 02:00:58.473 +03:00 [INF] Server macbookair:24290:1a4eb287 successfully reported itself as stopped in 0,4817 ms
+2025-12-06 02:00:58.473 +03:00 [INF] Server macbookair:24290:1a4eb287 has been stopped in total 8,7378 ms
+2025-12-06 02:01:41.084 +03:00 [INF] Ensuring database schema exists...
+2025-12-06 02:01:43.769 +03:00 [INF] Database schema is ready.
+2025-12-06 02:01:44.048 +03:00 [ERR] Failed executing DbCommand (159ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM users AS u
+    WHERE u.email = 'bilgi@teybilisim.com')
+2025-12-06 02:01:44.064 +03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'FreeStays.Infrastructure.Persistence.Context.FreeStaysDbContext'.
+Npgsql.PostgresException (0x80004005): 42P01: relation "users" does not exist
+
+POSITION: 39
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "users" does not exist
+    Position: 39
+    File: parse_relation.c
+    Line: 1449
+    Routine: parserOpenTable
+Npgsql.PostgresException (0x80004005): 42P01: relation "users" does not exist
+
+POSITION: 39
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "users" does not exist
+    Position: 39
+    File: parse_relation.c
+    Line: 1449
+    Routine: parserOpenTable
+2025-12-06 02:01:44.068 +03:00 [ERR] An error occurred while seeding the database
+Npgsql.PostgresException (0x80004005): 42P01: relation "users" does not exist
+
+POSITION: 39
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at FreeStays.API.Data.DatabaseSeeder.SeedAdminUserAsync(FreeStaysDbContext context, IPasswordHasher passwordHasher, ILogger logger) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Data/DatabaseSeeder.cs:line 57
+   at FreeStays.API.Data.DatabaseSeeder.SeedAsync(IServiceProvider serviceProvider) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Data/DatabaseSeeder.cs:line 33
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "users" does not exist
+    Position: 39
+    File: parse_relation.c
+    Line: 1449
+    Routine: parserOpenTable
+2025-12-06 02:01:44.075 +03:00 [INF] FreeStays API started at "2025-12-05T23:01:44.0753320Z"
+2025-12-06 02:01:44.125 +03:00 [INF] Starting Hangfire Server using job storage: 'In-Memory Storage'
+2025-12-06 02:01:44.126 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-06 02:01:44.133 +03:00 [INF] Server macbookair:24826:96dae1dd successfully announced in 1,3376 ms
+2025-12-06 02:01:44.134 +03:00 [INF] Server macbookair:24826:96dae1dd is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-06 02:01:44.136 +03:00 [INF] Server macbookair:24826:96dae1dd all the dispatchers started
+2025-12-06 02:03:44.652 +03:00 [INF] Server macbookair:24826:96dae1dd caught stopping signal...
+2025-12-06 02:03:44.682 +03:00 [INF] Server macbookair:24826:96dae1dd All dispatchers stopped
+2025-12-06 02:03:44.695 +03:00 [INF] Server macbookair:24826:96dae1dd successfully reported itself as stopped in 9,7355 ms
+2025-12-06 02:03:44.695 +03:00 [INF] Server macbookair:24826:96dae1dd has been stopped in total 37,732 ms
+2025-12-06 02:03:57.288 +03:00 [ERR] Failed executing DbCommand (174ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1 FROM "Users" LIMIT 1
+2025-12-06 02:03:57.313 +03:00 [INF] Database tables do not exist, creating...
+2025-12-06 02:04:02.549 +03:00 [ERR] Failed executing DbCommand (186ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        )
+2025-12-06 02:04:02.551 +03:00 [ERR] An error occurred while seeding the database
+Npgsql.PostgresException (0x80004005): 3D000: database "verceldb" does not exist
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteScalar(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteScalarAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteScalarAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteScalarAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlDatabaseCreator.<HasTablesAsync>b__14_0(INpgsqlRelationalConnection connection, CancellationToken ct)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabaseCreator.EnsureCreatedAsync(CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabaseCreator.EnsureCreatedAsync(CancellationToken cancellationToken)
+   at FreeStays.API.Data.DatabaseSeeder.SeedAsync(IServiceProvider serviceProvider) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Data/DatabaseSeeder.cs:line 44
+  Exception data:
+    Severity: FATAL
+    SqlState: 3D000
+    MessageText: database "verceldb" does not exist
+2025-12-06 02:04:02.579 +03:00 [INF] FreeStays API started at "2025-12-05T23:04:02.5774560Z"
+2025-12-06 02:04:02.645 +03:00 [INF] Starting Hangfire Server using job storage: 'In-Memory Storage'
+2025-12-06 02:04:02.645 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-06 02:04:02.653 +03:00 [INF] Server macbookair:25307:ca1aeb93 successfully announced in 1,6467 ms
+2025-12-06 02:04:02.654 +03:00 [INF] Server macbookair:25307:ca1aeb93 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-06 02:04:02.657 +03:00 [INF] Server macbookair:25307:ca1aeb93 all the dispatchers started
+2025-12-06 02:07:36.224 +03:00 [INF] Server macbookair:25307:ca1aeb93 caught stopping signal...
+2025-12-06 02:07:36.232 +03:00 [INF] Server macbookair:25307:ca1aeb93 All dispatchers stopped
+2025-12-06 02:07:36.236 +03:00 [INF] Server macbookair:25307:ca1aeb93 successfully reported itself as stopped in 0,7388 ms
+2025-12-06 02:07:36.236 +03:00 [INF] Server macbookair:25307:ca1aeb93 has been stopped in total 9,824 ms
+2025-12-06 02:07:42.157 +03:00 [INF] Ensuring database and schema exists...
+2025-12-06 02:07:44.134 +03:00 [ERR] An error occurred while seeding the database
+Npgsql.PostgresException (0x80004005): 08P01: server login has been failing, cached error: database "verceldb" does not exist (server_login_retry)
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.PostgresDatabaseInfo.LoadBackendTypes(NpgsqlConnector conn, NpgsqlTimeout timeout, Boolean async)
+   at Npgsql.PostgresDatabaseInfo.LoadPostgresInfo(NpgsqlConnector conn, NpgsqlTimeout timeout, Boolean async)
+   at Npgsql.PostgresDatabaseInfoFactory.Load(NpgsqlConnector conn, NpgsqlTimeout timeout, Boolean async)
+   at Npgsql.Internal.NpgsqlDatabaseInfo.Load(NpgsqlConnector conn, NpgsqlTimeout timeout, Boolean async)
+   at Npgsql.NpgsqlDataSource.Bootstrap(NpgsqlConnector connector, NpgsqlTimeout timeout, Boolean forceReload, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.UnpooledDataSource.Get(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlDatabaseCreator.Exists(Boolean async, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlDatabaseCreator.Exists(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabaseCreator.EnsureCreatedAsync(CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabaseCreator.EnsureCreatedAsync(CancellationToken cancellationToken)
+   at FreeStays.API.Data.DatabaseSeeder.SeedAsync(IServiceProvider serviceProvider) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Data/DatabaseSeeder.cs:line 22
+  Exception data:
+    Severity: FATAL
+    SqlState: 08P01
+    MessageText: server login has been failing, cached error: database "verceldb" does not exist (server_login_retry)
+2025-12-06 02:07:44.151 +03:00 [INF] FreeStays API started at "2025-12-05T23:07:44.1504690Z"
+2025-12-06 02:07:44.204 +03:00 [INF] Starting Hangfire Server using job storage: 'In-Memory Storage'
+2025-12-06 02:07:44.204 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-06 02:07:44.213 +03:00 [INF] Server macbookair:25840:c13c9754 successfully announced in 1,3882 ms
+2025-12-06 02:07:44.214 +03:00 [INF] Server macbookair:25840:c13c9754 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-06 02:07:44.216 +03:00 [INF] Server macbookair:25840:c13c9754 all the dispatchers started
+2025-12-06 02:14:38.465 +03:00 [INF] Server macbookair:25840:c13c9754 caught stopping signal...
+2025-12-06 02:14:38.472 +03:00 [INF] Server macbookair:25840:c13c9754 All dispatchers stopped
+2025-12-06 02:14:38.473 +03:00 [INF] Server macbookair:25840:c13c9754 successfully reported itself as stopped in 0,6592 ms
+2025-12-06 02:14:38.474 +03:00 [INF] Server macbookair:25840:c13c9754 has been stopped in total 7,6348 ms
+2025-12-06 02:14:43.277 +03:00 [INF] Checking database connectivity...
+2025-12-06 02:14:43.961 +03:00 [WRN] Database is not available. Skipping seeding.
+2025-12-06 02:14:43.964 +03:00 [INF] FreeStays API started at "2025-12-05T23:14:43.9637780Z"
+2025-12-06 02:14:44.055 +03:00 [INF] Starting Hangfire Server using job storage: 'In-Memory Storage'
+2025-12-06 02:14:44.055 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-06 02:14:44.063 +03:00 [INF] Server macbookair:26232:88f04cea successfully announced in 1,5249 ms
+2025-12-06 02:14:44.064 +03:00 [INF] Server macbookair:26232:88f04cea is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-06 02:14:44.066 +03:00 [INF] Server macbookair:26232:88f04cea all the dispatchers started
+2025-12-06 02:15:02.068 +03:00 [INF] Server macbookair:26232:88f04cea caught stopping signal...
+2025-12-06 02:15:02.074 +03:00 [INF] Server macbookair:26232:88f04cea All dispatchers stopped
+2025-12-06 02:15:02.078 +03:00 [INF] Server macbookair:26232:88f04cea successfully reported itself as stopped in 2,6575 ms
+2025-12-06 02:15:02.078 +03:00 [INF] Server macbookair:26232:88f04cea has been stopped in total 7,3966 ms
+2025-12-06 02:25:46.689 +03:00 [INF] Checking database connectivity...
+2025-12-06 02:25:47.401 +03:00 [INF] Ensuring database schema exists...
+2025-12-06 02:25:48.974 +03:00 [INF] Database is ready.
+2025-12-06 02:25:49.620 +03:00 [INF] Admin user created: bilgi@teybilisim.com
+2025-12-06 02:25:49.693 +03:00 [INF] Email templates seeded: 5 templates
+2025-12-06 02:25:49.750 +03:00 [ERR] Failed executing DbCommand (23ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime), @p2='?', @p3='?', @p4='?' (DbType = DateTime), @p5='?' (DbType = Object), @p6='?' (DbType = Guid), @p7='?' (DbType = DateTime), @p8='?', @p9='?', @p10='?' (DbType = DateTime), @p11='?' (DbType = Object), @p12='?' (DbType = Guid), @p13='?' (DbType = DateTime), @p14='?', @p15='?', @p16='?' (DbType = DateTime), @p17='?' (DbType = Object), @p18='?' (DbType = Guid), @p19='?' (DbType = DateTime), @p20='?', @p21='?', @p22='?' (DbType = DateTime), @p23='?' (DbType = Object), @p24='?' (DbType = Guid), @p25='?' (DbType = DateTime), @p26='?', @p27='?', @p28='?' (DbType = DateTime), @p29='?' (DbType = Object), @p30='?' (DbType = Guid), @p31='?' (DbType = DateTime), @p32='?', @p33='?', @p34='?' (DbType = DateTime), @p35='?' (DbType = Object), @p36='?' (DbType = Guid), @p37='?' (DbType = DateTime), @p38='?', @p39='?', @p40='?' (DbType = DateTime), @p41='?' (DbType = Object), @p42='?' (DbType = Guid), @p43='?' (DbType = DateTime), @p44='?', @p45='?', @p46='?' (DbType = DateTime), @p47='?' (DbType = Object), @p48='?' (DbType = Guid), @p49='?' (DbType = DateTime), @p50='?', @p51='?', @p52='?' (DbType = DateTime), @p53='?' (DbType = Object)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "SiteSettings" ("Id", "CreatedAt", "Group", "Key", "UpdatedAt", "Value")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+INSERT INTO "SiteSettings" ("Id", "CreatedAt", "Group", "Key", "UpdatedAt", "Value")
+VALUES (@p6, @p7, @p8, @p9, @p10, @p11);
+INSERT INTO "SiteSettings" ("Id", "CreatedAt", "Group", "Key", "UpdatedAt", "Value")
+VALUES (@p12, @p13, @p14, @p15, @p16, @p17);
+INSERT INTO "SiteSettings" ("Id", "CreatedAt", "Group", "Key", "UpdatedAt", "Value")
+VALUES (@p18, @p19, @p20, @p21, @p22, @p23);
+INSERT INTO "SiteSettings" ("Id", "CreatedAt", "Group", "Key", "UpdatedAt", "Value")
+VALUES (@p24, @p25, @p26, @p27, @p28, @p29);
+INSERT INTO "SiteSettings" ("Id", "CreatedAt", "Group", "Key", "UpdatedAt", "Value")
+VALUES (@p30, @p31, @p32, @p33, @p34, @p35);
+INSERT INTO "SiteSettings" ("Id", "CreatedAt", "Group", "Key", "UpdatedAt", "Value")
+VALUES (@p36, @p37, @p38, @p39, @p40, @p41);
+INSERT INTO "SiteSettings" ("Id", "CreatedAt", "Group", "Key", "UpdatedAt", "Value")
+VALUES (@p42, @p43, @p44, @p45, @p46, @p47);
+INSERT INTO "SiteSettings" ("Id", "CreatedAt", "Group", "Key", "UpdatedAt", "Value")
+VALUES (@p48, @p49, @p50, @p51, @p52, @p53);
+2025-12-06 02:25:49.783 +03:00 [ERR] An exception occurred in the database while saving changes for context type 'FreeStays.Infrastructure.Persistence.Context.FreeStaysDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 22P02: invalid input syntax for type json
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 22P02
+    MessageText: invalid input syntax for type json
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    Where: JSON data, line 1: TRY
+unnamed portal parameter $6
+    File: jsonfuncs.c
+    Line: 627
+    Routine: json_ereport_error
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 22P02: invalid input syntax for type json
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 22P02
+    MessageText: invalid input syntax for type json
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    Where: JSON data, line 1: TRY
+unnamed portal parameter $6
+    File: jsonfuncs.c
+    Line: 627
+    Routine: json_ereport_error
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+2025-12-06 02:25:49.785 +03:00 [ERR] An error occurred while seeding the database. Application will continue.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 22P02: invalid input syntax for type json
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 22P02
+    MessageText: invalid input syntax for type json
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    Where: JSON data, line 1: TRY
+unnamed portal parameter $6
+    File: jsonfuncs.c
+    Line: 627
+    Routine: json_ereport_error
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at FreeStays.API.Data.DatabaseSeeder.SeedSiteSettingsAsync(FreeStaysDbContext context, ILogger logger) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Data/DatabaseSeeder.cs:line 186
+   at FreeStays.API.Data.DatabaseSeeder.SeedAsync(IServiceProvider serviceProvider) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Data/DatabaseSeeder.cs:line 40
+2025-12-06 02:25:49.790 +03:00 [INF] FreeStays API started at "2025-12-05T23:25:49.7901100Z"
+2025-12-06 02:25:49.835 +03:00 [INF] Starting Hangfire Server using job storage: 'In-Memory Storage'
+2025-12-06 02:25:49.836 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-06 02:25:49.843 +03:00 [INF] Server macbookair:31377:57f7a569 successfully announced in 1,3552 ms
+2025-12-06 02:25:49.844 +03:00 [INF] Server macbookair:31377:57f7a569 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-06 02:25:49.846 +03:00 [INF] Server macbookair:31377:57f7a569 all the dispatchers started
+2025-12-06 02:47:41.272 +03:00 [INF] Server macbookair:31377:57f7a569 caught stopping signal...
+2025-12-06 02:47:41.282 +03:00 [INF] Server macbookair:31377:57f7a569 All dispatchers stopped
+2025-12-06 02:47:41.287 +03:00 [INF] Server macbookair:31377:57f7a569 successfully reported itself as stopped in 2,8337 ms
+2025-12-06 02:47:41.287 +03:00 [INF] Server macbookair:31377:57f7a569 has been stopped in total 12,8102 ms

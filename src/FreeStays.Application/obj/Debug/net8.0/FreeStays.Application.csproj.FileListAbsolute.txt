@@ -1,0 +1,15 @@
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/obj/Debug/net8.0/FreeStays.Application.csproj.AssemblyReference.cache
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/obj/Debug/net8.0/FreeStays.Application.GeneratedMSBuildEditorConfig.editorconfig
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/obj/Debug/net8.0/FreeStays.Application.AssemblyInfoInputs.cache
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/obj/Debug/net8.0/FreeStays.Application.AssemblyInfo.cs
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/obj/Debug/net8.0/FreeStays.Application.csproj.CoreCompileInputs.cache
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/bin/Debug/net8.0/FreeStays.Application.deps.json
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/bin/Debug/net8.0/FreeStays.Application.dll
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/bin/Debug/net8.0/FreeStays.Application.pdb
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/bin/Debug/net8.0/FreeStays.Domain.dll
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/bin/Debug/net8.0/FreeStays.Domain.pdb
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/obj/Debug/net8.0/FreeStay.4A41C5C5.Up2Date
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/obj/Debug/net8.0/FreeStays.Application.dll
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/obj/Debug/net8.0/refint/FreeStays.Application.dll
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/obj/Debug/net8.0/FreeStays.Application.pdb
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/obj/Debug/net8.0/ref/FreeStays.Application.dll
