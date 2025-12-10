@@ -2,7 +2,6 @@
     "dotnet.defaultSolution": "src/FreeStays.sln",
     "omnisharp.enableEditorConfigSupport": true,
     "omnisharp.enableRoslynAnalyzers": true,
-    "omnisharp.organizeImportsOnFormat": true,
     "csharp.semanticHighlighting.enabled": true,
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
@@ -25,5 +24,6 @@
     },
     "files.associations": {
         "*.json": "jsonc"
-    }
+    },
+    "dotnet.formatting.organizeImportsOnFormat": true
 }
