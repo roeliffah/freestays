@@ -1,3 +1,4 @@
+using System.Text.Json;
 using FreeStays.Application.DTOs.Settings;
 using FreeStays.Domain.Interfaces;
 using MediatR;
@@ -25,9 +26,24 @@ public class GetSiteSettingsQueryHandler : IRequestHandler<GetSiteSettingsQuery,
         {
             Id = s.Id,
             Key = s.Key,
-            Value = s.Value,
+            Value = ExtractJsonValue(s.Value),
             Group = s.Group,
             UpdatedAt = s.UpdatedAt
         }).ToList();
+    }
+    
+    private static string ExtractJsonValue(string jsonValue)
+    {
+        try
+        {
+            // Try to deserialize as a JSON string
+            var deserialized = JsonSerializer.Deserialize<string>(jsonValue);
+            return deserialized ?? jsonValue;
+        }
+        catch (JsonException)
+        {
+            // If it's not a JSON string, return as is
+            return jsonValue;
+        }
     }
 }

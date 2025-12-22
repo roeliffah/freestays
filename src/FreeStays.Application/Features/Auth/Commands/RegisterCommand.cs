@@ -25,11 +25,11 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage("Email is required.")
             .EmailAddress().WithMessage("Invalid email format.");
-        
+
         RuleFor(x => x.Password)
             .NotEmpty().WithMessage("Password is required.")
             .MinimumLength(6).WithMessage("Password must be at least 6 characters.");
-        
+
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Name is required.")
             .MaximumLength(200).WithMessage("Name cannot exceed 200 characters.");
@@ -39,29 +39,32 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthResponseDto>
 {
     private readonly IUserRepository _userRepository;
+    private readonly ICustomerRepository _customerRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IPasswordHasher _passwordHasher;
     private readonly ITokenService _tokenService;
-    
+
     public RegisterCommandHandler(
         IUserRepository userRepository,
+        ICustomerRepository customerRepository,
         IUnitOfWork unitOfWork,
         IPasswordHasher passwordHasher,
         ITokenService tokenService)
     {
         _userRepository = userRepository;
+        _customerRepository = customerRepository;
         _unitOfWork = unitOfWork;
         _passwordHasher = passwordHasher;
         _tokenService = tokenService;
     }
-    
+
     public async Task<AuthResponseDto> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         if (await _userRepository.EmailExistsAsync(request.Email, cancellationToken))
         {
             throw new DomainValidationException("Email", "Email already exists.");
         }
-        
+
         var user = new User
         {
             Id = Guid.NewGuid(),
@@ -73,16 +76,32 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
             Role = UserRole.Customer,
             IsActive = true
         };
-        
+
         var refreshToken = _tokenService.GenerateRefreshToken();
         user.RefreshToken = refreshToken;
         user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
-        
+
         await _userRepository.AddAsync(user, cancellationToken);
+
+        // Customer kaydı oluştur (sadece Customer rollü kullanıcılar için)
+        if (user.Role == UserRole.Customer)
+        {
+            var customer = new Customer
+            {
+                Id = Guid.NewGuid(),
+                UserId = user.Id,
+                TotalBookings = 0,
+                TotalSpent = 0,
+                IsBlocked = false
+            };
+
+            await _customerRepository.AddAsync(customer, cancellationToken);
+        }
+
         await _unitOfWork.SaveChangesAsync(cancellationToken);
-        
+
         var accessToken = _tokenService.GenerateAccessToken(user);
-        
+
         return new AuthResponseDto
         {
             AccessToken = accessToken,

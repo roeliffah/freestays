@@ -11,6 +11,13 @@ public class StaticPageRepository : Repository<StaticPage>, IStaticPageRepositor
     {
     }
 
+    public async Task<StaticPage?> GetByIdWithTranslationsAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await _dbSet
+            .Include(p => p.Translations)
+            .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+    }
+
     public async Task<StaticPage?> GetBySlugAsync(string slug, CancellationToken cancellationToken = default)
     {
         return await _dbSet
@@ -50,12 +57,26 @@ public class StaticPageRepository : Repository<StaticPage>, IStaticPageRepositor
     public async Task<bool> SlugExistsAsync(string slug, Guid? excludeId = null, CancellationToken cancellationToken = default)
     {
         var query = _dbSet.Where(p => p.Slug == slug);
-        
+
         if (excludeId.HasValue)
         {
             query = query.Where(p => p.Id != excludeId.Value);
         }
 
         return await query.AnyAsync(cancellationToken);
+    }
+
+    public async Task DeleteTranslationsAsync(Guid pageId, CancellationToken cancellationToken = default)
+    {
+        var translations = await _context.Set<StaticPageTranslation>()
+            .Where(t => t.PageId == pageId)
+            .ToListAsync(cancellationToken);
+        
+        _context.Set<StaticPageTranslation>().RemoveRange(translations);
+    }
+
+    public async Task AddTranslationAsync(StaticPageTranslation translation, CancellationToken cancellationToken = default)
+    {
+        await _context.Set<StaticPageTranslation>().AddAsync(translation, cancellationToken);
     }
 }

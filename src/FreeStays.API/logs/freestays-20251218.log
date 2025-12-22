@@ -1,0 +1,1141 @@
+2025-12-18 01:27:14.216 +03:00 [INF] Checking database connectivity...
+2025-12-18 01:27:14.942 +03:00 [INF] Ensuring database schema exists...
+2025-12-18 01:27:15.334 +03:00 [INF] Database is ready.
+2025-12-18 01:27:15.482 +03:00 [INF] Admin user already exists, skipping...
+2025-12-18 01:27:15.505 +03:00 [INF] Email templates already exist, skipping...
+2025-12-18 01:27:15.528 +03:00 [INF] Site settings already exist, skipping...
+2025-12-18 01:27:15.528 +03:00 [INF] Database seeding completed successfully.
+2025-12-18 01:27:15.532 +03:00 [INF] FreeStays API started at "2025-12-17T22:27:15.5324020Z"
+2025-12-18 01:27:15.625 +03:00 [INF] Starting Hangfire Server using job storage: 'In-Memory Storage'
+2025-12-18 01:27:15.625 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-18 01:27:15.634 +03:00 [INF] Server macbookair:4871:5b6564e6 successfully announced in 1,0144 ms
+2025-12-18 01:27:15.637 +03:00 [INF] Server macbookair:4871:5b6564e6 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-18 01:27:15.648 +03:00 [INF] Server macbookair:4871:5b6564e6 all the dispatchers started
+2025-12-18 01:29:19.456 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-12-18 01:29:19.599 +03:00 [INF] FreeStays Request: LoginCommand {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-18 01:29:20.276 +03:00 [WRN] FreeStays Long Running Request: LoginCommand (675 ms) {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-18 01:29:20.285 +03:00 [INF] HTTP POST /api/v1/Auth/login responded 200 in 830.5426 ms
+2025-12-18 01:29:21.221 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 01:29:21.221 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 01:29:21.226 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-18 01:29:21.226 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-18 01:29:21.381 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 182.2352 ms
+2025-12-18 01:29:21.493 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 294.6458 ms
+2025-12-18 01:29:26.031 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 01:29:26.032 +03:00 [INF] HTTP GET /api/v1/admin/users responded 404 in 2.5457 ms
+2025-12-18 01:29:26.036 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 01:29:26.036 +03:00 [INF] HTTP GET /api/v1/admin/users responded 404 in 0.3656 ms
+2025-12-18 01:29:34.451 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 01:29:34.452 +03:00 [INF] HTTP GET /api/v1/admin/users responded 404 in 1.0097 ms
+2025-12-18 01:29:34.460 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 01:29:34.461 +03:00 [INF] HTTP GET /api/v1/admin/users responded 404 in 0.3995 ms
+2025-12-18 01:47:44.498 +03:00 [INF] Server macbookair:4871:5b6564e6 caught stopping signal...
+2025-12-18 01:47:44.513 +03:00 [INF] Server macbookair:4871:5b6564e6 All dispatchers stopped
+2025-12-18 01:47:44.516 +03:00 [INF] Server macbookair:4871:5b6564e6 successfully reported itself as stopped in 1,1351 ms
+2025-12-18 01:47:44.516 +03:00 [INF] Server macbookair:4871:5b6564e6 has been stopped in total 11,1869 ms
+2025-12-18 01:50:45.390 +03:00 [INF] Checking database connectivity...
+2025-12-18 01:50:46.078 +03:00 [INF] Ensuring database schema exists...
+2025-12-18 01:50:46.519 +03:00 [INF] Database is ready.
+2025-12-18 01:50:46.651 +03:00 [INF] Admin user already exists, skipping...
+2025-12-18 01:50:46.673 +03:00 [INF] Email templates already exist, skipping...
+2025-12-18 01:50:46.694 +03:00 [INF] Site settings already exist, skipping...
+2025-12-18 01:50:46.694 +03:00 [INF] Database seeding completed successfully.
+2025-12-18 01:50:46.696 +03:00 [INF] FreeStays API started at "2025-12-17T22:50:46.6965610Z"
+2025-12-18 01:50:46.740 +03:00 [INF] Starting Hangfire Server using job storage: 'In-Memory Storage'
+2025-12-18 01:50:46.741 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-18 01:50:46.747 +03:00 [INF] Server macbookair:6057:d8e50b3c successfully announced in 0,4904 ms
+2025-12-18 01:50:46.748 +03:00 [INF] Server macbookair:6057:d8e50b3c is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-18 01:50:46.750 +03:00 [INF] Server macbookair:6057:d8e50b3c all the dispatchers started
+2025-12-18 01:50:51.593 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-12-18 01:50:51.663 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 01:50:51.663 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 01:50:51.683 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 01:50:51.683 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 01:50:51.847 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 254.6249 ms
+2025-12-18 01:50:51.922 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 330.4294 ms
+2025-12-18 01:50:54.951 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 01:50:54.951 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 01:50:54.955 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-18 01:50:54.955 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-18 01:50:55.147 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 206.5061 ms
+2025-12-18 01:50:55.147 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 205.8171 ms
+2025-12-18 01:51:03.160 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 01:51:03.161 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 01:51:03.172 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 01:51:03.172 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 01:51:03.229 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 69.2038 ms
+2025-12-18 01:51:03.229 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 71.1323 ms
+2025-12-18 01:51:41.538 +03:00 [WRN] JWT Authentication challenge: null, null
+2025-12-18 01:51:41.540 +03:00 [INF] HTTP GET /api/v1/admin/users responded 401 in 7.4345 ms
+2025-12-18 01:52:01.434 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 01:52:01.437 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 01:52:01.447 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 01:52:01.448 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 01:52:01.567 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 119.9135 ms
+2025-12-18 01:52:01.567 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 135.8800 ms
+2025-12-18 02:09:29.416 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:09:29.420 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 02:09:29.624 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 212.1847 ms
+2025-12-18 02:16:44.271 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:16:44.271 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:16:44.278 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 02:16:44.278 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 02:16:44.594 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 329.7530 ms
+2025-12-18 02:16:44.594 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 327.5451 ms
+2025-12-18 02:17:00.817 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:17:00.819 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 404 in 5.5435 ms
+2025-12-18 02:22:48.612 +03:00 [INF] Server macbookair:6057:d8e50b3c caught stopping signal...
+2025-12-18 02:22:48.658 +03:00 [INF] Server macbookair:6057:d8e50b3c All dispatchers stopped
+2025-12-18 02:22:48.674 +03:00 [INF] Server macbookair:6057:d8e50b3c successfully reported itself as stopped in 4,5229 ms
+2025-12-18 02:22:48.674 +03:00 [INF] Server macbookair:6057:d8e50b3c has been stopped in total 44,0252 ms
+2025-12-18 02:24:02.372 +03:00 [INF] Checking database connectivity...
+2025-12-18 02:24:03.042 +03:00 [INF] Ensuring database schema exists...
+2025-12-18 02:24:03.481 +03:00 [INF] Database is ready.
+2025-12-18 02:24:03.609 +03:00 [INF] Admin user already exists, skipping...
+2025-12-18 02:24:03.631 +03:00 [INF] Email templates already exist, skipping...
+2025-12-18 02:24:03.653 +03:00 [INF] Site settings already exist, skipping...
+2025-12-18 02:24:03.653 +03:00 [INF] Database seeding completed successfully.
+2025-12-18 02:24:03.655 +03:00 [INF] FreeStays API started at "2025-12-17T23:24:03.6554170Z"
+2025-12-18 02:24:03.700 +03:00 [INF] Starting Hangfire Server using job storage: 'In-Memory Storage'
+2025-12-18 02:24:03.700 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-18 02:24:03.706 +03:00 [INF] Server macbookair:7030:17be8ad4 successfully announced in 0,502 ms
+2025-12-18 02:24:03.707 +03:00 [INF] Server macbookair:7030:17be8ad4 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-18 02:24:03.710 +03:00 [INF] Server macbookair:7030:17be8ad4 all the dispatchers started
+2025-12-18 02:25:32.007 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-12-18 02:25:32.085 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:25:32.085 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:25:32.114 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 02:25:32.114 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 02:25:32.281 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 277.1406 ms
+2025-12-18 02:25:32.344 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 339.9822 ms
+2025-12-18 02:25:39.852 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:25:39.882 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 400 in 34.8335 ms
+2025-12-18 02:29:09.082 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:29:09.097 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 02:29:09.412 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 331.4957 ms
+2025-12-18 02:29:23.650 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:29:23.654 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:29:23.656 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 02:29:23.656 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 02:29:23.715 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 66.5877 ms
+2025-12-18 02:29:23.866 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 212.8957 ms
+2025-12-18 02:29:50.999 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:29:51.002 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 02:29:51.006 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:29:51.007 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 02:29:51.068 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 63.5001 ms
+2025-12-18 02:29:51.068 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 70.0291 ms
+2025-12-18 02:30:06.652 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:30:06.675 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 400 in 26.0830 ms
+2025-12-18 02:31:26.938 +03:00 [INF] FreeStays Request: LoginCommand {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-18 02:31:27.457 +03:00 [WRN] FreeStays Long Running Request: LoginCommand (518 ms) {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-18 02:31:27.458 +03:00 [INF] HTTP POST /api/v1/Auth/login responded 200 in 550.2183 ms
+2025-12-18 02:31:59.926 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:31:59.928 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 02:31:59.980 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 56.4992 ms
+2025-12-18 02:32:57.862 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:32:57.882 +03:00 [INF] FreeStays Request: UpdateAdminUserCommand {"Id":"31508e19-e4db-448c-a34a-3d1cc9c22496","Name":"Halit YILMAZ","Phone":"+905358959397","Role":"Admin","IsActive":true,"NewPassword":null,"$type":"UpdateAdminUserCommand"}
+2025-12-18 02:32:57.943 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 200 in 81.7963 ms
+2025-12-18 02:33:05.622 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:33:05.624 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 02:33:05.627 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:33:05.627 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 02:33:05.685 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 64.7331 ms
+2025-12-18 02:33:05.685 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 58.6503 ms
+2025-12-18 02:33:15.853 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:33:15.855 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 400 in 2.3946 ms
+2025-12-18 02:35:18.925 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:35:18.937 +03:00 [ERR] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 500 in 13.5512 ms
+FreeStays.Domain.Exceptions.ValidationException: One or more validation failures have occurred.
+   at FreeStays.Application.Common.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/Common/Behaviors/ValidationBehavior.cs:line 38
+   at FreeStays.API.Controllers.Admin.AdminUsersController.UpdateAdminUser(Guid id, UpdateAdminUserCommand command) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Controllers/Admin/AdminUsersController.cs:line 69
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2025-12-18 02:35:18.959 +03:00 [WRN] Validation error: One or more validation failures have occurred.
+FreeStays.Domain.Exceptions.ValidationException: One or more validation failures have occurred.
+   at FreeStays.Application.Common.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/Common/Behaviors/ValidationBehavior.cs:line 38
+   at FreeStays.API.Controllers.Admin.AdminUsersController.UpdateAdminUser(Guid id, UpdateAdminUserCommand command) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Controllers/Admin/AdminUsersController.cs:line 69
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at FreeStays.API.Middleware.ExceptionHandlingMiddleware.InvokeAsync(HttpContext context) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Middleware/ExceptionHandlingMiddleware.cs:line 22
+2025-12-18 02:36:54.816 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:36:54.825 +03:00 [ERR] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 500 in 8.9529 ms
+FreeStays.Domain.Exceptions.ValidationException: One or more validation failures have occurred.
+   at FreeStays.Application.Common.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/Common/Behaviors/ValidationBehavior.cs:line 38
+   at FreeStays.API.Controllers.Admin.AdminUsersController.UpdateAdminUser(Guid id, UpdateAdminUserCommand command) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Controllers/Admin/AdminUsersController.cs:line 69
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2025-12-18 02:36:54.830 +03:00 [WRN] Validation error: One or more validation failures have occurred.
+FreeStays.Domain.Exceptions.ValidationException: One or more validation failures have occurred.
+   at FreeStays.Application.Common.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/Common/Behaviors/ValidationBehavior.cs:line 38
+   at FreeStays.API.Controllers.Admin.AdminUsersController.UpdateAdminUser(Guid id, UpdateAdminUserCommand command) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Controllers/Admin/AdminUsersController.cs:line 69
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at FreeStays.API.Middleware.ExceptionHandlingMiddleware.InvokeAsync(HttpContext context) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Middleware/ExceptionHandlingMiddleware.cs:line 22
+2025-12-18 02:37:01.737 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:37:01.738 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 02:37:01.744 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:37:01.745 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 02:37:01.941 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 204.4104 ms
+2025-12-18 02:37:01.954 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 209.9775 ms
+2025-12-18 02:37:11.139 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:37:11.142 +03:00 [ERR] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 500 in 3.4915 ms
+FreeStays.Domain.Exceptions.ValidationException: One or more validation failures have occurred.
+   at FreeStays.Application.Common.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/Common/Behaviors/ValidationBehavior.cs:line 38
+   at FreeStays.API.Controllers.Admin.AdminUsersController.UpdateAdminUser(Guid id, UpdateAdminUserCommand command) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Controllers/Admin/AdminUsersController.cs:line 69
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2025-12-18 02:37:11.148 +03:00 [WRN] Validation error: One or more validation failures have occurred.
+FreeStays.Domain.Exceptions.ValidationException: One or more validation failures have occurred.
+   at FreeStays.Application.Common.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/Common/Behaviors/ValidationBehavior.cs:line 38
+   at FreeStays.API.Controllers.Admin.AdminUsersController.UpdateAdminUser(Guid id, UpdateAdminUserCommand command) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Controllers/Admin/AdminUsersController.cs:line 69
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at FreeStays.API.Middleware.ExceptionHandlingMiddleware.InvokeAsync(HttpContext context) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Middleware/ExceptionHandlingMiddleware.cs:line 22
+2025-12-18 02:37:15.377 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:37:15.381 +03:00 [INF] FreeStays Request: UpdateAdminUserCommand {"Id":"31508e19-e4db-448c-a34a-3d1cc9c22496","Name":"Halit YILMAZ","Phone":"+905358959397","Role":"Admin","IsActive":true,"NewPassword":null,"$type":"UpdateAdminUserCommand"}
+2025-12-18 02:37:15.437 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 200 in 61.8685 ms
+2025-12-18 02:37:25.907 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:37:25.909 +03:00 [ERR] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 500 in 2.4536 ms
+FreeStays.Domain.Exceptions.ValidationException: One or more validation failures have occurred.
+   at FreeStays.Application.Common.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/Common/Behaviors/ValidationBehavior.cs:line 38
+   at FreeStays.API.Controllers.Admin.AdminUsersController.UpdateAdminUser(Guid id, UpdateAdminUserCommand command) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Controllers/Admin/AdminUsersController.cs:line 69
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2025-12-18 02:37:25.911 +03:00 [WRN] Validation error: One or more validation failures have occurred.
+FreeStays.Domain.Exceptions.ValidationException: One or more validation failures have occurred.
+   at FreeStays.Application.Common.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/Common/Behaviors/ValidationBehavior.cs:line 38
+   at FreeStays.API.Controllers.Admin.AdminUsersController.UpdateAdminUser(Guid id, UpdateAdminUserCommand command) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Controllers/Admin/AdminUsersController.cs:line 69
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at FreeStays.API.Middleware.ExceptionHandlingMiddleware.InvokeAsync(HttpContext context) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Middleware/ExceptionHandlingMiddleware.cs:line 22
+2025-12-18 02:37:42.946 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:37:42.948 +03:00 [INF] FreeStays Request: UpdateAdminUserCommand {"Id":"31508e19-e4db-448c-a34a-3d1cc9c22496","Name":"Halit YILMAZ","Phone":"+905358959397","Role":"Admin","IsActive":true,"NewPassword":null,"$type":"UpdateAdminUserCommand"}
+2025-12-18 02:37:42.998 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 200 in 52.4201 ms
+2025-12-18 02:38:41.071 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:38:41.075 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 02:38:41.141 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 73.6562 ms
+2025-12-18 02:38:49.791 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:38:49.794 +03:00 [ERR] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 500 in 3.0555 ms
+FreeStays.Domain.Exceptions.ValidationException: One or more validation failures have occurred.
+   at FreeStays.Application.Common.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/Common/Behaviors/ValidationBehavior.cs:line 38
+   at FreeStays.API.Controllers.Admin.AdminUsersController.UpdateAdminUser(Guid id, UpdateAdminUserCommand command) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Controllers/Admin/AdminUsersController.cs:line 69
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2025-12-18 02:38:49.796 +03:00 [WRN] Validation error: One or more validation failures have occurred.
+FreeStays.Domain.Exceptions.ValidationException: One or more validation failures have occurred.
+   at FreeStays.Application.Common.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/Common/Behaviors/ValidationBehavior.cs:line 38
+   at FreeStays.API.Controllers.Admin.AdminUsersController.UpdateAdminUser(Guid id, UpdateAdminUserCommand command) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Controllers/Admin/AdminUsersController.cs:line 69
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at FreeStays.API.Middleware.ExceptionHandlingMiddleware.InvokeAsync(HttpContext context) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Middleware/ExceptionHandlingMiddleware.cs:line 22
+2025-12-18 02:38:54.896 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:38:54.897 +03:00 [INF] FreeStays Request: UpdateAdminUserCommand {"Id":"31508e19-e4db-448c-a34a-3d1cc9c22496","Name":"Halit YILMAZ","Phone":"+905358959397","Role":"Admin","IsActive":true,"NewPassword":null,"$type":"UpdateAdminUserCommand"}
+2025-12-18 02:38:54.945 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 200 in 49.3124 ms
+2025-12-18 02:40:28.573 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:40:28.578 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 02:40:28.643 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 72.2381 ms
+2025-12-18 02:40:38.578 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:40:38.581 +03:00 [ERR] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 500 in 3.3167 ms
+FreeStays.Domain.Exceptions.ValidationException: One or more validation failures have occurred.
+   at FreeStays.Application.Common.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/Common/Behaviors/ValidationBehavior.cs:line 38
+   at FreeStays.API.Controllers.Admin.AdminUsersController.UpdateAdminUser(Guid id, UpdateAdminUserCommand command) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Controllers/Admin/AdminUsersController.cs:line 69
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2025-12-18 02:40:38.585 +03:00 [WRN] Validation error: One or more validation failures have occurred.
+FreeStays.Domain.Exceptions.ValidationException: One or more validation failures have occurred.
+   at FreeStays.Application.Common.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/Common/Behaviors/ValidationBehavior.cs:line 38
+   at FreeStays.API.Controllers.Admin.AdminUsersController.UpdateAdminUser(Guid id, UpdateAdminUserCommand command) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Controllers/Admin/AdminUsersController.cs:line 69
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at FreeStays.API.Middleware.ExceptionHandlingMiddleware.InvokeAsync(HttpContext context) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Middleware/ExceptionHandlingMiddleware.cs:line 22
+2025-12-18 02:49:18.599 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:49:18.599 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:49:18.603 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 02:49:18.603 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 02:49:18.855 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 258.4068 ms
+2025-12-18 02:49:18.855 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 264.3643 ms
+2025-12-18 02:49:35.571 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 02:49:35.585 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 400 in 14.7561 ms
+2025-12-18 02:53:19.320 +03:00 [INF] Server macbookair:7030:17be8ad4 caught stopping signal...
+2025-12-18 02:53:19.327 +03:00 [INF] Server macbookair:7030:17be8ad4 All dispatchers stopped
+2025-12-18 02:53:19.330 +03:00 [INF] Server macbookair:7030:17be8ad4 successfully reported itself as stopped in 1,4793 ms
+2025-12-18 02:53:19.330 +03:00 [INF] Server macbookair:7030:17be8ad4 has been stopped in total 9,1575 ms
+2025-12-18 03:00:12.910 +03:00 [INF] Checking database connectivity...
+2025-12-18 03:00:13.577 +03:00 [INF] Ensuring database schema exists...
+2025-12-18 03:00:14.026 +03:00 [INF] Database is ready.
+2025-12-18 03:00:14.157 +03:00 [INF] Admin user already exists, skipping...
+2025-12-18 03:00:14.178 +03:00 [INF] Email templates already exist, skipping...
+2025-12-18 03:00:14.200 +03:00 [INF] Site settings already exist, skipping...
+2025-12-18 03:00:14.200 +03:00 [INF] Database seeding completed successfully.
+2025-12-18 03:00:14.202 +03:00 [INF] FreeStays API started at "2025-12-18T00:00:14.2025730Z"
+2025-12-18 03:00:14.246 +03:00 [INF] Starting Hangfire Server using job storage: 'In-Memory Storage'
+2025-12-18 03:00:14.247 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-18 03:00:14.253 +03:00 [INF] Server macbookair:8562:9706b1bf successfully announced in 0,5333 ms
+2025-12-18 03:00:14.254 +03:00 [INF] Server macbookair:8562:9706b1bf is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-18 03:00:14.256 +03:00 [INF] Server macbookair:8562:9706b1bf all the dispatchers started
+2025-12-18 03:00:30.166 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-12-18 03:00:30.228 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 03:00:30.271 +03:00 [INF] FreeStays Request: UpdateAdminUserCommand {"Id":"31508e19-e4db-448c-a34a-3d1cc9c22496","Name":null,"Phone":null,"Role":null,"IsActive":null,"NewPassword":null,"$type":"UpdateAdminUserCommand"}
+2025-12-18 03:00:30.474 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 200 in 308.4332 ms
+2025-12-18 03:00:40.348 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 03:00:40.351 +03:00 [INF] FreeStays Request: UpdateAdminUserCommand {"Id":"31508e19-e4db-448c-a34a-3d1cc9c22496","Name":null,"Phone":null,"Role":null,"IsActive":null,"NewPassword":null,"$type":"UpdateAdminUserCommand"}
+2025-12-18 03:00:40.492 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 200 in 149.8975 ms
+2025-12-18 03:00:53.083 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 03:00:53.088 +03:00 [INF] FreeStays Request: UpdateAdminUserCommand {"Id":"31508e19-e4db-448c-a34a-3d1cc9c22496","Name":null,"Phone":null,"Role":null,"IsActive":null,"NewPassword":null,"$type":"UpdateAdminUserCommand"}
+2025-12-18 03:00:53.136 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 200 in 55.1833 ms
+2025-12-18 03:01:03.284 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 03:01:03.306 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 03:01:03.327 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 03:01:03.327 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 03:01:03.485 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 201.6181 ms
+2025-12-18 03:01:03.646 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 342.1593 ms
+2025-12-18 03:01:15.996 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 03:01:16.000 +03:00 [INF] FreeStays Request: UpdateAdminUserCommand {"Id":"31508e19-e4db-448c-a34a-3d1cc9c22496","Name":null,"Phone":null,"Role":null,"IsActive":null,"NewPassword":null,"$type":"UpdateAdminUserCommand"}
+2025-12-18 03:01:16.052 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 200 in 57.8167 ms
+2025-12-18 03:05:41.993 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 03:05:41.996 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 03:05:41.999 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 03:05:41.998 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 03:05:42.236 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 240.7918 ms
+2025-12-18 03:05:42.237 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 245.3878 ms
+2025-12-18 03:05:51.097 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 03:05:51.099 +03:00 [INF] FreeStays Request: UpdateAdminUserCommand {"Id":"31508e19-e4db-448c-a34a-3d1cc9c22496","Name":null,"Phone":null,"Role":null,"IsActive":null,"NewPassword":null,"$type":"UpdateAdminUserCommand"}
+2025-12-18 03:05:51.155 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 200 in 58.7260 ms
+2025-12-18 03:07:39.166 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 03:07:39.169 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 03:07:39.175 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 03:07:39.176 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 03:07:39.255 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 90.6755 ms
+2025-12-18 03:07:39.255 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 80.1521 ms
+2025-12-18 03:07:46.757 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 03:07:46.761 +03:00 [INF] FreeStays Request: UpdateAdminUserCommand {"Id":"31508e19-e4db-448c-a34a-3d1cc9c22496","Name":null,"Phone":null,"Role":null,"IsActive":null,"NewPassword":null,"$type":"UpdateAdminUserCommand"}
+2025-12-18 03:07:46.813 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 200 in 57.2472 ms
+2025-12-18 03:07:46.818 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 03:07:46.819 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 03:07:46.859 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 40.7138 ms
+2025-12-18 06:00:00.516 +03:00 [INF] Starting SunHotels basic data synchronization...
+2025-12-18 06:00:00.519 +03:00 [INF] Syncing languages...
+2025-12-18 06:00:00.520 +03:00 [INF] Sending static request to SunHotels: GetLanguages - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetLanguages?userName=FreestaysTEST&password=Vision2024!@
+2025-12-18 06:00:01.005 +03:00 [INF] Parsed 19 languages from XML
+2025-12-18 06:00:01.204 +03:00 [INF] Synced 19 languages (Added: 0, Updated: 0)
+2025-12-18 06:00:01.208 +03:00 [INF] Syncing themes...
+2025-12-18 06:00:01.209 +03:00 [INF] Sending static request to SunHotels: GetThemes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetThemes?userName=FreestaysTEST&password=Vision2024!@
+2025-12-18 06:00:01.459 +03:00 [INF] Parsed 6 themes from XML
+2025-12-18 06:00:01.488 +03:00 [INF] Synced 6 themes (Added: 0, Updated: 0)
+2025-12-18 06:00:01.491 +03:00 [INF] Syncing destinations for language: en
+2025-12-18 06:00:01.492 +03:00 [INF] Sending static request to SunHotels: GetDestinations - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetDestinations?userName=FreestaysTEST&password=Vision2024!@&language=en&destinationCode=&sortBy=&sortOrder=&exactDestinationMatch=
+2025-12-18 06:00:05.017 +03:00 [INF] Parsed 23247 destinations from XML
+2025-12-18 06:00:05.295 +03:00 [INF] Synced 23247 destinations for language: en (Added: 0, Updated: 0)
+2025-12-18 06:00:05.297 +03:00 [INF] Syncing meals for language: en
+2025-12-18 06:00:05.298 +03:00 [INF] Sending static request to SunHotels: GetMeals - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetMeals?userName=FreestaysTEST&password=Vision2024!@&language=en
+2025-12-18 06:00:05.530 +03:00 [INF] Parsed 5 meals from XML
+2025-12-18 06:00:05.652 +03:00 [INF] Synced 5 meals for language: en (Added: 0, Updated: 2)
+2025-12-18 06:00:05.654 +03:00 [INF] Syncing room types for language: en
+2025-12-18 06:00:05.655 +03:00 [INF] Sending static request to SunHotels: GetRoomTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomTypes?userName=FreestaysTEST&password=Vision2024!@&language=en
+2025-12-18 06:00:17.059 +03:00 [INF] Parsed 184097 room types from XML
+2025-12-18 06:00:20.459 +03:00 [INF] Added batch of 9 room types for language: en (Progress: 9/9)
+2025-12-18 06:00:20.459 +03:00 [INF] Synced 184097 room types for language: en (Added: 9, Updated: 0)
+2025-12-18 06:00:20.460 +03:00 [INF] Syncing features for language: en
+2025-12-18 06:00:20.461 +03:00 [INF] Sending static request to SunHotels: GetFeatures - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetFeatures?userName=FreestaysTEST&password=Vision2024!@&language=en
+2025-12-18 06:00:20.684 +03:00 [INF] Parsed 50 features from XML
+2025-12-18 06:00:20.708 +03:00 [INF] Synced 50 features for language: en
+2025-12-18 06:00:20.708 +03:00 [INF] SunHotels basic data synchronization completed
+2025-12-18 20:43:51.279 +03:00 [INF] Starting SunHotels basic data synchronization...
+2025-12-18 20:43:51.284 +03:00 [INF] Syncing languages...
+2025-12-18 20:43:51.288 +03:00 [INF] Sending static request to SunHotels: GetLanguages - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetLanguages?userName=FreestaysTEST&password=Vision2024!@
+2025-12-18 20:43:51.533 +03:00 [ERR] Error getting languages from SunHotels
+System.Net.Http.HttpRequestException: nodename nor servname provided, or not known (xml.sunhotels.net:80)
+ ---> System.Net.Sockets.SocketException (0xFFFDFFFF): nodename nor servname provided, or not known
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|5_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingScopeHttpMessageHandler.<SendCoreAsync>g__Core|5_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.SendStaticRequestAsync(String method, Dictionary`2 parameters, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 876
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.GetLanguagesAsync(CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 143
+2025-12-18 20:43:51.575 +03:00 [ERR] Error syncing languages
+FreeStays.Domain.Exceptions.ExternalServiceException: External service 'SunHotels' error: Failed to get languages
+ ---> System.Net.Http.HttpRequestException: nodename nor servname provided, or not known (xml.sunhotels.net:80)
+ ---> System.Net.Sockets.SocketException (0xFFFDFFFF): nodename nor servname provided, or not known
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|5_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingScopeHttpMessageHandler.<SendCoreAsync>g__Core|5_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.SendStaticRequestAsync(String method, Dictionary`2 parameters, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 876
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.GetLanguagesAsync(CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 143
+   --- End of inner exception stack trace ---
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.GetLanguagesAsync(CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 149
+   at FreeStays.Infrastructure.BackgroundJobs.SunHotelsStaticDataSyncJob.SyncLanguagesAsync() in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/BackgroundJobs/SunHotelsStaticDataSyncJob.cs:line 593
+2025-12-18 20:43:51.578 +03:00 [INF] Syncing themes...
+2025-12-18 20:43:51.578 +03:00 [INF] Sending static request to SunHotels: GetThemes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetThemes?userName=FreestaysTEST&password=Vision2024!@
+2025-12-18 20:43:51.680 +03:00 [ERR] Error getting themes from SunHotels
+System.Net.Http.HttpRequestException: nodename nor servname provided, or not known (xml.sunhotels.net:80)
+ ---> System.Net.Sockets.SocketException (0xFFFDFFFF): nodename nor servname provided, or not known
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|5_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingScopeHttpMessageHandler.<SendCoreAsync>g__Core|5_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.SendStaticRequestAsync(String method, Dictionary`2 parameters, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 876
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.GetThemesAsync(CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 157
+2025-12-18 20:43:51.682 +03:00 [ERR] Error syncing themes
+FreeStays.Domain.Exceptions.ExternalServiceException: External service 'SunHotels' error: Failed to get themes
+ ---> System.Net.Http.HttpRequestException: nodename nor servname provided, or not known (xml.sunhotels.net:80)
+ ---> System.Net.Sockets.SocketException (0xFFFDFFFF): nodename nor servname provided, or not known
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|5_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingScopeHttpMessageHandler.<SendCoreAsync>g__Core|5_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.SendStaticRequestAsync(String method, Dictionary`2 parameters, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 876
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.GetThemesAsync(CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 157
+   --- End of inner exception stack trace ---
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.GetThemesAsync(CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 163
+   at FreeStays.Infrastructure.BackgroundJobs.SunHotelsStaticDataSyncJob.SyncThemesAsync() in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/BackgroundJobs/SunHotelsStaticDataSyncJob.cs:line 529
+2025-12-18 20:43:51.683 +03:00 [INF] Syncing destinations for language: en
+2025-12-18 20:43:51.683 +03:00 [INF] Sending static request to SunHotels: GetDestinations - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetDestinations?userName=FreestaysTEST&password=Vision2024!@&language=en&destinationCode=&sortBy=&sortOrder=&exactDestinationMatch=
+2025-12-18 20:43:51.795 +03:00 [ERR] Error getting destinations from SunHotels
+System.Net.Http.HttpRequestException: nodename nor servname provided, or not known (xml.sunhotels.net:80)
+ ---> System.Net.Sockets.SocketException (0xFFFDFFFF): nodename nor servname provided, or not known
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|5_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingScopeHttpMessageHandler.<SendCoreAsync>g__Core|5_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.SendStaticRequestAsync(String method, Dictionary`2 parameters, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 876
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.GetDestinationsAsync(String language, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 48
+2025-12-18 20:43:51.798 +03:00 [ERR] Error syncing destinations for language: en
+FreeStays.Domain.Exceptions.ExternalServiceException: External service 'SunHotels' error: Failed to get destinations
+ ---> System.Net.Http.HttpRequestException: nodename nor servname provided, or not known (xml.sunhotels.net:80)
+ ---> System.Net.Sockets.SocketException (0xFFFDFFFF): nodename nor servname provided, or not known
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|5_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingScopeHttpMessageHandler.<SendCoreAsync>g__Core|5_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.SendStaticRequestAsync(String method, Dictionary`2 parameters, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 876
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.GetDestinationsAsync(String language, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 48
+   --- End of inner exception stack trace ---
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.GetDestinationsAsync(String language, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 54
+   at FreeStays.Infrastructure.BackgroundJobs.SunHotelsStaticDataSyncJob.SyncDestinationsAsync(String language) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/BackgroundJobs/SunHotelsStaticDataSyncJob.cs:line 123
+2025-12-18 20:43:51.800 +03:00 [INF] Syncing meals for language: en
+2025-12-18 20:43:51.800 +03:00 [INF] Sending static request to SunHotels: GetMeals - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetMeals?userName=FreestaysTEST&password=Vision2024!@&language=en
+2025-12-18 20:43:51.834 +03:00 [ERR] Error getting meals from SunHotels
+System.Net.Http.HttpRequestException: nodename nor servname provided, or not known (xml.sunhotels.net:80)
+ ---> System.Net.Sockets.SocketException (0xFFFDFFFF): nodename nor servname provided, or not known
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|5_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingScopeHttpMessageHandler.<SendCoreAsync>g__Core|5_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.SendStaticRequestAsync(String method, Dictionary`2 parameters, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 876
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.GetMealsAsync(String language, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 91
+2025-12-18 20:43:51.837 +03:00 [ERR] Error syncing meals for language: en
+FreeStays.Domain.Exceptions.ExternalServiceException: External service 'SunHotels' error: Failed to get meals
+ ---> System.Net.Http.HttpRequestException: nodename nor servname provided, or not known (xml.sunhotels.net:80)
+ ---> System.Net.Sockets.SocketException (0xFFFDFFFF): nodename nor servname provided, or not known
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|5_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingScopeHttpMessageHandler.<SendCoreAsync>g__Core|5_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.SendStaticRequestAsync(String method, Dictionary`2 parameters, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 876
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.GetMealsAsync(String language, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 91
+   --- End of inner exception stack trace ---
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.GetMealsAsync(String language, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 97
+   at FreeStays.Infrastructure.BackgroundJobs.SunHotelsStaticDataSyncJob.SyncMealsAsync(String language) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/BackgroundJobs/SunHotelsStaticDataSyncJob.cs:line 308
+2025-12-18 20:43:51.840 +03:00 [INF] Syncing room types for language: en
+2025-12-18 20:43:51.840 +03:00 [INF] Sending static request to SunHotels: GetRoomTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomTypes?userName=FreestaysTEST&password=Vision2024!@&language=en
+2025-12-18 20:43:51.894 +03:00 [ERR] Error getting room types from SunHotels
+System.Net.Http.HttpRequestException: nodename nor servname provided, or not known (xml.sunhotels.net:80)
+ ---> System.Net.Sockets.SocketException (0xFFFDFFFF): nodename nor servname provided, or not known
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|5_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingScopeHttpMessageHandler.<SendCoreAsync>g__Core|5_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.SendStaticRequestAsync(String method, Dictionary`2 parameters, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 876
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.GetRoomTypesAsync(String language, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 110
+2025-12-18 20:43:51.896 +03:00 [ERR] Error syncing room types for language: en
+FreeStays.Domain.Exceptions.ExternalServiceException: External service 'SunHotels' error: Failed to get room types
+ ---> System.Net.Http.HttpRequestException: nodename nor servname provided, or not known (xml.sunhotels.net:80)
+ ---> System.Net.Sockets.SocketException (0xFFFDFFFF): nodename nor servname provided, or not known
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|5_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingScopeHttpMessageHandler.<SendCoreAsync>g__Core|5_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.SendStaticRequestAsync(String method, Dictionary`2 parameters, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 876
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.GetRoomTypesAsync(String language, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 110
+   --- End of inner exception stack trace ---
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.GetRoomTypesAsync(String language, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 116
+   at FreeStays.Infrastructure.BackgroundJobs.SunHotelsStaticDataSyncJob.SyncRoomTypesAsync(String language) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/BackgroundJobs/SunHotelsStaticDataSyncJob.cs:line 377
+2025-12-18 20:43:51.897 +03:00 [INF] Syncing features for language: en
+2025-12-18 20:43:51.897 +03:00 [INF] Sending static request to SunHotels: GetFeatures - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetFeatures?userName=FreestaysTEST&password=Vision2024!@&language=en
+2025-12-18 20:43:51.903 +03:00 [ERR] Error getting features from SunHotels
+System.Net.Http.HttpRequestException: nodename nor servname provided, or not known (xml.sunhotels.net:80)
+ ---> System.Net.Sockets.SocketException (0xFFFDFFFF): nodename nor servname provided, or not known
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|5_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingScopeHttpMessageHandler.<SendCoreAsync>g__Core|5_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.SendStaticRequestAsync(String method, Dictionary`2 parameters, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 876
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.GetFeaturesAsync(String language, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 129
+2025-12-18 20:43:51.905 +03:00 [ERR] Error syncing features for language: en
+FreeStays.Domain.Exceptions.ExternalServiceException: External service 'SunHotels' error: Failed to get features
+ ---> System.Net.Http.HttpRequestException: nodename nor servname provided, or not known (xml.sunhotels.net:80)
+ ---> System.Net.Sockets.SocketException (0xFFFDFFFF): nodename nor servname provided, or not known
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|5_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingScopeHttpMessageHandler.<SendCoreAsync>g__Core|5_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.SendStaticRequestAsync(String method, Dictionary`2 parameters, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 876
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.GetFeaturesAsync(String language, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 129
+   --- End of inner exception stack trace ---
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsService.GetFeaturesAsync(String language, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsService.cs:line 135
+   at FreeStays.Infrastructure.BackgroundJobs.SunHotelsStaticDataSyncJob.SyncFeaturesAsync(String language) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/BackgroundJobs/SunHotelsStaticDataSyncJob.cs:line 465
+2025-12-18 20:43:51.907 +03:00 [INF] SunHotels basic data synchronization completed
+2025-12-18 20:46:27.011 +03:00 [INF] Server macbookair:8562:9706b1bf caught stopping signal...
+2025-12-18 20:46:27.191 +03:00 [INF] Server macbookair:8562:9706b1bf All dispatchers stopped
+2025-12-18 20:46:27.194 +03:00 [INF] Server macbookair:8562:9706b1bf successfully reported itself as stopped in 1,5079 ms
+2025-12-18 20:46:27.194 +03:00 [INF] Server macbookair:8562:9706b1bf has been stopped in total 181,2618 ms
+2025-12-18 20:51:57.487 +03:00 [INF] Checking database connectivity...
+2025-12-18 20:51:58.166 +03:00 [INF] Ensuring database schema exists...
+2025-12-18 20:51:58.599 +03:00 [INF] Database is ready.
+2025-12-18 20:51:58.728 +03:00 [INF] Admin user already exists, skipping...
+2025-12-18 20:51:58.749 +03:00 [INF] Email templates already exist, skipping...
+2025-12-18 20:51:58.771 +03:00 [INF] Site settings already exist, skipping...
+2025-12-18 20:51:58.771 +03:00 [INF] Database seeding completed successfully.
+2025-12-18 20:51:58.774 +03:00 [INF] FreeStays API started at "2025-12-18T17:51:58.7739820Z"
+2025-12-18 20:51:58.816 +03:00 [INF] Starting Hangfire Server using job storage: 'In-Memory Storage'
+2025-12-18 20:51:58.816 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-18 20:51:58.823 +03:00 [INF] Server macbookair:12050:d93d5eea successfully announced in 0,5672 ms
+2025-12-18 20:51:58.824 +03:00 [INF] Server macbookair:12050:d93d5eea is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-18 20:51:58.826 +03:00 [INF] Server macbookair:12050:d93d5eea all the dispatchers started
+2025-12-18 20:56:41.926 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-12-18 20:56:42.032 +03:00 [INF] FreeStays Request: LoginCommand {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-18 20:56:42.700 +03:00 [WRN] FreeStays Long Running Request: LoginCommand (666 ms) {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-18 20:56:42.709 +03:00 [INF] HTTP POST /api/v1/Auth/login responded 200 in 785.8862 ms
+2025-12-18 20:56:43.481 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 20:56:43.481 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 20:56:43.492 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-18 20:56:43.492 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-18 20:56:43.708 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 269.4511 ms
+2025-12-18 20:56:43.801 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 362.0812 ms
+2025-12-18 20:57:23.061 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 20:57:23.061 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 20:57:23.099 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 20:57:23.099 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 20:57:23.181 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 119.6880 ms
+2025-12-18 20:57:23.312 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 256.1165 ms
+2025-12-18 20:57:32.641 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 20:57:32.663 +03:00 [INF] FreeStays Request: UpdateAdminUserCommand {"Id":"31508e19-e4db-448c-a34a-3d1cc9c22496","Name":null,"Phone":null,"Role":null,"IsActive":null,"NewPassword":null,"$type":"UpdateAdminUserCommand"}
+2025-12-18 20:57:32.719 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 200 in 79.3345 ms
+2025-12-18 20:57:32.724 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 20:57:32.725 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 20:57:32.766 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 41.9030 ms
+2025-12-18 21:02:00.747 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:02:00.747 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:02:00.751 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-18 21:02:00.751 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-18 21:02:01.028 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 283.0746 ms
+2025-12-18 21:02:01.028 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 282.8936 ms
+2025-12-18 21:02:11.305 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:02:11.305 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:02:11.308 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-18 21:02:11.308 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-18 21:02:11.444 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 141.3438 ms
+2025-12-18 21:02:11.444 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 141.5048 ms
+2025-12-18 21:14:09.872 +03:00 [INF] Server macbookair:12050:d93d5eea caught stopping signal...
+2025-12-18 21:14:09.890 +03:00 [INF] Server macbookair:12050:d93d5eea All dispatchers stopped
+2025-12-18 21:14:09.896 +03:00 [INF] Server macbookair:12050:d93d5eea successfully reported itself as stopped in 2,778 ms
+2025-12-18 21:14:09.896 +03:00 [INF] Server macbookair:12050:d93d5eea has been stopped in total 17,3677 ms
+2025-12-18 21:15:43.500 +03:00 [INF] Checking database connectivity...
+2025-12-18 21:15:44.215 +03:00 [INF] Ensuring database schema exists...
+2025-12-18 21:15:44.627 +03:00 [INF] Database is ready.
+2025-12-18 21:15:44.752 +03:00 [INF] Admin user already exists, skipping...
+2025-12-18 21:15:44.773 +03:00 [INF] Email templates already exist, skipping...
+2025-12-18 21:15:44.794 +03:00 [INF] Site settings already exist, skipping...
+2025-12-18 21:15:44.794 +03:00 [INF] Database seeding completed successfully.
+2025-12-18 21:15:44.796 +03:00 [INF] FreeStays API started at "2025-12-18T18:15:44.7962500Z"
+2025-12-18 21:15:44.839 +03:00 [INF] Starting Hangfire Server using job storage: 'In-Memory Storage'
+2025-12-18 21:15:44.839 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-18 21:15:44.847 +03:00 [INF] Server macbookair:12952:9d5468e8 successfully announced in 0,7066 ms
+2025-12-18 21:15:44.849 +03:00 [INF] Server macbookair:12952:9d5468e8 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-18 21:15:44.856 +03:00 [INF] Server macbookair:12952:9d5468e8 all the dispatchers started
+2025-12-18 21:16:43.971 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-12-18 21:16:44.045 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:16:44.045 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:16:44.062 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-18 21:16:44.062 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-18 21:16:44.245 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 275.3569 ms
+2025-12-18 21:16:44.325 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 356.7856 ms
+2025-12-18 21:17:05.728 +03:00 [ERR] JWT Authentication failed
+Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '18.12.2025 01:31:27', Current time (UTC): '18.12.2025 18:17:05'.
+   at Microsoft.IdentityModel.Tokens.Validators.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateTokenPayloadAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateJWSAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+2025-12-18 21:17:05.779 +03:00 [INF] FreeStays Request: LoginCommand {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-18 21:17:06.380 +03:00 [WRN] FreeStays Long Running Request: LoginCommand (599 ms) {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-18 21:17:06.383 +03:00 [INF] HTTP POST /api/v1/Auth/login responded 200 in 665.5618 ms
+2025-12-18 21:18:29.378 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:18:29.381 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-18 21:18:29.475 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 99.5743 ms
+2025-12-18 21:28:09.658 +03:00 [INF] Server macbookair:12952:9d5468e8 caught stopping signal...
+2025-12-18 21:28:09.668 +03:00 [INF] Server macbookair:12952:9d5468e8 All dispatchers stopped
+2025-12-18 21:28:09.670 +03:00 [INF] Server macbookair:12952:9d5468e8 successfully reported itself as stopped in 0,995 ms
+2025-12-18 21:28:09.670 +03:00 [INF] Server macbookair:12952:9d5468e8 has been stopped in total 9,9417 ms
+2025-12-18 21:41:29.017 +03:00 [INF] Checking database connectivity...
+2025-12-18 21:41:29.707 +03:00 [INF] Ensuring database schema exists...
+2025-12-18 21:41:30.134 +03:00 [INF] Database is ready.
+2025-12-18 21:41:30.263 +03:00 [INF] Admin user already exists, skipping...
+2025-12-18 21:41:30.285 +03:00 [INF] Email templates already exist, skipping...
+2025-12-18 21:41:30.307 +03:00 [INF] Site settings already exist, skipping...
+2025-12-18 21:41:30.307 +03:00 [INF] Database seeding completed successfully.
+2025-12-18 21:41:30.309 +03:00 [INF] FreeStays API started at "2025-12-18T18:41:30.3092720Z"
+2025-12-18 21:41:30.353 +03:00 [INF] Starting Hangfire Server using job storage: 'In-Memory Storage'
+2025-12-18 21:41:30.354 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-18 21:41:30.359 +03:00 [INF] Server macbookair:15812:c9741a5b successfully announced in 0,478 ms
+2025-12-18 21:41:30.360 +03:00 [INF] Server macbookair:15812:c9741a5b is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-18 21:41:30.363 +03:00 [INF] Server macbookair:15812:c9741a5b all the dispatchers started
+2025-12-18 21:41:36.907 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-12-18 21:41:36.975 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:41:36.975 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:41:36.989 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-18 21:41:36.989 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-18 21:41:37.166 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 259.8491 ms
+2025-12-18 21:41:37.249 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 343.0987 ms
+2025-12-18 21:42:17.555 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:42:17.556 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:42:17.607 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 21:42:17.607 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 21:42:17.765 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 230.7143 ms
+2025-12-18 21:42:17.765 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 230.7178 ms
+2025-12-18 21:42:26.256 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:42:26.292 +03:00 [INF] FreeStays Request: UpdateAdminUserCommand {"Id":"31508e19-e4db-448c-a34a-3d1cc9c22496","Name":null,"Phone":null,"Role":null,"IsActive":null,"NewPassword":null,"$type":"UpdateAdminUserCommand"}
+2025-12-18 21:42:26.415 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 200 in 159.8570 ms
+2025-12-18 21:42:26.420 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:42:26.421 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 21:42:26.462 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 42.4910 ms
+2025-12-18 21:42:29.286 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:42:29.287 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 21:42:29.330 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 44.3966 ms
+2025-12-18 21:43:04.172 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:43:04.176 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 21:43:04.236 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 67.7275 ms
+2025-12-18 21:43:05.554 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:43:05.554 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 21:43:05.603 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 49.5531 ms
+2025-12-18 21:43:06.139 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:43:06.140 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 21:43:06.188 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 49.2036 ms
+2025-12-18 21:43:09.141 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:43:09.142 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 21:43:09.154 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:43:09.155 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 21:43:09.191 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 50.5500 ms
+2025-12-18 21:43:09.194 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 40.2851 ms
+2025-12-18 21:43:34.982 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:43:34.994 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 21:43:35.060 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 81.1608 ms
+2025-12-18 21:43:35.920 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:43:35.920 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 21:43:35.960 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 40.9297 ms
+2025-12-18 21:48:53.672 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:48:53.677 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 21:48:53.879 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 208.7318 ms
+2025-12-18 21:50:20.999 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:50:21.034 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 400 in 38.8818 ms
+2025-12-18 21:51:06.124 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:51:06.136 +03:00 [INF] FreeStays Request: UpdateAdminUserCommand {"Id":"31508e19-e4db-448c-a34a-3d1cc9c22496","Name":null,"Phone":null,"Role":null,"IsActive":null,"NewPassword":null,"$type":"UpdateAdminUserCommand"}
+2025-12-18 21:51:06.201 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 200 in 79.4890 ms
+2025-12-18 21:51:06.207 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:51:06.208 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 21:51:06.248 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 41.5382 ms
+2025-12-18 21:54:24.750 +03:00 [INF] FreeStays Request: LoginCommand {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-18 21:54:25.404 +03:00 [WRN] FreeStays Long Running Request: LoginCommand (653 ms) {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-18 21:54:25.407 +03:00 [INF] HTTP POST /api/v1/Auth/login responded 200 in 701.6156 ms
+2025-12-18 21:54:25.882 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:54:25.882 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-18 21:54:25.964 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 83.0987 ms
+2025-12-18 21:54:25.965 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:54:25.965 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-18 21:54:26.040 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 75.7979 ms
+2025-12-18 21:54:38.721 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:54:38.723 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 21:54:38.777 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 57.3038 ms
+2025-12-18 21:54:38.779 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:54:38.779 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 21:54:38.818 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 39.4265 ms
+2025-12-18 21:55:10.024 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:55:10.045 +03:00 [INF] FreeStays Request: UpdateAdminUserCommand {"Id":"31508e19-e4db-448c-a34a-3d1cc9c22496","Name":null,"Phone":null,"Role":null,"IsActive":null,"NewPassword":null,"$type":"UpdateAdminUserCommand"}
+2025-12-18 21:55:10.114 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 200 in 92.7499 ms
+2025-12-18 21:55:10.119 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 21:55:10.120 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 21:55:10.159 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 40.8023 ms
+2025-12-18 21:58:45.849 +03:00 [INF] Server macbookair:15812:c9741a5b caught stopping signal...
+2025-12-18 21:58:45.859 +03:00 [INF] Server macbookair:15812:c9741a5b All dispatchers stopped
+2025-12-18 21:58:45.862 +03:00 [INF] Server macbookair:15812:c9741a5b successfully reported itself as stopped in 1,1047 ms
+2025-12-18 21:58:45.862 +03:00 [INF] Server macbookair:15812:c9741a5b has been stopped in total 10,7003 ms
+2025-12-18 22:07:49.190 +03:00 [INF] Checking database connectivity...
+2025-12-18 22:07:49.860 +03:00 [INF] Ensuring database schema exists...
+2025-12-18 22:07:50.277 +03:00 [INF] Database is ready.
+2025-12-18 22:07:50.406 +03:00 [INF] Admin user already exists, skipping...
+2025-12-18 22:07:50.428 +03:00 [INF] Email templates already exist, skipping...
+2025-12-18 22:07:50.448 +03:00 [INF] Site settings already exist, skipping...
+2025-12-18 22:07:50.449 +03:00 [INF] Database seeding completed successfully.
+2025-12-18 22:07:50.451 +03:00 [INF] FreeStays API started at "2025-12-18T19:07:50.4512190Z"
+2025-12-18 22:07:50.493 +03:00 [INF] Starting Hangfire Server using job storage: 'In-Memory Storage'
+2025-12-18 22:07:50.494 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-18 22:07:50.500 +03:00 [INF] Server macbookair:17265:5b013a0c successfully announced in 0,511 ms
+2025-12-18 22:07:50.501 +03:00 [INF] Server macbookair:17265:5b013a0c is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-18 22:07:50.503 +03:00 [INF] Server macbookair:17265:5b013a0c all the dispatchers started
+2025-12-18 22:07:55.195 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-12-18 22:07:55.252 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:07:55.276 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 22:07:55.440 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 246.2315 ms
+2025-12-18 22:08:03.433 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:08:03.475 +03:00 [INF] FreeStays Request: UpdateAdminUserCommand {"Id":"31508e19-e4db-448c-a34a-3d1cc9c22496","Name":null,"Phone":null,"Role":null,"IsActive":null,"NewPassword":null,"$type":"UpdateAdminUserCommand"}
+2025-12-18 22:08:03.629 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 200 in 201.1986 ms
+2025-12-18 22:08:03.638 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:08:03.641 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 22:08:03.683 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 48.8799 ms
+2025-12-18 22:08:06.468 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:08:06.470 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 22:08:06.524 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 56.1224 ms
+2025-12-18 22:09:09.341 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:09:09.346 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 22:09:09.417 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 77.8564 ms
+2025-12-18 22:09:20.410 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:09:20.418 +03:00 [INF] FreeStays Request: UpdateAdminUserCommand {"Id":"31508e19-e4db-448c-a34a-3d1cc9c22496","Name":null,"Phone":null,"Role":null,"IsActive":null,"NewPassword":null,"$type":"UpdateAdminUserCommand"}
+2025-12-18 22:09:20.470 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 200 in 62.3423 ms
+2025-12-18 22:09:20.474 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:09:20.475 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 22:09:20.515 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 41.0426 ms
+2025-12-18 22:10:25.769 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:10:25.775 +03:00 [INF] FreeStays Request: UpdateAdminUserCommand {"Id":"31508e19-e4db-448c-a34a-3d1cc9c22496","Name":null,"Phone":null,"Role":null,"IsActive":null,"NewPassword":null,"$type":"UpdateAdminUserCommand"}
+2025-12-18 22:10:25.841 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 200 in 80.0659 ms
+2025-12-18 22:10:25.846 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:10:25.846 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 22:10:25.886 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 40.4153 ms
+2025-12-18 22:12:30.372 +03:00 [INF] Server macbookair:17265:5b013a0c caught stopping signal...
+2025-12-18 22:12:30.388 +03:00 [INF] Server macbookair:17265:5b013a0c All dispatchers stopped
+2025-12-18 22:12:30.390 +03:00 [INF] Server macbookair:17265:5b013a0c successfully reported itself as stopped in 0,8738 ms
+2025-12-18 22:12:30.390 +03:00 [INF] Server macbookair:17265:5b013a0c has been stopped in total 13,0457 ms
+2025-12-18 22:17:46.936 +03:00 [INF] Checking database connectivity...
+2025-12-18 22:17:47.609 +03:00 [INF] Ensuring database schema exists...
+2025-12-18 22:17:47.997 +03:00 [INF] Database is ready.
+2025-12-18 22:17:48.135 +03:00 [INF] Admin user already exists, skipping...
+2025-12-18 22:17:48.156 +03:00 [INF] Email templates already exist, skipping...
+2025-12-18 22:17:48.177 +03:00 [INF] Site settings already exist, skipping...
+2025-12-18 22:17:48.177 +03:00 [INF] Database seeding completed successfully.
+2025-12-18 22:17:48.179 +03:00 [INF] FreeStays API started at "2025-12-18T19:17:48.1796140Z"
+2025-12-18 22:17:48.223 +03:00 [INF] Starting Hangfire Server using job storage: 'In-Memory Storage'
+2025-12-18 22:17:48.223 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-18 22:17:48.230 +03:00 [INF] Server macbookair:17741:21a60b2a successfully announced in 0,8163 ms
+2025-12-18 22:17:48.231 +03:00 [INF] Server macbookair:17741:21a60b2a is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-18 22:17:48.233 +03:00 [INF] Server macbookair:17741:21a60b2a all the dispatchers started
+2025-12-18 22:17:52.175 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-12-18 22:17:52.234 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:17:52.253 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 22:17:52.420 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 246.0436 ms
+2025-12-18 22:17:59.840 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:17:59.881 +03:00 [INF] FreeStays Request: UpdateAdminUserCommand {"Id":"31508e19-e4db-448c-a34a-3d1cc9c22496","Name":"Halit YILMAZ","Phone":"+905358959397","Role":"Admin","IsActive":true,"NewPassword":null,"$type":"UpdateAdminUserCommand"}
+2025-12-18 22:18:00.037 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 200 in 201.6860 ms
+2025-12-18 22:18:00.043 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:18:00.045 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 22:18:00.086 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 44.4142 ms
+2025-12-18 22:18:10.533 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:18:10.538 +03:00 [INF] FreeStays Request: UpdateAdminUserCommand {"Id":"31508e19-e4db-448c-a34a-3d1cc9c22496","Name":"Halit YILMAZ","Phone":"+905358959397","Role":"SuperAdmin","IsActive":true,"NewPassword":null,"$type":"UpdateAdminUserCommand"}
+2025-12-18 22:18:10.583 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 200 in 50.9530 ms
+2025-12-18 22:18:10.588 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:18:10.589 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 22:18:10.629 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 41.5742 ms
+2025-12-18 22:18:20.942 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:18:20.945 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 22:18:20.953 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:18:20.954 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 22:18:20.998 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 56.9626 ms
+2025-12-18 22:18:21.145 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 192.4247 ms
+2025-12-18 22:18:52.216 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:18:52.217 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 22:18:52.223 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:18:52.223 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 22:18:52.270 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 54.7906 ms
+2025-12-18 22:18:52.270 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 47.3010 ms
+2025-12-18 22:19:00.194 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:19:00.195 +03:00 [INF] HTTP PATCH /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496/status responded 404 in 1.7230 ms
+2025-12-18 22:19:06.174 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:19:06.189 +03:00 [INF] HTTP POST /api/v1/Auth/forgot-password responded 200 in 15.1408 ms
+2025-12-18 22:19:17.102 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:19:17.107 +03:00 [INF] HTTP POST /api/v1/Auth/forgot-password responded 200 in 8.5728 ms
+2025-12-18 22:57:27.011 +03:00 [ERR] JWT Authentication failed
+Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '18.12.2025 19:56:42', Current time (UTC): '18.12.2025 19:57:26'.
+   at Microsoft.IdentityModel.Tokens.Validators.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateTokenPayloadAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateJWSAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+2025-12-18 22:57:27.055 +03:00 [WRN] JWT Authentication challenge: invalid_token, The token expired at '12/18/2025 19:56:42'
+2025-12-18 22:57:27.055 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 401 in 76.6501 ms
+2025-12-18 22:57:34.185 +03:00 [INF] FreeStays Request: LoginCommand {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-18 22:57:34.861 +03:00 [WRN] FreeStays Long Running Request: LoginCommand (672 ms) {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-18 22:57:34.862 +03:00 [INF] HTTP POST /api/v1/Auth/login responded 200 in 728.0900 ms
+2025-12-18 22:57:35.918 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:57:35.918 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:57:35.927 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-18 22:57:35.927 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-18 22:57:36.050 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 142.5985 ms
+2025-12-18 22:57:36.172 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 264.6738 ms
+2025-12-18 22:57:39.253 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:57:39.253 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:57:39.254 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 22:57:39.254 +03:00 [INF] FreeStays Request: GetAdminUsersQuery {"Page":1,"PageSize":20,"Search":null,"$type":"GetAdminUsersQuery"}
+2025-12-18 22:57:39.306 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 55.3801 ms
+2025-12-18 22:57:39.306 +03:00 [INF] HTTP GET /api/v1/admin/users responded 200 in 53.9185 ms
+2025-12-18 22:57:42.601 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:57:42.608 +03:00 [INF] FreeStays Request: UpdateAdminUserCommand {"Id":"31508e19-e4db-448c-a34a-3d1cc9c22496","Name":null,"Phone":null,"Role":null,"IsActive":false,"NewPassword":null,"$type":"UpdateAdminUserCommand"}
+2025-12-18 22:57:42.660 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 200 in 59.5278 ms
+2025-12-18 22:57:59.291 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 22:57:59.298 +03:00 [INF] FreeStays Request: UpdateAdminUserCommand {"Id":"31508e19-e4db-448c-a34a-3d1cc9c22496","Name":null,"Phone":null,"Role":null,"IsActive":true,"NewPassword":null,"$type":"UpdateAdminUserCommand"}
+2025-12-18 22:57:59.363 +03:00 [INF] HTTP PUT /api/v1/admin/users/31508e19-e4db-448c-a34a-3d1cc9c22496 responded 200 in 79.8828 ms
+2025-12-18 23:01:46.026 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 23:01:46.026 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 23:01:46.100 +03:00 [INF] FreeStays Request: GetCustomersQuery {"Page":1,"PageSize":20,"Search":null,"IsBlocked":null,"$type":"GetCustomersQuery"}
+2025-12-18 23:01:46.100 +03:00 [INF] FreeStays Request: GetCustomersQuery {"Page":1,"PageSize":20,"Search":null,"IsBlocked":null,"$type":"GetCustomersQuery"}
+2025-12-18 23:01:46.252 +03:00 [INF] HTTP GET /api/v1/admin/customers responded 200 in 234.3089 ms
+2025-12-18 23:01:46.252 +03:00 [INF] HTTP GET /api/v1/admin/customers responded 200 in 232.0001 ms
+2025-12-18 23:01:59.621 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 23:01:59.652 +03:00 [INF] FreeStays Request: GetCustomerBookingsQuery {"CustomerId":"7725db12-e13f-4f34-a509-a89dd10ebeab","$type":"GetCustomerBookingsQuery"}
+2025-12-18 23:01:59.797 +03:00 [INF] HTTP GET /api/v1/admin/customers/7725db12-e13f-4f34-a509-a89dd10ebeab/bookings responded 200 in 179.5749 ms
+2025-12-18 23:02:06.623 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 23:02:06.624 +03:00 [INF] FreeStays Request: GetCustomersQuery {"Page":1,"PageSize":20,"Search":null,"IsBlocked":null,"$type":"GetCustomersQuery"}
+2025-12-18 23:02:06.630 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 23:02:06.630 +03:00 [INF] FreeStays Request: GetCustomersQuery {"Page":1,"PageSize":20,"Search":null,"IsBlocked":null,"$type":"GetCustomersQuery"}
+2025-12-18 23:02:06.665 +03:00 [INF] HTTP GET /api/v1/admin/customers responded 200 in 43.2451 ms
+2025-12-18 23:02:06.671 +03:00 [INF] HTTP GET /api/v1/admin/customers responded 200 in 41.5380 ms
+2025-12-18 23:02:22.856 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 23:02:22.906 +03:00 [INF] FreeStays Request: UpdateCustomerCommand {"Id":"7725db12-e13f-4f34-a509-a89dd10ebeab","Name":null,"Phone":null,"Role":null,"Notes":null,"IsBlocked":true,"$type":"UpdateCustomerCommand"}
+2025-12-18 23:02:23.030 +03:00 [INF] HTTP PUT /api/v1/admin/customers/7725db12-e13f-4f34-a509-a89dd10ebeab responded 200 in 178.1019 ms
+2025-12-18 23:02:30.246 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 23:02:30.248 +03:00 [INF] FreeStays Request: UpdateCustomerCommand {"Id":"7725db12-e13f-4f34-a509-a89dd10ebeab","Name":null,"Phone":null,"Role":null,"Notes":null,"IsBlocked":false,"$type":"UpdateCustomerCommand"}
+2025-12-18 23:02:30.338 +03:00 [INF] HTTP PUT /api/v1/admin/customers/7725db12-e13f-4f34-a509-a89dd10ebeab responded 200 in 92.9070 ms
+2025-12-18 23:02:41.129 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 23:02:41.130 +03:00 [INF] FreeStays Request: GetCustomerBookingsQuery {"CustomerId":"7725db12-e13f-4f34-a509-a89dd10ebeab","$type":"GetCustomerBookingsQuery"}
+2025-12-18 23:02:41.351 +03:00 [INF] HTTP GET /api/v1/admin/customers/7725db12-e13f-4f34-a509-a89dd10ebeab/bookings responded 200 in 222.1930 ms
+2025-12-18 23:06:14.782 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 23:06:14.782 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 23:06:14.812 +03:00 [INF] FreeStays Request: GetCustomersQuery {"Page":1,"PageSize":20,"Search":null,"IsBlocked":null,"$type":"GetCustomersQuery"}
+2025-12-18 23:06:14.815 +03:00 [INF] FreeStays Request: GetCustomersQuery {"Page":1,"PageSize":20,"Search":null,"IsBlocked":null,"$type":"GetCustomersQuery"}
+2025-12-18 23:06:14.866 +03:00 [INF] HTTP GET /api/v1/admin/customers responded 200 in 86.7224 ms
+2025-12-18 23:06:15.003 +03:00 [INF] HTTP GET /api/v1/admin/customers responded 200 in 223.7240 ms
+2025-12-18 23:06:36.235 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 23:06:36.240 +03:00 [INF] FreeStays Request: GetCustomerBookingsQuery {"CustomerId":"7725db12-e13f-4f34-a509-a89dd10ebeab","$type":"GetCustomerBookingsQuery"}
+2025-12-18 23:06:36.306 +03:00 [INF] HTTP GET /api/v1/admin/customers/7725db12-e13f-4f34-a509-a89dd10ebeab/bookings responded 200 in 77.0355 ms
+2025-12-18 23:07:45.299 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 23:07:45.303 +03:00 [INF] FreeStays Request: GetCustomersQuery {"Page":1,"PageSize":20,"Search":null,"IsBlocked":null,"$type":"GetCustomersQuery"}
+2025-12-18 23:07:45.355 +03:00 [INF] HTTP GET /api/v1/admin/customers responded 200 in 60.0069 ms
+2025-12-18 23:19:58.884 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-18 23:19:58.892 +03:00 [INF] FreeStays Request: GetCustomerBookingsQuery {"CustomerId":"7725db12-e13f-4f34-a509-a89dd10ebeab","$type":"GetCustomerBookingsQuery"}
+2025-12-18 23:19:59.115 +03:00 [INF] HTTP GET /api/v1/admin/customers/7725db12-e13f-4f34-a509-a89dd10ebeab/bookings responded 200 in 238.8909 ms
+2025-12-18 23:20:53.736 +03:00 [ERR] JWT Authentication failed
+Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '18.12.2025 20:17:06', Current time (UTC): '18.12.2025 20:20:53'.
+   at Microsoft.IdentityModel.Tokens.Validators.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateTokenPayloadAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateJWSAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+2025-12-18 23:20:53.741 +03:00 [WRN] JWT Authentication challenge: invalid_token, The token expired at '12/18/2025 20:17:06'
+2025-12-18 23:20:53.741 +03:00 [INF] HTTP GET /api/v1/admin/email-templates responded 401 in 11.6365 ms
+2025-12-18 23:47:46.683 +03:00 [INF] Server macbookair:17741:21a60b2a caught stopping signal...
+2025-12-18 23:47:46.703 +03:00 [INF] Server macbookair:17741:21a60b2a All dispatchers stopped
+2025-12-18 23:47:46.713 +03:00 [INF] Server macbookair:17741:21a60b2a successfully reported itself as stopped in 4,835 ms
+2025-12-18 23:47:46.713 +03:00 [INF] Server macbookair:17741:21a60b2a has been stopped in total 25,2638 ms

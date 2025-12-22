@@ -1,0 +1,33 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/wwwroot/swagger-ui/custom.css",
+      "PackagePath": "staticwebassets/swagger-ui/custom.css"
+    },
+    {
+      "Id": "/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/wwwroot/swagger-ui/custom.js",
+      "PackagePath": "staticwebassets/swagger-ui/custom.js"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.FreeStays.API.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.FreeStays.API.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.FreeStays.API.props",
+      "PackagePath": "build\\FreeStays.API.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.FreeStays.API.props",
+      "PackagePath": "buildMultiTargeting\\FreeStays.API.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.FreeStays.API.props",
+      "PackagePath": "buildTransitive\\FreeStays.API.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

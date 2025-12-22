@@ -13,3 +13,4 @@
 /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/obj/Debug/net8.0/refint/FreeStays.Application.dll
 /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/obj/Debug/net8.0/FreeStays.Application.pdb
 /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/obj/Debug/net8.0/ref/FreeStays.Application.dll
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Application/obj/Debug/net8.0/FreeStays.Application.sourcelink.json

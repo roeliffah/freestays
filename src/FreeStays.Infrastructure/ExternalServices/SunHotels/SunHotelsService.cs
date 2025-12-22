@@ -233,14 +233,16 @@ public class SunHotelsService : ISunHotelsService
         {
             var parameters = new Dictionary<string, string>
             {
-                { "language", language }
+                { "language", language },
+                { "hotelIds", hotelIds ?? string.Empty },
+                { "resortIds", resortIds ?? string.Empty },
+                { "accommodationTypes", string.Empty },
+                { "sortBy", string.Empty },
+                { "sortOrder", string.Empty },
+                { "exactDestinationMatch", string.Empty }
             };
             if (!string.IsNullOrEmpty(destination))
                 parameters.Add("destination", destination);
-            if (!string.IsNullOrEmpty(hotelIds))
-                parameters.Add("hotelIds", hotelIds);
-            if (!string.IsNullOrEmpty(resortIds))
-                parameters.Add("resortIds", resortIds);
 
             var response = await SendStaticRequestAsync("GetStaticHotelsAndRooms", parameters, cancellationToken);
             return ParseStaticHotels(response);

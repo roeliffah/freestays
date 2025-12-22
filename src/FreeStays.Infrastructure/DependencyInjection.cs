@@ -59,6 +59,9 @@ public static class DependencyInjection
         services.AddScoped<ITranslationRepository, TranslationRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<IStaticPageRepository, StaticPageRepository>();
+        services.AddScoped<IFaqRepository, FaqRepository>();
+        services.AddScoped<IFeaturedHotelRepository, FeaturedHotelRepository>();
+        services.AddScoped<IFeaturedDestinationRepository, FeaturedDestinationRepository>();
         services.AddScoped<IEmailTemplateRepository, EmailTemplateRepository>();
         services.AddScoped<ISiteSettingRepository, SiteSettingRepository>();
         services.AddScoped<ISeoSettingRepository, SeoSettingRepository>();

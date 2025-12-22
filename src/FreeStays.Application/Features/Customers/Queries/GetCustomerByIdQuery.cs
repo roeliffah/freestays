@@ -1,4 +1,5 @@
 using FreeStays.Application.DTOs.Customers;
+using FreeStays.Application.Features.Customers.Extensions;
 using FreeStays.Domain.Exceptions;
 using FreeStays.Domain.Interfaces;
 using MediatR;
@@ -25,19 +26,6 @@ public class GetCustomerByIdQueryHandler : IRequestHandler<GetCustomerByIdQuery,
             throw new NotFoundException("Customer", request.Id);
         }
 
-        return new CustomerDto
-        {
-            Id = customer.Id,
-            UserId = customer.UserId,
-            Email = customer.User?.Email ?? string.Empty,
-            Name = customer.User?.Name ?? string.Empty,
-            Phone = customer.User?.Phone,
-            TotalBookings = customer.TotalBookings,
-            TotalSpent = customer.TotalSpent,
-            LastBookingAt = customer.LastBookingAt,
-            Notes = customer.Notes,
-            IsBlocked = customer.IsBlocked,
-            CreatedAt = customer.CreatedAt
-        };
+        return customer.ToDto();
     }
 }

@@ -1,0 +1,12 @@
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Domain/bin/Release/net8.0/FreeStays.Domain.deps.json
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Domain/bin/Release/net8.0/FreeStays.Domain.dll
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Domain/bin/Release/net8.0/FreeStays.Domain.pdb
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Domain/obj/Release/net8.0/FreeStays.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Domain/obj/Release/net8.0/FreeStays.Domain.AssemblyInfoInputs.cache
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Domain/obj/Release/net8.0/FreeStays.Domain.AssemblyInfo.cs
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Domain/obj/Release/net8.0/FreeStays.Domain.csproj.CoreCompileInputs.cache
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Domain/obj/Release/net8.0/FreeStays.Domain.sourcelink.json
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Domain/obj/Release/net8.0/FreeStays.Domain.dll
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Domain/obj/Release/net8.0/refint/FreeStays.Domain.dll
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Domain/obj/Release/net8.0/FreeStays.Domain.pdb
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Domain/obj/Release/net8.0/ref/FreeStays.Domain.dll

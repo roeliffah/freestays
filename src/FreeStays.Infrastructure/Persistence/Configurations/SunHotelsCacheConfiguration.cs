@@ -12,7 +12,7 @@ public class SunHotelsDestinationCacheConfiguration : IEntityTypeConfiguration<S
 
         builder.HasKey(x => x.Id);
         builder.Property(x => x.DestinationId).HasMaxLength(50).IsRequired();
-        builder.Property(x => x.Name).HasMaxLength(500).IsRequired();
+        builder.Property(x => x.Name).HasColumnType("text").IsRequired();
         builder.Property(x => x.Country).HasMaxLength(100);
         builder.Property(x => x.CountryCode).HasMaxLength(10);
         builder.Property(x => x.DestinationCode).HasMaxLength(50);
@@ -31,9 +31,9 @@ public class SunHotelsResortCacheConfiguration : IEntityTypeConfiguration<SunHot
         builder.ToTable("sunhotels_resorts_cache");
 
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Name).HasMaxLength(500).IsRequired();
+        builder.Property(x => x.Name).HasColumnType("text").IsRequired();
         builder.Property(x => x.DestinationId).HasMaxLength(50);
-        builder.Property(x => x.DestinationName).HasMaxLength(500);
+        builder.Property(x => x.DestinationName).HasColumnType("text");
         builder.Property(x => x.CountryCode).HasMaxLength(10);
         builder.Property(x => x.CountryName).HasMaxLength(100);
         builder.Property(x => x.Language).HasMaxLength(10).HasDefaultValue("en");
@@ -51,7 +51,7 @@ public class SunHotelsMealCacheConfiguration : IEntityTypeConfiguration<SunHotel
 
         builder.HasKey(x => x.Id);
         builder.Property(x => x.MealId).IsRequired();
-        builder.Property(x => x.Name).HasMaxLength(500).IsRequired();
+        builder.Property(x => x.Name).HasColumnType("text").IsRequired();
         builder.Property(x => x.Labels).HasColumnType("jsonb");
         builder.Property(x => x.Language).HasMaxLength(10).HasDefaultValue("en");
 
@@ -68,7 +68,7 @@ public class SunHotelsRoomTypeCacheConfiguration : IEntityTypeConfiguration<SunH
 
         builder.HasKey(x => x.Id);
         builder.Property(x => x.RoomTypeId).IsRequired();
-        builder.Property(x => x.Name).HasMaxLength(500).IsRequired();
+        builder.Property(x => x.Name).HasColumnType("text").IsRequired();
         builder.Property(x => x.Language).HasMaxLength(10).HasDefaultValue("en");
 
         builder.HasIndex(x => x.RoomTypeId);
@@ -84,7 +84,7 @@ public class SunHotelsFeatureCacheConfiguration : IEntityTypeConfiguration<SunHo
 
         builder.HasKey(x => x.Id);
         builder.Property(x => x.FeatureId).IsRequired();
-        builder.Property(x => x.Name).HasMaxLength(500).IsRequired();
+        builder.Property(x => x.Name).HasColumnType("text").IsRequired();
         builder.Property(x => x.Language).HasMaxLength(10).HasDefaultValue("en");
 
         builder.HasIndex(x => x.FeatureId);
@@ -99,8 +99,8 @@ public class SunHotelsThemeCacheConfiguration : IEntityTypeConfiguration<SunHote
         builder.ToTable("sunhotels_themes_cache");
 
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Name).HasMaxLength(500).IsRequired();
-        builder.Property(x => x.EnglishName).HasMaxLength(500);
+        builder.Property(x => x.Name).HasColumnType("text").IsRequired();
+        builder.Property(x => x.EnglishName).HasColumnType("text");
 
         builder.HasIndex(x => x.ThemeId).IsUnique();
     }
@@ -128,7 +128,7 @@ public class SunHotelsTransferTypeCacheConfiguration : IEntityTypeConfiguration<
 
         builder.HasKey(x => x.Id);
         builder.Property(x => x.TransferTypeId).IsRequired();
-        builder.Property(x => x.Name).HasMaxLength(500).IsRequired();
+        builder.Property(x => x.Name).HasColumnType("text").IsRequired();
         builder.Property(x => x.Language).HasMaxLength(10).HasDefaultValue("en");
 
         builder.HasIndex(x => x.TransferTypeId);
@@ -144,7 +144,7 @@ public class SunHotelsNoteTypeCacheConfiguration : IEntityTypeConfiguration<SunH
 
         builder.HasKey(x => x.Id);
         builder.Property(x => x.NoteTypeId).IsRequired();
-        builder.Property(x => x.Name).HasMaxLength(500).IsRequired();
+        builder.Property(x => x.Name).HasColumnType("text").IsRequired();
         builder.Property(x => x.NoteCategory).HasMaxLength(50).IsRequired(); // Hotel veya Room
         builder.Property(x => x.Language).HasMaxLength(10).HasDefaultValue("en");
 
@@ -160,7 +160,7 @@ public class SunHotelsHotelCacheConfiguration : IEntityTypeConfiguration<SunHote
         builder.ToTable("sunhotels_hotels_cache");
 
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Name).HasMaxLength(500).IsRequired();
+        builder.Property(x => x.Name).HasColumnType("text").IsRequired();
         builder.Property(x => x.Description).HasColumnType("text");
         builder.Property(x => x.Address).HasMaxLength(500);
         builder.Property(x => x.ZipCode).HasMaxLength(20);
@@ -199,8 +199,8 @@ public class SunHotelsRoomCacheConfiguration : IEntityTypeConfiguration<SunHotel
         builder.ToTable("sunhotels_rooms_cache");
 
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Name).HasMaxLength(500).IsRequired();
-        builder.Property(x => x.EnglishName).HasMaxLength(500);
+        builder.Property(x => x.Name).HasColumnType("text").IsRequired();
+        builder.Property(x => x.EnglishName).HasColumnType("text");
         builder.Property(x => x.Description).HasColumnType("text");
         builder.Property(x => x.FeatureIds).HasColumnType("jsonb").HasDefaultValue("[]");
         builder.Property(x => x.ImageUrls).HasColumnType("jsonb").HasDefaultValue("[]");

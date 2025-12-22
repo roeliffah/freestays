@@ -1,3 +1,5 @@
+using System.Text.Json;
+using FreeStays.Domain.Entities;
 using FreeStays.Domain.Entities.Cache;
 using FreeStays.Infrastructure.ExternalServices.SunHotels;
 using FreeStays.Infrastructure.Persistence.Context;
@@ -31,7 +33,16 @@ public class SunHotelsStaticDataSyncJob
     /// </summary>
     public async Task SyncAllStaticDataAsync()
     {
-        _logger.LogInformation("Starting SunHotels static data synchronization...");
+        var jobHistory = new JobHistory
+        {
+            JobType = "SyncAllStaticData",
+            Status = JobStatus.Running,
+            StartTime = DateTime.UtcNow
+        };
+        _dbContext.JobHistories.Add(jobHistory);
+        await _dbContext.SaveChangesAsync();
+
+        _logger.LogInformation("Starting SunHotels static data synchronization... (JobId: {JobId})", jobHistory.Id);
 
         try
         {
@@ -44,12 +55,19 @@ public class SunHotelsStaticDataSyncJob
             _logger.LogInformation("Found {Count} supported languages: {Languages}",
                 supportedLanguages.Count, string.Join(", ", supportedLanguages));
 
+            var stats = new Dictionary<string, int>();
+
             // Dil bazlı veriler - sadece desteklenen diller için
             foreach (var language in supportedLanguages)
             {
                 try
                 {
-                    await SyncDestinationsAsync(language);
+                    // Destinations sadece İngilizce'de senkronize edilir (dil bağımsız)
+                    if (language == "en")
+                    {
+                        await SyncDestinationsAsync(language);
+                    }
+
                     await SyncResortsAsync(language);
                     await SyncMealsAsync(language);
                     await SyncRoomTypesAsync(language);
@@ -64,11 +82,35 @@ public class SunHotelsStaticDataSyncJob
                 }
             }
 
-            _logger.LogInformation("SunHotels static data synchronization completed successfully");
+            // Otel ve oda verilerini senkronize et (sadece İngilizce)
+            await SyncAllHotelsAsync("en");
+
+            // İstatistikleri topla
+            stats["languages"] = await _dbContext.SunHotelsLanguages.Select(x => x.LanguageCode).Distinct().CountAsync();
+            stats["destinations"] = await _dbContext.SunHotelsDestinations.Select(x => x.DestinationId).Distinct().CountAsync();
+            stats["resorts"] = await _dbContext.SunHotelsResorts.Select(x => x.ResortId).Distinct().CountAsync();
+            stats["hotels"] = await _dbContext.SunHotelsHotels.Select(x => x.HotelId).Distinct().CountAsync();
+            stats["rooms"] = await _dbContext.SunHotelsRooms.Select(x => x.Id).Distinct().CountAsync();
+
+            jobHistory.Status = JobStatus.Completed;
+            jobHistory.EndTime = DateTime.UtcNow;
+            jobHistory.DurationSeconds = (int)(jobHistory.EndTime.Value - jobHistory.StartTime).TotalSeconds;
+            jobHistory.Message = "Senkronizasyon başarıyla tamamlandı.";
+            jobHistory.Details = JsonSerializer.Serialize(stats);
+            await _dbContext.SaveChangesAsync();
+
+            _logger.LogInformation("SunHotels static data synchronization completed successfully (JobId: {JobId}, Duration: {Duration}s)",
+                jobHistory.Id, jobHistory.DurationSeconds);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error during SunHotels static data synchronization");
+            jobHistory.Status = JobStatus.Failed;
+            jobHistory.EndTime = DateTime.UtcNow;
+            jobHistory.DurationSeconds = (int)(jobHistory.EndTime.Value - jobHistory.StartTime).TotalSeconds;
+            jobHistory.Message = ex.Message;
+            await _dbContext.SaveChangesAsync();
+
+            _logger.LogError(ex, "Error during SunHotels static data synchronization (JobId: {JobId})", jobHistory.Id);
             throw;
         }
     }
@@ -78,7 +120,16 @@ public class SunHotelsStaticDataSyncJob
     /// </summary>
     public async Task SyncBasicDataAsync()
     {
-        _logger.LogInformation("Starting SunHotels basic data synchronization...");
+        var jobHistory = new JobHistory
+        {
+            JobType = "SyncBasicData",
+            Status = JobStatus.Running,
+            StartTime = DateTime.UtcNow
+        };
+        _dbContext.JobHistories.Add(jobHistory);
+        await _dbContext.SaveChangesAsync();
+
+        _logger.LogInformation("Starting SunHotels basic data synchronization... (JobId: {JobId})", jobHistory.Id);
 
         try
         {
@@ -89,20 +140,50 @@ public class SunHotelsStaticDataSyncJob
             await SyncRoomTypesAsync("en");
             await SyncFeaturesAsync("en");
 
-            _logger.LogInformation("SunHotels basic data synchronization completed");
+            var stats = new Dictionary<string, int>
+            {
+                ["destinations"] = await _dbContext.SunHotelsDestinations.Select(x => x.DestinationId).Distinct().CountAsync(),
+                ["meals"] = await _dbContext.SunHotelsMeals.Select(x => x.MealId).Distinct().CountAsync(),
+                ["roomTypes"] = await _dbContext.SunHotelsRoomTypes.Select(x => x.RoomTypeId).Distinct().CountAsync(),
+                ["features"] = await _dbContext.SunHotelsFeatures.Select(x => x.FeatureId).Distinct().CountAsync()
+            };
+
+            jobHistory.Status = JobStatus.Completed;
+            jobHistory.EndTime = DateTime.UtcNow;
+            jobHistory.DurationSeconds = (int)(jobHistory.EndTime.Value - jobHistory.StartTime).TotalSeconds;
+            jobHistory.Message = "Temel veri senkronizasyonu başarıyla tamamlandı.";
+            jobHistory.Details = JsonSerializer.Serialize(stats);
+            await _dbContext.SaveChangesAsync();
+
+            _logger.LogInformation("SunHotels basic data synchronization completed (JobId: {JobId}, Duration: {Duration}s)",
+                jobHistory.Id, jobHistory.DurationSeconds);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error during SunHotels basic data synchronization");
+            jobHistory.Status = JobStatus.Failed;
+            jobHistory.EndTime = DateTime.UtcNow;
+            jobHistory.DurationSeconds = (int)(jobHistory.EndTime.Value - jobHistory.StartTime).TotalSeconds;
+            jobHistory.Message = ex.Message;
+            await _dbContext.SaveChangesAsync();
+
+            _logger.LogError(ex, "Error during SunHotels basic data synchronization (JobId: {JobId})", jobHistory.Id);
             throw;
         }
     }
 
     /// <summary>
     /// Destinasyonları senkronize eder (Batch Processing - Optimized)
+    /// Not: Destinations dil bağımsız olduğu için sadece "en" dilinde senkronize edilir
     /// </summary>
     public async Task SyncDestinationsAsync(string language = "en")
     {
+        // Destinations dil bağımsız - sadece İngilizce'de senkronize et
+        if (language != "en")
+        {
+            _logger.LogInformation("Skipping destinations sync for language: {Language} (destinations are language-independent)", language);
+            return;
+        }
+
         _logger.LogInformation("Syncing destinations for language: {Language}", language);
 
         try
@@ -122,14 +203,20 @@ public class SunHotelsStaticDataSyncJob
             {
                 if (existingDestinations.TryGetValue(dest.Id, out var existing))
                 {
-                    // Güncelleme gerekiyorsa
+                    // Güncelleme gerekiyorsa - yeni instance oluştur
                     if (existing.Name != dest.Name || existing.Country != dest.Country)
                     {
-                        existing.Name = dest.Name;
-                        existing.Country = dest.Country;
-                        existing.LastSyncedAt = now;
-                        existing.UpdatedAt = now;
-                        toUpdate.Add(existing);
+                        var updatedEntity = new SunHotelsDestinationCache
+                        {
+                            Id = existing.Id, // Mevcut ID'yi koru
+                            DestinationId = dest.Id,
+                            Name = dest.Name,
+                            Country = dest.Country,
+                            LastSyncedAt = now,
+                            UpdatedAt = now,
+                            CreatedAt = existing.CreatedAt // Orijinal oluşturma tarihini koru
+                        };
+                        toUpdate.Add(updatedEntity);
                     }
                 }
                 else
@@ -145,21 +232,32 @@ public class SunHotelsStaticDataSyncJob
                 }
             }
 
-            // Toplu ekleme
+            // Batch processing to avoid connection reset
+            const int batchSize = 5000;
+
             if (toAdd.Any())
             {
-                await _dbContext.SunHotelsDestinations.AddRangeAsync(toAdd);
-                _logger.LogInformation("Adding {Count} new destinations", toAdd.Count);
+                for (int i = 0; i < toAdd.Count; i += batchSize)
+                {
+                    var batch = toAdd.Skip(i).Take(batchSize).ToList();
+                    await _dbContext.SunHotelsDestinations.AddRangeAsync(batch);
+                    await _dbContext.SaveChangesAsync();
+                    _logger.LogInformation("Added batch of {Count} destinations (Progress: {Current}/{Total})",
+                        batch.Count, Math.Min(i + batchSize, toAdd.Count), toAdd.Count);
+                }
             }
 
-            // Toplu güncelleme
             if (toUpdate.Any())
             {
-                _dbContext.SunHotelsDestinations.UpdateRange(toUpdate);
-                _logger.LogInformation("Updating {Count} existing destinations", toUpdate.Count);
+                for (int i = 0; i < toUpdate.Count; i += batchSize)
+                {
+                    var batch = toUpdate.Skip(i).Take(batchSize).ToList();
+                    _dbContext.SunHotelsDestinations.UpdateRange(batch);
+                    await _dbContext.SaveChangesAsync();
+                    _logger.LogInformation("Updated batch of {Count} destinations (Progress: {Current}/{Total})",
+                        batch.Count, Math.Min(i + batchSize, toUpdate.Count), toUpdate.Count);
+                }
             }
-
-            await _dbContext.SaveChangesAsync();
             _logger.LogInformation("Synced {Count} destinations for language: {Language} (Added: {Added}, Updated: {Updated})",
                 destinations.Count, language, toAdd.Count, toUpdate.Count);
         }
@@ -197,13 +295,20 @@ public class SunHotelsStaticDataSyncJob
                         existing.DestinationId != resort.DestinationId ||
                         existing.CountryCode != resort.CountryCode)
                     {
-                        existing.Name = resort.Name;
-                        existing.DestinationId = resort.DestinationId;
-                        existing.DestinationName = resort.DestinationName;
-                        existing.CountryCode = resort.CountryCode;
-                        existing.LastSyncedAt = now;
-                        existing.UpdatedAt = now;
-                        toUpdate.Add(existing);
+                        var updatedEntity = new SunHotelsResortCache
+                        {
+                            Id = existing.Id, // Mevcut ID'yi koru
+                            ResortId = resort.Id,
+                            Name = resort.Name,
+                            DestinationId = resort.DestinationId,
+                            DestinationName = resort.DestinationName,
+                            CountryCode = resort.CountryCode,
+                            Language = language,
+                            LastSyncedAt = now,
+                            UpdatedAt = now,
+                            CreatedAt = existing.CreatedAt // Orijinal oluşturma tarihini koru
+                        };
+                        toUpdate.Add(updatedEntity);
                     }
                 }
                 else
@@ -222,8 +327,32 @@ public class SunHotelsStaticDataSyncJob
                 }
             }
 
-            if (toAdd.Any()) await _dbContext.SunHotelsResorts.AddRangeAsync(toAdd);
-            if (toUpdate.Any()) _dbContext.SunHotelsResorts.UpdateRange(toUpdate);
+            // Batch processing to avoid connection reset
+            const int batchSize = 5000;
+
+            if (toAdd.Any())
+            {
+                for (int i = 0; i < toAdd.Count; i += batchSize)
+                {
+                    var batch = toAdd.Skip(i).Take(batchSize).ToList();
+                    await _dbContext.SunHotelsResorts.AddRangeAsync(batch);
+                    await _dbContext.SaveChangesAsync();
+                    _logger.LogInformation("Added batch of {Count} resorts for language: {Language} (Progress: {Current}/{Total})",
+                        batch.Count, language, Math.Min(i + batchSize, toAdd.Count), toAdd.Count);
+                }
+            }
+
+            if (toUpdate.Any())
+            {
+                for (int i = 0; i < toUpdate.Count; i += batchSize)
+                {
+                    var batch = toUpdate.Skip(i).Take(batchSize).ToList();
+                    _dbContext.SunHotelsResorts.UpdateRange(batch);
+                    await _dbContext.SaveChangesAsync();
+                    _logger.LogInformation("Updated batch of {Count} resorts for language: {Language} (Progress: {Current}/{Total})",
+                        batch.Count, language, Math.Min(i + batchSize, toUpdate.Count), toUpdate.Count);
+                }
+            }
 
             await _dbContext.SaveChangesAsync();
             _logger.LogInformation("Synced {Count} resorts for language: {Language} (Added: {Added}, Updated: {Updated})",
@@ -263,11 +392,18 @@ public class SunHotelsStaticDataSyncJob
                 {
                     if (existing.Name != meal.Name || existing.Labels != labelsJson)
                     {
-                        existing.Name = meal.Name;
-                        existing.Labels = labelsJson;
-                        existing.LastSyncedAt = now;
-                        existing.UpdatedAt = now;
-                        toUpdate.Add(existing);
+                        var updatedEntity = new SunHotelsMealCache
+                        {
+                            Id = existing.Id, // Mevcut ID'yi koru
+                            MealId = meal.Id,
+                            Name = meal.Name,
+                            Labels = labelsJson,
+                            Language = language,
+                            LastSyncedAt = now,
+                            UpdatedAt = now,
+                            CreatedAt = existing.CreatedAt // Orijinal oluşturma tarihini koru
+                        };
+                        toUpdate.Add(updatedEntity);
                     }
                 }
                 else
@@ -323,10 +459,17 @@ public class SunHotelsStaticDataSyncJob
                 {
                     if (existing.Name != roomType.Name)
                     {
-                        existing.Name = roomType.Name;
-                        existing.LastSyncedAt = now;
-                        existing.UpdatedAt = now;
-                        toUpdate.Add(existing);
+                        var updatedEntity = new SunHotelsRoomTypeCache
+                        {
+                            Id = existing.Id, // Mevcut ID'yi koru
+                            RoomTypeId = roomType.Id,
+                            Name = roomType.Name,
+                            Language = language,
+                            LastSyncedAt = now,
+                            UpdatedAt = now,
+                            CreatedAt = existing.CreatedAt // Orijinal oluşturma tarihini koru
+                        };
+                        toUpdate.Add(updatedEntity);
                     }
                 }
                 else
@@ -342,10 +485,33 @@ public class SunHotelsStaticDataSyncJob
                 }
             }
 
-            if (toAdd.Any()) await _dbContext.SunHotelsRoomTypes.AddRangeAsync(toAdd);
-            if (toUpdate.Any()) _dbContext.SunHotelsRoomTypes.UpdateRange(toUpdate);
+            // Batch processing to avoid connection reset
+            const int batchSize = 5000;
 
-            await _dbContext.SaveChangesAsync();
+            if (toAdd.Any())
+            {
+                for (int i = 0; i < toAdd.Count; i += batchSize)
+                {
+                    var batch = toAdd.Skip(i).Take(batchSize).ToList();
+                    await _dbContext.SunHotelsRoomTypes.AddRangeAsync(batch);
+                    await _dbContext.SaveChangesAsync();
+                    _logger.LogInformation("Added batch of {Count} room types for language: {Language} (Progress: {Current}/{Total})",
+                        batch.Count, language, Math.Min(i + batchSize, toAdd.Count), toAdd.Count);
+                }
+            }
+
+            if (toUpdate.Any())
+            {
+                for (int i = 0; i < toUpdate.Count; i += batchSize)
+                {
+                    var batch = toUpdate.Skip(i).Take(batchSize).ToList();
+                    _dbContext.SunHotelsRoomTypes.UpdateRange(batch);
+                    await _dbContext.SaveChangesAsync();
+                    _logger.LogInformation("Updated batch of {Count} room types for language: {Language} (Progress: {Current}/{Total})",
+                        batch.Count, language, Math.Min(i + batchSize, toUpdate.Count), toUpdate.Count);
+                }
+            }
+
             _logger.LogInformation("Synced {Count} room types for language: {Language} (Added: {Added}, Updated: {Updated})",
                 roomTypes.Count, language, toAdd.Count, toUpdate.Count);
         }
@@ -381,10 +547,17 @@ public class SunHotelsStaticDataSyncJob
                 {
                     if (existing.Name != feature.Name)
                     {
-                        existing.Name = feature.Name;
-                        existing.LastSyncedAt = now;
-                        existing.UpdatedAt = now;
-                        toUpdate.Add(existing);
+                        var updatedEntity = new SunHotelsFeatureCache
+                        {
+                            Id = existing.Id, // Mevcut ID'yi koru
+                            FeatureId = feature.Id,
+                            Name = feature.Name,
+                            Language = language,
+                            LastSyncedAt = now,
+                            UpdatedAt = now,
+                            CreatedAt = existing.CreatedAt // Orijinal oluşturma tarihini koru
+                        };
+                        toUpdate.Add(updatedEntity);
                     }
                 }
                 else
@@ -437,11 +610,17 @@ public class SunHotelsStaticDataSyncJob
                 {
                     if (existing.Name != theme.Name || existing.EnglishName != theme.EnglishName)
                     {
-                        existing.Name = theme.Name;
-                        existing.EnglishName = theme.EnglishName;
-                        existing.LastSyncedAt = now;
-                        existing.UpdatedAt = now;
-                        toUpdate.Add(existing);
+                        var updatedEntity = new SunHotelsThemeCache
+                        {
+                            Id = existing.Id, // Mevcut ID'yi koru
+                            ThemeId = theme.Id,
+                            Name = theme.Name,
+                            EnglishName = theme.EnglishName,
+                            LastSyncedAt = now,
+                            UpdatedAt = now,
+                            CreatedAt = existing.CreatedAt // Orijinal oluşturma tarihini koru
+                        };
+                        toUpdate.Add(updatedEntity);
                     }
                 }
                 else
@@ -495,10 +674,16 @@ public class SunHotelsStaticDataSyncJob
                 {
                     if (existing.Name != lang.Name)
                     {
-                        existing.Name = lang.Name;
-                        existing.LastSyncedAt = now;
-                        existing.UpdatedAt = now;
-                        toUpdate.Add(existing);
+                        var updatedEntity = new SunHotelsLanguageCache
+                        {
+                            Id = existing.Id, // Mevcut ID'yi koru
+                            LanguageCode = lang.Code,
+                            Name = lang.Name,
+                            LastSyncedAt = now,
+                            UpdatedAt = now,
+                            CreatedAt = existing.CreatedAt // Orijinal oluşturma tarihini koru
+                        };
+                        toUpdate.Add(updatedEntity);
                     }
                 }
                 else
@@ -552,10 +737,17 @@ public class SunHotelsStaticDataSyncJob
                 {
                     if (existing.Name != transferType.Name)
                     {
-                        existing.Name = transferType.Name;
-                        existing.LastSyncedAt = now;
-                        existing.UpdatedAt = now;
-                        toUpdate.Add(existing);
+                        var updatedEntity = new SunHotelsTransferTypeCache
+                        {
+                            Id = existing.Id, // Mevcut ID'yi koru
+                            TransferTypeId = transferType.Id,
+                            Name = transferType.Name,
+                            Language = language,
+                            LastSyncedAt = now,
+                            UpdatedAt = now,
+                            CreatedAt = existing.CreatedAt // Orijinal oluşturma tarihini koru
+                        };
+                        toUpdate.Add(updatedEntity);
                     }
                 }
                 else
@@ -615,10 +807,18 @@ public class SunHotelsStaticDataSyncJob
                 {
                     if (existing.Name != noteType.Name)
                     {
-                        existing.Name = noteType.Name;
-                        existing.LastSyncedAt = now;
-                        existing.UpdatedAt = now;
-                        toUpdate.Add(existing);
+                        var updatedEntity = new SunHotelsNoteTypeCache
+                        {
+                            Id = existing.Id, // Mevcut ID'yi koru
+                            NoteTypeId = noteType.Id,
+                            Name = noteType.Name,
+                            NoteCategory = "Hotel",
+                            Language = language,
+                            LastSyncedAt = now,
+                            UpdatedAt = now,
+                            CreatedAt = existing.CreatedAt // Orijinal oluşturma tarihini koru
+                        };
+                        toUpdate.Add(updatedEntity);
                     }
                 }
                 else
@@ -646,10 +846,18 @@ public class SunHotelsStaticDataSyncJob
                 {
                     if (existing.Name != noteType.Name)
                     {
-                        existing.Name = noteType.Name;
-                        existing.LastSyncedAt = now;
-                        existing.UpdatedAt = now;
-                        toUpdate.Add(existing);
+                        var updatedEntity = new SunHotelsNoteTypeCache
+                        {
+                            Id = existing.Id, // Mevcut ID'yi koru
+                            NoteTypeId = noteType.Id,
+                            Name = noteType.Name,
+                            NoteCategory = "Room",
+                            Language = language,
+                            LastSyncedAt = now,
+                            UpdatedAt = now,
+                            CreatedAt = existing.CreatedAt // Orijinal oluşturma tarihini koru
+                        };
+                        toUpdate.Add(updatedEntity);
                     }
                 }
                 else
@@ -676,6 +884,98 @@ public class SunHotelsStaticDataSyncJob
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error syncing note types for language: {Language}", language);
+        }
+    }
+
+    /// <summary>
+    /// Tüm otelleri ve odaları senkronize eder
+    /// </summary>
+    public async Task SyncAllHotelsAsync(string language = "en")
+    {
+        var jobHistory = new JobHistory
+        {
+            JobType = "SyncHotels",
+            Status = JobStatus.Running,
+            StartTime = DateTime.UtcNow
+        };
+        _dbContext.JobHistories.Add(jobHistory);
+        await _dbContext.SaveChangesAsync();
+
+        _logger.LogInformation("Starting hotels synchronization for language: {Language} (JobId: {JobId})", language, jobHistory.Id);
+
+        try
+        {
+            // Tüm destinasyonları al
+            var destinations = await _dbContext.SunHotelsDestinations
+                .Select(d => d.DestinationId)
+                .Distinct()
+                .ToListAsync();
+
+            _logger.LogInformation("Found {Count} destinations. Starting hotel sync...", destinations.Count);
+
+            var totalHotels = 0;
+            var totalRooms = 0;
+            var processedDestinations = 0;
+
+            foreach (var destinationId in destinations)
+            {
+                try
+                {
+                    var beforeHotelCount = await _dbContext.SunHotelsHotels.CountAsync(h => h.Language == language);
+                    var beforeRoomCount = await _dbContext.SunHotelsRooms.CountAsync(r => r.Language == language);
+
+                    await SyncHotelsForDestinationAsync(destinationId, language);
+
+                    var afterHotelCount = await _dbContext.SunHotelsHotels.CountAsync(h => h.Language == language);
+                    var afterRoomCount = await _dbContext.SunHotelsRooms.CountAsync(r => r.Language == language);
+
+                    var hotelsDiff = afterHotelCount - beforeHotelCount;
+                    var roomsDiff = afterRoomCount - beforeRoomCount;
+
+                    totalHotels += hotelsDiff;
+                    totalRooms += roomsDiff;
+                    processedDestinations++;
+
+                    if (hotelsDiff > 0 || roomsDiff > 0)
+                    {
+                        _logger.LogInformation("Destination {DestinationId} sync completed. Hotels: +{Hotels}, Rooms: +{Rooms}. Progress: {Progress}/{Total}",
+                            destinationId, hotelsDiff, roomsDiff, processedDestinations, destinations.Count);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error syncing hotels for destination: {DestinationId}", destinationId);
+                    // Hata olsa bile diğer destinasyonlara devam et
+                }
+            }
+
+            var stats = new Dictionary<string, int>
+            {
+                ["processedDestinations"] = processedDestinations,
+                ["totalHotels"] = totalHotels,
+                ["totalRooms"] = totalRooms
+            };
+
+            jobHistory.Status = JobStatus.Completed;
+            jobHistory.EndTime = DateTime.UtcNow;
+            jobHistory.DurationSeconds = (int)(jobHistory.EndTime.Value - jobHistory.StartTime).TotalSeconds;
+            jobHistory.Message = $"Otel senkronizasyonu tamamlandı. {processedDestinations} destinasyon işlendi.";
+            jobHistory.Details = JsonSerializer.Serialize(stats);
+            await _dbContext.SaveChangesAsync();
+
+            _logger.LogInformation("Hotels synchronization completed (JobId: {JobId}, Duration: {Duration}s). Processed: {Processed}, Hotels: +{Hotels}, Rooms: +{Rooms}",
+                jobHistory.Id, jobHistory.DurationSeconds, processedDestinations, totalHotels, totalRooms);
+        }
+        catch (Exception ex)
+        {
+            jobHistory.Status = JobStatus.Failed;
+            jobHistory.EndTime = DateTime.UtcNow;
+            jobHistory.DurationSeconds = (int)(jobHistory.EndTime.Value - jobHistory.StartTime).TotalSeconds;
+            jobHistory.Message = ex.Message;
+            await _dbContext.SaveChangesAsync();
+
+            _logger.LogError(ex, "Error during hotels synchronization (JobId: {JobId})", jobHistory.Id);
+            throw;
         }
     }
 

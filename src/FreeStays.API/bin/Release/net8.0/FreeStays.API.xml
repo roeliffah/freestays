@@ -1,0 +1,618 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FreeStays.API</name>
+    </assembly>
+    <members>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminCustomersController.GetCustomers(System.Int32,System.Int32,System.String,System.Nullable{System.Boolean},System.String,System.Boolean)">
+            <summary>
+            Tüm müşterileri listele
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminCustomersController.GetCustomer(System.Guid)">
+            <summary>
+            Müşteri detaylarını getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminCustomersController.UpdateCustomer(System.Guid,FreeStays.API.Controllers.Admin.UpdateCustomerRequest)">
+            <summary>
+            Müşteri bilgilerini güncelle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminCustomersController.DeleteCustomer(System.Guid)">
+            <summary>
+            Müşteri sil (soft delete)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminCustomersController.GetCustomerBookings(System.Guid,System.Int32,System.Int32)">
+            <summary>
+            Müşterinin rezervasyonlarını getir
+            </summary>
+        </member>
+        <member name="T:FreeStays.API.Controllers.Admin.AdminJobsController">
+            <summary>
+            Background job'ları yönetme endpoint'leri
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminJobsController.SyncAllSunHotelsData">
+            <summary>
+            SunHotels tüm statik verileri senkronize et (manuel tetikleme)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminJobsController.SyncBasicSunHotelsData">
+            <summary>
+            SunHotels temel verileri senkronize et (hızlı)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminJobsController.EnqueueFullSync">
+            <summary>
+            Hangfire ile arka plan job'u olarak senkronizasyonu tetikle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminJobsController.EnqueueBasicSync">
+            <summary>
+            Hangfire ile arka plan job'u olarak temel senkronizasyonu tetikle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminJobsController.GetJobStatus">
+            <summary>
+            Aktif ve zamanlanmış job'ları listele
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminJobsController.TriggerRecurringJob(System.String)">
+            <summary>
+            Recurring job'ı manuel tetikle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminPagesController.GetPages(System.Nullable{System.Boolean})">
+            <summary>
+            Tüm statik sayfaları listele
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminPagesController.GetPage(System.String)">
+            <summary>
+            Sayfa detaylarını slug ile getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminPagesController.CreatePage(FreeStays.API.Controllers.Admin.CreatePageRequest)">
+            <summary>
+            Yeni sayfa oluştur
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminPagesController.UpdatePage(System.Guid,FreeStays.API.Controllers.Admin.UpdatePageRequest)">
+            <summary>
+            Sayfayı güncelle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminPagesController.DeletePage(System.Guid)">
+            <summary>
+            Sayfayı sil
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.GetSiteSettings">
+            <summary>
+            Site ayarlarını getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.UpdateSiteSettings(FreeStays.API.Controllers.Admin.UpdateSiteSettingsRequest)">
+            <summary>
+            Site ayarlarını güncelle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.GetSeoSettings">
+            <summary>
+            Genel SEO ayarlarını getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.UpdateSeoSettings(FreeStays.API.Controllers.Admin.UpdateSeoSettingsRequest)">
+            <summary>
+            Genel SEO ayarlarını güncelle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.GetSeoSettingsByLocale(System.String)">
+            <summary>
+            Belirli bir dil için SEO ayarlarını getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.UpdateSeoSettingsByLocale(System.String,FreeStays.API.Controllers.Admin.UpdateLocaleSeoSettingsRequest)">
+            <summary>
+            Belirli bir dil için SEO ayarlarını güncelle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.GetPaymentSettings">
+            <summary>
+            Ödeme ayarlarını getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.UpdatePaymentSettings(FreeStays.API.Controllers.Admin.UpdatePaymentSettingsRequest)">
+            <summary>
+            Ödeme ayarlarını güncelle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.TestPaymentConnection(FreeStays.API.Controllers.Admin.TestPaymentConnectionRequest)">
+            <summary>
+            Ödeme bağlantısını test et
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminTranslationsController.GetTranslations(System.String,System.String)">
+            <summary>
+            Tüm çevirileri getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminTranslationsController.GetTranslationsByLocale(System.String,System.String)">
+            <summary>
+            Belirli bir dilin çevirilerini getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminTranslationsController.UpdateTranslations(System.String,FreeStays.API.Controllers.Admin.UpdateTranslationsRequest)">
+            <summary>
+            Belirli bir dilin çevirilerini güncelle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminTranslationsController.AddTranslationKey(System.String,FreeStays.API.Controllers.Admin.AddTranslationKeyRequest)">
+            <summary>
+            Yeni çeviri anahtarı ekle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminUsersController.GetAdminUsers(System.Int32,System.Int32,System.String)">
+            <summary>
+            Tüm Admin/SuperAdmin kullanıcılarını listele
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminUsersController.GetAdminUser(System.Guid)">
+            <summary>
+            Admin/SuperAdmin kullanıcı detayı
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminUsersController.CreateAdminUser(FreeStays.Application.DTOs.Admin.CreateAdminUserRequest)">
+            <summary>
+            Yeni Admin/SuperAdmin kullanıcı oluştur
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminUsersController.UpdateAdminUser(System.Guid,FreeStays.Application.DTOs.Admin.UpdateAdminUserRequestWrapper)">
+            <summary>
+            Admin/SuperAdmin kullanıcı bilgilerini güncelle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminUsersController.DeleteAdminUser(System.Guid)">
+            <summary>
+            Admin/SuperAdmin kullanıcı sil (soft delete)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.EmailTemplatesController.GetAll(System.Nullable{System.Boolean})">
+            <summary>
+            Tüm e-posta şablonlarını listele
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.EmailTemplatesController.GetById(System.Guid)">
+            <summary>
+            Belirli bir e-posta şablonunu getir (ID ile)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.EmailTemplatesController.GetByCode(System.String,System.String)">
+            <summary>
+            Belirli bir e-posta şablonunu getir (Code ile) - Dil parametresi ile
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.EmailTemplatesController.Create(FreeStays.Application.DTOs.EmailTemplates.CreateEmailTemplateRequest)">
+            <summary>
+            Yeni e-posta şablonu oluştur
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.EmailTemplatesController.Update(System.Guid,FreeStays.Application.DTOs.EmailTemplates.UpdateEmailTemplateRequest)">
+            <summary>
+            E-posta şablonunu güncelle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.EmailTemplatesController.Delete(System.Guid)">
+            <summary>
+            E-posta şablonunu sil
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.EmailTemplatesController.ToggleStatus(System.Guid)">
+            <summary>
+            E-posta şablonunu aktif/pasif yap
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AdminController.GetDashboard">
+            <summary>
+            Dashboard istatistikleri, son rezervasyonlar ve popüler destinasyonlar
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AdminController.GetAllBookings(System.Int32,System.Int32,System.Nullable{FreeStays.Domain.Enums.BookingStatus},System.Nullable{FreeStays.Domain.Enums.BookingType},System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <summary>
+            Tüm rezervasyonları listele
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AdminController.UpdateBookingStatus(System.Guid,FreeStays.API.Controllers.UpdateBookingStatusRequest)">
+            <summary>
+            Rezervasyon durumunu güncelle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AdminController.GetAllCoupons(System.Int32,System.Int32,System.Nullable{System.Boolean})">
+            <summary>
+            Tüm kuponları listele
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AdminController.CreateCoupon(FreeStays.API.Controllers.CreateCouponRequest)">
+            <summary>
+            Yeni kupon oluştur
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AdminController.GetCoupon(System.Guid)">
+            <summary>
+            Kupon detayları
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AdminController.UpdateCoupon(System.Guid,FreeStays.API.Controllers.UpdateCouponRequest)">
+            <summary>
+            Kupon güncelle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AdminController.DeleteCoupon(System.Guid)">
+            <summary>
+            Kupon sil
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AdminController.GetDashboardStats">
+            <summary>
+            Dashboard istatistikleri (eski endpoint - deprecated)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AdminController.GetRevenueReport(System.DateTime,System.DateTime)">
+            <summary>
+            Gelir raporu
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AdminController.GetExternalServices">
+            <summary>
+            Harici servis yapılandırmalarını getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AdminController.UpdateExternalService(System.Guid,FreeStays.API.Controllers.UpdateExternalServiceRequest)">
+            <summary>
+            Harici servis yapılandırmasını güncelle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AdminController.SyncSunHotelsData">
+            <summary>
+            SunHotels statik veri senkronizasyonunu başlat
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AdminController.GetJobHistory(System.Int32,System.Int32,System.String,FreeStays.Infrastructure.Persistence.Context.FreeStaysDbContext)">
+            <summary>
+            Job geçmişini listele
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AdminController.GetJobHistoryById(System.Guid,FreeStays.Infrastructure.Persistence.Context.FreeStaysDbContext)">
+            <summary>
+            Job detayını getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AuthController.Register(FreeStays.Application.Features.Auth.Commands.RegisterCommand)">
+            <summary>
+            Yeni kullanıcı kaydı
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AuthController.Login(FreeStays.Application.Features.Auth.Commands.LoginCommand)">
+            <summary>
+            Kullanıcı girişi
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AuthController.RefreshToken(FreeStays.Application.Features.Auth.Commands.RefreshTokenCommand)">
+            <summary>
+            Token yenileme
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AuthController.ForgotPassword(FreeStays.API.Controllers.ForgotPasswordRequest)">
+            <summary>
+            Şifre sıfırlama isteği
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AuthController.ResetPassword(FreeStays.API.Controllers.ResetPasswordRequest)">
+            <summary>
+            Şifre sıfırlama
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.BookingsController.GetMyBookings(System.Int32,System.Int32)">
+            <summary>
+            Kullanıcının rezervasyonlarını getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.BookingsController.GetBooking(System.Guid)">
+            <summary>
+            Rezervasyon detaylarını getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.BookingsController.CreateHotelBooking(FreeStays.Application.Features.Bookings.Commands.CreateHotelBookingCommand)">
+            <summary>
+            Otel rezervasyonu oluştur
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.BookingsController.CreateFlightBooking(FreeStays.API.Controllers.CreateFlightBookingRequest)">
+            <summary>
+            Uçuş rezervasyonu oluştur
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.BookingsController.CreateCarRentalBooking(FreeStays.API.Controllers.CreateCarRentalRequest)">
+            <summary>
+            Araç kiralama rezervasyonu oluştur
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.BookingsController.CancelBooking(System.Guid,FreeStays.API.Controllers.CancelBookingRequest)">
+            <summary>
+            Rezervasyonu iptal et
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.CarsController.SearchCars(FreeStays.API.Controllers.SearchCarsRequest)">
+            <summary>
+            Araç ara
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.CarsController.GetCar(System.String)">
+            <summary>
+            Araç detaylarını getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.CarsController.SearchLocations(System.String)">
+            <summary>
+            Lokasyonları ara
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.CarsController.GetCategories">
+            <summary>
+            Araç kategorilerini getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.CouponsController.ValidateCoupon(FreeStays.API.Controllers.ValidateCouponRequest)">
+            <summary>
+            Kupon kodunu doğrula
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.CouponsController.ApplyCoupon(FreeStays.API.Controllers.ApplyCouponRequest)">
+            <summary>
+            Kuponu uygula
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.CouponsController.GetMyCoupons">
+            <summary>
+            Kullanıcının kuponlarını getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.FlightsController.SearchFlights(FreeStays.API.Controllers.SearchFlightsRequest)">
+            <summary>
+            Uçuş ara
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.FlightsController.GetFlight(System.String)">
+            <summary>
+            Uçuş detaylarını getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.FlightsController.SearchAirports(System.String)">
+            <summary>
+            Havaalanlarını ara
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.FlightsController.GetPopularRoutes(System.Int32)">
+            <summary>
+            Popüler rotaları getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.HotelsController.SearchHotels(FreeStays.Application.Features.Hotels.Queries.SearchHotelsQuery)">
+            <summary>
+            Otelleri ara
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.HotelsController.GetHotel(System.Guid)">
+            <summary>
+            Otel detaylarını getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.HotelsController.GetFeaturedHotels(System.Int32)">
+            <summary>
+            Öne çıkan otelleri getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.HotelsController.GetDestinations(FreeStays.Application.Features.Hotels.Queries.GetDestinationsQuery)">
+            <summary>
+            Destinasyonları getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.HotelsController.GetHotelsByDestination(System.Guid,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Int32)">
+            <summary>
+            Belirli bir destinasyonun otellerini getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.HotelsController.GetRoomAvailability(System.Guid,System.DateTime,System.DateTime,System.Int32,System.Int32)">
+            <summary>
+            Oda müsaitliğini kontrol et
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.PagesController.GetPage(System.String,System.String)">
+            <summary>
+            Statik sayfa içeriğini getir (varsayılan dil)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.PagesController.GetPageByLocale(System.String,System.String)">
+            <summary>
+            Statik sayfa içeriğini belirli bir dil için getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.PaymentsController.InitiatePayment(FreeStays.API.Controllers.InitiatePaymentRequest)">
+            <summary>
+            Ödeme başlat
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.PaymentsController.GetPaymentStatus(System.Guid)">
+            <summary>
+            Ödeme durumunu kontrol et
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.PaymentsController.RefundPayment(System.Guid,FreeStays.API.Controllers.RefundRequest)">
+            <summary>
+            Ödeme iade et
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.PaymentsController.GetPaymentHistory(System.Int32,System.Int32)">
+            <summary>
+            Ödeme geçmişi
+            </summary>
+        </member>
+        <member name="T:FreeStays.API.Controllers.SunHotelsController">
+            <summary>
+            SunHotels statik veri cache API'si
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetStatistics(System.Threading.CancellationToken)">
+            <summary>
+            Cache istatistiklerini getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetAllDestinations(System.Threading.CancellationToken)">
+            <summary>
+            Tüm destinasyonları getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetDestinationById(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Destinasyon ID'ye göre getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.SearchDestinations(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Destinasyonlarda arama yapar
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetAllResorts(System.Threading.CancellationToken)">
+            <summary>
+            Tüm resortları getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetResortById(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Resort ID'ye göre getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetResortsByDestination(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Destinasyona göre resortları getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.SearchResorts(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Resortlarda arama yapar
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetAllMeals(System.Threading.CancellationToken)">
+            <summary>
+            Tüm yemek tiplerini getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetMealById(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Yemek tipi ID'ye göre getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetAllRoomTypes(System.Threading.CancellationToken)">
+            <summary>
+            Tüm oda tiplerini getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetRoomTypeById(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Oda tipi ID'ye göre getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetAllFeatures(System.Threading.CancellationToken)">
+            <summary>
+            Tüm özellikleri getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetFeatureById(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Özellik ID'ye göre getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetFeaturesByType(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Özellik tipine göre filtreler
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetAllThemes(System.Threading.CancellationToken)">
+            <summary>
+            Tüm temaları getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetThemeById(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Tema ID'ye göre getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetAllLanguages(System.Threading.CancellationToken)">
+            <summary>
+            Tüm dilleri getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetLanguageByCode(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Dil koduna göre getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetAllTransferTypes(System.Threading.CancellationToken)">
+            <summary>
+            Tüm transfer tiplerini getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetTransferTypeById(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Transfer tipi ID'ye göre getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetAllNoteTypes(System.Threading.CancellationToken)">
+            <summary>
+            Tüm not tiplerini getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetNoteTypeById(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Not tipi ID'ye göre getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetHotelsPaginated(System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <summary>
+            Otelleri sayfalanmış olarak getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetHotelById(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Otel ID'ye göre getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.SearchHotels(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Otellerde arama yapar
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetHotelsByDestination(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Destinasyona göre otelleri getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetHotelsByResort(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Resorta göre otelleri getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetRoomsByHotel(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Otele göre odaları getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetRoomById(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Oda ID'ye göre getirir
+            </summary>
+        </member>
+    </members>
+</doc>

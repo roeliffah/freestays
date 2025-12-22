@@ -1,6 +1,15 @@
+using FreeStays.Application.DTOs.Admin;
+using FreeStays.Application.Features.Admin.Commands;
+using FreeStays.Application.Features.Admin.Queries;
+using FreeStays.Application.Features.Coupons.Commands;
+using FreeStays.Application.Features.Coupons.Queries;
 using FreeStays.Domain.Enums;
+using FreeStays.Infrastructure.BackgroundJobs;
+using FreeStays.Infrastructure.Persistence.Context;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FreeStays.API.Controllers;
 
@@ -8,47 +17,18 @@ namespace FreeStays.API.Controllers;
 [Route("api/v1/admin")]
 public class AdminController : BaseApiController
 {
-    #region Users Management
+    #region Dashboard
 
     /// <summary>
-    /// Tüm kullanıcıları listele
+    /// Dashboard istatistikleri, son rezervasyonlar ve popüler destinasyonlar
     /// </summary>
-    [HttpGet("users")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetUsers([FromQuery] int page = 1, [FromQuery] int pageSize = 20, [FromQuery] string? search = null)
+    [HttpGet("dashboard")]
+    [ProducesResponseType(typeof(DashboardResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> GetDashboard()
     {
-        // TODO: Implement get users
-        return Ok(new 
-        { 
-            items = new List<object>(),
-            page = page,
-            pageSize = pageSize,
-            totalCount = 0
-        });
-    }
-
-    /// <summary>
-    /// Kullanıcı detayları
-    /// </summary>
-    [HttpGet("users/{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetUser(Guid id)
-    {
-        // TODO: Implement get user by id
-        return Ok(new { id = id });
-    }
-
-    /// <summary>
-    /// Kullanıcı durumunu güncelle
-    /// </summary>
-    [HttpPatch("users/{id}/status")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateUserStatus(Guid id, [FromBody] UpdateUserStatusRequest request)
-    {
-        // TODO: Implement update user status
-        return Ok(new { message = "Kullanıcı durumu güncellendi." });
+        var result = await Mediator.Send(new GetDashboardQuery());
+        return Ok(result);
     }
 
     #endregion
@@ -61,21 +41,23 @@ public class AdminController : BaseApiController
     [HttpGet("bookings")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllBookings(
-        [FromQuery] int page = 1, 
+        [FromQuery] int page = 1,
         [FromQuery] int pageSize = 20,
         [FromQuery] BookingStatus? status = null,
         [FromQuery] BookingType? type = null,
         [FromQuery] DateTime? fromDate = null,
         [FromQuery] DateTime? toDate = null)
     {
-        // TODO: Implement get all bookings
-        return Ok(new 
-        { 
-            items = new List<object>(),
-            page = page,
-            pageSize = pageSize,
-            totalCount = 0
+        var result = await Mediator.Send(new GetAllBookingsQuery
+        {
+            Page = page,
+            PageSize = pageSize,
+            Status = status,
+            Type = type,
+            FromDate = fromDate,
+            ToDate = toDate
         });
+        return Ok(result);
     }
 
     /// <summary>
@@ -86,8 +68,13 @@ public class AdminController : BaseApiController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateBookingStatus(Guid id, [FromBody] UpdateBookingStatusRequest request)
     {
-        // TODO: Implement update booking status
-        return Ok(new { message = "Rezervasyon durumu güncellendi." });
+        var result = await Mediator.Send(new UpdateBookingStatusCommand
+        {
+            Id = id,
+            Status = request.Status,
+            Notes = request.Notes
+        });
+        return Ok(result);
     }
 
     #endregion
@@ -101,14 +88,13 @@ public class AdminController : BaseApiController
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllCoupons([FromQuery] int page = 1, [FromQuery] int pageSize = 20, [FromQuery] bool? isActive = null)
     {
-        // TODO: Implement get all coupons
-        return Ok(new 
-        { 
-            items = new List<object>(),
-            page = page,
-            pageSize = pageSize,
-            totalCount = 0
+        var result = await Mediator.Send(new GetAllCouponsQuery
+        {
+            Page = page,
+            PageSize = pageSize,
+            IsActive = isActive
         });
+        return Ok(result);
     }
 
     /// <summary>
@@ -119,9 +105,18 @@ public class AdminController : BaseApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateCoupon([FromBody] CreateCouponRequest request)
     {
-        // TODO: Implement create coupon
-        var couponId = Guid.NewGuid();
-        return CreatedAtAction(nameof(GetCoupon), new { id = couponId }, new { id = couponId, code = request.Code });
+        var result = await Mediator.Send(new CreateCouponCommand
+        {
+            Code = request.Code,
+            Description = request.Description,
+            DiscountType = request.DiscountType,
+            DiscountValue = request.DiscountValue,
+            MinBookingAmount = request.MinimumAmount,
+            MaxUses = request.UsageLimit,
+            ValidFrom = request.ValidFrom,
+            ValidUntil = request.ValidUntil
+        });
+        return CreatedAtAction(nameof(GetCoupon), new { id = result.Id }, result);
     }
 
     /// <summary>
@@ -132,8 +127,8 @@ public class AdminController : BaseApiController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetCoupon(Guid id)
     {
-        // TODO: Implement get coupon
-        return Ok(new { id = id });
+        var result = await Mediator.Send(new GetCouponByIdQuery(id));
+        return Ok(result);
     }
 
     /// <summary>
@@ -144,8 +139,17 @@ public class AdminController : BaseApiController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateCoupon(Guid id, [FromBody] UpdateCouponRequest request)
     {
-        // TODO: Implement update coupon
-        return Ok(new { message = "Kupon güncellendi." });
+        var result = await Mediator.Send(new UpdateCouponCommand
+        {
+            Id = id,
+            Description = request.Description,
+            DiscountValue = request.DiscountValue,
+            MinBookingAmount = request.MinimumAmount,
+            MaxUses = request.UsageLimit,
+            ValidUntil = request.ValidUntil,
+            IsActive = request.IsActive
+        });
+        return Ok(result);
     }
 
     /// <summary>
@@ -156,7 +160,7 @@ public class AdminController : BaseApiController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteCoupon(Guid id)
     {
-        // TODO: Implement delete coupon
+        await Mediator.Send(new DeleteCouponCommand(id));
         return NoContent();
     }
 
@@ -165,22 +169,14 @@ public class AdminController : BaseApiController
     #region Statistics
 
     /// <summary>
-    /// Dashboard istatistikleri
+    /// Dashboard istatistikleri (eski endpoint - deprecated)
     /// </summary>
-    [HttpGet("dashboard")]
+    [HttpGet("dashboard/stats")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetDashboardStats()
     {
-        // TODO: Implement dashboard statistics
-        return Ok(new 
-        { 
-            totalUsers = 0,
-            totalBookings = 0,
-            totalRevenue = 0m,
-            pendingBookings = 0,
-            todayBookings = 0,
-            monthlyRevenue = 0m
-        });
+        var result = await Mediator.Send(new GetDashboardStatsQuery());
+        return Ok(result);
     }
 
     /// <summary>
@@ -191,8 +187,8 @@ public class AdminController : BaseApiController
     public async Task<IActionResult> GetRevenueReport([FromQuery] DateTime fromDate, [FromQuery] DateTime toDate)
     {
         // TODO: Implement revenue report
-        return Ok(new 
-        { 
+        return Ok(new
+        {
             fromDate = fromDate,
             toDate = toDate,
             totalRevenue = 0m,
@@ -231,10 +227,118 @@ public class AdminController : BaseApiController
         return Ok(new { message = "Servis yapılandırması güncellendi." });
     }
 
+    /// <summary>
+    /// SunHotels statik veri senkronizasyonunu başlat
+    /// </summary>
+    [HttpPost("services/sunhotels/sync")]
+    [AllowAnonymous] // TODO: Remove after testing
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult SyncSunHotelsData()
+    {
+        BackgroundJob.Enqueue<SunHotelsStaticDataSyncJob>(job => job.SyncAllStaticDataAsync());
+        return Ok(new { message = "SunHotels veri senkronizasyonu başlatıldı." });
+    }
+
+    #endregion
+
+    #region Job History
+
+    /// <summary>
+    /// Job geçmişini listele
+    /// </summary>
+    [HttpGet("jobs/history")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetJobHistory(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20,
+        [FromQuery] string? jobType = null,
+        [FromServices] FreeStaysDbContext dbContext = null!)
+    {
+        var query = dbContext.JobHistories.AsQueryable();
+
+        if (!string.IsNullOrEmpty(jobType))
+        {
+            query = query.Where(j => j.JobType == jobType);
+        }
+
+        var total = await query.CountAsync();
+        var items = await query
+            .OrderByDescending(j => j.StartTime)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(j => new
+            {
+                j.Id,
+                j.JobType,
+                j.Status,
+                j.StartTime,
+                j.EndTime,
+                j.DurationSeconds,
+                j.Message,
+                j.Details
+            })
+            .ToListAsync();
+
+        return Ok(new
+        {
+            total,
+            page,
+            pageSize,
+            items
+        });
+    }
+
+    /// <summary>
+    /// Job detayını getir
+    /// </summary>
+    [HttpGet("jobs/history/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetJobHistoryById(
+        Guid id,
+        [FromServices] FreeStaysDbContext dbContext = null!)
+    {
+        var job = await dbContext.JobHistories
+            .Where(j => j.Id == id)
+            .Select(j => new
+            {
+                j.Id,
+                j.JobType,
+                j.Status,
+                j.StartTime,
+                j.EndTime,
+                j.DurationSeconds,
+                j.Message,
+                j.Details,
+                j.CreatedAt
+            })
+            .FirstOrDefaultAsync();
+
+        if (job == null)
+            return NotFound(new { message = "Job history not found" });
+
+        return Ok(job);
+    }
+
     #endregion
 }
 
 // Request DTOs
+public record CreateUserRequest(
+    string Email,
+    string Password,
+    string Name,
+    string? Phone,
+    UserRole Role,
+    string? Notes);
+
+public record UpdateUserRequest(
+    string? Name,
+    string? Phone,
+    UserRole? Role,
+    string? Notes,
+    bool? IsBlocked);
+
 public record UpdateUserStatusRequest(bool IsActive, string? Reason);
 public record UpdateBookingStatusRequest(BookingStatus Status, string? Notes);
 public record CreateCouponRequest(

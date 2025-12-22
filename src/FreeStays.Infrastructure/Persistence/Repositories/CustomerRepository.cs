@@ -30,7 +30,7 @@ public class CustomerRepository : Repository<Customer>, ICustomerRepository
         if (!string.IsNullOrWhiteSpace(search))
         {
             search = search.ToLower();
-            query = query.Where(c => 
+            query = query.Where(c =>
                 c.User!.Email.ToLower().Contains(search) ||
                 c.User.Name.ToLower().Contains(search) ||
                 (c.User.Phone != null && c.User.Phone.Contains(search)));
@@ -57,5 +57,12 @@ public class CustomerRepository : Repository<Customer>, ICustomerRepository
         return await _dbSet
             .Include(c => c.User)
             .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
+    }
+
+    public async Task<int> GetCustomerRoleCountAsync(CancellationToken cancellationToken = default)
+    {
+        return await _dbSet
+            .Include(c => c.User)
+            .CountAsync(c => c.User.Role == Domain.Enums.UserRole.Customer, cancellationToken);
     }
 }

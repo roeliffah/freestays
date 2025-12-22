@@ -370,15 +370,52 @@ public class SunHotelsCacheService : ISunHotelsCacheService
 
             var stats = new SunHotelsCacheStatistics
             {
-                DestinationCount = await _context.SunHotelsDestinations.CountAsync(cancellationToken),
-                ResortCount = await _context.SunHotelsResorts.CountAsync(cancellationToken),
-                MealCount = await _context.SunHotelsMeals.CountAsync(cancellationToken),
-                RoomTypeCount = await _context.SunHotelsRoomTypes.CountAsync(cancellationToken),
-                FeatureCount = await _context.SunHotelsFeatures.CountAsync(cancellationToken),
-                ThemeCount = await _context.SunHotelsThemes.CountAsync(cancellationToken),
-                LanguageCount = await _context.SunHotelsLanguages.CountAsync(cancellationToken),
-                TransferTypeCount = await _context.SunHotelsTransferTypes.CountAsync(cancellationToken),
-                NoteTypeCount = await _context.SunHotelsNoteTypes.CountAsync(cancellationToken),
+                // Unique ID bazında say (her dil için ayrı kayıt olduğundan distinct yapıyoruz)
+                DestinationCount = await _context.SunHotelsDestinations
+                    .Select(d => d.DestinationId)
+                    .Distinct()
+                    .CountAsync(cancellationToken),
+
+                ResortCount = await _context.SunHotelsResorts
+                    .Select(r => r.ResortId)
+                    .Distinct()
+                    .CountAsync(cancellationToken),
+
+                MealCount = await _context.SunHotelsMeals
+                    .Select(m => m.MealId)
+                    .Distinct()
+                    .CountAsync(cancellationToken),
+
+                RoomTypeCount = await _context.SunHotelsRoomTypes
+                    .Select(r => r.RoomTypeId)
+                    .Distinct()
+                    .CountAsync(cancellationToken),
+
+                FeatureCount = await _context.SunHotelsFeatures
+                    .Select(f => f.FeatureId)
+                    .Distinct()
+                    .CountAsync(cancellationToken),
+
+                ThemeCount = await _context.SunHotelsThemes
+                    .Select(t => t.ThemeId)
+                    .Distinct()
+                    .CountAsync(cancellationToken),
+
+                LanguageCount = await _context.SunHotelsLanguages
+                    .Select(l => l.LanguageCode)
+                    .Distinct()
+                    .CountAsync(cancellationToken),
+
+                TransferTypeCount = await _context.SunHotelsTransferTypes
+                    .Select(t => t.TransferTypeId)
+                    .Distinct()
+                    .CountAsync(cancellationToken),
+
+                NoteTypeCount = await _context.SunHotelsNoteTypes
+                    .Select(n => n.NoteTypeId)
+                    .Distinct()
+                    .CountAsync(cancellationToken),
+
                 HotelCount = await _context.SunHotelsHotels.CountAsync(cancellationToken),
                 RoomCount = await _context.SunHotelsRooms.CountAsync(cancellationToken),
                 LastSyncTime = await GetLastSyncTimeAsync(cancellationToken)

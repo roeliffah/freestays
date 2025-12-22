@@ -29,24 +29,75 @@
             Müşterinin rezervasyonlarını getir
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.Admin.AdminEmailTemplatesController.GetEmailTemplates(System.Nullable{System.Boolean})">
+        <member name="M:FreeStays.API.Controllers.Admin.AdminFaqsController.GetAllFaqs">
             <summary>
-            Tüm e-posta şablonlarını listele
+            Get all FAQs (including inactive)
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.Admin.AdminEmailTemplatesController.GetEmailTemplate(System.String)">
+        <member name="M:FreeStays.API.Controllers.Admin.AdminFaqsController.GetFaqById(System.Guid)">
             <summary>
-            E-posta şablonu detayları
+            Get FAQ by ID
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.Admin.AdminEmailTemplatesController.UpdateEmailTemplate(System.String,FreeStays.API.Controllers.Admin.UpdateEmailTemplateRequest)">
+        <member name="M:FreeStays.API.Controllers.Admin.AdminFaqsController.CreateFaq(FreeStays.API.Controllers.Admin.CreateFaqRequest)">
             <summary>
-            E-posta şablonunu güncelle
+            Create new FAQ
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.Admin.AdminEmailTemplatesController.SendTestEmail(System.String,FreeStays.API.Controllers.Admin.SendTestEmailRequest)">
+        <member name="M:FreeStays.API.Controllers.Admin.AdminFaqsController.UpdateFaq(System.Guid,FreeStays.API.Controllers.Admin.UpdateFaqRequest)">
             <summary>
-            Test e-postası gönder
+            Update FAQ
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminFaqsController.DeleteFaq(System.Guid)">
+            <summary>
+            Delete FAQ
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminFeaturedContentController.GetAllFeaturedHotels(System.Int32,System.Int32,System.String,System.String,System.String)">
+            <summary>
+            Get all featured hotels (admin)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminFeaturedContentController.CreateFeaturedHotel(FreeStays.Application.DTOs.FeaturedContent.CreateFeaturedHotelDto)">
+            <summary>
+            Create new featured hotel
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminFeaturedContentController.UpdateFeaturedHotel(System.Guid,FreeStays.Application.DTOs.FeaturedContent.UpdateFeaturedHotelDto)">
+            <summary>
+            Update featured hotel
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminFeaturedContentController.DeleteFeaturedHotel(System.Guid)">
+            <summary>
+            Delete featured hotel
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminFeaturedContentController.UpdateFeaturedHotelPriority(System.Guid,FreeStays.API.Controllers.Admin.PriorityUpdateRequest)">
+            <summary>
+            Update featured hotel priority
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:FreeStays.API.Controllers.Admin.AdminFeaturedContentController.BulkUpdateFeaturedHotelPriority(FreeStays.Application.DTOs.FeaturedContent.BulkPriorityUpdateDto)" -->
+        <member name="M:FreeStays.API.Controllers.Admin.AdminFeaturedContentController.GetAllFeaturedDestinations(System.String,System.String)">
+            <summary>
+            Get all featured destinations (admin)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminFeaturedContentController.CreateFeaturedDestination(FreeStays.Application.DTOs.FeaturedContent.CreateFeaturedDestinationDto)">
+            <summary>
+            Create new featured destination
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminFeaturedContentController.UpdateFeaturedDestination(System.Guid,FreeStays.Application.DTOs.FeaturedContent.UpdateFeaturedDestinationDto)">
+            <summary>
+            Update featured destination
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminFeaturedContentController.DeleteFeaturedDestination(System.Guid)">
+            <summary>
+            Delete featured destination
             </summary>
         </member>
         <member name="T:FreeStays.API.Controllers.Admin.AdminJobsController">
@@ -174,19 +225,69 @@
             Yeni çeviri anahtarı ekle
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.AdminController.GetUsers(System.Int32,System.Int32,System.String)">
+        <member name="M:FreeStays.API.Controllers.Admin.AdminUsersController.GetAdminUsers(System.Int32,System.Int32,System.String)">
             <summary>
-            Tüm kullanıcıları listele
+            Tüm Admin/SuperAdmin kullanıcılarını listele
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.AdminController.GetUser(System.Guid)">
+        <member name="M:FreeStays.API.Controllers.Admin.AdminUsersController.GetAdminUser(System.Guid)">
             <summary>
-            Kullanıcı detayları
+            Admin/SuperAdmin kullanıcı detayı
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.AdminController.UpdateUserStatus(System.Guid,FreeStays.API.Controllers.UpdateUserStatusRequest)">
+        <member name="M:FreeStays.API.Controllers.Admin.AdminUsersController.CreateAdminUser(FreeStays.Application.DTOs.Admin.CreateAdminUserRequest)">
             <summary>
-            Kullanıcı durumunu güncelle
+            Yeni Admin/SuperAdmin kullanıcı oluştur
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminUsersController.UpdateAdminUser(System.Guid,FreeStays.Application.DTOs.Admin.UpdateAdminUserRequestWrapper)">
+            <summary>
+            Admin/SuperAdmin kullanıcı bilgilerini güncelle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminUsersController.DeleteAdminUser(System.Guid)">
+            <summary>
+            Admin/SuperAdmin kullanıcı sil (soft delete)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.EmailTemplatesController.GetAll(System.Nullable{System.Boolean})">
+            <summary>
+            Tüm e-posta şablonlarını listele
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.EmailTemplatesController.GetById(System.Guid)">
+            <summary>
+            Belirli bir e-posta şablonunu getir (ID ile)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.EmailTemplatesController.GetByCode(System.String,System.String)">
+            <summary>
+            Belirli bir e-posta şablonunu getir (Code ile) - Dil parametresi ile
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.EmailTemplatesController.Create(FreeStays.Application.DTOs.EmailTemplates.CreateEmailTemplateRequest)">
+            <summary>
+            Yeni e-posta şablonu oluştur
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.EmailTemplatesController.Update(System.Guid,FreeStays.Application.DTOs.EmailTemplates.UpdateEmailTemplateRequest)">
+            <summary>
+            E-posta şablonunu güncelle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.EmailTemplatesController.Delete(System.Guid)">
+            <summary>
+            E-posta şablonunu sil
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.EmailTemplatesController.ToggleStatus(System.Guid)">
+            <summary>
+            E-posta şablonunu aktif/pasif yap
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AdminController.GetDashboard">
+            <summary>
+            Dashboard istatistikleri, son rezervasyonlar ve popüler destinasyonlar
             </summary>
         </member>
         <member name="M:FreeStays.API.Controllers.AdminController.GetAllBookings(System.Int32,System.Int32,System.Nullable{FreeStays.Domain.Enums.BookingStatus},System.Nullable{FreeStays.Domain.Enums.BookingType},System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
@@ -226,7 +327,7 @@
         </member>
         <member name="M:FreeStays.API.Controllers.AdminController.GetDashboardStats">
             <summary>
-            Dashboard istatistikleri
+            Dashboard istatistikleri (eski endpoint - deprecated)
             </summary>
         </member>
         <member name="M:FreeStays.API.Controllers.AdminController.GetRevenueReport(System.DateTime,System.DateTime)">
@@ -242,6 +343,21 @@
         <member name="M:FreeStays.API.Controllers.AdminController.UpdateExternalService(System.Guid,FreeStays.API.Controllers.UpdateExternalServiceRequest)">
             <summary>
             Harici servis yapılandırmasını güncelle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AdminController.SyncSunHotelsData">
+            <summary>
+            SunHotels statik veri senkronizasyonunu başlat
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AdminController.GetJobHistory(System.Int32,System.Int32,System.String,FreeStays.Infrastructure.Persistence.Context.FreeStaysDbContext)">
+            <summary>
+            Job geçmişini listele
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AdminController.GetJobHistoryById(System.Guid,FreeStays.Infrastructure.Persistence.Context.FreeStaysDbContext)">
+            <summary>
+            Job detayını getir
             </summary>
         </member>
         <member name="M:FreeStays.API.Controllers.AuthController.Register(FreeStays.Application.Features.Auth.Commands.RegisterCommand)">
@@ -333,6 +449,33 @@
             <summary>
             Kullanıcının kuponlarını getir
             </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.FaqsController.GetActiveFaqs(System.String,System.String)">
+            <summary>
+            Get all active FAQs for frontend
+            </summary>
+            <param name="locale">Optional locale filter (e.g., 'tr', 'en')</param>
+            <param name="category">Optional category filter</param>
+        </member>
+        <member name="M:FreeStays.API.Controllers.FaqsController.GetFaqById(System.Guid)">
+            <summary>
+            Get FAQ by ID
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.FeaturedContentController.GetActiveFeaturedHotels(System.Int32,System.String,System.String)">
+            <summary>
+            Get active featured hotels for frontend
+            </summary>
+            <param name="count">Number of hotels to return (default: 10)</param>
+            <param name="season">Season filter (optional)</param>
+            <param name="category">Category filter (optional)</param>
+        </member>
+        <member name="M:FreeStays.API.Controllers.FeaturedContentController.GetActiveFeaturedDestinations(System.Int32,System.String)">
+            <summary>
+            Get active featured destinations for frontend
+            </summary>
+            <param name="count">Number of destinations to return (default: 10)</param>
+            <param name="season">Season filter (optional)</param>
         </member>
         <member name="M:FreeStays.API.Controllers.FlightsController.SearchFlights(FreeStays.API.Controllers.SearchFlightsRequest)">
             <summary>

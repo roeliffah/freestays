@@ -1,80 +1,100 @@
+using System.Text.Json;
+using FluentValidation;
 using FreeStays.Application.DTOs.EmailTemplates;
-using FreeStays.Domain.Entities;
 using FreeStays.Domain.Exceptions;
 using FreeStays.Domain.Interfaces;
-using FluentValidation;
 using MediatR;
 
 namespace FreeStays.Application.Features.EmailTemplates.Commands;
 
 public record UpdateEmailTemplateCommand : IRequest<EmailTemplateDto>
 {
-    public string Code { get; init; } = string.Empty;
-    public string Subject { get; init; } = string.Empty;
-    public string Body { get; init; } = string.Empty;
-    public string? Variables { get; init; }
-    public bool IsActive { get; init; }
+    public Guid Id { get; init; }
+    public Dictionary<string, string>? Subject { get; init; }
+    public Dictionary<string, string>? Body { get; init; }
+    public List<string>? Variables { get; init; }
+    public bool? IsActive { get; init; }
 }
 
 public class UpdateEmailTemplateCommandValidator : AbstractValidator<UpdateEmailTemplateCommand>
 {
     public UpdateEmailTemplateCommandValidator()
     {
-        RuleFor(x => x.Code).NotEmpty().MaximumLength(100);
-        RuleFor(x => x.Subject).NotEmpty();
-        RuleFor(x => x.Body).NotEmpty();
+        When(x => x.Subject != null, () =>
+        {
+            RuleFor(x => x.Subject!)
+                .Must(s => s.ContainsKey("tr") && s.ContainsKey("en"))
+                .WithMessage("TR ve EN dilleri için konu başlığı gereklidir.");
+        });
+
+        When(x => x.Body != null, () =>
+        {
+            RuleFor(x => x.Body!)
+                .Must(b => b.ContainsKey("tr") && b.ContainsKey("en"))
+                .WithMessage("TR ve EN dilleri için e-posta içeriği gereklidir.");
+        });
     }
 }
 
 public class UpdateEmailTemplateCommandHandler : IRequestHandler<UpdateEmailTemplateCommand, EmailTemplateDto>
 {
-    private readonly IEmailTemplateRepository _emailTemplateRepository;
+    private readonly IEmailTemplateRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateEmailTemplateCommandHandler(IEmailTemplateRepository emailTemplateRepository, IUnitOfWork unitOfWork)
+    public UpdateEmailTemplateCommandHandler(IEmailTemplateRepository repository, IUnitOfWork unitOfWork)
     {
-        _emailTemplateRepository = emailTemplateRepository;
+        _repository = repository;
         _unitOfWork = unitOfWork;
     }
 
     public async Task<EmailTemplateDto> Handle(UpdateEmailTemplateCommand request, CancellationToken cancellationToken)
     {
-        var template = await _emailTemplateRepository.GetByCodeAsync(request.Code, cancellationToken);
+        var template = await _repository.GetByIdAsync(request.Id, cancellationToken);
 
         if (template == null)
         {
-            template = new EmailTemplate
-            {
-                Id = Guid.NewGuid(),
-                Code = request.Code,
-                Subject = request.Subject,
-                Body = request.Body,
-                Variables = request.Variables,
-                IsActive = request.IsActive
-            };
-            await _emailTemplateRepository.AddAsync(template, cancellationToken);
-        }
-        else
-        {
-            template.Subject = request.Subject;
-            template.Body = request.Body;
-            template.Variables = request.Variables;
-            template.IsActive = request.IsActive;
-            template.UpdatedAt = DateTime.UtcNow;
-            await _emailTemplateRepository.UpdateAsync(template, cancellationToken);
+            throw new NotFoundException("EmailTemplate", request.Id.ToString());
         }
 
+        var currentSubject = JsonSerializer.Deserialize<Dictionary<string, string>>(template.Subject) ?? new();
+        var currentBody = JsonSerializer.Deserialize<Dictionary<string, string>>(template.Body) ?? new();
+        var currentVariables = JsonSerializer.Deserialize<List<string>>(template.Variables) ?? new();
+
+        if (request.Subject != null)
+        {
+            template.Subject = JsonSerializer.Serialize(request.Subject);
+            currentSubject = request.Subject;
+        }
+
+        if (request.Body != null)
+        {
+            template.Body = JsonSerializer.Serialize(request.Body);
+            currentBody = request.Body;
+        }
+
+        if (request.Variables != null)
+        {
+            template.Variables = JsonSerializer.Serialize(request.Variables);
+            currentVariables = request.Variables;
+        }
+
+        if (request.IsActive.HasValue)
+        {
+            template.IsActive = request.IsActive.Value;
+        }
+
+        await _repository.UpdateAsync(template, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new EmailTemplateDto
         {
             Id = template.Id,
             Code = template.Code,
-            Subject = template.Subject,
-            Body = template.Body,
-            Variables = template.Variables,
+            Subject = currentSubject,
+            Body = currentBody,
+            Variables = currentVariables,
             IsActive = template.IsActive,
-            UpdatedAt = template.UpdatedAt
+            CreatedAt = template.CreatedAt
         };
     }
 }

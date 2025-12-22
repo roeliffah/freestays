@@ -1,3 +1,4 @@
+using System.Text.Json;
 using FreeStays.Application.DTOs.EmailTemplates;
 using FreeStays.Domain.Exceptions;
 using FreeStays.Domain.Interfaces;
@@ -5,9 +6,9 @@ using MediatR;
 
 namespace FreeStays.Application.Features.EmailTemplates.Queries;
 
-public record GetEmailTemplateByCodeQuery(string Code) : IRequest<EmailTemplateDto>;
+public record GetEmailTemplateByCodeQuery(string Code, string Locale = "tr") : IRequest<EmailTemplateLocalizedDto>;
 
-public class GetEmailTemplateByCodeQueryHandler : IRequestHandler<GetEmailTemplateByCodeQuery, EmailTemplateDto>
+public class GetEmailTemplateByCodeQueryHandler : IRequestHandler<GetEmailTemplateByCodeQuery, EmailTemplateLocalizedDto>
 {
     private readonly IEmailTemplateRepository _emailTemplateRepository;
 
@@ -16,7 +17,7 @@ public class GetEmailTemplateByCodeQueryHandler : IRequestHandler<GetEmailTempla
         _emailTemplateRepository = emailTemplateRepository;
     }
 
-    public async Task<EmailTemplateDto> Handle(GetEmailTemplateByCodeQuery request, CancellationToken cancellationToken)
+    public async Task<EmailTemplateLocalizedDto> Handle(GetEmailTemplateByCodeQuery request, CancellationToken cancellationToken)
     {
         var template = await _emailTemplateRepository.GetByCodeAsync(request.Code, cancellationToken);
 
@@ -25,15 +26,35 @@ public class GetEmailTemplateByCodeQueryHandler : IRequestHandler<GetEmailTempla
             throw new NotFoundException("EmailTemplate", request.Code);
         }
 
-        return new EmailTemplateDto
+        if (!template.IsActive)
+        {
+            throw new ValidationException("EmailTemplate", "Bu e-posta şablonu pasif durumda.");
+        }
+
+        var subjects = JsonSerializer.Deserialize<Dictionary<string, string>>(template.Subject) ?? new();
+        var bodies = JsonSerializer.Deserialize<Dictionary<string, string>>(template.Body) ?? new();
+        var variables = JsonSerializer.Deserialize<List<string>>(template.Variables) ?? new();
+
+        // İlgili dile göre subject ve body al, yoksa fallback olarak tr veya ilk mevcut dil
+        var subject = subjects.GetValueOrDefault(request.Locale)
+            ?? subjects.GetValueOrDefault("tr")
+            ?? subjects.Values.FirstOrDefault()
+            ?? string.Empty;
+
+        var body = bodies.GetValueOrDefault(request.Locale)
+            ?? bodies.GetValueOrDefault("tr")
+            ?? bodies.Values.FirstOrDefault()
+            ?? string.Empty;
+
+        return new EmailTemplateLocalizedDto
         {
             Id = template.Id,
             Code = template.Code,
-            Subject = template.Subject,
-            Body = template.Body,
-            Variables = template.Variables,
+            Subject = subject,
+            Body = body,
+            Variables = variables,
             IsActive = template.IsActive,
-            UpdatedAt = template.UpdatedAt
+            Locale = request.Locale
         };
     }
 }

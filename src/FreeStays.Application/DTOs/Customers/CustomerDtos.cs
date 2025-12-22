@@ -1,3 +1,5 @@
+using FreeStays.Domain.Enums;
+
 namespace FreeStays.Application.DTOs.Customers;
 
 public record CustomerDto
@@ -7,6 +9,7 @@ public record CustomerDto
     public string Email { get; init; } = string.Empty;
     public string Name { get; init; } = string.Empty;
     public string? Phone { get; init; }
+    public UserRole Role { get; init; }
     public int TotalBookings { get; init; }
     public decimal TotalSpent { get; init; }
     public DateTime? LastBookingAt { get; init; }

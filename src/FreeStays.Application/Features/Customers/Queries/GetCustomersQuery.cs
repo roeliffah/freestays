@@ -1,4 +1,5 @@
 using FreeStays.Application.DTOs.Customers;
+using FreeStays.Application.Features.Customers.Extensions;
 using FreeStays.Domain.Interfaces;
 using MediatR;
 
@@ -32,20 +33,7 @@ public class GetCustomersQueryHandler : IRequestHandler<GetCustomersQuery, Custo
 
         return new CustomerListDto
         {
-            Items = items.Select(c => new CustomerDto
-            {
-                Id = c.Id,
-                UserId = c.UserId,
-                Email = c.User?.Email ?? string.Empty,
-                Name = c.User?.Name ?? string.Empty,
-                Phone = c.User?.Phone,
-                TotalBookings = c.TotalBookings,
-                TotalSpent = c.TotalSpent,
-                LastBookingAt = c.LastBookingAt,
-                Notes = c.Notes,
-                IsBlocked = c.IsBlocked,
-                CreatedAt = c.CreatedAt
-            }).ToList(),
+            Items = items.Select(c => c.ToDto()).ToList(),
             TotalCount = totalCount,
             Page = request.Page,
             PageSize = request.PageSize,

@@ -17,3 +17,4 @@
 /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/obj/Debug/net8.0/FreeStays.Infrastructure.pdb
 /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/obj/Debug/net8.0/FreeStays.Infrastructure.genruntimeconfig.cache
 /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/obj/Debug/net8.0/ref/FreeStays.Infrastructure.dll
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/obj/Debug/net8.0/FreeStays.Infrastructure.sourcelink.json

@@ -1,4 +1,6 @@
 using FreeStays.Application.DTOs.Customers;
+using FreeStays.Application.Features.Customers.Extensions;
+using FreeStays.Domain.Enums;
 using FreeStays.Domain.Exceptions;
 using FreeStays.Domain.Interfaces;
 using MediatR;
@@ -8,18 +10,26 @@ namespace FreeStays.Application.Features.Customers.Commands;
 public record UpdateCustomerCommand : IRequest<CustomerDto>
 {
     public Guid Id { get; init; }
+    public string? Name { get; init; }
+    public string? Phone { get; init; }
+    public UserRole? Role { get; init; }
     public string? Notes { get; init; }
-    public bool IsBlocked { get; init; }
+    public bool? IsBlocked { get; init; }
 }
 
 public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, CustomerDto>
 {
     private readonly ICustomerRepository _customerRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateCustomerCommandHandler(ICustomerRepository customerRepository, IUnitOfWork unitOfWork)
+    public UpdateCustomerCommandHandler(
+        ICustomerRepository customerRepository,
+        IUserRepository userRepository,
+        IUnitOfWork unitOfWork)
     {
         _customerRepository = customerRepository;
+        _userRepository = userRepository;
         _unitOfWork = unitOfWork;
     }
 
@@ -32,26 +42,38 @@ public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerComman
             throw new NotFoundException("Customer", request.Id);
         }
 
-        customer.Notes = request.Notes;
-        customer.IsBlocked = request.IsBlocked;
-        customer.UpdatedAt = DateTime.UtcNow;
+        var user = await _userRepository.GetByIdAsync(customer.UserId, cancellationToken);
+        if (user == null)
+        {
+            throw new NotFoundException("User", customer.UserId);
+        }
 
+        // User bilgilerini güncelle
+        if (request.Name != null)
+            user.Name = request.Name;
+
+        if (request.Phone != null)
+            user.Phone = request.Phone;
+
+        if (request.Role.HasValue)
+            user.Role = request.Role.Value;
+
+        user.UpdatedAt = DateTime.UtcNow;
+        await _userRepository.UpdateAsync(user, cancellationToken);
+
+        // Customer bilgilerini güncelle
+        if (request.Notes != null)
+            customer.Notes = request.Notes;
+
+        if (request.IsBlocked.HasValue)
+            customer.IsBlocked = request.IsBlocked.Value;
+
+        customer.UpdatedAt = DateTime.UtcNow;
         await _customerRepository.UpdateAsync(customer, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new CustomerDto
-        {
-            Id = customer.Id,
-            UserId = customer.UserId,
-            Email = customer.User?.Email ?? string.Empty,
-            Name = customer.User?.Name ?? string.Empty,
-            Phone = customer.User?.Phone,
-            TotalBookings = customer.TotalBookings,
-            TotalSpent = customer.TotalSpent,
-            LastBookingAt = customer.LastBookingAt,
-            Notes = customer.Notes,
-            IsBlocked = customer.IsBlocked,
-            CreatedAt = customer.CreatedAt
-        };
+        // User navigation property'sini set et
+        customer.User = user;
+        return customer.ToDto();
     }
 }
