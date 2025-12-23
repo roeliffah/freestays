@@ -231,6 +231,9 @@ public class SunHotelsService : ISunHotelsService
     {
         try
         {
+            _logger.LogInformation("Getting static hotels and rooms - Destination: {Destination}, HotelIds: {HotelIds}, ResortIds: {ResortIds}, Language: {Language}",
+                destination ?? "null", hotelIds ?? "null", resortIds ?? "null", language);
+
             var parameters = new Dictionary<string, string>
             {
                 { "language", language },
@@ -245,7 +248,10 @@ public class SunHotelsService : ISunHotelsService
                 parameters.Add("destination", destination);
 
             var response = await SendStaticRequestAsync("GetStaticHotelsAndRooms", parameters, cancellationToken);
-            return ParseStaticHotels(response);
+            var hotels = ParseStaticHotels(response);
+
+            _logger.LogInformation("Successfully retrieved {Count} hotels from SunHotels", hotels.Count);
+            return hotels;
         }
         catch (Exception ex)
         {
@@ -1197,85 +1203,201 @@ public class SunHotelsService : ISunHotelsService
         try
         {
             var doc = XDocument.Parse(xmlResponse);
-            var hotelElements = doc.Descendants("hotel");
+            XNamespace ns = "http://xml.sunhotels.net/15/";
+
+            // Try with namespace first, fall back to no namespace
+            var hotelElements = doc.Descendants(ns + "hotel");
+            if (!hotelElements.Any())
+            {
+                hotelElements = doc.Descendants("hotel");
+            }
+
+            _logger.LogInformation("Found {Count} hotel elements in XML response", hotelElements.Count());
 
             foreach (var elem in hotelElements)
             {
+                // Helper function to get element value with different possible names
+                string GetElementValue(params string[] names)
+                {
+                    foreach (var name in names)
+                    {
+                        var value = elem.Element(ns + name)?.Value ?? elem.Element(name)?.Value;
+                        if (!string.IsNullOrEmpty(value))
+                            return value;
+                    }
+                    return "";
+                }
+
                 var hotel = new SunHotelsStaticHotel
                 {
-                    HotelId = int.TryParse(elem.Element("hotelId")?.Value, out var id) ? id : 0,
-                    Name = elem.Element("hotelName")?.Value ?? "",
-                    Description = elem.Element("description")?.Value ?? "",
-                    Address = elem.Element("address")?.Value ?? "",
-                    ZipCode = elem.Element("zipCode")?.Value,
-                    City = elem.Element("city")?.Value ?? "",
-                    Country = elem.Element("countryName")?.Value ?? "",
-                    CountryCode = elem.Element("countryCode")?.Value ?? "",
-                    Category = int.TryParse(elem.Element("category")?.Value, out var cat) ? cat : 0,
-                    Latitude = double.TryParse(elem.Element("latitude")?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var lat) ? lat : null,
-                    Longitude = double.TryParse(elem.Element("longitude")?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var lng) ? lng : null,
-                    GiataCode = elem.Element("giataCode")?.Value,
-                    ResortId = int.TryParse(elem.Element("resortId")?.Value, out var resortId) ? resortId : 0,
-                    ResortName = elem.Element("resortName")?.Value ?? "",
-                    Phone = elem.Element("phone")?.Value,
-                    Fax = elem.Element("fax")?.Value,
-                    Email = elem.Element("email")?.Value,
-                    Website = elem.Element("website")?.Value
+                    HotelId = int.TryParse(GetElementValue("hotel.id", "hotelId"), out var id) ? id : 0,
+                    Name = GetElementValue("name", "hotelName"),
+                    Description = GetElementValue("description"),
+                    Address = GetElementValue("hotel.address", "address"),
+                    ZipCode = GetElementValue("hotel.addr.zip", "zipCode"),
+                    City = GetElementValue("hotel.addr.city", "city"),
+                    Country = GetElementValue("hotel.addr.country", "countryName"),
+                    CountryCode = GetElementValue("hotel.addr.countrycode", "countryCode"),
+                    Category = int.TryParse(GetElementValue("classification", "category"), out var cat) ? cat : 0,
+                    ResortId = int.TryParse(GetElementValue("resort_id", "resortId"), out var resortId) ? resortId : 0,
+                    ResortName = GetElementValue("resort", "resortName"),
+                    Phone = GetElementValue("phone"),
+                    Fax = GetElementValue("fax"),
+                    Email = GetElementValue("email"),
+                    Website = GetElementValue("website")
                 };
+
+                // Parse coordinates
+                var coordsElem = elem.Element(ns + "coordinates") ?? elem.Element("coordinates");
+                if (coordsElem != null)
+                {
+                    if (double.TryParse(coordsElem.Element(ns + "latitude")?.Value ?? coordsElem.Element("latitude")?.Value,
+                        NumberStyles.Any, CultureInfo.InvariantCulture, out var lat))
+                        hotel.Latitude = lat;
+                    if (double.TryParse(coordsElem.Element(ns + "longitude")?.Value ?? coordsElem.Element("longitude")?.Value,
+                        NumberStyles.Any, CultureInfo.InvariantCulture, out var lng))
+                        hotel.Longitude = lng;
+                }
+
+                // Parse GIATA code from codes section
+                var codesElem = elem.Element(ns + "codes") ?? elem.Element("codes");
+                if (codesElem != null)
+                {
+                    var giataElem = codesElem.Elements().FirstOrDefault(e =>
+                        e.Name.LocalName.ToLower().Contains("giata"));
+                    if (giataElem != null)
+                        hotel.GiataCode = giataElem.Value;
+                }
 
                 // Parse images
                 int order = 0;
-                foreach (var imgElem in elem.Descendants("image"))
+                var imagesContainer = elem.Element(ns + "images") ?? elem.Element("images");
+                if (imagesContainer != null)
                 {
-                    hotel.Images.Add(new SunHotelsImage
+                    foreach (var imgElem in imagesContainer.Elements())
                     {
-                        Url = imgElem.Element("url")?.Value ?? imgElem.Value,
-                        Order = order++
-                    });
-                }
+                        if (imgElem.Name.LocalName == "image")
+                        {
+                            var fullSizeElem = imgElem.Element(ns + "fullSizeImage") ?? imgElem.Element("fullSizeImage");
+                            var smallImageElem = imgElem.Element(ns + "smallImage") ?? imgElem.Element("smallImage");
 
-                // Parse feature IDs
-                foreach (var featureElem in elem.Descendants("featureId"))
-                {
-                    if (int.TryParse(featureElem.Value, out var featureId))
-                        hotel.FeatureIds.Add(featureId);
-                }
+                            var imageUrl = fullSizeElem?.Attribute("url")?.Value
+                                        ?? smallImageElem?.Attribute("url")?.Value
+                                        ?? imgElem.Element(ns + "url")?.Value
+                                        ?? imgElem.Element("url")?.Value
+                                        ?? imgElem.Value;
 
-                // Parse theme IDs
-                foreach (var themeElem in elem.Descendants("themeId"))
-                {
-                    if (int.TryParse(themeElem.Value, out var themeId))
-                        hotel.ThemeIds.Add(themeId);
-                }
+                            if (!string.IsNullOrEmpty(imageUrl))
+                            {
+                                // If URL is relative (starts with ?), construct full URL
+                                if (imageUrl.StartsWith("?"))
+                                {
+                                    imageUrl = $"http://xml.sunhotels.net/15/GetImage.aspx{imageUrl}";
+                                }
 
-                // Parse rooms
-                foreach (var roomElem in elem.Descendants("room"))
-                {
-                    var room = new SunHotelsStaticRoom
-                    {
-                        RoomTypeId = int.TryParse(roomElem.Element("roomTypeId")?.Value, out var roomTypeId) ? roomTypeId : 0,
-                        Name = roomElem.Element("roomName")?.Value ?? "",
-                        EnglishName = roomElem.Element("roomNameEnglish")?.Value ?? "",
-                        Description = roomElem.Element("description")?.Value,
-                        MaxOccupancy = int.TryParse(roomElem.Element("maxOccupancy")?.Value, out var maxOcc) ? maxOcc : 0,
-                        MinOccupancy = int.TryParse(roomElem.Element("minOccupancy")?.Value, out var minOcc) ? minOcc : 0
-                    };
-
-                    foreach (var roomFeatureElem in roomElem.Descendants("featureId"))
-                    {
-                        if (int.TryParse(roomFeatureElem.Value, out var featureId))
-                            room.FeatureIds.Add(featureId);
+                                hotel.Images.Add(new SunHotelsImage
+                                {
+                                    Url = imageUrl,
+                                    Order = order++
+                                });
+                            }
+                        }
                     }
+                }
 
-                    hotel.Rooms.Add(room);
+                // Parse features
+                var featuresContainer = elem.Element(ns + "features") ?? elem.Element("features");
+                if (featuresContainer != null)
+                {
+                    foreach (var featureElem in featuresContainer.Elements())
+                    {
+                        if (featureElem.Name.LocalName == "feature")
+                        {
+                            if (int.TryParse(featureElem.Attribute("id")?.Value, out var featureId))
+                                hotel.FeatureIds.Add(featureId);
+                        }
+                    }
+                }
+
+                // Parse themes
+                var themesContainer = elem.Element(ns + "themes") ?? elem.Element("themes");
+                if (themesContainer != null)
+                {
+                    foreach (var themeElem in themesContainer.Elements())
+                    {
+                        if (themeElem.Name.LocalName == "theme")
+                        {
+                            if (int.TryParse(themeElem.Attribute("id")?.Value, out var themeId))
+                                hotel.ThemeIds.Add(themeId);
+                        }
+                    }
+                }
+
+                // Parse rooms - structure is: roomtypes > roomtype > rooms > room
+                var roomtypesContainer = elem.Element(ns + "roomtypes") ?? elem.Element("roomtypes");
+                if (roomtypesContainer != null)
+                {
+                    foreach (var roomtypeElem in roomtypesContainer.Elements())
+                    {
+                        if (roomtypeElem.Name.LocalName == "roomtype")
+                        {
+                            var roomTypeName = roomtypeElem.Element(ns + "room.type")?.Value
+                                            ?? roomtypeElem.Element("room.type")?.Value ?? "";
+                            var roomTypeId = int.TryParse(
+                                roomtypeElem.Element(ns + "roomtype.ID")?.Value
+                                ?? roomtypeElem.Element("roomtype.ID")?.Value, out var rtId) ? rtId : 0;
+
+                            var roomsContainer = roomtypeElem.Element(ns + "rooms") ?? roomtypeElem.Element("rooms");
+                            if (roomsContainer != null)
+                            {
+                                foreach (var roomElem in roomsContainer.Elements())
+                                {
+                                    if (roomElem.Name.LocalName == "room")
+                                    {
+                                        var room = new SunHotelsStaticRoom
+                                        {
+                                            RoomTypeId = roomTypeId,
+                                            Name = roomTypeName,
+                                            EnglishName = roomTypeName,
+                                            Description = roomtypeElem.Element(ns + "description")?.Value
+                                                       ?? roomtypeElem.Element("description")?.Value,
+                                            MaxOccupancy = int.TryParse(
+                                                roomElem.Element(ns + "beds")?.Value
+                                                ?? roomElem.Element("beds")?.Value, out var beds) ? beds : 0,
+                                            MinOccupancy = 1
+                                        };
+
+                                        // Parse room features
+                                        var roomFeaturesContainer = roomElem.Element(ns + "features") ?? roomElem.Element("features");
+                                        if (roomFeaturesContainer != null)
+                                        {
+                                            foreach (var roomFeatureElem in roomFeaturesContainer.Elements())
+                                            {
+                                                if (roomFeatureElem.Name.LocalName == "feature")
+                                                {
+                                                    if (int.TryParse(roomFeatureElem.Attribute("id")?.Value, out var featureId))
+                                                        room.FeatureIds.Add(featureId);
+                                                }
+                                            }
+                                        }
+
+                                        hotel.Rooms.Add(room);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
                 hotels.Add(hotel);
             }
+
+            _logger.LogInformation("Parsed {Count} static hotels from XML with total {RoomCount} rooms",
+                hotels.Count, hotels.Sum(h => h.Rooms.Count));
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error parsing static hotels XML");
+            _logger.LogError(ex, "Error parsing static hotels XML: {Xml}", xmlResponse?.Substring(0, Math.Min(500, xmlResponse?.Length ?? 0)));
         }
 
         return hotels;

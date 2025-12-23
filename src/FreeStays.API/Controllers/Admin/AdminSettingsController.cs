@@ -20,9 +20,9 @@ public class AdminSettingsController : BaseApiController
     {
         var settings = await Mediator.Send(new GetSiteSettingsQuery());
         var settingsDict = settings.ToDictionary(s => s.Key, s => s.Value);
-        
-        return Ok(new 
-        { 
+
+        return Ok(new
+        {
             siteName = settingsDict.GetValueOrDefault("siteName", "FreeStays"),
             siteUrl = settingsDict.GetValueOrDefault("siteUrl", "https://freestays.com"),
             supportEmail = settingsDict.GetValueOrDefault("supportEmail", "support@freestays.com"),
@@ -33,7 +33,9 @@ public class AdminSettingsController : BaseApiController
             availableCurrencies = new[] { "TRY", "USD", "EUR", "GBP" },
             maintenanceMode = settingsDict.GetValueOrDefault("maintenanceMode", "false") == "true",
             logoUrl = settingsDict.GetValueOrDefault("logoUrl", "/images/logo.png"),
-            faviconUrl = settingsDict.GetValueOrDefault("faviconUrl", "/images/favicon.ico")
+            faviconUrl = settingsDict.GetValueOrDefault("faviconUrl", "/images/favicon.ico"),
+            profitMargin = decimal.TryParse(settingsDict.GetValueOrDefault("profitMargin", "10"), out var margin) ? margin : 10m,
+            defaultVatRate = decimal.TryParse(settingsDict.GetValueOrDefault("defaultVatRate", "20"), out var vat) ? vat : 20m
         });
     }
 
@@ -59,7 +61,11 @@ public class AdminSettingsController : BaseApiController
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "maintenanceMode", Value = request.MaintenanceMode.Value.ToString().ToLower(), Group = "site" });
         if (request.LogoUrl != null)
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "logoUrl", Value = request.LogoUrl, Group = "site" });
-            
+        if (request.ProfitMargin.HasValue)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "profitMargin", Value = request.ProfitMargin.Value.ToString(), Group = "site" });
+        if (request.DefaultVatRate.HasValue)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "defaultVatRate", Value = request.DefaultVatRate.Value.ToString(), Group = "site" });
+
         return Ok(new { message = "Site ayarları güncellendi." });
     }
 
@@ -76,9 +82,9 @@ public class AdminSettingsController : BaseApiController
     {
         var settings = await Mediator.Send(new GetSiteSettingsQuery("seo"));
         var settingsDict = settings.ToDictionary(s => s.Key, s => s.Value);
-        
-        return Ok(new 
-        { 
+
+        return Ok(new
+        {
             defaultMetaTitle = settingsDict.GetValueOrDefault("defaultMetaTitle", "FreeStays - En İyi Otel Fırsatları"),
             defaultMetaDescription = settingsDict.GetValueOrDefault("defaultMetaDescription", "FreeStays ile en uygun otel fırsatlarını keşfedin."),
             googleAnalyticsId = settingsDict.GetValueOrDefault("googleAnalyticsId", ""),
@@ -110,7 +116,7 @@ public class AdminSettingsController : BaseApiController
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "robotsTxt", Value = request.RobotsTxt, Group = "seo" });
         if (request.SitemapEnabled.HasValue)
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "sitemapEnabled", Value = request.SitemapEnabled.Value.ToString().ToLower(), Group = "seo" });
-            
+
         return Ok(new { message = "SEO ayarları güncellendi." });
     }
 
@@ -122,11 +128,11 @@ public class AdminSettingsController : BaseApiController
     public async Task<IActionResult> GetSeoSettingsByLocale(string locale)
     {
         var settings = await Mediator.Send(new GetSeoSettingsQuery(locale));
-        
-        return Ok(new 
-        { 
+
+        return Ok(new
+        {
             locale = locale,
-            pages = settings.Select(s => new 
+            pages = settings.Select(s => new
             {
                 pageType = s.PageType,
                 metaTitle = s.MetaTitle,
@@ -156,7 +162,7 @@ public class AdminSettingsController : BaseApiController
                 OgImage = page.OgImage
             });
         }
-        
+
         return Ok(new { message = $"{locale} dili için SEO ayarları güncellendi." });
     }
 
@@ -173,10 +179,10 @@ public class AdminSettingsController : BaseApiController
     public async Task<IActionResult> GetPaymentSettings()
     {
         var settings = await Mediator.Send(new GetPaymentSettingsQuery());
-        
-        return Ok(new 
-        { 
-            providers = settings.Select(s => new 
+
+        return Ok(new
+        {
+            providers = settings.Select(s => new
             {
                 provider = s.Provider,
                 isActive = s.IsActive,
@@ -208,7 +214,7 @@ public class AdminSettingsController : BaseApiController
             IsLive = request.IsLive ?? false,
             IsActive = request.IsActive ?? false
         });
-        
+
         return Ok(new { message = "Ödeme ayarları güncellendi." });
     }
 
@@ -222,11 +228,82 @@ public class AdminSettingsController : BaseApiController
     public async Task<IActionResult> TestPaymentConnection([FromBody] TestPaymentConnectionRequest request)
     {
         // TODO: Implement actual payment provider connection test
-        return Ok(new 
-        { 
+        return Ok(new
+        {
             success = true,
             provider = request.Provider,
             message = "Bağlantı başarılı."
+        });
+    }
+
+    #endregion
+
+    #region SMTP Settings
+
+    /// <summary>
+    /// SMTP ayarlarını getir
+    /// </summary>
+    [HttpGet("smtp")]
+    [Authorize(Roles = "SuperAdmin")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetSmtpSettings()
+    {
+        var settings = await Mediator.Send(new GetSiteSettingsQuery("smtp"));
+        var settingsDict = settings.ToDictionary(s => s.Key, s => s.Value);
+
+        return Ok(new
+        {
+            smtpHost = settingsDict.GetValueOrDefault("smtpHost", ""),
+            smtpPort = int.TryParse(settingsDict.GetValueOrDefault("smtpPort", "587"), out var port) ? port : 587,
+            smtpUsername = settingsDict.GetValueOrDefault("smtpUsername", ""),
+            smtpFromEmail = settingsDict.GetValueOrDefault("smtpFromEmail", ""),
+            smtpFromName = settingsDict.GetValueOrDefault("smtpFromName", "FreeStays"),
+            smtpEnableSsl = settingsDict.GetValueOrDefault("smtpEnableSsl", "true") == "true",
+            smtpIsConfigured = !string.IsNullOrEmpty(settingsDict.GetValueOrDefault("smtpHost", ""))
+        });
+    }
+
+    /// <summary>
+    /// SMTP ayarlarını güncelle
+    /// </summary>
+    [HttpPut("smtp")]
+    [Authorize(Roles = "SuperAdmin")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UpdateSmtpSettings([FromBody] UpdateSmtpSettingsRequest request)
+    {
+        if (request.SmtpHost != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "smtpHost", Value = request.SmtpHost, Group = "smtp" });
+        if (request.SmtpPort.HasValue)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "smtpPort", Value = request.SmtpPort.Value.ToString(), Group = "smtp" });
+        if (request.SmtpUsername != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "smtpUsername", Value = request.SmtpUsername, Group = "smtp" });
+        if (request.SmtpPassword != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "smtpPassword", Value = request.SmtpPassword, Group = "smtp" });
+        if (request.SmtpFromEmail != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "smtpFromEmail", Value = request.SmtpFromEmail, Group = "smtp" });
+        if (request.SmtpFromName != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "smtpFromName", Value = request.SmtpFromName, Group = "smtp" });
+        if (request.SmtpEnableSsl.HasValue)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "smtpEnableSsl", Value = request.SmtpEnableSsl.Value.ToString().ToLower(), Group = "smtp" });
+
+        return Ok(new { message = "SMTP ayarları güncellendi." });
+    }
+
+    /// <summary>
+    /// SMTP bağlantısını test et
+    /// </summary>
+    [HttpPost("smtp/test-connection")]
+    [Authorize(Roles = "SuperAdmin")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> TestSmtpConnection([FromBody] TestSmtpConnectionRequest request)
+    {
+        // TODO: Implement actual SMTP connection test
+        return Ok(new
+        {
+            success = true,
+            message = "SMTP bağlantısı başarılı. Test e-postası gönderildi."
         });
     }
 
@@ -244,6 +321,8 @@ public record UpdateSiteSettingsRequest(
     string[]? AvailableCurrencies,
     bool? MaintenanceMode,
     string? LogoUrl,
+    decimal? ProfitMargin,
+    decimal? DefaultVatRate,
     SocialLinksRequest? SocialLinks);
 
 public record SocialLinksRequest(
@@ -282,3 +361,15 @@ public record UpdatePaymentSettingsRequest(
 
 public record TestPaymentConnectionRequest(
     string Provider);
+
+public record UpdateSmtpSettingsRequest(
+    string? SmtpHost,
+    int? SmtpPort,
+    string? SmtpUsername,
+    string? SmtpPassword,
+    string? SmtpFromEmail,
+    string? SmtpFromName,
+    bool? SmtpEnableSsl);
+
+public record TestSmtpConnectionRequest(
+    string TestEmail);

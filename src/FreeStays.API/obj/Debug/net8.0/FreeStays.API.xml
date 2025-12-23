@@ -205,6 +205,21 @@
             Ödeme bağlantısını test et
             </summary>
         </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.GetSmtpSettings">
+            <summary>
+            SMTP ayarlarını getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.UpdateSmtpSettings(FreeStays.API.Controllers.Admin.UpdateSmtpSettingsRequest)">
+            <summary>
+            SMTP ayarlarını güncelle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.TestSmtpConnection(FreeStays.API.Controllers.Admin.TestSmtpConnectionRequest)">
+            <summary>
+            SMTP bağlantısını test et
+            </summary>
+        </member>
         <member name="M:FreeStays.API.Controllers.Admin.AdminTranslationsController.GetTranslations(System.String,System.String)">
             <summary>
             Tüm çevirileri getir

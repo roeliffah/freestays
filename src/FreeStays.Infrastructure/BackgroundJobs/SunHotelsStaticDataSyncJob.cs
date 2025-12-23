@@ -989,6 +989,16 @@ public class SunHotelsStaticDataSyncJob
         try
         {
             var hotels = await _sunHotelsService.GetStaticHotelsAndRoomsAsync(destinationId, null, null, language);
+
+            _logger.LogInformation("Retrieved {HotelCount} hotels from SunHotels API for destination: {DestinationId}",
+                hotels.Count, destinationId);
+
+            if (hotels.Count == 0)
+            {
+                _logger.LogWarning("No hotels found for destination: {DestinationId}", destinationId);
+                return;
+            }
+
             var now = DateTime.UtcNow;
 
             foreach (var hotel in hotels)
