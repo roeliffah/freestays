@@ -1,25 +1,19 @@
 # Build Stage
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-
 # Copy solution file
 COPY src/FreeStays.sln ./
-
 # Copy project files
 COPY src/FreeStays.API/FreeStays.API.csproj ./FreeStays.API/
 COPY src/FreeStays.Application/FreeStays.Application.csproj ./FreeStays.Application/
 COPY src/FreeStays.Domain/FreeStays.Domain.csproj ./FreeStays.Domain/
 COPY src/FreeStays.Infrastructure/FreeStays.Infrastructure.csproj ./FreeStays.Infrastructure/
-
 # Restore dependencies
 RUN dotnet restore FreeStays.API/FreeStays.API.csproj
-
 # Copy all source files
 COPY src/ ./
-
 # Build the application
 RUN dotnet build FreeStays.API/FreeStays.API.csproj -c Release -o /app/build
-
 # Publish the application
 RUN dotnet publish FreeStays.API/FreeStays.API.csproj -c Release -o /app/publish /p:UseAppHost=false
 
@@ -27,8 +21,8 @@ RUN dotnet publish FreeStays.API/FreeStays.API.csproj -c Release -o /app/publish
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 
-# Install tzdata for timezone support
-RUN apt-get update && apt-get install -y tzdata && rm -rf /var/lib/apt/lists/*
+# Install tzdata and curl for timezone support and healthcheck
+RUN apt-get update && apt-get install -y tzdata curl && rm -rf /var/lib/apt/lists/*
 
 # Set timezone to Istanbul
 ENV TZ=Europe/Istanbul
