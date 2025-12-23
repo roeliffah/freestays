@@ -12,7 +12,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:8080
       - ConnectionStrings__DefaultConnection=Host=3.72.175.63;Port=4848;Database=freestays;Username=usrarvas;Password=Barneveld2026
-      - ConnectionStrings__Redis=3.72.175.63:6379,password=Barneveld2026,ssl=false,abortConnect=false
+      - ConnectionStrings__Redis=freestays-cachedb-aucb6o:6379,password=Barneveld2026,ssl=false,abortConnect=false
     volumes:
       - ./logs:/app/logs
     restart: unless-stopped

@@ -22,10 +22,10 @@ public static class DependencyInjection
             options.UseNpgsql(
                 configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly(typeof(FreeStaysDbContext).Assembly.FullName)));
-        
+
         // Memory Cache (Always add - used by SunHotelsCacheService)
         services.AddMemoryCache();
-        
+
         // Redis (Optional - falls back to InMemory cache if not available)
         var redisConnection = configuration.GetConnectionString("Redis");
         if (!string.IsNullOrWhiteSpace(redisConnection))
@@ -47,7 +47,7 @@ public static class DependencyInjection
             // No Redis configured, use InMemory cache
             services.AddScoped<ICacheService, InMemoryCacheService>();
         }
-        
+
         // Repositories
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserRepository, UserRepository>();
@@ -55,7 +55,7 @@ public static class DependencyInjection
         services.AddScoped<IBookingRepository, BookingRepository>();
         services.AddScoped<IDestinationRepository, DestinationRepository>();
         services.AddScoped<ICouponRepository, CouponRepository>();
-        
+
         // New CMS Repositories
         services.AddScoped<ITranslationRepository, TranslationRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
@@ -67,15 +67,15 @@ public static class DependencyInjection
         services.AddScoped<ISiteSettingRepository, SiteSettingRepository>();
         services.AddScoped<ISeoSettingRepository, SeoSettingRepository>();
         services.AddScoped<IPaymentSettingRepository, PaymentSettingRepository>();
-        
+
         // External Services
         services.Configure<SunHotelsConfig>(configuration.GetSection("ExternalServices:SunHotels"));
         services.AddHttpClient<ISunHotelsService, SunHotelsService>();
         services.AddScoped<ISunHotelsCacheService, SunHotelsCacheService>();
-        
+
         // Background Jobs
         services.AddScoped<BackgroundJobs.SunHotelsStaticDataSyncJob>();
-        
+
         return services;
     }
 }
