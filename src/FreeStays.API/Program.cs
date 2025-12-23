@@ -303,7 +303,7 @@ try
 {
     using (var scope = app.Services.CreateScope())
     {
-        var dbContext = scope.ServiceProvider.GetRequiredService<FreeStays.Infrastructure.Persistence.ApplicationDbContext>();
+        var dbContext = scope.ServiceProvider.GetRequiredService<FreeStays.Infrastructure.Persistence.Context.FreeStaysDbContext>();
         await dbContext.Database.MigrateAsync();
         Log.Information("Database migration completed successfully");
     }
