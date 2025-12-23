@@ -23,6 +23,9 @@ public static class DependencyInjection
                 configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly(typeof(FreeStaysDbContext).Assembly.FullName)));
         
+        // Memory Cache (Always add - used by SunHotelsCacheService)
+        services.AddMemoryCache();
+        
         // Redis (Optional - falls back to InMemory cache if not available)
         var redisConnection = configuration.GetConnectionString("Redis");
         if (!string.IsNullOrWhiteSpace(redisConnection))
@@ -36,14 +39,12 @@ public static class DependencyInjection
             catch
             {
                 // Redis connection failed, use InMemory cache
-                services.AddMemoryCache();
                 services.AddScoped<ICacheService, InMemoryCacheService>();
             }
         }
         else
         {
             // No Redis configured, use InMemory cache
-            services.AddMemoryCache();
             services.AddScoped<ICacheService, InMemoryCacheService>();
         }
         

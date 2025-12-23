@@ -1,0 +1,47 @@
+2025-12-24 00:41:38.715 +03:00 [INF] Database migration completed successfully
+2025-12-24 00:41:38.737 +03:00 [INF] Checking database connectivity...
+2025-12-24 00:41:38.886 +03:00 [INF] Ensuring database schema exists...
+2025-12-24 00:41:39.058 +03:00 [INF] Database is ready.
+2025-12-24 00:41:39.194 +03:00 [INF] Admin user already exists, skipping...
+2025-12-24 00:41:39.216 +03:00 [INF] Email templates already exist, skipping...
+2025-12-24 00:41:39.236 +03:00 [INF] Site settings already exist, skipping...
+2025-12-24 00:41:39.236 +03:00 [INF] Database seeding completed successfully.
+2025-12-24 00:41:39.237 +03:00 [INF] FreeStays API started at "2025-12-23T21:41:39.2369190Z"
+2025-12-24 00:41:39.291 +03:00 [INF] Starting Hangfire Server using job storage: 'In-Memory Storage'
+2025-12-24 00:41:39.292 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-24 00:41:39.300 +03:00 [INF] Server macbookair:6268:5d878fef successfully announced in 0,6789 ms
+2025-12-24 00:41:39.301 +03:00 [INF] Server macbookair:6268:5d878fef is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-24 00:41:39.304 +03:00 [INF] Server macbookair:6268:5d878fef all the dispatchers started
+2025-12-24 00:47:23.929 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-12-24 00:47:24.005 +03:00 [INF] HTTP GET /health responded 200 in 80.7721 ms
+2025-12-24 00:47:24.056 +03:00 [INF] HTTP GET /favicon.ico responded 404 in 4.4381 ms
+2025-12-24 00:55:44.398 +03:00 [INF] Server macbookair:6268:5d878fef caught stopping signal...
+2025-12-24 00:55:44.414 +03:00 [INF] Server macbookair:6268:5d878fef All dispatchers stopped
+2025-12-24 00:55:44.421 +03:00 [INF] Server macbookair:6268:5d878fef successfully reported itself as stopped in 2,9522 ms
+2025-12-24 00:55:44.421 +03:00 [INF] Server macbookair:6268:5d878fef has been stopped in total 17,1708 ms
+2025-12-24 00:56:46.755 +03:00 [INF] Database migration completed successfully
+2025-12-24 00:56:46.777 +03:00 [INF] Checking database connectivity...
+2025-12-24 00:56:46.930 +03:00 [INF] Ensuring database schema exists...
+2025-12-24 00:56:47.103 +03:00 [INF] Database is ready.
+2025-12-24 00:56:47.251 +03:00 [INF] Admin user already exists, skipping...
+2025-12-24 00:56:47.272 +03:00 [INF] Email templates already exist, skipping...
+2025-12-24 00:56:47.293 +03:00 [INF] Site settings already exist, skipping...
+2025-12-24 00:56:47.293 +03:00 [INF] Database seeding completed successfully.
+2025-12-24 00:56:47.294 +03:00 [INF] FreeStays API started at "2025-12-23T21:56:47.2937760Z"
+2025-12-24 00:56:47.340 +03:00 [INF] Starting Hangfire Server using job storage: 'In-Memory Storage'
+2025-12-24 00:56:47.341 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-24 00:56:47.347 +03:00 [INF] Server macbookair:7145:100e1f04 successfully announced in 0,5131 ms
+2025-12-24 00:56:47.348 +03:00 [INF] Server macbookair:7145:100e1f04 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-24 00:56:47.350 +03:00 [INF] Server macbookair:7145:100e1f04 all the dispatchers started
+2025-12-24 01:15:05.861 +03:00 [INF] Server macbookair:7145:100e1f04 caught stopping signal...
+2025-12-24 01:15:05.914 +03:00 [INF] Server macbookair:7145:100e1f04 All dispatchers stopped
+2025-12-24 01:15:05.989 +03:00 [INF] Server macbookair:7145:100e1f04 successfully reported itself as stopped in 3,271 ms
+2025-12-24 01:15:06.000 +03:00 [INF] Server macbookair:7145:100e1f04 has been stopped in total 131,5231 ms
