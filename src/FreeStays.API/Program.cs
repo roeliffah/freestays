@@ -11,6 +11,7 @@ using Hangfire;
 using Hangfire.InMemory;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -296,6 +297,21 @@ RecurringJob.AddOrUpdate<FreeStays.Infrastructure.BackgroundJobs.SunHotelsStatic
 app.MapHealthChecks("/health");
 
 app.MapControllers();
+
+// Auto Migrate Database
+try
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<FreeStays.Infrastructure.Persistence.ApplicationDbContext>();
+        await dbContext.Database.MigrateAsync();
+        Log.Information("Database migration completed successfully");
+    }
+}
+catch (Exception ex)
+{
+    Log.Error(ex, "An error occurred during database migration");
+}
 
 // Seed Database
 await DatabaseSeeder.SeedAsync(app.Services);
