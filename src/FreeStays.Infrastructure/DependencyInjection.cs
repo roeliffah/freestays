@@ -67,16 +67,10 @@ public static class DependencyInjection
         services.AddScoped<ISiteSettingRepository, SiteSettingRepository>();
         services.AddScoped<ISeoSettingRepository, SeoSettingRepository>();
         services.AddScoped<IPaymentSettingRepository, PaymentSettingRepository>();
+        services.AddScoped<IExternalServiceConfigRepository, ExternalServiceConfigRepository>();
 
-        // External Services - Config from Database (ExternalServiceConfig table)
-        // SunHotelsConfig will be populated from database in SunHotelsService
-        services.Configure<SunHotelsConfig>(options =>
-        {
-            // Default empty config - will be loaded from database
-            options.BaseUrl = string.Empty;
-            options.Username = string.Empty;
-            options.Password = string.Empty;
-        });
+        // External Services - SunHotels Configuration
+        services.Configure<SunHotelsConfig>(configuration.GetSection("SunHotels"));
         services.AddHttpClient<ISunHotelsService, SunHotelsService>();
         services.AddScoped<ISunHotelsCacheService, SunHotelsCacheService>();
 

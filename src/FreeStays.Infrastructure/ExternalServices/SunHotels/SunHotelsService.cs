@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Xml.Linq;
 using FreeStays.Domain.Exceptions;
+using FreeStays.Domain.Interfaces;
 using FreeStays.Infrastructure.ExternalServices.SunHotels.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -12,8 +13,10 @@ namespace FreeStays.Infrastructure.ExternalServices.SunHotels;
 public class SunHotelsService : ISunHotelsService
 {
     private readonly HttpClient _httpClient;
-    private readonly SunHotelsConfig _config;
+    private SunHotelsConfig _config;
     private readonly ILogger<SunHotelsService> _logger;
+    private readonly IExternalServiceConfigRepository _serviceConfigRepository;
+    private bool _configLoaded = false;
 
     private const string NonStaticApiUrl = "http://xml.sunhotels.net/15/PostGet/NonStaticXMLAPI.asmx";
     private const string StaticApiUrl = "http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx";
@@ -21,19 +24,54 @@ public class SunHotelsService : ISunHotelsService
     public SunHotelsService(
         HttpClient httpClient,
         IOptions<SunHotelsConfig> config,
-        ILogger<SunHotelsService> logger)
+        ILogger<SunHotelsService> logger,
+        IExternalServiceConfigRepository serviceConfigRepository)
     {
         _httpClient = httpClient;
         _config = config.Value;
         _logger = logger;
+        _serviceConfigRepository = serviceConfigRepository;
 
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
+    }
+
+    private async Task EnsureConfigLoadedAsync(CancellationToken cancellationToken = default)
+    {
+        if (_configLoaded) return;
+
+        try
+        {
+            var dbConfig = await _serviceConfigRepository.GetByServiceNameAsync("SunHotels", cancellationToken);
+
+            if (dbConfig != null && dbConfig.IsActive)
+            {
+                _config.Username = dbConfig.Username ?? string.Empty;
+                _config.Password = dbConfig.Password ?? string.Empty;
+                _config.BaseUrl = dbConfig.BaseUrl;
+                _config.AffiliateCode = dbConfig.AffiliateCode;
+
+                _logger.LogInformation("SunHotels configuration loaded from database for service: {ServiceName}", dbConfig.ServiceName);
+            }
+            else
+            {
+                _logger.LogWarning("SunHotels configuration not found in database, using default config");
+            }
+
+            _configLoaded = true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to load SunHotels configuration from database, using default config");
+            _configLoaded = true; // Don't try to load again
+        }
     }
 
     #region Static Data Methods
 
     public async Task<List<SunHotelsDestination>> GetDestinationsAsync(string? language = "en", CancellationToken cancellationToken = default)
     {
+        await EnsureConfigLoadedAsync(cancellationToken);
+
         try
         {
             var parameters = new Dictionary<string, string>
@@ -57,6 +95,8 @@ public class SunHotelsService : ISunHotelsService
 
     public async Task<List<SunHotelsResort>> GetResortsAsync(string? destinationId = null, string? language = "en", CancellationToken cancellationToken = default)
     {
+        await EnsureConfigLoadedAsync(cancellationToken);
+
         try
         {
             var parameters = new Dictionary<string, string>
@@ -81,6 +121,8 @@ public class SunHotelsService : ISunHotelsService
 
     public async Task<List<SunHotelsMeal>> GetMealsAsync(string language = "en", CancellationToken cancellationToken = default)
     {
+        await EnsureConfigLoadedAsync(cancellationToken);
+
         try
         {
             var parameters = new Dictionary<string, string>
@@ -100,6 +142,8 @@ public class SunHotelsService : ISunHotelsService
 
     public async Task<List<SunHotelsRoomType>> GetRoomTypesAsync(string language = "en", CancellationToken cancellationToken = default)
     {
+        await EnsureConfigLoadedAsync(cancellationToken);
+
         try
         {
             var parameters = new Dictionary<string, string>
@@ -119,6 +163,8 @@ public class SunHotelsService : ISunHotelsService
 
     public async Task<List<SunHotelsFeature>> GetFeaturesAsync(string language = "en", CancellationToken cancellationToken = default)
     {
+        await EnsureConfigLoadedAsync(cancellationToken);
+
         try
         {
             var parameters = new Dictionary<string, string>
@@ -138,6 +184,8 @@ public class SunHotelsService : ISunHotelsService
 
     public async Task<List<SunHotelsLanguage>> GetLanguagesAsync(CancellationToken cancellationToken = default)
     {
+        await EnsureConfigLoadedAsync(cancellationToken);
+
         try
         {
             var response = await SendStaticRequestAsync("GetLanguages", new Dictionary<string, string>(), cancellationToken);
@@ -152,6 +200,8 @@ public class SunHotelsService : ISunHotelsService
 
     public async Task<List<SunHotelsTheme>> GetThemesAsync(CancellationToken cancellationToken = default)
     {
+        await EnsureConfigLoadedAsync(cancellationToken);
+
         try
         {
             var response = await SendStaticRequestAsync("GetThemes", new Dictionary<string, string>(), cancellationToken);
@@ -166,6 +216,8 @@ public class SunHotelsService : ISunHotelsService
 
     public async Task<List<SunHotelsTransferType>> GetTransferTypesAsync(string language = "en", CancellationToken cancellationToken = default)
     {
+        await EnsureConfigLoadedAsync(cancellationToken);
+
         try
         {
             var parameters = new Dictionary<string, string>
@@ -186,6 +238,8 @@ public class SunHotelsService : ISunHotelsService
 
     public async Task<List<SunHotelsNoteType>> GetHotelNoteTypesAsync(string language = "en", CancellationToken cancellationToken = default)
     {
+        await EnsureConfigLoadedAsync(cancellationToken);
+
         try
         {
             var parameters = new Dictionary<string, string>
@@ -205,6 +259,8 @@ public class SunHotelsService : ISunHotelsService
 
     public async Task<List<SunHotelsNoteType>> GetRoomNoteTypesAsync(string language = "en", CancellationToken cancellationToken = default)
     {
+        await EnsureConfigLoadedAsync(cancellationToken);
+
         try
         {
             var parameters = new Dictionary<string, string>
@@ -266,6 +322,8 @@ public class SunHotelsService : ISunHotelsService
 
     public async Task<List<SunHotelsSearchResult>> SearchHotelsAsync(SunHotelsSearchRequest request, CancellationToken cancellationToken = default)
     {
+        await EnsureConfigLoadedAsync(cancellationToken);
+
         try
         {
             var parameters = new Dictionary<string, string>
@@ -290,6 +348,8 @@ public class SunHotelsService : ISunHotelsService
 
     public async Task<List<SunHotelsSearchResultV3>> SearchHotelsV3Async(SunHotelsSearchRequestV3 request, CancellationToken cancellationToken = default)
     {
+        await EnsureConfigLoadedAsync(cancellationToken);
+
         try
         {
             var parameters = new Dictionary<string, string>
@@ -387,6 +447,8 @@ public class SunHotelsService : ISunHotelsService
 
     public async Task<SunHotelsPreBookResult> PreBookAsync(SunHotelsPreBookRequest request, CancellationToken cancellationToken = default)
     {
+        await EnsureConfigLoadedAsync(cancellationToken);
+
         try
         {
             var parameters = new Dictionary<string, string>
@@ -411,6 +473,8 @@ public class SunHotelsService : ISunHotelsService
 
     public async Task<SunHotelsPreBookResultV3> PreBookV3Async(SunHotelsPreBookRequestV3 request, CancellationToken cancellationToken = default)
     {
+        await EnsureConfigLoadedAsync(cancellationToken);
+
         try
         {
             var parameters = new Dictionary<string, string>
@@ -454,6 +518,8 @@ public class SunHotelsService : ISunHotelsService
 
     public async Task<SunHotelsBookResult> BookAsync(SunHotelsBookRequest request, CancellationToken cancellationToken = default)
     {
+        await EnsureConfigLoadedAsync(cancellationToken);
+
         try
         {
             var parameters = new Dictionary<string, string>
@@ -477,6 +543,8 @@ public class SunHotelsService : ISunHotelsService
 
     public async Task<SunHotelsBookResultV3> BookV3Async(SunHotelsBookRequestV3 request, CancellationToken cancellationToken = default)
     {
+        await EnsureConfigLoadedAsync(cancellationToken);
+
         try
         {
             var parameters = new Dictionary<string, string>
@@ -550,6 +618,8 @@ public class SunHotelsService : ISunHotelsService
 
     public async Task<SunHotelsCancelResult> CancelBookingAsync(string bookingId, string language = "en", CancellationToken cancellationToken = default)
     {
+        await EnsureConfigLoadedAsync(cancellationToken);
+
         try
         {
             var parameters = new Dictionary<string, string>
@@ -570,6 +640,8 @@ public class SunHotelsService : ISunHotelsService
 
     public async Task<List<SunHotelsBookingInfo>> GetBookingInformationAsync(SunHotelsGetBookingRequest request, CancellationToken cancellationToken = default)
     {
+        await EnsureConfigLoadedAsync(cancellationToken);
+
         try
         {
             var parameters = new Dictionary<string, string>
@@ -607,6 +679,8 @@ public class SunHotelsService : ISunHotelsService
 
     public async Task<SunHotelsAmendmentPriceResult> GetAmendmentPriceAsync(SunHotelsAmendmentPriceRequest request, CancellationToken cancellationToken = default)
     {
+        await EnsureConfigLoadedAsync(cancellationToken);
+
         try
         {
             var parameters = new Dictionary<string, string>

@@ -87,7 +87,11 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddScoped<IFileUploadService, FileUploadService>();
 builder.Services.AddHttpContextAccessor();
+
+// File Upload Settings
+builder.Services.Configure<FileUploadSettings>(builder.Configuration.GetSection("FileUpload"));
 
 // CORS
 var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();

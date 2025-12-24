@@ -300,6 +300,26 @@
             E-posta şablonunu aktif/pasif yap
             </summary>
         </member>
+        <member name="M:FreeStays.API.Controllers.Admin.FileUploadController.UploadImage(Microsoft.AspNetCore.Http.IFormFile,System.String)">
+            <summary>
+            Upload an image file (for featured content, logos, etc.)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.FileUploadController.UploadMultipleImages(System.Collections.Generic.List{Microsoft.AspNetCore.Http.IFormFile},System.String)">
+            <summary>
+            Upload multiple images at once
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.FileUploadController.DeleteFile(System.String)">
+            <summary>
+            Delete an uploaded file
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.FileUploadController.ValidateFile(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Validate file before upload (without actually uploading)
+            </summary>
+        </member>
         <member name="M:FreeStays.API.Controllers.AdminController.GetDashboard">
             <summary>
             Dashboard istatistikleri, son rezervasyonlar ve popüler destinasyonlar
@@ -725,6 +745,26 @@
         <member name="M:FreeStays.API.Controllers.SunHotelsController.GetRoomById(System.Int32,System.Threading.CancellationToken)">
             <summary>
             Oda ID'ye göre getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Services.IFileUploadService.UploadFileAsync(Microsoft.AspNetCore.Http.IFormFile,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Upload a file and return its URL
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Services.IFileUploadService.DeleteFileAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Delete a file by its URL
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Services.IFileUploadService.IsValidFileExtension(System.String)">
+            <summary>
+            Check if file extension is allowed
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Services.IFileUploadService.IsValidFileSize(System.Int64)">
+            <summary>
+            Check if file size is within limits
             </summary>
         </member>
     </members>

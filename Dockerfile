@@ -30,8 +30,9 @@ ENV TZ=Europe/Istanbul
 # Copy published files from build stage
 COPY --from=build /app/publish .
 
-# Create logs directory
+# Create necessary directories
 RUN mkdir -p /app/logs && chmod 777 /app/logs
+RUN mkdir -p /app/wwwroot/uploads && chmod 777 /app/wwwroot/uploads
 
 # Expose ports
 EXPOSE 8080

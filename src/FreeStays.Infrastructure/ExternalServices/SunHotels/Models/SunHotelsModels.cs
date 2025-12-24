@@ -5,6 +5,7 @@ public class SunHotelsConfig
     public string BaseUrl { get; set; } = "http://xml.sunhotels.net/15/PostGet/NonStaticXMLAPI.asmx";
     public string Username { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
+    public string? AffiliateCode { get; set; }
 }
 
 public class SunHotelsDestination
