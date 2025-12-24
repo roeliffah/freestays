@@ -3,6 +3,7 @@ using System;
 using FreeStays.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FreeStays.Infrastructure.Migrations
 {
     [DbContext(typeof(FreeStaysDbContext))]
-    partial class FreeStaysDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251224065208_AddAffiliateFieldsToExternalServiceConfig")]
+    partial class AddAffiliateFieldsToExternalServiceConfig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

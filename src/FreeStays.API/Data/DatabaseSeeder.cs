@@ -39,6 +39,9 @@ public static class DatabaseSeeder
             // Seed Site Settings
             await SeedSiteSettingsAsync(context, logger);
 
+            // Seed External Service Configs
+            await SeedExternalServiceConfigsAsync(context, logger);
+
             logger.LogInformation("Database seeding completed successfully.");
         }
         catch (Exception ex)
@@ -218,5 +221,59 @@ public static class DatabaseSeeder
         await context.SaveChangesAsync();
 
         logger.LogInformation("Site settings seeded: {Count} settings", settings.Count);
+    }
+
+    private static async Task SeedExternalServiceConfigsAsync(FreeStaysDbContext context, ILogger logger)
+    {
+        if (await context.ExternalServiceConfigs.AnyAsync())
+        {
+            logger.LogInformation("External service configs already exist, skipping...");
+            return;
+        }
+
+        var serviceConfigs = new List<ExternalServiceConfig>
+        {
+            // SunHotels - API Mode
+            new()
+            {
+                Id = Guid.NewGuid(),
+                ServiceName = "SunHotels",
+                BaseUrl = "http://xml.sunhotels.net/15/PostGet/NonStaticXMLAPI.asmx",
+                Username = "FreestaysTEST",
+                Password = "Vision2024!@",
+                IsActive = true,
+                IntegrationMode = ServiceIntegrationMode.Api,
+                CreatedAt = DateTime.UtcNow
+            },
+            
+            // Kiwi (Flight) - API Mode (ApiKey'i admin panelden eklenecek)
+            new()
+            {
+                Id = Guid.NewGuid(),
+                ServiceName = "Kiwi",
+                BaseUrl = "https://api.tequila.kiwi.com",
+                ApiKey = "",
+                IsActive = false,
+                IntegrationMode = ServiceIntegrationMode.Api,
+                CreatedAt = DateTime.UtcNow
+            },
+            
+            // DiscoverCars - Affiliate Mode (Başlangıçta affiliate, belirli hacimden sonra API'ye geçilebilir)
+            new()
+            {
+                Id = Guid.NewGuid(),
+                ServiceName = "DiscoverCars",
+                BaseUrl = "https://www.discovercars.com",
+                AffiliateCode = "", // Admin panelden girilecek
+                IsActive = false,
+                IntegrationMode = ServiceIntegrationMode.Affiliate,
+                CreatedAt = DateTime.UtcNow
+            }
+        };
+
+        await context.ExternalServiceConfigs.AddRangeAsync(serviceConfigs);
+        await context.SaveChangesAsync();
+
+        logger.LogInformation("External service configs seeded: {Count} configs", serviceConfigs.Count);
     }
 }
