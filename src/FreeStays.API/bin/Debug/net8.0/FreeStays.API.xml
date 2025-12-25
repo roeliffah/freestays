@@ -300,6 +300,46 @@
             E-posta şablonunu aktif/pasif yap
             </summary>
         </member>
+        <member name="M:FreeStays.API.Controllers.Admin.ExternalServicesController.GetAll">
+            <summary>
+            Get all external service configurations
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.ExternalServicesController.GetById(System.Guid)">
+            <summary>
+            Get external service configuration by ID
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.ExternalServicesController.GetByServiceName(System.String)">
+            <summary>
+            Get external service configuration by service name
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.ExternalServicesController.Create(FreeStays.API.Controllers.Admin.CreateExternalServiceRequest)">
+            <summary>
+            Create new external service configuration
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.ExternalServicesController.Update(System.Guid,FreeStays.API.Controllers.Admin.UpdateExternalServiceRequest)">
+            <summary>
+            Update external service configuration
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.ExternalServicesController.ToggleStatus(System.Guid)">
+            <summary>
+            Toggle external service active status
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.ExternalServicesController.Delete(System.Guid)">
+            <summary>
+            Delete external service configuration
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.ExternalServicesController.TestConnection(System.Guid)">
+            <summary>
+            Test external service connection (placeholder for future implementation)
+            </summary>
+        </member>
         <member name="M:FreeStays.API.Controllers.Admin.FileUploadController.UploadImage(Microsoft.AspNetCore.Http.IFormFile,System.String)">
             <summary>
             Upload an image file (for featured content, logos, etc.)

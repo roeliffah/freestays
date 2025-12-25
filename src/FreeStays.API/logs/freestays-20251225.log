@@ -1,0 +1,571 @@
+2025-12-25 02:25:54.480 +03:00 [INF] Database migration completed successfully
+2025-12-25 02:25:54.503 +03:00 [INF] Checking database connectivity...
+2025-12-25 02:25:54.663 +03:00 [INF] Ensuring database schema exists...
+2025-12-25 02:25:54.829 +03:00 [INF] Database is ready.
+2025-12-25 02:25:54.960 +03:00 [INF] Admin user already exists, skipping...
+2025-12-25 02:25:54.981 +03:00 [INF] Email templates already exist, skipping...
+2025-12-25 02:25:55.002 +03:00 [INF] Site settings already exist, skipping...
+2025-12-25 02:25:55.196 +03:00 [INF] External service configs seeded: 3 configs
+2025-12-25 02:25:55.197 +03:00 [INF] Database seeding completed successfully.
+2025-12-25 02:25:55.197 +03:00 [INF] FreeStays API started at "2025-12-24T23:25:55.1976390Z"
+2025-12-25 02:25:55.292 +03:00 [INF] Starting Hangfire Server using job storage: 'In-Memory Storage'
+2025-12-25 02:25:55.293 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-25 02:25:55.302 +03:00 [INF] Server macbookair:29379:17c188f1 successfully announced in 0,6064 ms
+2025-12-25 02:25:55.303 +03:00 [INF] Server macbookair:29379:17c188f1 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-25 02:25:55.306 +03:00 [INF] Server macbookair:29379:17c188f1 all the dispatchers started
+2025-12-25 02:29:16.614 +03:00 [INF] Server macbookair:29379:17c188f1 caught stopping signal...
+2025-12-25 02:29:16.625 +03:00 [INF] Server macbookair:29379:17c188f1 All dispatchers stopped
+2025-12-25 02:29:16.629 +03:00 [INF] Server macbookair:29379:17c188f1 successfully reported itself as stopped in 1,3695 ms
+2025-12-25 02:29:16.630 +03:00 [INF] Server macbookair:29379:17c188f1 has been stopped in total 9,4354 ms
+2025-12-25 02:31:49.594 +03:00 [INF] Database migration completed successfully
+2025-12-25 02:31:49.618 +03:00 [INF] Checking database connectivity...
+2025-12-25 02:31:49.771 +03:00 [INF] Ensuring database schema exists...
+2025-12-25 02:31:49.952 +03:00 [INF] Database is ready.
+2025-12-25 02:31:50.092 +03:00 [INF] Admin user already exists, skipping...
+2025-12-25 02:31:50.117 +03:00 [INF] Email templates already exist, skipping...
+2025-12-25 02:31:50.141 +03:00 [INF] Site settings already exist, skipping...
+2025-12-25 02:31:50.166 +03:00 [INF] External service configs already exist, skipping...
+2025-12-25 02:31:50.166 +03:00 [INF] Database seeding completed successfully.
+2025-12-25 02:31:50.167 +03:00 [INF] FreeStays API started at "2025-12-24T23:31:50.1667350Z"
+2025-12-25 02:31:50.215 +03:00 [INF] Starting Hangfire Server using job storage: 'In-Memory Storage'
+2025-12-25 02:31:50.216 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-25 02:31:50.222 +03:00 [INF] Server macbookair:29742:b7c4e24d successfully announced in 0,5568 ms
+2025-12-25 02:31:50.223 +03:00 [INF] Server macbookair:29742:b7c4e24d is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-25 02:31:50.225 +03:00 [INF] Server macbookair:29742:b7c4e24d all the dispatchers started
+2025-12-25 03:00:05.861 +03:00 [INF] Starting SunHotels static data synchronization... (JobId: "1f3d35fe-3dd3-4a7a-960d-0e830146acf3")
+2025-12-25 03:00:05.865 +03:00 [INF] Syncing languages...
+2025-12-25 03:00:05.934 +03:00 [INF] SunHotels configuration loaded from database for service: SunHotels
+2025-12-25 03:00:05.935 +03:00 [INF] Sending static request to SunHotels: GetLanguages - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetLanguages?userName=FreestaysTEST&password=Vision2024!@
+2025-12-25 03:00:06.228 +03:00 [INF] Parsed 19 languages from XML
+2025-12-25 03:00:06.275 +03:00 [INF] Synced 19 languages (Added: 0, Updated: 0)
+2025-12-25 03:00:06.277 +03:00 [INF] Syncing themes...
+2025-12-25 03:00:06.278 +03:00 [INF] Sending static request to SunHotels: GetThemes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetThemes?userName=FreestaysTEST&password=Vision2024!@
+2025-12-25 03:00:06.380 +03:00 [INF] Parsed 6 themes from XML
+2025-12-25 03:00:06.413 +03:00 [INF] Synced 6 themes (Added: 0, Updated: 0)
+2025-12-25 03:00:06.415 +03:00 [INF] Sending static request to SunHotels: GetLanguages - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetLanguages?userName=FreestaysTEST&password=Vision2024!@
+2025-12-25 03:00:06.527 +03:00 [INF] Parsed 19 languages from XML
+2025-12-25 03:00:06.528 +03:00 [INF] Found 19 supported languages: en, es, sv, de, fr, fi, pl, no, da, it, zh-hans, ru, pt, zh-hant, ko, nl, hu, cs, ja
+2025-12-25 03:00:06.532 +03:00 [INF] Syncing destinations for language: en
+2025-12-25 03:00:06.534 +03:00 [INF] Sending static request to SunHotels: GetDestinations - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetDestinations?userName=FreestaysTEST&password=Vision2024!@&language=en&destinationCode=&sortBy=&sortOrder=&exactDestinationMatch=
+2025-12-25 03:00:10.653 +03:00 [INF] Parsed 23250 destinations from XML
+2025-12-25 03:00:10.967 +03:00 [INF] Added batch of 1 destinations (Progress: 1/1)
+2025-12-25 03:00:10.968 +03:00 [INF] Synced 23250 destinations for language: en (Added: 1, Updated: 0)
+2025-12-25 03:00:10.969 +03:00 [INF] Syncing resorts for language: en
+2025-12-25 03:00:10.970 +03:00 [INF] Sending static request to SunHotels: GetResorts - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetResorts?userName=FreestaysTEST&password=Vision2024!@&language=en&destinationID=&destinationCode=&sortBy=&sortOrder=&exactDestinationMatch=
+2025-12-25 03:00:15.057 +03:00 [INF] Parsed 34044 resorts from XML
+2025-12-25 03:00:15.976 +03:00 [INF] Added batch of 4 resorts for language: en (Progress: 4/4)
+2025-12-25 03:00:15.976 +03:00 [INF] Synced 34044 resorts for language: en (Added: 4, Updated: 0)
+2025-12-25 03:00:15.978 +03:00 [INF] Syncing meals for language: en
+2025-12-25 03:00:15.978 +03:00 [INF] Sending static request to SunHotels: GetMeals - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetMeals?userName=FreestaysTEST&password=Vision2024!@&language=en
+2025-12-25 03:00:16.080 +03:00 [INF] Parsed 5 meals from XML
+2025-12-25 03:00:16.172 +03:00 [INF] Synced 5 meals for language: en (Added: 0, Updated: 2)
+2025-12-25 03:00:16.174 +03:00 [INF] Syncing room types for language: en
+2025-12-25 03:00:16.175 +03:00 [INF] Sending static request to SunHotels: GetRoomTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomTypes?userName=FreestaysTEST&password=Vision2024!@&language=en
+2025-12-25 03:00:27.923 +03:00 [INF] Parsed 184251 room types from XML
+2025-12-25 03:00:31.392 +03:00 [INF] Synced 184251 room types for language: en (Added: 0, Updated: 0)
+2025-12-25 03:00:31.393 +03:00 [INF] Syncing features for language: en
+2025-12-25 03:00:31.393 +03:00 [INF] Sending static request to SunHotels: GetFeatures - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetFeatures?userName=FreestaysTEST&password=Vision2024!@&language=en
+2025-12-25 03:00:31.484 +03:00 [INF] Parsed 50 features from XML
+2025-12-25 03:00:31.512 +03:00 [INF] Synced 50 features for language: en
+2025-12-25 03:00:31.514 +03:00 [INF] Syncing transfer types for language: en
+2025-12-25 03:00:31.515 +03:00 [INF] Sending static request to SunHotels: GetTransferTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetTransferTypes?userName=FreestaysTEST&password=Vision2024!@&language=en&transferTypeCode=
+2025-12-25 03:00:31.606 +03:00 [INF] Parsed 127 transfer types from XML
+2025-12-25 03:00:31.638 +03:00 [INF] Synced 127 transfer types for language: en (Added: 0, Updated: 0)
+2025-12-25 03:00:31.641 +03:00 [INF] Syncing note types for language: en
+2025-12-25 03:00:31.917 +03:00 [INF] Sending static request to SunHotels: GetHotelNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetHotelNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=en
+2025-12-25 03:00:32.440 +03:00 [INF] Parsed 4212 note types from XML
+2025-12-25 03:00:32.659 +03:00 [INF] Sending static request to SunHotels: GetRoomNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=en
+2025-12-25 03:00:32.877 +03:00 [INF] Parsed 2239 note types from XML
+2025-12-25 03:00:33.083 +03:00 [INF] Synced 4212 hotel note types and 2239 room note types for language: en (Added: 4, Updated: 0)
+2025-12-25 03:00:33.083 +03:00 [INF] Syncing resorts for language: es
+2025-12-25 03:00:33.083 +03:00 [INF] Sending static request to SunHotels: GetResorts - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetResorts?userName=FreestaysTEST&password=Vision2024!@&language=es&destinationID=&destinationCode=&sortBy=&sortOrder=&exactDestinationMatch=
+2025-12-25 03:00:36.504 +03:00 [INF] Parsed 34044 resorts from XML
+2025-12-25 03:00:37.360 +03:00 [INF] Added batch of 4 resorts for language: es (Progress: 4/4)
+2025-12-25 03:00:37.360 +03:00 [INF] Synced 34044 resorts for language: es (Added: 4, Updated: 0)
+2025-12-25 03:00:37.360 +03:00 [INF] Syncing meals for language: es
+2025-12-25 03:00:37.360 +03:00 [INF] Sending static request to SunHotels: GetMeals - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetMeals?userName=FreestaysTEST&password=Vision2024!@&language=es
+2025-12-25 03:00:37.446 +03:00 [INF] Parsed 5 meals from XML
+2025-12-25 03:00:37.503 +03:00 [INF] Synced 5 meals for language: es (Added: 0, Updated: 2)
+2025-12-25 03:00:37.503 +03:00 [INF] Syncing room types for language: es
+2025-12-25 03:00:37.503 +03:00 [INF] Sending static request to SunHotels: GetRoomTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomTypes?userName=FreestaysTEST&password=Vision2024!@&language=es
+2025-12-25 03:00:47.979 +03:00 [INF] Parsed 184251 room types from XML
+2025-12-25 03:00:50.365 +03:00 [INF] Added batch of 7 room types for language: es (Progress: 7/7)
+2025-12-25 03:00:50.365 +03:00 [INF] Synced 184251 room types for language: es (Added: 7, Updated: 0)
+2025-12-25 03:00:50.365 +03:00 [INF] Syncing features for language: es
+2025-12-25 03:00:50.365 +03:00 [INF] Sending static request to SunHotels: GetFeatures - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetFeatures?userName=FreestaysTEST&password=Vision2024!@&language=es
+2025-12-25 03:00:50.451 +03:00 [INF] Parsed 50 features from XML
+2025-12-25 03:00:50.473 +03:00 [INF] Synced 50 features for language: es
+2025-12-25 03:00:50.473 +03:00 [INF] Syncing transfer types for language: es
+2025-12-25 03:00:50.473 +03:00 [INF] Sending static request to SunHotels: GetTransferTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetTransferTypes?userName=FreestaysTEST&password=Vision2024!@&language=es&transferTypeCode=
+2025-12-25 03:00:50.559 +03:00 [INF] Parsed 127 transfer types from XML
+2025-12-25 03:00:50.580 +03:00 [INF] Synced 127 transfer types for language: es (Added: 0, Updated: 0)
+2025-12-25 03:00:50.580 +03:00 [INF] Syncing note types for language: es
+2025-12-25 03:00:50.726 +03:00 [INF] Sending static request to SunHotels: GetHotelNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetHotelNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=es
+2025-12-25 03:00:51.875 +03:00 [INF] Parsed 4212 note types from XML
+2025-12-25 03:00:52.110 +03:00 [INF] Sending static request to SunHotels: GetRoomNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=es
+2025-12-25 03:00:52.403 +03:00 [INF] Parsed 2240 note types from XML
+2025-12-25 03:00:52.589 +03:00 [INF] Synced 4212 hotel note types and 2240 room note types for language: es (Added: 4, Updated: 0)
+2025-12-25 03:00:52.589 +03:00 [INF] Syncing resorts for language: sv
+2025-12-25 03:00:52.589 +03:00 [INF] Sending static request to SunHotels: GetResorts - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetResorts?userName=FreestaysTEST&password=Vision2024!@&language=sv&destinationID=&destinationCode=&sortBy=&sortOrder=&exactDestinationMatch=
+2025-12-25 03:00:56.149 +03:00 [INF] Parsed 34044 resorts from XML
+2025-12-25 03:00:56.607 +03:00 [INF] Added batch of 4 resorts for language: sv (Progress: 4/4)
+2025-12-25 03:00:56.607 +03:00 [INF] Synced 34044 resorts for language: sv (Added: 4, Updated: 0)
+2025-12-25 03:00:56.607 +03:00 [INF] Syncing meals for language: sv
+2025-12-25 03:00:56.607 +03:00 [INF] Sending static request to SunHotels: GetMeals - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetMeals?userName=FreestaysTEST&password=Vision2024!@&language=sv
+2025-12-25 03:00:56.698 +03:00 [INF] Parsed 5 meals from XML
+2025-12-25 03:00:56.753 +03:00 [INF] Synced 5 meals for language: sv (Added: 0, Updated: 2)
+2025-12-25 03:00:56.754 +03:00 [INF] Syncing room types for language: sv
+2025-12-25 03:00:56.754 +03:00 [INF] Sending static request to SunHotels: GetRoomTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomTypes?userName=FreestaysTEST&password=Vision2024!@&language=sv
+2025-12-25 03:01:07.435 +03:00 [INF] Parsed 184252 room types from XML
+2025-12-25 03:01:09.749 +03:00 [INF] Added batch of 7 room types for language: sv (Progress: 7/7)
+2025-12-25 03:01:09.749 +03:00 [INF] Synced 184252 room types for language: sv (Added: 7, Updated: 0)
+2025-12-25 03:01:09.749 +03:00 [INF] Syncing features for language: sv
+2025-12-25 03:01:09.749 +03:00 [INF] Sending static request to SunHotels: GetFeatures - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetFeatures?userName=FreestaysTEST&password=Vision2024!@&language=sv
+2025-12-25 03:01:09.841 +03:00 [INF] Parsed 50 features from XML
+2025-12-25 03:01:09.860 +03:00 [INF] Synced 50 features for language: sv
+2025-12-25 03:01:09.860 +03:00 [INF] Syncing transfer types for language: sv
+2025-12-25 03:01:09.860 +03:00 [INF] Sending static request to SunHotels: GetTransferTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetTransferTypes?userName=FreestaysTEST&password=Vision2024!@&language=sv&transferTypeCode=
+2025-12-25 03:01:09.947 +03:00 [INF] Parsed 127 transfer types from XML
+2025-12-25 03:01:09.968 +03:00 [INF] Synced 127 transfer types for language: sv (Added: 0, Updated: 0)
+2025-12-25 03:01:09.968 +03:00 [INF] Syncing note types for language: sv
+2025-12-25 03:01:10.103 +03:00 [INF] Sending static request to SunHotels: GetHotelNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetHotelNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=sv
+2025-12-25 03:01:10.653 +03:00 [INF] Parsed 4212 note types from XML
+2025-12-25 03:01:10.885 +03:00 [INF] Sending static request to SunHotels: GetRoomNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=sv
+2025-12-25 03:01:11.100 +03:00 [INF] Parsed 2240 note types from XML
+2025-12-25 03:01:11.281 +03:00 [INF] Synced 4212 hotel note types and 2240 room note types for language: sv (Added: 4, Updated: 0)
+2025-12-25 03:01:11.281 +03:00 [INF] Syncing resorts for language: de
+2025-12-25 03:01:11.281 +03:00 [INF] Sending static request to SunHotels: GetResorts - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetResorts?userName=FreestaysTEST&password=Vision2024!@&language=de&destinationID=&destinationCode=&sortBy=&sortOrder=&exactDestinationMatch=
+2025-12-25 03:01:14.356 +03:00 [INF] Parsed 34044 resorts from XML
+2025-12-25 03:01:14.807 +03:00 [INF] Added batch of 4 resorts for language: de (Progress: 4/4)
+2025-12-25 03:01:14.807 +03:00 [INF] Synced 34044 resorts for language: de (Added: 4, Updated: 0)
+2025-12-25 03:01:14.807 +03:00 [INF] Syncing meals for language: de
+2025-12-25 03:01:14.807 +03:00 [INF] Sending static request to SunHotels: GetMeals - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetMeals?userName=FreestaysTEST&password=Vision2024!@&language=de
+2025-12-25 03:01:14.894 +03:00 [INF] Parsed 5 meals from XML
+2025-12-25 03:01:14.950 +03:00 [INF] Synced 5 meals for language: de (Added: 0, Updated: 2)
+2025-12-25 03:01:14.951 +03:00 [INF] Syncing room types for language: de
+2025-12-25 03:01:14.951 +03:00 [INF] Sending static request to SunHotels: GetRoomTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomTypes?userName=FreestaysTEST&password=Vision2024!@&language=de
+2025-12-25 03:01:24.537 +03:00 [INF] Parsed 184251 room types from XML
+2025-12-25 03:01:26.943 +03:00 [INF] Added batch of 7 room types for language: de (Progress: 7/7)
+2025-12-25 03:01:26.944 +03:00 [INF] Synced 184251 room types for language: de (Added: 7, Updated: 0)
+2025-12-25 03:01:26.944 +03:00 [INF] Syncing features for language: de
+2025-12-25 03:01:26.944 +03:00 [INF] Sending static request to SunHotels: GetFeatures - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetFeatures?userName=FreestaysTEST&password=Vision2024!@&language=de
+2025-12-25 03:01:27.031 +03:00 [INF] Parsed 50 features from XML
+2025-12-25 03:01:27.051 +03:00 [INF] Synced 50 features for language: de
+2025-12-25 03:01:27.051 +03:00 [INF] Syncing transfer types for language: de
+2025-12-25 03:01:27.051 +03:00 [INF] Sending static request to SunHotels: GetTransferTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetTransferTypes?userName=FreestaysTEST&password=Vision2024!@&language=de&transferTypeCode=
+2025-12-25 03:01:27.139 +03:00 [INF] Parsed 127 transfer types from XML
+2025-12-25 03:01:27.160 +03:00 [INF] Synced 127 transfer types for language: de (Added: 0, Updated: 0)
+2025-12-25 03:01:27.160 +03:00 [INF] Syncing note types for language: de
+2025-12-25 03:01:27.360 +03:00 [INF] Sending static request to SunHotels: GetHotelNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetHotelNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=de
+2025-12-25 03:01:27.816 +03:00 [INF] Parsed 4212 note types from XML
+2025-12-25 03:01:28.050 +03:00 [INF] Sending static request to SunHotels: GetRoomNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=de
+2025-12-25 03:01:28.276 +03:00 [INF] Parsed 2240 note types from XML
+2025-12-25 03:01:28.462 +03:00 [INF] Synced 4212 hotel note types and 2240 room note types for language: de (Added: 4, Updated: 0)
+2025-12-25 03:01:28.462 +03:00 [INF] Syncing resorts for language: fr
+2025-12-25 03:01:28.462 +03:00 [INF] Sending static request to SunHotels: GetResorts - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetResorts?userName=FreestaysTEST&password=Vision2024!@&language=fr&destinationID=&destinationCode=&sortBy=&sortOrder=&exactDestinationMatch=
+2025-12-25 03:01:31.463 +03:00 [INF] Parsed 34044 resorts from XML
+2025-12-25 03:01:31.972 +03:00 [INF] Added batch of 4 resorts for language: fr (Progress: 4/4)
+2025-12-25 03:01:31.973 +03:00 [INF] Synced 34044 resorts for language: fr (Added: 4, Updated: 0)
+2025-12-25 03:01:31.973 +03:00 [INF] Syncing meals for language: fr
+2025-12-25 03:01:31.973 +03:00 [INF] Sending static request to SunHotels: GetMeals - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetMeals?userName=FreestaysTEST&password=Vision2024!@&language=fr
+2025-12-25 03:01:32.061 +03:00 [INF] Parsed 5 meals from XML
+2025-12-25 03:01:32.116 +03:00 [INF] Synced 5 meals for language: fr (Added: 0, Updated: 2)
+2025-12-25 03:01:32.117 +03:00 [INF] Syncing room types for language: fr
+2025-12-25 03:01:32.117 +03:00 [INF] Sending static request to SunHotels: GetRoomTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomTypes?userName=FreestaysTEST&password=Vision2024!@&language=fr
+2025-12-25 03:01:42.962 +03:00 [INF] Parsed 184251 room types from XML
+2025-12-25 03:01:45.173 +03:00 [INF] Added batch of 7 room types for language: fr (Progress: 7/7)
+2025-12-25 03:01:45.173 +03:00 [INF] Synced 184251 room types for language: fr (Added: 7, Updated: 0)
+2025-12-25 03:01:45.173 +03:00 [INF] Syncing features for language: fr
+2025-12-25 03:01:45.173 +03:00 [INF] Sending static request to SunHotels: GetFeatures - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetFeatures?userName=FreestaysTEST&password=Vision2024!@&language=fr
+2025-12-25 03:01:45.258 +03:00 [INF] Parsed 50 features from XML
+2025-12-25 03:01:45.278 +03:00 [INF] Synced 50 features for language: fr
+2025-12-25 03:01:45.278 +03:00 [INF] Syncing transfer types for language: fr
+2025-12-25 03:01:45.279 +03:00 [INF] Sending static request to SunHotels: GetTransferTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetTransferTypes?userName=FreestaysTEST&password=Vision2024!@&language=fr&transferTypeCode=
+2025-12-25 03:01:45.368 +03:00 [INF] Parsed 127 transfer types from XML
+2025-12-25 03:01:45.388 +03:00 [INF] Synced 127 transfer types for language: fr (Added: 0, Updated: 0)
+2025-12-25 03:01:45.388 +03:00 [INF] Syncing note types for language: fr
+2025-12-25 03:01:45.563 +03:00 [INF] Sending static request to SunHotels: GetHotelNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetHotelNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=fr
+2025-12-25 03:01:46.111 +03:00 [INF] Parsed 4212 note types from XML
+2025-12-25 03:01:46.341 +03:00 [INF] Sending static request to SunHotels: GetRoomNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=fr
+2025-12-25 03:01:46.563 +03:00 [INF] Parsed 2240 note types from XML
+2025-12-25 03:01:46.749 +03:00 [INF] Synced 4212 hotel note types and 2240 room note types for language: fr (Added: 4, Updated: 0)
+2025-12-25 03:01:46.749 +03:00 [INF] Syncing resorts for language: fi
+2025-12-25 03:01:46.749 +03:00 [INF] Sending static request to SunHotels: GetResorts - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetResorts?userName=FreestaysTEST&password=Vision2024!@&language=fi&destinationID=&destinationCode=&sortBy=&sortOrder=&exactDestinationMatch=
+2025-12-25 03:01:49.905 +03:00 [INF] Parsed 34044 resorts from XML
+2025-12-25 03:01:50.523 +03:00 [INF] Added batch of 4 resorts for language: fi (Progress: 4/4)
+2025-12-25 03:01:50.524 +03:00 [INF] Synced 34044 resorts for language: fi (Added: 4, Updated: 0)
+2025-12-25 03:01:50.524 +03:00 [INF] Syncing meals for language: fi
+2025-12-25 03:01:50.524 +03:00 [INF] Sending static request to SunHotels: GetMeals - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetMeals?userName=FreestaysTEST&password=Vision2024!@&language=fi
+2025-12-25 03:01:50.610 +03:00 [INF] Parsed 5 meals from XML
+2025-12-25 03:01:50.670 +03:00 [INF] Synced 5 meals for language: fi (Added: 0, Updated: 2)
+2025-12-25 03:01:50.670 +03:00 [INF] Syncing room types for language: fi
+2025-12-25 03:01:50.670 +03:00 [INF] Sending static request to SunHotels: GetRoomTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomTypes?userName=FreestaysTEST&password=Vision2024!@&language=fi
+2025-12-25 03:02:04.570 +03:00 [INF] Parsed 184251 room types from XML
+2025-12-25 03:02:06.926 +03:00 [INF] Added batch of 7 room types for language: fi (Progress: 7/7)
+2025-12-25 03:02:06.926 +03:00 [INF] Synced 184251 room types for language: fi (Added: 7, Updated: 0)
+2025-12-25 03:02:06.926 +03:00 [INF] Syncing features for language: fi
+2025-12-25 03:02:06.926 +03:00 [INF] Sending static request to SunHotels: GetFeatures - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetFeatures?userName=FreestaysTEST&password=Vision2024!@&language=fi
+2025-12-25 03:02:07.014 +03:00 [INF] Parsed 50 features from XML
+2025-12-25 03:02:07.038 +03:00 [INF] Synced 50 features for language: fi
+2025-12-25 03:02:07.038 +03:00 [INF] Syncing transfer types for language: fi
+2025-12-25 03:02:07.038 +03:00 [INF] Sending static request to SunHotels: GetTransferTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetTransferTypes?userName=FreestaysTEST&password=Vision2024!@&language=fi&transferTypeCode=
+2025-12-25 03:02:07.131 +03:00 [INF] Parsed 127 transfer types from XML
+2025-12-25 03:02:07.152 +03:00 [INF] Synced 127 transfer types for language: fi (Added: 0, Updated: 0)
+2025-12-25 03:02:07.152 +03:00 [INF] Syncing note types for language: fi
+2025-12-25 03:02:07.326 +03:00 [INF] Sending static request to SunHotels: GetHotelNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetHotelNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=fi
+2025-12-25 03:02:07.797 +03:00 [INF] Parsed 4212 note types from XML
+2025-12-25 03:02:08.032 +03:00 [INF] Sending static request to SunHotels: GetRoomNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=fi
+2025-12-25 03:02:08.246 +03:00 [INF] Parsed 2240 note types from XML
+2025-12-25 03:02:08.432 +03:00 [INF] Synced 4212 hotel note types and 2240 room note types for language: fi (Added: 4, Updated: 0)
+2025-12-25 03:02:08.432 +03:00 [INF] Syncing resorts for language: pl
+2025-12-25 03:02:08.432 +03:00 [INF] Sending static request to SunHotels: GetResorts - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetResorts?userName=FreestaysTEST&password=Vision2024!@&language=pl&destinationID=&destinationCode=&sortBy=&sortOrder=&exactDestinationMatch=
+2025-12-25 03:02:11.717 +03:00 [INF] Parsed 34044 resorts from XML
+2025-12-25 03:02:12.332 +03:00 [INF] Added batch of 4 resorts for language: pl (Progress: 4/4)
+2025-12-25 03:02:12.332 +03:00 [INF] Synced 34044 resorts for language: pl (Added: 4, Updated: 0)
+2025-12-25 03:02:12.332 +03:00 [INF] Syncing meals for language: pl
+2025-12-25 03:02:12.332 +03:00 [INF] Sending static request to SunHotels: GetMeals - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetMeals?userName=FreestaysTEST&password=Vision2024!@&language=pl
+2025-12-25 03:02:12.425 +03:00 [INF] Parsed 5 meals from XML
+2025-12-25 03:02:12.482 +03:00 [INF] Synced 5 meals for language: pl (Added: 0, Updated: 2)
+2025-12-25 03:02:12.482 +03:00 [INF] Syncing room types for language: pl
+2025-12-25 03:02:12.482 +03:00 [INF] Sending static request to SunHotels: GetRoomTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomTypes?userName=FreestaysTEST&password=Vision2024!@&language=pl
+2025-12-25 03:02:25.052 +03:00 [INF] Parsed 184251 room types from XML
+2025-12-25 03:02:27.631 +03:00 [INF] Added batch of 7 room types for language: pl (Progress: 7/7)
+2025-12-25 03:02:27.631 +03:00 [INF] Synced 184251 room types for language: pl (Added: 7, Updated: 0)
+2025-12-25 03:02:27.631 +03:00 [INF] Syncing features for language: pl
+2025-12-25 03:02:27.631 +03:00 [INF] Sending static request to SunHotels: GetFeatures - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetFeatures?userName=FreestaysTEST&password=Vision2024!@&language=pl
+2025-12-25 03:02:27.722 +03:00 [INF] Parsed 50 features from XML
+2025-12-25 03:02:27.741 +03:00 [INF] Synced 50 features for language: pl
+2025-12-25 03:02:27.741 +03:00 [INF] Syncing transfer types for language: pl
+2025-12-25 03:02:27.742 +03:00 [INF] Sending static request to SunHotels: GetTransferTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetTransferTypes?userName=FreestaysTEST&password=Vision2024!@&language=pl&transferTypeCode=
+2025-12-25 03:02:27.838 +03:00 [INF] Parsed 127 transfer types from XML
+2025-12-25 03:02:27.862 +03:00 [INF] Synced 127 transfer types for language: pl (Added: 0, Updated: 0)
+2025-12-25 03:02:27.862 +03:00 [INF] Syncing note types for language: pl
+2025-12-25 03:02:28.039 +03:00 [INF] Sending static request to SunHotels: GetHotelNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetHotelNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=pl
+2025-12-25 03:02:28.501 +03:00 [INF] Parsed 4212 note types from XML
+2025-12-25 03:02:28.736 +03:00 [INF] Sending static request to SunHotels: GetRoomNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=pl
+2025-12-25 03:02:28.956 +03:00 [INF] Parsed 2240 note types from XML
+2025-12-25 03:02:29.138 +03:00 [INF] Synced 4212 hotel note types and 2240 room note types for language: pl (Added: 4, Updated: 0)
+2025-12-25 03:02:29.138 +03:00 [INF] Syncing resorts for language: no
+2025-12-25 03:02:29.138 +03:00 [INF] Sending static request to SunHotels: GetResorts - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetResorts?userName=FreestaysTEST&password=Vision2024!@&language=no&destinationID=&destinationCode=&sortBy=&sortOrder=&exactDestinationMatch=
+2025-12-25 03:02:32.232 +03:00 [INF] Parsed 34044 resorts from XML
+2025-12-25 03:02:32.762 +03:00 [INF] Added batch of 4 resorts for language: no (Progress: 4/4)
+2025-12-25 03:02:32.763 +03:00 [INF] Synced 34044 resorts for language: no (Added: 4, Updated: 0)
+2025-12-25 03:02:32.763 +03:00 [INF] Syncing meals for language: no
+2025-12-25 03:02:32.763 +03:00 [INF] Sending static request to SunHotels: GetMeals - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetMeals?userName=FreestaysTEST&password=Vision2024!@&language=no
+2025-12-25 03:02:32.850 +03:00 [INF] Parsed 5 meals from XML
+2025-12-25 03:02:32.907 +03:00 [INF] Synced 5 meals for language: no (Added: 0, Updated: 2)
+2025-12-25 03:02:32.907 +03:00 [INF] Syncing room types for language: no
+2025-12-25 03:02:32.907 +03:00 [INF] Sending static request to SunHotels: GetRoomTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomTypes?userName=FreestaysTEST&password=Vision2024!@&language=no
+2025-12-25 03:02:43.499 +03:00 [INF] Parsed 184251 room types from XML
+2025-12-25 03:02:45.872 +03:00 [INF] Added batch of 7 room types for language: no (Progress: 7/7)
+2025-12-25 03:02:45.872 +03:00 [INF] Synced 184251 room types for language: no (Added: 7, Updated: 0)
+2025-12-25 03:02:45.872 +03:00 [INF] Syncing features for language: no
+2025-12-25 03:02:45.872 +03:00 [INF] Sending static request to SunHotels: GetFeatures - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetFeatures?userName=FreestaysTEST&password=Vision2024!@&language=no
+2025-12-25 03:02:45.960 +03:00 [INF] Parsed 50 features from XML
+2025-12-25 03:02:45.980 +03:00 [INF] Synced 50 features for language: no
+2025-12-25 03:02:45.980 +03:00 [INF] Syncing transfer types for language: no
+2025-12-25 03:02:45.980 +03:00 [INF] Sending static request to SunHotels: GetTransferTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetTransferTypes?userName=FreestaysTEST&password=Vision2024!@&language=no&transferTypeCode=
+2025-12-25 03:02:46.072 +03:00 [INF] Parsed 127 transfer types from XML
+2025-12-25 03:02:46.097 +03:00 [INF] Synced 127 transfer types for language: no (Added: 0, Updated: 0)
+2025-12-25 03:02:46.097 +03:00 [INF] Syncing note types for language: no
+2025-12-25 03:02:46.252 +03:00 [INF] Sending static request to SunHotels: GetHotelNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetHotelNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=no
+2025-12-25 03:02:46.711 +03:00 [INF] Parsed 4212 note types from XML
+2025-12-25 03:02:46.946 +03:00 [INF] Sending static request to SunHotels: GetRoomNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=no
+2025-12-25 03:02:47.165 +03:00 [INF] Parsed 2240 note types from XML
+2025-12-25 03:02:47.355 +03:00 [INF] Synced 4212 hotel note types and 2240 room note types for language: no (Added: 4, Updated: 0)
+2025-12-25 03:02:47.355 +03:00 [INF] Syncing resorts for language: da
+2025-12-25 03:02:47.355 +03:00 [INF] Sending static request to SunHotels: GetResorts - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetResorts?userName=FreestaysTEST&password=Vision2024!@&language=da&destinationID=&destinationCode=&sortBy=&sortOrder=&exactDestinationMatch=
+2025-12-25 03:02:50.537 +03:00 [INF] Parsed 34044 resorts from XML
+2025-12-25 03:02:51.119 +03:00 [INF] Added batch of 4 resorts for language: da (Progress: 4/4)
+2025-12-25 03:02:51.120 +03:00 [INF] Synced 34044 resorts for language: da (Added: 4, Updated: 0)
+2025-12-25 03:02:51.120 +03:00 [INF] Syncing meals for language: da
+2025-12-25 03:02:51.120 +03:00 [INF] Sending static request to SunHotels: GetMeals - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetMeals?userName=FreestaysTEST&password=Vision2024!@&language=da
+2025-12-25 03:02:51.208 +03:00 [INF] Parsed 5 meals from XML
+2025-12-25 03:02:51.265 +03:00 [INF] Synced 5 meals for language: da (Added: 0, Updated: 2)
+2025-12-25 03:02:51.265 +03:00 [INF] Syncing room types for language: da
+2025-12-25 03:02:51.265 +03:00 [INF] Sending static request to SunHotels: GetRoomTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomTypes?userName=FreestaysTEST&password=Vision2024!@&language=da
+2025-12-25 03:03:02.441 +03:00 [INF] Parsed 184251 room types from XML
+2025-12-25 03:03:05.148 +03:00 [INF] Added batch of 7 room types for language: da (Progress: 7/7)
+2025-12-25 03:03:05.148 +03:00 [INF] Synced 184251 room types for language: da (Added: 7, Updated: 0)
+2025-12-25 03:03:05.148 +03:00 [INF] Syncing features for language: da
+2025-12-25 03:03:05.148 +03:00 [INF] Sending static request to SunHotels: GetFeatures - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetFeatures?userName=FreestaysTEST&password=Vision2024!@&language=da
+2025-12-25 03:03:05.242 +03:00 [INF] Parsed 50 features from XML
+2025-12-25 03:03:05.264 +03:00 [INF] Synced 50 features for language: da
+2025-12-25 03:03:05.264 +03:00 [INF] Syncing transfer types for language: da
+2025-12-25 03:03:05.264 +03:00 [INF] Sending static request to SunHotels: GetTransferTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetTransferTypes?userName=FreestaysTEST&password=Vision2024!@&language=da&transferTypeCode=
+2025-12-25 03:03:05.351 +03:00 [INF] Parsed 127 transfer types from XML
+2025-12-25 03:03:05.371 +03:00 [INF] Synced 127 transfer types for language: da (Added: 0, Updated: 0)
+2025-12-25 03:03:05.372 +03:00 [INF] Syncing note types for language: da
+2025-12-25 03:03:05.540 +03:00 [INF] Sending static request to SunHotels: GetHotelNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetHotelNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=da
+2025-12-25 03:03:06.015 +03:00 [INF] Parsed 4212 note types from XML
+2025-12-25 03:03:06.250 +03:00 [INF] Sending static request to SunHotels: GetRoomNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=da
+2025-12-25 03:03:06.480 +03:00 [INF] Parsed 2240 note types from XML
+2025-12-25 03:03:06.667 +03:00 [INF] Synced 4212 hotel note types and 2240 room note types for language: da (Added: 4, Updated: 0)
+2025-12-25 03:03:06.667 +03:00 [INF] Syncing resorts for language: it
+2025-12-25 03:03:06.667 +03:00 [INF] Sending static request to SunHotels: GetResorts - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetResorts?userName=FreestaysTEST&password=Vision2024!@&language=it&destinationID=&destinationCode=&sortBy=&sortOrder=&exactDestinationMatch=
+2025-12-25 03:03:10.086 +03:00 [INF] Parsed 34044 resorts from XML
+2025-12-25 03:03:10.636 +03:00 [INF] Added batch of 4 resorts for language: it (Progress: 4/4)
+2025-12-25 03:03:10.637 +03:00 [INF] Synced 34044 resorts for language: it (Added: 4, Updated: 0)
+2025-12-25 03:03:10.637 +03:00 [INF] Syncing meals for language: it
+2025-12-25 03:03:10.637 +03:00 [INF] Sending static request to SunHotels: GetMeals - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetMeals?userName=FreestaysTEST&password=Vision2024!@&language=it
+2025-12-25 03:03:10.726 +03:00 [INF] Parsed 5 meals from XML
+2025-12-25 03:03:10.783 +03:00 [INF] Synced 5 meals for language: it (Added: 0, Updated: 2)
+2025-12-25 03:03:10.783 +03:00 [INF] Syncing room types for language: it
+2025-12-25 03:03:10.783 +03:00 [INF] Sending static request to SunHotels: GetRoomTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomTypes?userName=FreestaysTEST&password=Vision2024!@&language=it
+2025-12-25 03:03:22.964 +03:00 [INF] Parsed 184251 room types from XML
+2025-12-25 03:03:25.598 +03:00 [INF] Added batch of 7 room types for language: it (Progress: 7/7)
+2025-12-25 03:03:25.598 +03:00 [INF] Synced 184251 room types for language: it (Added: 7, Updated: 0)
+2025-12-25 03:03:25.598 +03:00 [INF] Syncing features for language: it
+2025-12-25 03:03:25.598 +03:00 [INF] Sending static request to SunHotels: GetFeatures - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetFeatures?userName=FreestaysTEST&password=Vision2024!@&language=it
+2025-12-25 03:03:25.685 +03:00 [INF] Parsed 50 features from XML
+2025-12-25 03:03:25.707 +03:00 [INF] Synced 50 features for language: it
+2025-12-25 03:03:25.707 +03:00 [INF] Syncing transfer types for language: it
+2025-12-25 03:03:25.707 +03:00 [INF] Sending static request to SunHotels: GetTransferTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetTransferTypes?userName=FreestaysTEST&password=Vision2024!@&language=it&transferTypeCode=
+2025-12-25 03:03:25.796 +03:00 [INF] Parsed 127 transfer types from XML
+2025-12-25 03:03:25.818 +03:00 [INF] Synced 127 transfer types for language: it (Added: 0, Updated: 0)
+2025-12-25 03:03:25.818 +03:00 [INF] Syncing note types for language: it
+2025-12-25 03:03:26.041 +03:00 [INF] Sending static request to SunHotels: GetHotelNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetHotelNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=it
+2025-12-25 03:03:26.530 +03:00 [INF] Parsed 4212 note types from XML
+2025-12-25 03:03:26.764 +03:00 [INF] Sending static request to SunHotels: GetRoomNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=it
+2025-12-25 03:03:26.986 +03:00 [INF] Parsed 2240 note types from XML
+2025-12-25 03:03:27.169 +03:00 [INF] Synced 4212 hotel note types and 2240 room note types for language: it (Added: 4, Updated: 0)
+2025-12-25 03:03:27.169 +03:00 [INF] Syncing resorts for language: zh-hans
+2025-12-25 03:03:27.169 +03:00 [INF] Sending static request to SunHotels: GetResorts - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetResorts?userName=FreestaysTEST&password=Vision2024!@&language=zh-hans&destinationID=&destinationCode=&sortBy=&sortOrder=&exactDestinationMatch=
+2025-12-25 03:03:30.480 +03:00 [INF] Parsed 34044 resorts from XML
+2025-12-25 03:03:31.182 +03:00 [INF] Added batch of 4 resorts for language: zh-hans (Progress: 4/4)
+2025-12-25 03:03:31.183 +03:00 [INF] Synced 34044 resorts for language: zh-hans (Added: 4, Updated: 0)
+2025-12-25 03:03:31.183 +03:00 [INF] Syncing meals for language: zh-hans
+2025-12-25 03:03:31.183 +03:00 [INF] Sending static request to SunHotels: GetMeals - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetMeals?userName=FreestaysTEST&password=Vision2024!@&language=zh-hans
+2025-12-25 03:03:31.271 +03:00 [INF] Parsed 5 meals from XML
+2025-12-25 03:03:31.329 +03:00 [INF] Synced 5 meals for language: zh-hans (Added: 0, Updated: 2)
+2025-12-25 03:03:31.329 +03:00 [INF] Syncing room types for language: zh-hans
+2025-12-25 03:03:31.329 +03:00 [INF] Sending static request to SunHotels: GetRoomTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomTypes?userName=FreestaysTEST&password=Vision2024!@&language=zh-hans
+2025-12-25 03:03:43.492 +03:00 [INF] Parsed 184251 room types from XML
+2025-12-25 03:03:46.082 +03:00 [INF] Added batch of 7 room types for language: zh-hans (Progress: 7/7)
+2025-12-25 03:03:46.082 +03:00 [INF] Synced 184251 room types for language: zh-hans (Added: 7, Updated: 0)
+2025-12-25 03:03:46.082 +03:00 [INF] Syncing features for language: zh-hans
+2025-12-25 03:03:46.082 +03:00 [INF] Sending static request to SunHotels: GetFeatures - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetFeatures?userName=FreestaysTEST&password=Vision2024!@&language=zh-hans
+2025-12-25 03:03:46.170 +03:00 [INF] Parsed 50 features from XML
+2025-12-25 03:03:46.191 +03:00 [INF] Synced 50 features for language: zh-hans
+2025-12-25 03:03:46.191 +03:00 [INF] Syncing transfer types for language: zh-hans
+2025-12-25 03:03:46.191 +03:00 [INF] Sending static request to SunHotels: GetTransferTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetTransferTypes?userName=FreestaysTEST&password=Vision2024!@&language=zh-hans&transferTypeCode=
+2025-12-25 03:03:46.278 +03:00 [INF] Parsed 127 transfer types from XML
+2025-12-25 03:03:46.300 +03:00 [INF] Synced 127 transfer types for language: zh-hans (Added: 0, Updated: 0)
+2025-12-25 03:03:46.300 +03:00 [INF] Syncing note types for language: zh-hans
+2025-12-25 03:03:46.440 +03:00 [INF] Sending static request to SunHotels: GetHotelNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetHotelNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=zh-hans
+2025-12-25 03:03:46.899 +03:00 [INF] Parsed 4212 note types from XML
+2025-12-25 03:03:47.132 +03:00 [INF] Sending static request to SunHotels: GetRoomNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=zh-hans
+2025-12-25 03:03:47.431 +03:00 [INF] Parsed 2240 note types from XML
+2025-12-25 03:03:47.616 +03:00 [INF] Synced 4212 hotel note types and 2240 room note types for language: zh-hans (Added: 4, Updated: 0)
+2025-12-25 03:03:47.616 +03:00 [INF] Syncing resorts for language: ru
+2025-12-25 03:03:47.616 +03:00 [INF] Sending static request to SunHotels: GetResorts - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetResorts?userName=FreestaysTEST&password=Vision2024!@&language=ru&destinationID=&destinationCode=&sortBy=&sortOrder=&exactDestinationMatch=
+2025-12-25 03:03:51.073 +03:00 [INF] Parsed 34044 resorts from XML
+2025-12-25 03:03:51.662 +03:00 [INF] Added batch of 4 resorts for language: ru (Progress: 4/4)
+2025-12-25 03:03:51.663 +03:00 [INF] Synced 34044 resorts for language: ru (Added: 4, Updated: 0)
+2025-12-25 03:03:51.663 +03:00 [INF] Syncing meals for language: ru
+2025-12-25 03:03:51.663 +03:00 [INF] Sending static request to SunHotels: GetMeals - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetMeals?userName=FreestaysTEST&password=Vision2024!@&language=ru
+2025-12-25 03:03:51.750 +03:00 [INF] Parsed 5 meals from XML
+2025-12-25 03:03:51.809 +03:00 [INF] Synced 5 meals for language: ru (Added: 0, Updated: 2)
+2025-12-25 03:03:51.809 +03:00 [INF] Syncing room types for language: ru
+2025-12-25 03:03:51.809 +03:00 [INF] Sending static request to SunHotels: GetRoomTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomTypes?userName=FreestaysTEST&password=Vision2024!@&language=ru
+2025-12-25 03:04:03.566 +03:00 [INF] Parsed 184251 room types from XML
+2025-12-25 03:04:06.338 +03:00 [INF] Added batch of 7 room types for language: ru (Progress: 7/7)
+2025-12-25 03:04:06.338 +03:00 [INF] Synced 184251 room types for language: ru (Added: 7, Updated: 0)
+2025-12-25 03:04:06.338 +03:00 [INF] Syncing features for language: ru
+2025-12-25 03:04:06.338 +03:00 [INF] Sending static request to SunHotels: GetFeatures - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetFeatures?userName=FreestaysTEST&password=Vision2024!@&language=ru
+2025-12-25 03:04:06.429 +03:00 [INF] Parsed 50 features from XML
+2025-12-25 03:04:06.449 +03:00 [INF] Synced 50 features for language: ru
+2025-12-25 03:04:06.449 +03:00 [INF] Syncing transfer types for language: ru
+2025-12-25 03:04:06.449 +03:00 [INF] Sending static request to SunHotels: GetTransferTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetTransferTypes?userName=FreestaysTEST&password=Vision2024!@&language=ru&transferTypeCode=
+2025-12-25 03:04:06.544 +03:00 [INF] Parsed 127 transfer types from XML
+2025-12-25 03:04:06.565 +03:00 [INF] Synced 127 transfer types for language: ru (Added: 0, Updated: 0)
+2025-12-25 03:04:06.565 +03:00 [INF] Syncing note types for language: ru
+2025-12-25 03:04:06.784 +03:00 [INF] Sending static request to SunHotels: GetHotelNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetHotelNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=ru
+2025-12-25 03:04:07.498 +03:00 [INF] Parsed 4212 note types from XML
+2025-12-25 03:04:07.731 +03:00 [INF] Sending static request to SunHotels: GetRoomNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=ru
+2025-12-25 03:04:08.039 +03:00 [INF] Parsed 2240 note types from XML
+2025-12-25 03:04:08.224 +03:00 [INF] Synced 4212 hotel note types and 2240 room note types for language: ru (Added: 4, Updated: 0)
+2025-12-25 03:04:08.224 +03:00 [INF] Syncing resorts for language: pt
+2025-12-25 03:04:08.224 +03:00 [INF] Sending static request to SunHotels: GetResorts - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetResorts?userName=FreestaysTEST&password=Vision2024!@&language=pt&destinationID=&destinationCode=&sortBy=&sortOrder=&exactDestinationMatch=
+2025-12-25 03:04:12.073 +03:00 [INF] Parsed 34044 resorts from XML
+2025-12-25 03:04:12.670 +03:00 [INF] Added batch of 4 resorts for language: pt (Progress: 4/4)
+2025-12-25 03:04:12.670 +03:00 [INF] Synced 34044 resorts for language: pt (Added: 4, Updated: 0)
+2025-12-25 03:04:12.670 +03:00 [INF] Syncing meals for language: pt
+2025-12-25 03:04:12.670 +03:00 [INF] Sending static request to SunHotels: GetMeals - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetMeals?userName=FreestaysTEST&password=Vision2024!@&language=pt
+2025-12-25 03:04:12.757 +03:00 [INF] Parsed 5 meals from XML
+2025-12-25 03:04:12.817 +03:00 [INF] Synced 5 meals for language: pt (Added: 0, Updated: 2)
+2025-12-25 03:04:12.817 +03:00 [INF] Syncing room types for language: pt
+2025-12-25 03:04:12.817 +03:00 [INF] Sending static request to SunHotels: GetRoomTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomTypes?userName=FreestaysTEST&password=Vision2024!@&language=pt
+2025-12-25 03:04:25.611 +03:00 [INF] Parsed 184251 room types from XML
+2025-12-25 03:04:28.091 +03:00 [INF] Added batch of 7 room types for language: pt (Progress: 7/7)
+2025-12-25 03:04:28.091 +03:00 [INF] Synced 184251 room types for language: pt (Added: 7, Updated: 0)
+2025-12-25 03:04:28.091 +03:00 [INF] Syncing features for language: pt
+2025-12-25 03:04:28.091 +03:00 [INF] Sending static request to SunHotels: GetFeatures - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetFeatures?userName=FreestaysTEST&password=Vision2024!@&language=pt
+2025-12-25 03:04:28.179 +03:00 [INF] Parsed 50 features from XML
+2025-12-25 03:04:28.199 +03:00 [INF] Synced 50 features for language: pt
+2025-12-25 03:04:28.199 +03:00 [INF] Syncing transfer types for language: pt
+2025-12-25 03:04:28.199 +03:00 [INF] Sending static request to SunHotels: GetTransferTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetTransferTypes?userName=FreestaysTEST&password=Vision2024!@&language=pt&transferTypeCode=
+2025-12-25 03:04:28.287 +03:00 [INF] Parsed 127 transfer types from XML
+2025-12-25 03:04:28.309 +03:00 [INF] Synced 127 transfer types for language: pt (Added: 0, Updated: 0)
+2025-12-25 03:04:28.309 +03:00 [INF] Syncing note types for language: pt
+2025-12-25 03:04:28.498 +03:00 [INF] Sending static request to SunHotels: GetHotelNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetHotelNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=pt
+2025-12-25 03:04:29.049 +03:00 [INF] Parsed 4212 note types from XML
+2025-12-25 03:04:29.285 +03:00 [INF] Sending static request to SunHotels: GetRoomNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=pt
+2025-12-25 03:04:29.504 +03:00 [INF] Parsed 2240 note types from XML
+2025-12-25 03:04:29.687 +03:00 [INF] Synced 4212 hotel note types and 2240 room note types for language: pt (Added: 4, Updated: 0)
+2025-12-25 03:04:29.687 +03:00 [INF] Syncing resorts for language: zh-hant
+2025-12-25 03:04:29.687 +03:00 [INF] Sending static request to SunHotels: GetResorts - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetResorts?userName=FreestaysTEST&password=Vision2024!@&language=zh-hant&destinationID=&destinationCode=&sortBy=&sortOrder=&exactDestinationMatch=
+2025-12-25 03:04:33.636 +03:00 [INF] Parsed 34044 resorts from XML
+2025-12-25 03:04:34.174 +03:00 [INF] Added batch of 4 resorts for language: zh-hant (Progress: 4/4)
+2025-12-25 03:04:34.174 +03:00 [INF] Synced 34044 resorts for language: zh-hant (Added: 4, Updated: 0)
+2025-12-25 03:04:34.174 +03:00 [INF] Syncing meals for language: zh-hant
+2025-12-25 03:04:34.174 +03:00 [INF] Sending static request to SunHotels: GetMeals - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetMeals?userName=FreestaysTEST&password=Vision2024!@&language=zh-hant
+2025-12-25 03:04:34.267 +03:00 [INF] Parsed 5 meals from XML
+2025-12-25 03:04:34.324 +03:00 [INF] Synced 5 meals for language: zh-hant (Added: 0, Updated: 2)
+2025-12-25 03:04:34.325 +03:00 [INF] Syncing room types for language: zh-hant
+2025-12-25 03:04:34.325 +03:00 [INF] Sending static request to SunHotels: GetRoomTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomTypes?userName=FreestaysTEST&password=Vision2024!@&language=zh-hant
+2025-12-25 03:04:46.550 +03:00 [INF] Parsed 184251 room types from XML
+2025-12-25 03:04:49.092 +03:00 [INF] Added batch of 7 room types for language: zh-hant (Progress: 7/7)
+2025-12-25 03:04:49.093 +03:00 [INF] Synced 184251 room types for language: zh-hant (Added: 7, Updated: 0)
+2025-12-25 03:04:49.093 +03:00 [INF] Syncing features for language: zh-hant
+2025-12-25 03:04:49.093 +03:00 [INF] Sending static request to SunHotels: GetFeatures - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetFeatures?userName=FreestaysTEST&password=Vision2024!@&language=zh-hant
+2025-12-25 03:04:49.180 +03:00 [INF] Parsed 50 features from XML
+2025-12-25 03:04:49.199 +03:00 [INF] Synced 50 features for language: zh-hant
+2025-12-25 03:04:49.200 +03:00 [INF] Syncing transfer types for language: zh-hant
+2025-12-25 03:04:49.200 +03:00 [INF] Sending static request to SunHotels: GetTransferTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetTransferTypes?userName=FreestaysTEST&password=Vision2024!@&language=zh-hant&transferTypeCode=
+2025-12-25 03:04:49.289 +03:00 [INF] Parsed 127 transfer types from XML
+2025-12-25 03:04:49.313 +03:00 [INF] Synced 127 transfer types for language: zh-hant (Added: 0, Updated: 0)
+2025-12-25 03:04:49.313 +03:00 [INF] Syncing note types for language: zh-hant
+2025-12-25 03:04:49.489 +03:00 [INF] Sending static request to SunHotels: GetHotelNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetHotelNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=zh-hant
+2025-12-25 03:04:49.876 +03:00 [INF] Parsed 4212 note types from XML
+2025-12-25 03:04:50.111 +03:00 [INF] Sending static request to SunHotels: GetRoomNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=zh-hant
+2025-12-25 03:04:50.330 +03:00 [INF] Parsed 2240 note types from XML
+2025-12-25 03:04:50.514 +03:00 [INF] Synced 4212 hotel note types and 2240 room note types for language: zh-hant (Added: 4, Updated: 0)
+2025-12-25 03:04:50.514 +03:00 [INF] Syncing resorts for language: ko
+2025-12-25 03:04:50.514 +03:00 [INF] Sending static request to SunHotels: GetResorts - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetResorts?userName=FreestaysTEST&password=Vision2024!@&language=ko&destinationID=&destinationCode=&sortBy=&sortOrder=&exactDestinationMatch=
+2025-12-25 03:04:53.641 +03:00 [INF] Parsed 34044 resorts from XML
+2025-12-25 03:04:54.310 +03:00 [INF] Added batch of 4 resorts for language: ko (Progress: 4/4)
+2025-12-25 03:04:54.311 +03:00 [INF] Synced 34044 resorts for language: ko (Added: 4, Updated: 0)
+2025-12-25 03:04:54.311 +03:00 [INF] Syncing meals for language: ko
+2025-12-25 03:04:54.311 +03:00 [INF] Sending static request to SunHotels: GetMeals - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetMeals?userName=FreestaysTEST&password=Vision2024!@&language=ko
+2025-12-25 03:04:54.398 +03:00 [INF] Parsed 5 meals from XML
+2025-12-25 03:04:54.459 +03:00 [INF] Synced 5 meals for language: ko (Added: 0, Updated: 2)
+2025-12-25 03:04:54.459 +03:00 [INF] Syncing room types for language: ko
+2025-12-25 03:04:54.459 +03:00 [INF] Sending static request to SunHotels: GetRoomTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomTypes?userName=FreestaysTEST&password=Vision2024!@&language=ko
+2025-12-25 03:05:06.546 +03:00 [INF] Parsed 184251 room types from XML
+2025-12-25 03:05:09.362 +03:00 [INF] Added batch of 7 room types for language: ko (Progress: 7/7)
+2025-12-25 03:05:09.362 +03:00 [INF] Synced 184251 room types for language: ko (Added: 7, Updated: 0)
+2025-12-25 03:05:09.362 +03:00 [INF] Syncing features for language: ko
+2025-12-25 03:05:09.362 +03:00 [INF] Sending static request to SunHotels: GetFeatures - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetFeatures?userName=FreestaysTEST&password=Vision2024!@&language=ko
+2025-12-25 03:05:09.673 +03:00 [INF] Parsed 50 features from XML
+2025-12-25 03:05:09.694 +03:00 [INF] Synced 50 features for language: ko
+2025-12-25 03:05:09.694 +03:00 [INF] Syncing transfer types for language: ko
+2025-12-25 03:05:09.694 +03:00 [INF] Sending static request to SunHotels: GetTransferTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetTransferTypes?userName=FreestaysTEST&password=Vision2024!@&language=ko&transferTypeCode=
+2025-12-25 03:05:09.812 +03:00 [INF] Parsed 127 transfer types from XML
+2025-12-25 03:05:09.836 +03:00 [INF] Synced 127 transfer types for language: ko (Added: 0, Updated: 0)
+2025-12-25 03:05:09.836 +03:00 [INF] Syncing note types for language: ko
+2025-12-25 03:05:10.539 +03:00 [INF] Sending static request to SunHotels: GetHotelNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetHotelNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=ko
+2025-12-25 03:05:11.476 +03:00 [INF] Parsed 4212 note types from XML
+2025-12-25 03:05:11.709 +03:00 [INF] Sending static request to SunHotels: GetRoomNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=ko
+2025-12-25 03:05:11.925 +03:00 [INF] Parsed 2240 note types from XML
+2025-12-25 03:05:12.101 +03:00 [INF] Synced 4212 hotel note types and 2240 room note types for language: ko (Added: 4, Updated: 0)
+2025-12-25 03:05:12.102 +03:00 [INF] Syncing resorts for language: nl
+2025-12-25 03:05:12.102 +03:00 [INF] Sending static request to SunHotels: GetResorts - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetResorts?userName=FreestaysTEST&password=Vision2024!@&language=nl&destinationID=&destinationCode=&sortBy=&sortOrder=&exactDestinationMatch=
+2025-12-25 03:05:15.548 +03:00 [INF] Parsed 34044 resorts from XML
+2025-12-25 03:05:16.285 +03:00 [INF] Added batch of 4 resorts for language: nl (Progress: 4/4)
+2025-12-25 03:05:16.286 +03:00 [INF] Synced 34044 resorts for language: nl (Added: 4, Updated: 0)
+2025-12-25 03:05:16.286 +03:00 [INF] Syncing meals for language: nl
+2025-12-25 03:05:16.286 +03:00 [INF] Sending static request to SunHotels: GetMeals - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetMeals?userName=FreestaysTEST&password=Vision2024!@&language=nl
+2025-12-25 03:05:16.376 +03:00 [INF] Parsed 5 meals from XML
+2025-12-25 03:05:16.434 +03:00 [INF] Synced 5 meals for language: nl (Added: 0, Updated: 2)
+2025-12-25 03:05:16.435 +03:00 [INF] Syncing room types for language: nl
+2025-12-25 03:05:16.435 +03:00 [INF] Sending static request to SunHotels: GetRoomTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomTypes?userName=FreestaysTEST&password=Vision2024!@&language=nl
+2025-12-25 03:05:27.042 +03:00 [INF] Parsed 184251 room types from XML
+2025-12-25 03:05:30.289 +03:00 [INF] Added batch of 7 room types for language: nl (Progress: 7/7)
+2025-12-25 03:05:30.289 +03:00 [INF] Synced 184251 room types for language: nl (Added: 7, Updated: 0)
+2025-12-25 03:05:30.289 +03:00 [INF] Syncing features for language: nl
+2025-12-25 03:05:30.289 +03:00 [INF] Sending static request to SunHotels: GetFeatures - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetFeatures?userName=FreestaysTEST&password=Vision2024!@&language=nl
+2025-12-25 03:05:30.380 +03:00 [INF] Parsed 50 features from XML
+2025-12-25 03:05:30.402 +03:00 [INF] Synced 50 features for language: nl
+2025-12-25 03:05:30.402 +03:00 [INF] Syncing transfer types for language: nl
+2025-12-25 03:05:30.402 +03:00 [INF] Sending static request to SunHotels: GetTransferTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetTransferTypes?userName=FreestaysTEST&password=Vision2024!@&language=nl&transferTypeCode=
+2025-12-25 03:05:30.503 +03:00 [INF] Parsed 127 transfer types from XML
+2025-12-25 03:05:30.527 +03:00 [INF] Synced 127 transfer types for language: nl (Added: 0, Updated: 0)
+2025-12-25 03:05:30.527 +03:00 [INF] Syncing note types for language: nl
+2025-12-25 03:05:30.806 +03:00 [INF] Sending static request to SunHotels: GetHotelNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetHotelNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=nl
+2025-12-25 03:05:31.271 +03:00 [INF] Parsed 4212 note types from XML
+2025-12-25 03:05:31.509 +03:00 [INF] Sending static request to SunHotels: GetRoomNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=nl
+2025-12-25 03:05:31.737 +03:00 [INF] Parsed 2240 note types from XML
+2025-12-25 03:05:31.922 +03:00 [INF] Synced 4212 hotel note types and 2240 room note types for language: nl (Added: 4, Updated: 0)
+2025-12-25 03:05:31.922 +03:00 [INF] Syncing resorts for language: hu
+2025-12-25 03:05:31.922 +03:00 [INF] Sending static request to SunHotels: GetResorts - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetResorts?userName=FreestaysTEST&password=Vision2024!@&language=hu&destinationID=&destinationCode=&sortBy=&sortOrder=&exactDestinationMatch=
+2025-12-25 03:05:34.960 +03:00 [INF] Parsed 34044 resorts from XML
+2025-12-25 03:05:35.747 +03:00 [INF] Added batch of 4 resorts for language: hu (Progress: 4/4)
+2025-12-25 03:05:35.748 +03:00 [INF] Synced 34044 resorts for language: hu (Added: 4, Updated: 0)
+2025-12-25 03:05:35.748 +03:00 [INF] Syncing meals for language: hu
+2025-12-25 03:05:35.748 +03:00 [INF] Sending static request to SunHotels: GetMeals - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetMeals?userName=FreestaysTEST&password=Vision2024!@&language=hu
+2025-12-25 03:05:35.834 +03:00 [INF] Parsed 5 meals from XML
+2025-12-25 03:05:35.892 +03:00 [INF] Synced 5 meals for language: hu (Added: 0, Updated: 2)
+2025-12-25 03:05:35.892 +03:00 [INF] Syncing room types for language: hu
+2025-12-25 03:05:35.892 +03:00 [INF] Sending static request to SunHotels: GetRoomTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomTypes?userName=FreestaysTEST&password=Vision2024!@&language=hu
+2025-12-25 03:05:50.162 +03:00 [INF] Parsed 184251 room types from XML
+2025-12-25 03:05:53.173 +03:00 [INF] Added batch of 7 room types for language: hu (Progress: 7/7)
+2025-12-25 03:05:53.173 +03:00 [INF] Synced 184251 room types for language: hu (Added: 7, Updated: 0)
+2025-12-25 03:05:53.173 +03:00 [INF] Syncing features for language: hu
+2025-12-25 03:05:53.173 +03:00 [INF] Sending static request to SunHotels: GetFeatures - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetFeatures?userName=FreestaysTEST&password=Vision2024!@&language=hu
+2025-12-25 03:05:53.260 +03:00 [INF] Parsed 50 features from XML
+2025-12-25 03:05:53.283 +03:00 [INF] Synced 50 features for language: hu
+2025-12-25 03:05:53.283 +03:00 [INF] Syncing transfer types for language: hu
+2025-12-25 03:05:53.284 +03:00 [INF] Sending static request to SunHotels: GetTransferTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetTransferTypes?userName=FreestaysTEST&password=Vision2024!@&language=hu&transferTypeCode=
+2025-12-25 03:05:53.374 +03:00 [INF] Parsed 127 transfer types from XML
+2025-12-25 03:05:53.396 +03:00 [INF] Synced 127 transfer types for language: hu (Added: 0, Updated: 0)
+2025-12-25 03:05:53.397 +03:00 [INF] Syncing note types for language: hu
+2025-12-25 03:05:53.612 +03:00 [INF] Sending static request to SunHotels: GetHotelNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetHotelNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=hu
+2025-12-25 03:05:54.230 +03:00 [INF] Parsed 4212 note types from XML
+2025-12-25 03:05:54.467 +03:00 [INF] Sending static request to SunHotels: GetRoomNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=hu
+2025-12-25 03:05:54.727 +03:00 [INF] Parsed 2240 note types from XML
+2025-12-25 03:05:54.912 +03:00 [INF] Synced 4212 hotel note types and 2240 room note types for language: hu (Added: 4, Updated: 0)
+2025-12-25 03:05:54.912 +03:00 [INF] Syncing resorts for language: cs
+2025-12-25 03:05:54.912 +03:00 [INF] Sending static request to SunHotels: GetResorts - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetResorts?userName=FreestaysTEST&password=Vision2024!@&language=cs&destinationID=&destinationCode=&sortBy=&sortOrder=&exactDestinationMatch=
+2025-12-25 03:05:59.997 +03:00 [INF] Parsed 34044 resorts from XML
+2025-12-25 03:06:00.847 +03:00 [INF] Added batch of 4 resorts for language: cs (Progress: 4/4)
+2025-12-25 03:06:00.851 +03:00 [INF] Synced 34044 resorts for language: cs (Added: 4, Updated: 0)
+2025-12-25 03:06:00.851 +03:00 [INF] Syncing meals for language: cs
+2025-12-25 03:06:00.851 +03:00 [INF] Sending static request to SunHotels: GetMeals - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetMeals?userName=FreestaysTEST&password=Vision2024!@&language=cs
+2025-12-25 03:06:00.944 +03:00 [INF] Parsed 5 meals from XML
+2025-12-25 03:06:01.011 +03:00 [INF] Synced 5 meals for language: cs (Added: 0, Updated: 2)
+2025-12-25 03:06:01.011 +03:00 [INF] Syncing room types for language: cs
+2025-12-25 03:06:01.011 +03:00 [INF] Sending static request to SunHotels: GetRoomTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomTypes?userName=FreestaysTEST&password=Vision2024!@&language=cs
+2025-12-25 03:06:02.891 +03:00 [INF] Server macbookair:29742:b7c4e24d caught stopping signal...
+2025-12-25 03:06:03.415 +03:00 [INF] Server macbookair:29742:b7c4e24d caught stopped signal...
+2025-12-25 03:06:13.531 +03:00 [INF] Parsed 184251 room types from XML
+2025-12-25 03:06:16.113 +03:00 [INF] Added batch of 7 room types for language: cs (Progress: 7/7)
+2025-12-25 03:06:16.113 +03:00 [INF] Synced 184251 room types for language: cs (Added: 7, Updated: 0)
+2025-12-25 03:06:16.113 +03:00 [INF] Syncing features for language: cs
+2025-12-25 03:06:16.113 +03:00 [INF] Sending static request to SunHotels: GetFeatures - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetFeatures?userName=FreestaysTEST&password=Vision2024!@&language=cs
+2025-12-25 03:06:16.210 +03:00 [INF] Parsed 50 features from XML
+2025-12-25 03:06:16.230 +03:00 [INF] Synced 50 features for language: cs
+2025-12-25 03:06:16.230 +03:00 [INF] Syncing transfer types for language: cs
+2025-12-25 03:06:16.230 +03:00 [INF] Sending static request to SunHotels: GetTransferTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetTransferTypes?userName=FreestaysTEST&password=Vision2024!@&language=cs&transferTypeCode=
+2025-12-25 03:06:16.318 +03:00 [INF] Parsed 127 transfer types from XML
+2025-12-25 03:06:16.342 +03:00 [INF] Synced 127 transfer types for language: cs (Added: 0, Updated: 0)
+2025-12-25 03:06:16.342 +03:00 [INF] Syncing note types for language: cs
+2025-12-25 03:06:16.521 +03:00 [INF] Sending static request to SunHotels: GetHotelNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetHotelNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=cs
+2025-12-25 03:06:17.004 +03:00 [INF] Parsed 4212 note types from XML
+2025-12-25 03:06:17.241 +03:00 [INF] Sending static request to SunHotels: GetRoomNoteTypes - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetRoomNoteTypes?userName=FreestaysTEST&password=Vision2024!@&language=cs
+2025-12-25 03:06:17.456 +03:00 [INF] Parsed 2240 note types from XML
+2025-12-25 03:06:17.634 +03:00 [INF] Synced 4212 hotel note types and 2240 room note types for language: cs (Added: 4, Updated: 0)
+2025-12-25 03:06:17.634 +03:00 [INF] Syncing resorts for language: ja
+2025-12-25 03:06:17.634 +03:00 [INF] Sending static request to SunHotels: GetResorts - URL: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx/GetResorts?userName=FreestaysTEST&password=Vision2024!@&language=ja&destinationID=&destinationCode=&sortBy=&sortOrder=&exactDestinationMatch=
+2025-12-25 03:06:17.914 +03:00 [WRN] Server macbookair:29742:b7c4e24d caught shutdown signal...
+2025-12-25 03:06:17.916 +03:00 [WRN] Server macbookair:29742:b7c4e24d stopped non-gracefully due to Worker. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
+2025-12-25 03:06:17.922 +03:00 [INF] Server macbookair:29742:b7c4e24d successfully reported itself as stopped in 1,4492 ms
+2025-12-25 03:06:17.922 +03:00 [INF] Server macbookair:29742:b7c4e24d has been stopped in total 15030,1305 ms
