@@ -164,3 +164,6 @@
 /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/bin/Debug/net8.0/Hangfire.InMemory.dll
 /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/obj/Debug/net8.0/FreeStays.API.sourcelink.json
 /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/bin/Debug/net8.0/FreeStays.API.staticwebassets.runtime.json
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/bin/Debug/net8.0/BouncyCastle.Cryptography.dll
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/bin/Debug/net8.0/MailKit.dll
+/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/bin/Debug/net8.0/MimeKit.dll

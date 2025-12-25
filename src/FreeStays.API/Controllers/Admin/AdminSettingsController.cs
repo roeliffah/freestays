@@ -251,11 +251,14 @@ public class AdminSettingsController : BaseApiController
         var settings = await Mediator.Send(new GetSiteSettingsQuery("smtp"));
         var settingsDict = settings.ToDictionary(s => s.Key, s => s.Value);
 
+        var hasPassword = !string.IsNullOrEmpty(settingsDict.GetValueOrDefault("smtpPassword", ""));
+
         return Ok(new
         {
             smtpHost = settingsDict.GetValueOrDefault("smtpHost", ""),
             smtpPort = int.TryParse(settingsDict.GetValueOrDefault("smtpPort", "587"), out var port) ? port : 587,
             smtpUsername = settingsDict.GetValueOrDefault("smtpUsername", ""),
+            hasPassword = hasPassword,
             smtpFromEmail = settingsDict.GetValueOrDefault("smtpFromEmail", ""),
             smtpFromName = settingsDict.GetValueOrDefault("smtpFromName", "FreeStays"),
             smtpEnableSsl = settingsDict.GetValueOrDefault("smtpEnableSsl", "true") == "true",
@@ -272,6 +275,40 @@ public class AdminSettingsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateSmtpSettings([FromBody] UpdateSmtpSettingsRequest request)
     {
+        // Validate SMTP host if provided
+        if (request.SmtpHost != null && string.IsNullOrWhiteSpace(request.SmtpHost))
+        {
+            return BadRequest(new { message = "SMTP host boş olamaz." });
+        }
+
+        // Validate SMTP port range
+        if (request.SmtpPort.HasValue && (request.SmtpPort.Value < 1 || request.SmtpPort.Value > 65535))
+        {
+            return BadRequest(new { message = "SMTP port 1-65535 arasında olmalıdır." });
+        }
+
+        // Validate email format
+        if (request.SmtpFromEmail != null && !string.IsNullOrEmpty(request.SmtpFromEmail))
+        {
+            if (!new System.ComponentModel.DataAnnotations.EmailAddressAttribute().IsValid(request.SmtpFromEmail))
+            {
+                return BadRequest(new { message = "Geçersiz email formatı." });
+            }
+        }
+
+        // Validate required fields if SMTP is being configured
+        if (request.SmtpHost != null)
+        {
+            var settings = await Mediator.Send(new GetSiteSettingsQuery("smtp"));
+            var settingsDict = settings.ToDictionary(s => s.Key, s => s.Value);
+
+            var fromEmail = request.SmtpFromEmail ?? settingsDict.GetValueOrDefault("smtpFromEmail", "");
+            if (string.IsNullOrEmpty(fromEmail))
+            {
+                return BadRequest(new { message = "SMTP from email gerekli." });
+            }
+        }
+
         if (request.SmtpHost != null)
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "smtpHost", Value = request.SmtpHost, Group = "smtp" });
         if (request.SmtpPort.HasValue)
@@ -299,12 +336,156 @@ public class AdminSettingsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> TestSmtpConnection([FromBody] TestSmtpConnectionRequest request)
     {
-        // TODO: Implement actual SMTP connection test
-        return Ok(new
+        try
         {
-            success = true,
-            message = "SMTP bağlantısı başarılı. Test e-postası gönderildi."
-        });
+            // Get current SMTP settings
+            var settings = await Mediator.Send(new GetSiteSettingsQuery("smtp"));
+            var settingsDict = settings.ToDictionary(s => s.Key, s => s.Value);
+
+            var smtpHost = settingsDict.GetValueOrDefault("smtpHost", "");
+            var smtpPort = int.TryParse(settingsDict.GetValueOrDefault("smtpPort", "587"), out var port) ? port : 587;
+            var smtpUsername = settingsDict.GetValueOrDefault("smtpUsername", "");
+            var smtpPassword = settingsDict.GetValueOrDefault("smtpPassword", "");
+            var smtpFromEmail = settingsDict.GetValueOrDefault("smtpFromEmail", "");
+            var smtpFromName = settingsDict.GetValueOrDefault("smtpFromName", "FreeStays");
+            var smtpEnableSsl = settingsDict.GetValueOrDefault("smtpEnableSsl", "true") == "true";
+
+            // Validate SMTP configuration
+            if (string.IsNullOrEmpty(smtpHost))
+            {
+                return BadRequest(new { success = false, message = "SMTP host yapılandırılmamış." });
+            }
+
+            if (string.IsNullOrEmpty(smtpFromEmail))
+            {
+                return BadRequest(new { success = false, message = "SMTP from email yapılandırılmamış." });
+            }
+
+            // Validate test email
+            if (string.IsNullOrEmpty(request.TestEmail))
+            {
+                return BadRequest(new { success = false, message = "Test email adresi gerekli." });
+            }
+
+            if (!new System.ComponentModel.DataAnnotations.EmailAddressAttribute().IsValid(request.TestEmail))
+            {
+                return BadRequest(new { success = false, message = "Geçersiz email formatı." });
+            }
+
+            // Create test email message
+            var message = new MimeKit.MimeMessage();
+            message.From.Add(new MimeKit.MailboxAddress(smtpFromName, smtpFromEmail));
+            message.To.Add(new MimeKit.MailboxAddress("", request.TestEmail));
+            message.Subject = "FreeStays SMTP Test";
+
+            var bodyBuilder = new MimeKit.BodyBuilder
+            {
+                HtmlBody = @"
+                    <html>
+                        <body style='font-family: Arial, sans-serif; padding: 20px;'>
+                            <h2 style='color: #2563eb;'>SMTP Bağlantı Testi Başarılı ✓</h2>
+                            <p>Bu bir test e-postasıdır. SMTP ayarlarınız doğru şekilde yapılandırılmış ve çalışıyor.</p>
+                            <hr style='margin: 20px 0;'/>
+                            <p style='color: #6b7280; font-size: 12px;'>
+                                Test Zamanı: " + DateTime.UtcNow.ToString("dd.MM.yyyy HH:mm:ss UTC") + @"<br/>
+                                SMTP Host: " + smtpHost + @"<br/>
+                                SMTP Port: " + smtpPort + @"<br/>
+                                SSL/TLS: " + (smtpEnableSsl ? "Aktif" : "Pasif") + @"
+                            </p>
+                        </body>
+                    </html>",
+                TextBody = $"SMTP Bağlantı Testi Başarılı\n\nBu bir test e-postasıdır. SMTP ayarlarınız doğru şekilde yapılandırılmış ve çalışıyor.\n\nTest Zamanı: {DateTime.UtcNow:dd.MM.yyyy HH:mm:ss UTC}\nSMTP Host: {smtpHost}\nSMTP Port: {smtpPort}\nSSL/TLS: {(smtpEnableSsl ? "Aktif" : "Pasif")}"
+            };
+            message.Body = bodyBuilder.ToMessageBody();
+
+            // Send email using MailKit
+            using var client = new MailKit.Net.Smtp.SmtpClient();
+
+            // Set timeout
+            client.Timeout = 15000; // 15 seconds
+
+            // Connect to SMTP server
+            await client.ConnectAsync(smtpHost, smtpPort, smtpEnableSsl ? MailKit.Security.SecureSocketOptions.SslOnConnect : MailKit.Security.SecureSocketOptions.StartTls);
+
+            // Authenticate if credentials provided
+            if (!string.IsNullOrEmpty(smtpUsername) && !string.IsNullOrEmpty(smtpPassword))
+            {
+                await client.AuthenticateAsync(smtpUsername, smtpPassword);
+            }
+
+            // Send message
+            await client.SendAsync(message);
+
+            // Disconnect
+            await client.DisconnectAsync(true);
+
+            return Ok(new
+            {
+                success = true,
+                message = $"SMTP bağlantısı başarılı. Test e-postası {request.TestEmail} adresine gönderildi.",
+                details = new
+                {
+                    host = smtpHost,
+                    port = smtpPort,
+                    ssl = smtpEnableSsl,
+                    authenticated = !string.IsNullOrEmpty(smtpUsername)
+                }
+            });
+        }
+        catch (MailKit.Security.AuthenticationException ex)
+        {
+            return BadRequest(new
+            {
+                success = false,
+                message = "SMTP kimlik doğrulama hatası. Kullanıcı adı veya şifre yanlış.",
+                error = ex.Message
+            });
+        }
+        catch (MailKit.Net.Smtp.SmtpCommandException ex)
+        {
+            return BadRequest(new
+            {
+                success = false,
+                message = "SMTP komutu hatası.",
+                error = ex.Message,
+                statusCode = ex.StatusCode.ToString()
+            });
+        }
+        catch (MailKit.Net.Smtp.SmtpProtocolException ex)
+        {
+            return BadRequest(new
+            {
+                success = false,
+                message = "SMTP protokol hatası.",
+                error = ex.Message
+            });
+        }
+        catch (System.Net.Sockets.SocketException ex)
+        {
+            return BadRequest(new
+            {
+                success = false,
+                message = "SMTP sunucusuna bağlanılamadı. Host veya port kontrolü yapın.",
+                error = ex.Message
+            });
+        }
+        catch (TimeoutException)
+        {
+            return BadRequest(new
+            {
+                success = false,
+                message = "SMTP bağlantısı zaman aşımına uğradı. Sunucu yanıt vermiyor."
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new
+            {
+                success = false,
+                message = "SMTP testi sırasında beklenmeyen bir hata oluştu.",
+                error = ex.Message
+            });
+        }
     }
 
     #endregion
