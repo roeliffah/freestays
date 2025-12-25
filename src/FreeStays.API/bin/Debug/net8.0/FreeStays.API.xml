@@ -315,12 +315,12 @@
             Get external service configuration by service name
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.Admin.ExternalServicesController.Create(FreeStays.API.Controllers.Admin.CreateExternalServiceRequest)">
+        <member name="M:FreeStays.API.Controllers.Admin.ExternalServicesController.Create(FreeStays.API.Controllers.Admin.CreateExternalServiceConfigRequest)">
             <summary>
             Create new external service configuration
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.Admin.ExternalServicesController.Update(System.Guid,FreeStays.API.Controllers.Admin.UpdateExternalServiceRequest)">
+        <member name="M:FreeStays.API.Controllers.Admin.ExternalServicesController.Update(System.Guid,FreeStays.API.Controllers.Admin.UpdateExternalServiceConfigRequest)">
             <summary>
             Update external service configuration
             </summary>

@@ -569,3 +569,102 @@
 2025-12-25 03:06:17.916 +03:00 [WRN] Server macbookair:29742:b7c4e24d stopped non-gracefully due to Worker. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods.
 2025-12-25 03:06:17.922 +03:00 [INF] Server macbookair:29742:b7c4e24d successfully reported itself as stopped in 1,4492 ms
 2025-12-25 03:06:17.922 +03:00 [INF] Server macbookair:29742:b7c4e24d has been stopped in total 15030,1305 ms
+2025-12-25 03:07:18.179 +03:00 [INF] Database migration completed successfully
+2025-12-25 03:07:18.200 +03:00 [INF] Checking database connectivity...
+2025-12-25 03:07:18.367 +03:00 [INF] Ensuring database schema exists...
+2025-12-25 03:07:18.548 +03:00 [INF] Database is ready.
+2025-12-25 03:07:18.672 +03:00 [INF] Admin user already exists, skipping...
+2025-12-25 03:07:18.694 +03:00 [INF] Email templates already exist, skipping...
+2025-12-25 03:07:18.715 +03:00 [INF] Site settings already exist, skipping...
+2025-12-25 03:07:18.736 +03:00 [INF] External service configs already exist, skipping...
+2025-12-25 03:07:18.736 +03:00 [INF] Database seeding completed successfully.
+2025-12-25 03:07:18.737 +03:00 [INF] FreeStays API started at "2025-12-25T00:07:18.7369550Z"
+2025-12-25 03:07:18.785 +03:00 [INF] Starting Hangfire Server using job storage: 'In-Memory Storage'
+2025-12-25 03:07:18.786 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-25 03:07:18.793 +03:00 [INF] Server macbookair:31326:29c54afb successfully announced in 0,6723 ms
+2025-12-25 03:07:18.794 +03:00 [INF] Server macbookair:31326:29c54afb is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-25 03:07:18.797 +03:00 [INF] Server macbookair:31326:29c54afb all the dispatchers started
+2025-12-25 03:08:45.304 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-12-25 03:08:45.345 +03:00 [INF] HTTP GET /apple-touch-icon-precomposed.png responded 404 in 42.0765 ms
+2025-12-25 03:08:45.347 +03:00 [INF] HTTP GET /apple-touch-icon.png responded 404 in 0.8409 ms
+2025-12-25 03:08:45.420 +03:00 [ERR] An unhandled exception has occurred while executing the request.
+Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Failed to generate Operation for action - FreeStays.API.Controllers.Admin.ExternalServicesController.Update (FreeStays.API). See inner exception
+ ---> Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Failed to generate schema for type - FreeStays.API.Controllers.Admin.UpdateExternalServiceRequest. See inner exception
+ ---> System.InvalidOperationException: Can't use schemaId "$UpdateExternalServiceRequest" for type "$FreeStays.API.Controllers.Admin.UpdateExternalServiceRequest". The same schemaId is already used for type "$FreeStays.API.Controllers.UpdateExternalServiceRequest"
+   at Swashbuckle.AspNetCore.SwaggerGen.SchemaRepository.RegisterType(Type type, String schemaId)
+   at Swashbuckle.AspNetCore.SwaggerGen.SchemaGenerator.GenerateReferencedSchema(DataContract dataContract, SchemaRepository schemaRepository, Func`1 definitionFactory)
+   at Swashbuckle.AspNetCore.SwaggerGen.SchemaGenerator.GenerateConcreteSchema(DataContract dataContract, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SchemaGenerator.GenerateSchemaForParameter(Type modelType, SchemaRepository schemaRepository, ParameterInfo parameterInfo, ApiParameterRouteInfo routeInfo)
+   at Swashbuckle.AspNetCore.SwaggerGen.SchemaGenerator.GenerateSchema(Type modelType, SchemaRepository schemaRepository, MemberInfo memberInfo, ParameterInfo parameterInfo, ApiParameterRouteInfo routeInfo)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateSchema(Type type, SchemaRepository schemaRepository, PropertyInfo propertyInfo, ParameterInfo parameterInfo, ApiParameterRouteInfo routeInfo)
+   --- End of inner exception stack trace ---
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateSchema(Type type, SchemaRepository schemaRepository, PropertyInfo propertyInfo, ParameterInfo parameterInfo, ApiParameterRouteInfo routeInfo)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateRequestBodyFromBodyParameter(ApiDescription apiDescription, SchemaRepository schemaRepository, ApiParameterDescription bodyParameter)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateRequestBody(ApiDescription apiDescription, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperation(ApiDescription apiDescription, SchemaRepository schemaRepository)
+   --- End of inner exception stack trace ---
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperation(ApiDescription apiDescription, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperations(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePaths(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwaggerDocumentWithoutFilters(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwaggerAsync(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-12-25 03:08:49.893 +03:00 [ERR] An unhandled exception has occurred while executing the request.
+Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Failed to generate Operation for action - FreeStays.API.Controllers.Admin.ExternalServicesController.Update (FreeStays.API). See inner exception
+ ---> Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Failed to generate schema for type - FreeStays.API.Controllers.Admin.UpdateExternalServiceRequest. See inner exception
+ ---> System.InvalidOperationException: Can't use schemaId "$UpdateExternalServiceRequest" for type "$FreeStays.API.Controllers.Admin.UpdateExternalServiceRequest". The same schemaId is already used for type "$FreeStays.API.Controllers.UpdateExternalServiceRequest"
+   at Swashbuckle.AspNetCore.SwaggerGen.SchemaRepository.RegisterType(Type type, String schemaId)
+   at Swashbuckle.AspNetCore.SwaggerGen.SchemaGenerator.GenerateReferencedSchema(DataContract dataContract, SchemaRepository schemaRepository, Func`1 definitionFactory)
+   at Swashbuckle.AspNetCore.SwaggerGen.SchemaGenerator.GenerateConcreteSchema(DataContract dataContract, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SchemaGenerator.GenerateSchemaForParameter(Type modelType, SchemaRepository schemaRepository, ParameterInfo parameterInfo, ApiParameterRouteInfo routeInfo)
+   at Swashbuckle.AspNetCore.SwaggerGen.SchemaGenerator.GenerateSchema(Type modelType, SchemaRepository schemaRepository, MemberInfo memberInfo, ParameterInfo parameterInfo, ApiParameterRouteInfo routeInfo)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateSchema(Type type, SchemaRepository schemaRepository, PropertyInfo propertyInfo, ParameterInfo parameterInfo, ApiParameterRouteInfo routeInfo)
+   --- End of inner exception stack trace ---
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateSchema(Type type, SchemaRepository schemaRepository, PropertyInfo propertyInfo, ParameterInfo parameterInfo, ApiParameterRouteInfo routeInfo)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateRequestBodyFromBodyParameter(ApiDescription apiDescription, SchemaRepository schemaRepository, ApiParameterDescription bodyParameter)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateRequestBody(ApiDescription apiDescription, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperation(ApiDescription apiDescription, SchemaRepository schemaRepository)
+   --- End of inner exception stack trace ---
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperation(ApiDescription apiDescription, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperations(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePaths(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwaggerDocumentWithoutFilters(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwaggerAsync(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-12-25 03:10:41.526 +03:00 [INF] Server macbookair:31326:29c54afb caught stopping signal...
+2025-12-25 03:10:41.538 +03:00 [INF] Server macbookair:31326:29c54afb All dispatchers stopped
+2025-12-25 03:10:41.541 +03:00 [INF] Server macbookair:31326:29c54afb successfully reported itself as stopped in 1,4357 ms
+2025-12-25 03:10:41.542 +03:00 [INF] Server macbookair:31326:29c54afb has been stopped in total 8,5413 ms
+2025-12-25 03:11:39.136 +03:00 [INF] Database migration completed successfully
+2025-12-25 03:11:39.161 +03:00 [INF] Checking database connectivity...
+2025-12-25 03:11:39.313 +03:00 [INF] Ensuring database schema exists...
+2025-12-25 03:11:39.487 +03:00 [INF] Database is ready.
+2025-12-25 03:11:39.616 +03:00 [INF] Admin user already exists, skipping...
+2025-12-25 03:11:39.637 +03:00 [INF] Email templates already exist, skipping...
+2025-12-25 03:11:39.658 +03:00 [INF] Site settings already exist, skipping...
+2025-12-25 03:11:39.679 +03:00 [INF] External service configs already exist, skipping...
+2025-12-25 03:11:39.679 +03:00 [INF] Database seeding completed successfully.
+2025-12-25 03:11:39.680 +03:00 [INF] FreeStays API started at "2025-12-25T00:11:39.6799200Z"
+2025-12-25 03:11:39.728 +03:00 [INF] Starting Hangfire Server using job storage: 'In-Memory Storage'
+2025-12-25 03:11:39.729 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-25 03:11:39.735 +03:00 [INF] Server macbookair:31483:7008be0f successfully announced in 0,7302 ms
+2025-12-25 03:11:39.737 +03:00 [INF] Server macbookair:31483:7008be0f is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-25 03:11:39.739 +03:00 [INF] Server macbookair:31483:7008be0f all the dispatchers started
+2025-12-25 03:12:03.214 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-12-25 03:12:03.261 +03:00 [INF] HTTP GET /favicon.ico responded 404 in 50.5073 ms
+2025-12-25 03:12:03.261 +03:00 [INF] HTTP GET /apple-touch-icon.png responded 404 in 50.2572 ms
+2025-12-25 03:12:03.261 +03:00 [INF] HTTP GET /apple-touch-icon-precomposed.png responded 404 in 50.4829 ms
+2025-12-25 03:12:32.453 +03:00 [INF] Server macbookair:31483:7008be0f caught stopping signal...
+2025-12-25 03:12:32.459 +03:00 [INF] Server macbookair:31483:7008be0f All dispatchers stopped
+2025-12-25 03:12:32.463 +03:00 [INF] Server macbookair:31483:7008be0f successfully reported itself as stopped in 1,0668 ms
+2025-12-25 03:12:32.463 +03:00 [INF] Server macbookair:31483:7008be0f has been stopped in total 8,8674 ms

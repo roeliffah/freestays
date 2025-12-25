@@ -128,7 +128,7 @@ public class ExternalServicesController : BaseApiController
     [Authorize(Roles = "SuperAdmin")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Create([FromBody] CreateExternalServiceRequest request)
+    public async Task<IActionResult> Create([FromBody] CreateExternalServiceConfigRequest request)
     {
         var service = new ExternalServiceConfig
         {
@@ -169,7 +169,7 @@ public class ExternalServicesController : BaseApiController
     [Authorize(Roles = "SuperAdmin")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateExternalServiceRequest request)
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateExternalServiceConfigRequest request)
     {
         var service = await _repository.GetByIdAsync(id);
 
@@ -310,7 +310,7 @@ public class ExternalServicesController : BaseApiController
 }
 
 // Request DTOs
-public record CreateExternalServiceRequest(
+public record CreateExternalServiceConfigRequest(
     string ServiceName,
     string BaseUrl,
     string? ApiKey = null,
@@ -322,7 +322,7 @@ public record CreateExternalServiceRequest(
     bool IsActive = true,
     string? Settings = null);
 
-public record UpdateExternalServiceRequest(
+public record UpdateExternalServiceConfigRequest(
     string? BaseUrl = null,
     string? ApiKey = null,
     string? ApiSecret = null,

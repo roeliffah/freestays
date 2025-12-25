@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FreeStays.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c59a603c72ac7748ad91bc45d733cf139c2714c3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+98fe4ec6413a86586fd8dd0c71da7bc181d3e383")]
 [assembly: System.Reflection.AssemblyProductAttribute("FreeStays.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FreeStays.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
