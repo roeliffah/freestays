@@ -1309,6 +1309,127 @@ namespace FreeStays.Infrastructure.Migrations
                     b.ToTable("flight_bookings", (string)null);
                 });
 
+            modelBuilder.Entity("FreeStays.Domain.Entities.HomePageSection", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Configuration")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("SectionType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HomePageSections");
+                });
+
+            modelBuilder.Entity("FreeStays.Domain.Entities.HomePageSectionDestination", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DestinationId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("SectionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SectionId");
+
+                    b.ToTable("HomePageSectionDestinations");
+                });
+
+            modelBuilder.Entity("FreeStays.Domain.Entities.HomePageSectionHotel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("HotelId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("SectionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SectionId");
+
+                    b.ToTable("HomePageSectionHotels");
+                });
+
+            modelBuilder.Entity("FreeStays.Domain.Entities.HomePageSectionTranslation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Locale")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("SectionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Subtitle")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SectionId");
+
+                    b.ToTable("HomePageSectionTranslations");
+                });
+
             modelBuilder.Entity("FreeStays.Domain.Entities.Hotel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -2185,6 +2306,39 @@ namespace FreeStays.Infrastructure.Migrations
                     b.Navigation("Booking");
                 });
 
+            modelBuilder.Entity("FreeStays.Domain.Entities.HomePageSectionDestination", b =>
+                {
+                    b.HasOne("FreeStays.Domain.Entities.HomePageSection", "Section")
+                        .WithMany("Destinations")
+                        .HasForeignKey("SectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Section");
+                });
+
+            modelBuilder.Entity("FreeStays.Domain.Entities.HomePageSectionHotel", b =>
+                {
+                    b.HasOne("FreeStays.Domain.Entities.HomePageSection", "Section")
+                        .WithMany("Hotels")
+                        .HasForeignKey("SectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Section");
+                });
+
+            modelBuilder.Entity("FreeStays.Domain.Entities.HomePageSectionTranslation", b =>
+                {
+                    b.HasOne("FreeStays.Domain.Entities.HomePageSection", "Section")
+                        .WithMany("Translations")
+                        .HasForeignKey("SectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Section");
+                });
+
             modelBuilder.Entity("FreeStays.Domain.Entities.HotelBooking", b =>
                 {
                     b.HasOne("FreeStays.Domain.Entities.Booking", "Booking")
@@ -2281,6 +2435,15 @@ namespace FreeStays.Infrastructure.Migrations
 
             modelBuilder.Entity("FreeStays.Domain.Entities.Faq", b =>
                 {
+                    b.Navigation("Translations");
+                });
+
+            modelBuilder.Entity("FreeStays.Domain.Entities.HomePageSection", b =>
+                {
+                    b.Navigation("Destinations");
+
+                    b.Navigation("Hotels");
+
                     b.Navigation("Translations");
                 });
 

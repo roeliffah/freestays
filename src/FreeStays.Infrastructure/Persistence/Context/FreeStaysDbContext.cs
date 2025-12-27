@@ -38,7 +38,11 @@ public class FreeStaysDbContext : DbContext
     public DbSet<SeoSetting> SeoSettings => Set<SeoSetting>();
     public DbSet<PaymentSetting> PaymentSettings => Set<PaymentSetting>();
     public DbSet<JobHistory> JobHistories => Set<JobHistory>();
-
+    // HomePage Management Entities
+    public DbSet<HomePageSection> HomePageSections => Set<HomePageSection>();
+    public DbSet<HomePageSectionTranslation> HomePageSectionTranslations => Set<HomePageSectionTranslation>();
+    public DbSet<HomePageSectionHotel> HomePageSectionHotels => Set<HomePageSectionHotel>();
+    public DbSet<HomePageSectionDestination> HomePageSectionDestinations => Set<HomePageSectionDestination>();
     // SunHotels Cache Entities
     public DbSet<SunHotelsDestinationCache> SunHotelsDestinations => Set<SunHotelsDestinationCache>();
     public DbSet<SunHotelsResortCache> SunHotelsResorts => Set<SunHotelsResortCache>();

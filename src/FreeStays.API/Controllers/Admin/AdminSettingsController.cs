@@ -40,7 +40,17 @@ public class AdminSettingsController : BaseApiController
             faviconUrl = settingsDict.GetValueOrDefault("faviconUrl", "/images/favicon.ico"),
             profitMargin = decimal.TryParse(settingsDict.GetValueOrDefault("profitMargin", "10"), out var margin) ? margin : 10m,
             defaultVatRate = decimal.TryParse(settingsDict.GetValueOrDefault("defaultVatRate", "20"), out var vat) ? vat : 20m,
-            extraFee = decimal.TryParse(settingsDict.GetValueOrDefault("extraFee", "0"), out var extra) ? extra : 0m
+            extraFee = decimal.TryParse(settingsDict.GetValueOrDefault("extraFee", "0"), out var extra) ? extra : 0m,
+            // Affiliate Programs
+            excursionsActive = settingsDict.GetValueOrDefault("excursionsActive", "false") == "true",
+            excursionsAffiliateCode = settingsDict.GetValueOrDefault("excursionsAffiliateCode", null),
+            excursionsWidgetCode = settingsDict.GetValueOrDefault("excursionsWidgetCode", null),
+            carRentalActive = settingsDict.GetValueOrDefault("carRentalActive", "false") == "true",
+            carRentalAffiliateCode = settingsDict.GetValueOrDefault("carRentalAffiliateCode", null),
+            carRentalWidgetCode = settingsDict.GetValueOrDefault("carRentalWidgetCode", null),
+            flightBookingActive = settingsDict.GetValueOrDefault("flightBookingActive", "false") == "true",
+            flightBookingAffiliateCode = settingsDict.GetValueOrDefault("flightBookingAffiliateCode", null),
+            flightBookingWidgetCode = settingsDict.GetValueOrDefault("flightBookingWidgetCode", null)
         });
     }
 
@@ -78,6 +88,28 @@ public class AdminSettingsController : BaseApiController
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "defaultVatRate", Value = request.DefaultVatRate.Value.ToString(), Group = "site" });
         if (request.ExtraFee.HasValue)
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "extraFee", Value = request.ExtraFee.Value.ToString(), Group = "site" });
+
+        // Affiliate Programs
+        if (request.ExcursionsActive.HasValue)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "excursionsActive", Value = request.ExcursionsActive.Value.ToString().ToLower(), Group = "site" });
+        if (request.ExcursionsAffiliateCode != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "excursionsAffiliateCode", Value = request.ExcursionsAffiliateCode, Group = "site" });
+        if (request.ExcursionsWidgetCode != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "excursionsWidgetCode", Value = request.ExcursionsWidgetCode, Group = "site" });
+
+        if (request.CarRentalActive.HasValue)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "carRentalActive", Value = request.CarRentalActive.Value.ToString().ToLower(), Group = "site" });
+        if (request.CarRentalAffiliateCode != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "carRentalAffiliateCode", Value = request.CarRentalAffiliateCode, Group = "site" });
+        if (request.CarRentalWidgetCode != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "carRentalWidgetCode", Value = request.CarRentalWidgetCode, Group = "site" });
+
+        if (request.FlightBookingActive.HasValue)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "flightBookingActive", Value = request.FlightBookingActive.Value.ToString().ToLower(), Group = "site" });
+        if (request.FlightBookingAffiliateCode != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "flightBookingAffiliateCode", Value = request.FlightBookingAffiliateCode, Group = "site" });
+        if (request.FlightBookingWidgetCode != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "flightBookingWidgetCode", Value = request.FlightBookingWidgetCode, Group = "site" });
 
         return Ok(new { message = "Site ayarları güncellendi." });
     }
@@ -773,6 +805,16 @@ public record UpdateSiteSettingsRequest(
     decimal? ProfitMargin,
     decimal? DefaultVatRate,
     decimal? ExtraFee,
+    // Affiliate Programs
+    bool? ExcursionsActive,
+    string? ExcursionsAffiliateCode,
+    string? ExcursionsWidgetCode,
+    bool? CarRentalActive,
+    string? CarRentalAffiliateCode,
+    string? CarRentalWidgetCode,
+    bool? FlightBookingActive,
+    string? FlightBookingAffiliateCode,
+    string? FlightBookingWidgetCode,
     SocialLinksRequest? SocialLinks);
 
 public record SocialLinksRequest(

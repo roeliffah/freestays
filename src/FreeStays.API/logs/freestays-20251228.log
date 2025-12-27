@@ -1,0 +1,249 @@
+2025-12-28 00:01:11.887 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-12-28 00:01:11.968 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-hotels responded 404 in 82.3231 ms
+2025-12-28 00:01:11.968 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-destinations responded 404 in 82.3170 ms
+2025-12-28 00:01:11.968 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-hotels responded 404 in 82.3207 ms
+2025-12-28 00:01:11.968 +03:00 [INF] HTTP GET /api/v1/api/v1/public/settings/affiliate-programs responded 404 in 82.1501 ms
+2025-12-28 00:01:12.006 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-28 00:01:12.717 +03:00 [WRN] FreeStays Long Running Request: GetSiteSettingsQuery (705 ms) {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-28 00:01:12.758 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 872.3924 ms
+2025-12-28 00:01:15.909 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:01:15.909 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:01:15.917 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-28 00:01:15.917 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-28 00:01:16.423 +03:00 [WRN] FreeStays Long Running Request: GetDashboardQuery (505 ms) {"$type":"GetDashboardQuery"}
+2025-12-28 00:01:16.442 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 576.0032 ms
+2025-12-28 00:01:16.660 +03:00 [WRN] FreeStays Long Running Request: GetDashboardQuery (742 ms) {"$type":"GetDashboardQuery"}
+2025-12-28 00:01:16.661 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 794.8952 ms
+2025-12-28 00:01:17.982 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:01:17.983 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:01:18.116 +03:00 [INF] HTTP GET /api/v1/admin/homepage/sections responded 200 in 135.3012 ms
+2025-12-28 00:01:18.116 +03:00 [INF] HTTP GET /api/v1/admin/homepage/sections responded 200 in 136.6108 ms
+2025-12-28 00:01:27.334 +03:00 [INF] HTTP GET /api/v1/sunhotels/destinations responded 200 in 886.2015 ms
+2025-12-28 00:01:30.199 +03:00 [INF] HTTP GET /api/v1/sunhotels/destinations/search responded 200 in 20.2667 ms
+2025-12-28 00:02:56.600 +03:00 [INF] HTTP GET /api/v1/sunhotels/destinations/search responded 200 in 17.0540 ms
+2025-12-28 00:03:56.269 +03:00 [INF] HTTP GET /api/v1/sunhotels/destinations/search responded 200 in 15.7542 ms
+2025-12-28 00:04:11.646 +03:00 [INF] HTTP GET /api/v1/sunhotels/destinations responded 200 in 134.9790 ms
+2025-12-28 00:04:14.751 +03:00 [INF] HTTP GET /api/v1/sunhotels/hotels responded 200 in 2774.8459 ms
+2025-12-28 00:04:26.109 +03:00 [INF] HTTP GET /api/v1/sunhotels/destinations/search responded 200 in 17.6926 ms
+2025-12-28 00:04:37.901 +03:00 [INF] HTTP GET /api/v1/sunhotels/destinations/search responded 200 in 11.6061 ms
+2025-12-28 00:05:05.057 +03:00 [INF] HTTP GET /api/v1/sunhotels/destinations/search responded 200 in 22.1457 ms
+2025-12-28 00:05:11.058 +03:00 [INF] HTTP GET /api/v1/sunhotels/destinations/search responded 200 in 9.3007 ms
+2025-12-28 00:05:14.232 +03:00 [INF] HTTP GET /api/v1/sunhotels/destinations/search responded 200 in 9.7348 ms
+2025-12-28 00:05:24.518 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:05:24.695 +03:00 [INF] HTTP POST /api/v1/admin/homepage/sections responded 200 in 178.5845 ms
+2025-12-28 00:05:24.698 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:05:24.814 +03:00 [INF] HTTP GET /api/v1/admin/homepage/sections responded 200 in 116.4476 ms
+2025-12-28 00:08:02.705 +03:00 [INF] Execution RecurringJobScheduler recovered from the Faulted state after 00:00:46.1966953 and is in the Running state now
+2025-12-28 00:08:04.382 +03:00 [INF] Execution DelayedJobScheduler recovered from the Faulted state after 00:00:48.6494097 and is in the Running state now
+2025-12-28 00:08:09.366 +03:00 [INF] HTTP GET /api/v1/api/v1/public/settings/affiliate-programs responded 404 in 3.7273 ms
+2025-12-28 00:08:09.472 +03:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2025-12-28 00:08:10.050 +03:00 [INF] HTTP GET /api/v1/public/homepage/sections responded 200 in 684.9918 ms
+2025-12-28 00:09:44.502 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:09:44.580 +03:00 [INF] HTTP POST /api/v1/admin/homepage/sections responded 200 in 81.9658 ms
+2025-12-28 00:09:44.583 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:09:44.660 +03:00 [INF] HTTP GET /api/v1/admin/homepage/sections responded 200 in 76.7665 ms
+2025-12-28 00:11:47.211 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:11:47.376 +03:00 [INF] HTTP GET /api/v1/admin/homepage/sections responded 200 in 176.9046 ms
+2025-12-28 00:12:17.331 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:12:17.463 +03:00 [INF] HTTP GET /api/v1/admin/homepage/sections responded 200 in 133.8638 ms
+2025-12-28 00:12:22.432 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:12:22.473 +03:00 [INF] HTTP PUT /api/v1/admin/homepage/sections/reorder responded 400 in 43.4670 ms
+2025-12-28 00:12:22.478 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:12:22.572 +03:00 [INF] HTTP GET /api/v1/admin/homepage/sections responded 200 in 94.8989 ms
+2025-12-28 00:12:29.982 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:12:29.984 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:12:30.093 +03:00 [INF] HTTP GET /api/v1/admin/homepage/sections responded 200 in 109.6267 ms
+2025-12-28 00:12:30.672 +03:00 [INF] HTTP GET /api/v1/admin/homepage/sections responded 200 in 692.9991 ms
+2025-12-28 00:12:34.504 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:12:34.506 +03:00 [INF] HTTP PUT /api/v1/admin/homepage/sections/reorder responded 400 in 2.6918 ms
+2025-12-28 00:12:34.537 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:12:34.608 +03:00 [INF] HTTP GET /api/v1/admin/homepage/sections responded 200 in 71.5078 ms
+2025-12-28 00:14:23.344 +03:00 [INF] HTTP GET /api/v1/api/v1/public/settings/affiliate-programs responded 404 in 1.8519 ms
+2025-12-28 00:14:23.458 +03:00 [INF] HTTP GET /api/v1/public/homepage/sections responded 200 in 116.1372 ms
+2025-12-28 00:15:29.982 +03:00 [INF] HTTP GET /api/v1/api/v1/public/settings/affiliate-programs responded 404 in 2.8181 ms
+2025-12-28 00:15:30.093 +03:00 [INF] HTTP GET /api/v1/public/homepage/sections responded 200 in 113.4027 ms
+2025-12-28 00:15:59.575 +03:00 [INF] HTTP GET /api/v1/api/v1/public/settings/affiliate-programs responded 404 in 0.8010 ms
+2025-12-28 00:16:32.511 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-28 00:16:32.605 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 101.8544 ms
+2025-12-28 00:16:41.667 +03:00 [INF] HTTP GET /api/v1/api/v1/public/settings/affiliate-programs responded 404 in 3.6690 ms
+2025-12-28 00:16:41.778 +03:00 [INF] HTTP GET /api/v1/public/homepage/sections responded 200 in 111.5532 ms
+2025-12-28 00:16:52.767 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-28 00:16:52.844 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 78.8953 ms
+2025-12-28 00:17:36.824 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-28 00:17:36.903 +03:00 [INF] HTTP GET /api/v1/public/homepage/sections responded 200 in 81.4895 ms
+2025-12-28 00:17:37.302 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 480.8859 ms
+2025-12-28 00:18:29.640 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:18:29.640 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:18:29.646 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-28 00:18:29.646 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-28 00:18:30.094 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 462.6676 ms
+2025-12-28 00:18:30.412 +03:00 [WRN] FreeStays Long Running Request: GetDashboardQuery (757 ms) {"$type":"GetDashboardQuery"}
+2025-12-28 00:18:30.412 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 780.7799 ms
+2025-12-28 00:18:58.898 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:18:59.061 +03:00 [INF] HTTP POST /api/v1/admin/homepage/sections responded 200 in 167.5374 ms
+2025-12-28 00:18:59.067 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:18:59.169 +03:00 [INF] HTTP GET /api/v1/admin/homepage/sections responded 200 in 102.4341 ms
+2025-12-28 00:19:15.002 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-28 00:19:15.146 +03:00 [INF] HTTP GET /api/v1/public/homepage/sections responded 200 in 154.9473 ms
+2025-12-28 00:19:15.150 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 159.1217 ms
+2025-12-28 00:21:30.022 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:21:30.097 +03:00 [INF] HTTP POST /api/v1/admin/homepage/sections responded 200 in 77.0708 ms
+2025-12-28 00:21:30.101 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:21:30.175 +03:00 [INF] HTTP GET /api/v1/admin/homepage/sections responded 200 in 74.2110 ms
+2025-12-28 00:21:37.845 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-hotels responded 404 in 1.0402 ms
+2025-12-28 00:21:37.845 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-destinations responded 404 in 0.0339 ms
+2025-12-28 00:21:37.848 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-hotels responded 404 in 0.0695 ms
+2025-12-28 00:21:37.848 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-destinations responded 404 in 0.0206 ms
+2025-12-28 00:22:46.673 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:22:46.675 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:22:46.739 +03:00 [INF] FreeStays Request: GetAllCouponsQuery {"Page":1,"PageSize":20,"IsActive":null,"$type":"GetAllCouponsQuery"}
+2025-12-28 00:22:46.739 +03:00 [INF] FreeStays Request: GetAllCouponsQuery {"Page":1,"PageSize":20,"IsActive":null,"$type":"GetAllCouponsQuery"}
+2025-12-28 00:22:47.017 +03:00 [INF] HTTP GET /api/v1/admin/coupons responded 200 in 342.1625 ms
+2025-12-28 00:22:47.017 +03:00 [INF] HTTP GET /api/v1/admin/coupons responded 200 in 350.0372 ms
+2025-12-28 00:23:47.297 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:23:47.767 +03:00 [INF] HTTP POST /api/v1/admin/homepage/sections responded 200 in 472.6716 ms
+2025-12-28 00:23:47.773 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:23:47.844 +03:00 [INF] HTTP GET /api/v1/admin/homepage/sections responded 200 in 71.4866 ms
+2025-12-28 00:23:51.625 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-hotels responded 404 in 0.1495 ms
+2025-12-28 00:23:51.627 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-destinations responded 404 in 0.1233 ms
+2025-12-28 00:23:51.629 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-hotels responded 404 in 0.2899 ms
+2025-12-28 00:23:51.633 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-destinations responded 404 in 0.1319 ms
+2025-12-28 00:24:03.923 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-28 00:24:04.009 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 89.3020 ms
+2025-12-28 00:24:04.353 +03:00 [INF] HTTP GET /api/v1/public/homepage/sections responded 200 in 433.3860 ms
+2025-12-28 00:24:04.373 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-hotels responded 404 in 0.1135 ms
+2025-12-28 00:24:04.373 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-destinations responded 404 in 0.0612 ms
+2025-12-28 00:24:04.373 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-hotels responded 404 in 0.0306 ms
+2025-12-28 00:24:04.376 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-destinations responded 404 in 0.0413 ms
+2025-12-28 00:25:04.956 +03:00 [INF] HTTP GET /api/v1/api/v1/public/homepage/sections responded 404 in 0.9147 ms
+2025-12-28 00:25:04.968 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-28 00:25:05.008 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-hotels responded 404 in 0.1034 ms
+2025-12-28 00:25:05.014 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-destinations responded 404 in 0.0808 ms
+2025-12-28 00:25:05.015 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-hotels responded 404 in 0.0713 ms
+2025-12-28 00:25:05.016 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-destinations responded 404 in 0.1059 ms
+2025-12-28 00:25:05.072 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 117.4666 ms
+2025-12-28 00:28:05.463 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-28 00:28:05.620 +03:00 [INF] HTTP GET /api/v1/public/homepage/sections responded 200 in 162.9781 ms
+2025-12-28 00:28:05.624 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 167.2997 ms
+2025-12-28 00:28:05.647 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-hotels responded 404 in 0.0951 ms
+2025-12-28 00:28:05.647 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-destinations responded 404 in 0.0429 ms
+2025-12-28 00:28:05.648 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-hotels responded 404 in 0.0180 ms
+2025-12-28 00:28:05.649 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-destinations responded 404 in 0.0525 ms
+2025-12-28 00:29:11.268 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-28 00:29:11.774 +03:00 [WRN] FreeStays Long Running Request: GetSiteSettingsQuery (503 ms) {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-28 00:29:11.775 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 509.8358 ms
+2025-12-28 00:29:11.848 +03:00 [INF] HTTP GET /api/v1/public/homepage/sections responded 200 in 581.1788 ms
+2025-12-28 00:29:11.871 +03:00 [INF] HTTP GET /api/v1/public/featured-destinations responded 404 in 0.6251 ms
+2025-12-28 00:29:11.875 +03:00 [INF] HTTP GET /api/v1/public/featured-destinations responded 404 in 0.0244 ms
+2025-12-28 00:29:11.907 +03:00 [INF] Getting featured hotels with 5 stars, language: tr
+2025-12-28 00:29:11.907 +03:00 [INF] Getting featured hotels with 5 stars, language: tr
+2025-12-28 00:30:14.413 +03:00 [WRN] JWT Authentication challenge: null, null
+2025-12-28 00:30:14.415 +03:00 [INF] HTTP GET /api/v1/admin/featured-content/destinations responded 401 in 23.7557 ms
+2025-12-28 00:30:43.662 +03:00 [INF] FreeStays Request: GetActiveFeaturedDestinationsQuery {"Count":10,"Season":null,"$type":"GetActiveFeaturedDestinationsQuery"}
+2025-12-28 00:30:44.258 +03:00 [WRN] FreeStays Long Running Request: GetActiveFeaturedDestinationsQuery (594 ms) {"Count":10,"Season":null,"$type":"GetActiveFeaturedDestinationsQuery"}
+2025-12-28 00:30:44.267 +03:00 [INF] HTTP GET /api/v1/FeaturedContent/destinations responded 200 in 622.7697 ms
+2025-12-28 00:31:32.508 +03:00 [INF] HTTP GET /api/v1/public/featured-hotels responded 200 in 140635.6050 ms
+2025-12-28 00:32:05.876 +03:00 [INF] HTTP GET /api/v1/public/featured-hotels responded 200 in 174009.9204 ms
+2025-12-28 00:32:45.283 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-28 00:32:45.370 +03:00 [INF] HTTP GET /api/v1/public/homepage/sections responded 200 in 92.7536 ms
+2025-12-28 00:32:45.386 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 108.8091 ms
+2025-12-28 00:34:16.653 +03:00 [INF] HTTP GET /api/v1/public/homepage/sections responded 200 in 214.4759 ms
+2025-12-28 00:35:36.293 +03:00 [INF] HTTP GET /api/v1/public/featured-destinations responded 404 in 5.6265 ms
+2025-12-28 00:35:36.293 +03:00 [INF] HTTP GET /api/v1/public/featured-destinations responded 404 in 5.5662 ms
+2025-12-28 00:35:36.301 +03:00 [INF] Getting featured hotels with 5 stars, language: tr
+2025-12-28 00:35:36.301 +03:00 [INF] Getting featured hotels with 5 stars, language: tr
+2025-12-28 00:36:12.422 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-destinations responded 404 in 0.9170 ms
+2025-12-28 00:36:12.422 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-destinations responded 404 in 0.1021 ms
+2025-12-28 00:36:12.422 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-hotels responded 404 in 0.8528 ms
+2025-12-28 00:36:12.422 +03:00 [INF] HTTP GET /api/v1/api/v1/public/featured-hotels responded 404 in 0.8541 ms
+2025-12-28 00:36:12.636 +03:00 [INF] HTTP GET /api/v1/public/featured-destinations responded 404 in 0.0346 ms
+2025-12-28 00:36:12.638 +03:00 [INF] Getting featured hotels with 5 stars, language: tr
+2025-12-28 00:36:12.639 +03:00 [INF] Getting featured hotels with 5 stars, language: tr
+2025-12-28 00:36:12.640 +03:00 [INF] HTTP GET /api/v1/public/featured-destinations responded 404 in 0.0360 ms
+2025-12-28 00:37:38.169 +03:00 [INF] HTTP GET /api/v1/public/featured-destinations responded 404 in 0.1221 ms
+2025-12-28 00:37:38.217 +03:00 [INF] Getting featured hotels with 5 stars, language: tr
+2025-12-28 00:37:38.218 +03:00 [INF] Getting featured hotels with 5 stars, language: tr
+2025-12-28 00:37:48.734 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-28 00:37:49.227 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 500.8945 ms
+2025-12-28 00:37:49.291 +03:00 [INF] HTTP GET /api/v1/public/homepage/sections responded 200 in 564.7875 ms
+2025-12-28 00:37:49.317 +03:00 [ERR] Error getting featured hotels
+System.OperationCanceledException: Query was cancelled
+ ---> Npgsql.PostgresException (0x80004005): 57014: canceling statement due to user request
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+  Exception data:
+    Severity: ERROR
+    SqlState: 57014
+    MessageText: canceling statement due to user request
+    File: postgres.c
+    Line: 3463
+    Routine: ProcessInterrupts
+   --- End of inner exception stack trace ---
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.Read(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsCacheService.GetAllHotelsAsync(CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsCacheService.cs:line 256
+   at FreeStays.API.Controllers.PublicHotelsController.GetFeaturedHotels(Nullable`1 stars, Int32 count, String acceptLanguage, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Controllers/PublicHotelsController.cs:line 50
+2025-12-28 00:37:49.371 +03:00 [ERR] HTTP GET /api/v1/public/featured-hotels responded 500 in 11187.4960 ms
+2025-12-28 00:37:51.950 +03:00 [INF] HTTP GET /api/v1/public/featured-hotels responded 200 in 135664.8995 ms
+2025-12-28 00:37:52.115 +03:00 [ERR] Error getting featured hotels
+System.OperationCanceledException: Query was cancelled
+ ---> Npgsql.PostgresException (0x80004005): 57014: canceling statement due to user request
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+  Exception data:
+    Severity: ERROR
+    SqlState: 57014
+    MessageText: canceling statement due to user request
+    File: postgres.c
+    Line: 3463
+    Routine: ProcessInterrupts
+   --- End of inner exception stack trace ---
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.Read(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsCacheService.GetAllHotelsAsync(CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsCacheService.cs:line 256
+   at FreeStays.API.Controllers.PublicHotelsController.GetFeaturedHotels(Nullable`1 stars, Int32 count, String acceptLanguage, CancellationToken cancellationToken) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Controllers/PublicHotelsController.cs:line 50
+2025-12-28 00:37:52.117 +03:00 [ERR] HTTP GET /api/v1/public/featured-hotels responded 500 in 13948.8468 ms
+2025-12-28 00:39:12.740 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:39:12.857 +03:00 [INF] HTTP POST /api/v1/admin/homepage/sections responded 200 in 130.6728 ms
+2025-12-28 00:39:12.861 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:39:12.948 +03:00 [INF] HTTP GET /api/v1/admin/homepage/sections responded 200 in 87.5654 ms
+2025-12-28 00:39:15.207 +03:00 [INF] HTTP GET /api/v1/public/featured-hotels responded 200 in 182607.4507 ms
+2025-12-28 00:39:19.194 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-28 00:39:19.278 +03:00 [INF] HTTP GET /api/v1/public/homepage/sections responded 200 in 87.3430 ms
+2025-12-28 00:39:19.282 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 90.5858 ms
+2025-12-28 00:40:04.719 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:40:04.791 +03:00 [INF] HTTP POST /api/v1/admin/homepage/sections responded 200 in 73.9393 ms
+2025-12-28 00:40:04.794 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:40:04.867 +03:00 [INF] HTTP GET /api/v1/admin/homepage/sections responded 200 in 74.1603 ms
+2025-12-28 00:40:08.962 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-28 00:40:09.032 +03:00 [INF] HTTP GET /api/v1/public/homepage/sections responded 200 in 75.8630 ms
+2025-12-28 00:40:09.035 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 77.1534 ms
+2025-12-28 00:40:09.047 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-28 00:40:09.047 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-28 00:40:09.110 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 63.6500 ms
+2025-12-28 00:40:09.114 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 66.9064 ms
+2025-12-28 00:40:16.677 +03:00 [INF] HTTP GET /api/v1/public/featured-hotels responded 200 in 280426.8007 ms
+2025-12-28 00:40:39.679 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:40:39.817 +03:00 [INF] HTTP POST /api/v1/admin/homepage/sections responded 200 in 138.9895 ms
+2025-12-28 00:40:39.821 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:40:39.897 +03:00 [INF] HTTP GET /api/v1/admin/homepage/sections responded 200 in 76.0746 ms
+2025-12-28 00:40:44.984 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-28 00:40:45.019 +03:00 [INF] HTTP PATCH /api/v1/admin/homepage/sections/reorder responded 200 in 35.8394 ms
+2025-12-28 00:40:49.687 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-28 00:40:49.751 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 63.5926 ms
+2025-12-28 00:40:49.821 +03:00 [INF] HTTP GET /api/v1/public/homepage/sections responded 200 in 134.8518 ms
+2025-12-28 00:40:49.833 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-28 00:40:49.833 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-28 00:40:49.894 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 61.2025 ms
+2025-12-28 00:40:49.901 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 68.2399 ms
+2025-12-28 00:40:52.701 +03:00 [INF] HTTP GET /api/v1/public/featured-hotels responded 200 in 280100.9039 ms
+2025-12-28 00:44:16.262 +03:00 [INF] Server macbookair-c269b1f8:22912:147db869 caught stopping signal...
+2025-12-28 00:44:16.377 +03:00 [INF] Server macbookair-c269b1f8:22912:147db869 All dispatchers stopped
+2025-12-28 00:44:16.454 +03:00 [INF] Server macbookair-c269b1f8:22912:147db869 successfully reported itself as stopped in 73,8932 ms
+2025-12-28 00:44:16.454 +03:00 [INF] Server macbookair-c269b1f8:22912:147db869 has been stopped in total 187,7533 ms

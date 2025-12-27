@@ -11,6 +11,7 @@ using Hangfire;
 using Hangfire.InMemory;
 using Hangfire.Redis.StackExchange;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -59,6 +60,19 @@ builder.Services.AddAuthentication(options =>
     {
         OnAuthenticationFailed = context =>
         {
+            // AllowAnonymous endpoint'lerde expired token hatalarını ignore et
+            var endpoint = context.HttpContext.GetEndpoint();
+            var allowAnonymous = endpoint?.Metadata?.GetMetadata<IAllowAnonymous>() != null;
+
+            if (allowAnonymous && context.Exception is SecurityTokenExpiredException)
+            {
+                Log.Warning("Expired token on AllowAnonymous endpoint: {Path}", context.HttpContext.Request.Path);
+                context.Response.Headers.Append("Token-Expired", "true");
+                // AllowAnonymous endpoint için authentication'ı başarılı say
+                context.NoResult();
+                return Task.CompletedTask;
+            }
+
             Log.Error(context.Exception, "JWT Authentication failed");
             if (context.Exception is SecurityTokenExpiredException)
             {
@@ -73,6 +87,17 @@ builder.Services.AddAuthentication(options =>
         },
         OnChallenge = context =>
         {
+            // AllowAnonymous endpoint'lerde challenge'ı bypass et
+            var endpoint = context.HttpContext.GetEndpoint();
+            var allowAnonymous = endpoint?.Metadata?.GetMetadata<IAllowAnonymous>() != null;
+
+            if (allowAnonymous)
+            {
+                Log.Information("Challenge bypassed for AllowAnonymous endpoint: {Path}", context.HttpContext.Request.Path);
+                context.HandleResponse();
+                return Task.CompletedTask;
+            }
+
             Log.Warning("JWT Authentication challenge: {Error}, {ErrorDescription}", context.Error, context.ErrorDescription);
             return Task.CompletedTask;
         }

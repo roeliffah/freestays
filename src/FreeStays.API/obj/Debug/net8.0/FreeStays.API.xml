@@ -100,6 +100,71 @@
             Delete featured destination
             </summary>
         </member>
+        <member name="T:FreeStays.API.Controllers.Admin.AdminHomePageController">
+            <summary>
+            Homepage Section Management (Admin)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminHomePageController.GetAllSections(System.Threading.CancellationToken)">
+            <summary>
+            Tüm homepage section'larını getir (Admin)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminHomePageController.CreateSection(FreeStays.Application.DTOs.HomePage.CreateHomePageSectionRequest,System.Threading.CancellationToken)">
+            <summary>
+            Yeni section oluştur
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminHomePageController.UpdateSection(System.Guid,FreeStays.Application.DTOs.HomePage.UpdateHomePageSectionRequest,System.Threading.CancellationToken)">
+            <summary>
+            Section güncelle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminHomePageController.DeleteSection(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Section sil
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminHomePageController.ReorderSections(FreeStays.Application.DTOs.HomePage.ReorderSectionsRequest,System.Threading.CancellationToken)">
+            <summary>
+            Section'ları yeniden sırala
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminHomePageController.ToggleSection(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Section aktif/pasif durumunu değiştir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminHomePageController.GetSectionTranslations(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Section çevirilerini getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminHomePageController.UpdateSectionTranslations(System.Guid,FreeStays.Application.DTOs.HomePage.UpdateSectionTranslationsRequest,System.Threading.CancellationToken)">
+            <summary>
+            Section çevirilerini güncelle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminHomePageController.GetSectionHotels(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Section'a ait otelleri getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminHomePageController.UpdateSectionHotels(System.Guid,FreeStays.Application.DTOs.HomePage.UpdateSectionHotelsRequest,System.Threading.CancellationToken)">
+            <summary>
+            Section'a ait otelleri güncelle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminHomePageController.GetSectionDestinations(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Section'a ait destinasyonları getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminHomePageController.UpdateSectionDestinations(System.Guid,FreeStays.Application.DTOs.HomePage.UpdateSectionDestinationsRequest,System.Threading.CancellationToken)">
+            <summary>
+            Section'a ait destinasyonları güncelle
+            </summary>
+        </member>
         <member name="T:FreeStays.API.Controllers.Admin.AdminJobsController">
             <summary>
             Background job'ları yönetme endpoint'leri
@@ -725,6 +790,87 @@
         <member name="M:FreeStays.API.Controllers.PaymentsController.GetPaymentHistory(System.Int32,System.Int32)">
             <summary>
             Ödeme geçmişi
+            </summary>
+        </member>
+        <member name="T:FreeStays.API.Controllers.PublicHomePageController">
+            <summary>
+            Public Homepage Sections API - Frontend için optimize edilmiş, hızlı endpoint
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.PublicHomePageController.GetActiveSections(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Aktif homepage section'larını getir (Public - Frontend için)
+            </summary>
+            <param name="locale">Dil kodu (tr, en, de, fr, etc.)</param>
+            <param name="cancellationToken"></param>
+        </member>
+        <member name="M:FreeStays.API.Controllers.PublicHomePageController.GetSectionById(System.Guid,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Specific section detaylarını getir
+            </summary>
+        </member>
+        <member name="T:FreeStays.API.Controllers.PublicHotelsController">
+            <summary>
+            Public API - Ziyaretçilere gösterilecek otel ve destinasyon endpoint'leri
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.PublicHotelsController.GetFeaturedHotels(System.Nullable{System.Int32},System.Int32,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Yıldız sayısına göre popüler otelleri getirir (dil bazlı)
+            </summary>
+            <param name="stars">Otel yıldız sayısı (3, 4, 5 gibi). Varsayılan: tümü</param>
+            <param name="count">Kaç otel getirileceği. Varsayılan: 10</param>
+            <param name="acceptLanguage">Dil kodu (Accept-Language header'dan)</param>
+            <param name="cancellationToken"></param>
+        </member>
+        <member name="M:FreeStays.API.Controllers.PublicHotelsController.GetPopularDestinations(System.String,System.Int32,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Ülke bazlı popüler destinasyonları getirir (dil bazlı)
+            </summary>
+            <param name="country">Ülke kodu (ör: TR, US). Boş bırakılırsa tüm ülkeler</param>
+            <param name="count">Kaç destinasyon getirileceği. Varsayılan: 10</param>
+            <param name="acceptLanguage">Dil kodu (Accept-Language header'dan)</param>
+            <param name="cancellationToken"></param>
+        </member>
+        <member name="M:FreeStays.API.Controllers.PublicHotelsController.GetRomanticHotels(System.Int32,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Romantik turlar için otelleri getirir (dil bazlı, theme bazlı)
+            </summary>
+            <param name="count">Kaç otel getirileceği. Varsayılan: 10</param>
+            <param name="acceptLanguage">Dil kodu (Accept-Language header'dan)</param>
+            <param name="cancellationToken"></param>
+        </member>
+        <member name="M:FreeStays.API.Controllers.PublicHotelsController.GetAccommodationTypes(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Themes ve features bazlı konaklama tiplerini getirir (dil bazlı)
+            </summary>
+            <param name="acceptLanguage">Dil kodu (Accept-Language header'dan)</param>
+            <param name="cancellationToken"></param>
+        </member>
+        <member name="M:FreeStays.API.Controllers.PublicHotelsController.ParseLanguage(System.String)">
+            <summary>
+            Accept-Language header'dan dil kodunu parse eder
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.PublicHotelsController.ParseJsonArray(System.String)">
+            <summary>
+            JSON array string'i List&lt;string&gt;'e parse eder
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.PublicSettingsController.GetPublicSiteSettings">
+            <summary>
+            Frontend için genel site ayarlarını getir (anonim erişim)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.PublicSettingsController.GetAffiliatePrograms">
+            <summary>
+            Frontend için affiliate programs ayarlarını getir (anonim erişim)
+            Widget kodları ve affiliate linkleri için kullanılır
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.PublicSettingsController.GetSocialLinks">
+            <summary>
+            Frontend için sosyal medya linklerini getir (anonim erişim)
             </summary>
         </member>
         <member name="T:FreeStays.API.Controllers.SunHotelsController">

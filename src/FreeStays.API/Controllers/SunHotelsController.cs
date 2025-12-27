@@ -1,6 +1,7 @@
 using FreeStays.Application.Common.Interfaces;
 using FreeStays.Infrastructure.ExternalServices.SunHotels;
 using FreeStays.Infrastructure.ExternalServices.SunHotels.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FreeStays.API.Controllers;
@@ -33,6 +34,7 @@ public class SunHotelsController : ControllerBase
     /// Cache istatistiklerini getirir
     /// </summary>
     [HttpGet("statistics")]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(SunHotelsCacheStatistics), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetStatistics(CancellationToken cancellationToken)
     {
@@ -48,6 +50,7 @@ public class SunHotelsController : ControllerBase
     /// Tüm destinasyonları getirir
     /// </summary>
     [HttpGet("destinations")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllDestinations(CancellationToken cancellationToken)
     {
@@ -59,6 +62,7 @@ public class SunHotelsController : ControllerBase
     /// Destinasyon ID'ye göre getirir
     /// </summary>
     [HttpGet("destinations/{id:int}")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDestinationById(int id, CancellationToken cancellationToken)
@@ -74,6 +78,7 @@ public class SunHotelsController : ControllerBase
     /// Destinasyonlarda arama yapar
     /// </summary>
     [HttpGet("destinations/search")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> SearchDestinations([FromQuery] string q, CancellationToken cancellationToken)
     {
@@ -89,6 +94,7 @@ public class SunHotelsController : ControllerBase
     /// Tüm resortları getirir
     /// </summary>
     [HttpGet("resorts")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllResorts(CancellationToken cancellationToken)
     {
@@ -100,6 +106,7 @@ public class SunHotelsController : ControllerBase
     /// Resort ID'ye göre getirir
     /// </summary>
     [HttpGet("resorts/{id:int}")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetResortById(int id, CancellationToken cancellationToken)
@@ -115,6 +122,7 @@ public class SunHotelsController : ControllerBase
     /// Destinasyona göre resortları getirir
     /// </summary>
     [HttpGet("destinations/{destinationId:int}/resorts")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetResortsByDestination(int destinationId, CancellationToken cancellationToken)
     {
@@ -126,6 +134,7 @@ public class SunHotelsController : ControllerBase
     /// Resortlarda arama yapar
     /// </summary>
     [HttpGet("resorts/search")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> SearchResorts([FromQuery] string q, CancellationToken cancellationToken)
     {
@@ -141,6 +150,7 @@ public class SunHotelsController : ControllerBase
     /// Tüm yemek tiplerini getirir
     /// </summary>
     [HttpGet("meals")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllMeals(CancellationToken cancellationToken)
     {
@@ -152,6 +162,7 @@ public class SunHotelsController : ControllerBase
     /// Yemek tipi ID'ye göre getirir
     /// </summary>
     [HttpGet("meals/{id:int}")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetMealById(int id, CancellationToken cancellationToken)
@@ -171,6 +182,7 @@ public class SunHotelsController : ControllerBase
     /// Tüm oda tiplerini getirir
     /// </summary>
     [HttpGet("room-types")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllRoomTypes(CancellationToken cancellationToken)
     {
@@ -182,6 +194,7 @@ public class SunHotelsController : ControllerBase
     /// Oda tipi ID'ye göre getirir
     /// </summary>
     [HttpGet("room-types/{id:int}")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetRoomTypeById(int id, CancellationToken cancellationToken)
@@ -201,6 +214,7 @@ public class SunHotelsController : ControllerBase
     /// Tüm özellikleri getirir
     /// </summary>
     [HttpGet("features")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllFeatures(CancellationToken cancellationToken)
     {
@@ -212,6 +226,7 @@ public class SunHotelsController : ControllerBase
     /// Özellik ID'ye göre getirir
     /// </summary>
     [HttpGet("features/{id:int}")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetFeatureById(int id, CancellationToken cancellationToken)
@@ -227,6 +242,7 @@ public class SunHotelsController : ControllerBase
     /// Özellik tipine göre filtreler
     /// </summary>
     [HttpGet("features/by-type/{featureType}")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetFeaturesByType(string featureType, CancellationToken cancellationToken)
     {
@@ -242,6 +258,7 @@ public class SunHotelsController : ControllerBase
     /// Tüm temaları getirir
     /// </summary>
     [HttpGet("themes")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllThemes(CancellationToken cancellationToken)
     {
@@ -253,6 +270,7 @@ public class SunHotelsController : ControllerBase
     /// Tema ID'ye göre getirir
     /// </summary>
     [HttpGet("themes/{id:int}")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetThemeById(int id, CancellationToken cancellationToken)
@@ -272,6 +290,7 @@ public class SunHotelsController : ControllerBase
     /// Tüm dilleri getirir
     /// </summary>
     [HttpGet("languages")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllLanguages(CancellationToken cancellationToken)
     {
@@ -283,6 +302,7 @@ public class SunHotelsController : ControllerBase
     /// Dil koduna göre getirir
     /// </summary>
     [HttpGet("languages/{code}")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetLanguageByCode(string code, CancellationToken cancellationToken)
@@ -302,6 +322,7 @@ public class SunHotelsController : ControllerBase
     /// Tüm transfer tiplerini getirir
     /// </summary>
     [HttpGet("transfer-types")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllTransferTypes(CancellationToken cancellationToken)
     {
@@ -313,6 +334,7 @@ public class SunHotelsController : ControllerBase
     /// Transfer tipi ID'ye göre getirir
     /// </summary>
     [HttpGet("transfer-types/{id:int}")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetTransferTypeById(int id, CancellationToken cancellationToken)
@@ -332,6 +354,7 @@ public class SunHotelsController : ControllerBase
     /// Tüm not tiplerini getirir
     /// </summary>
     [HttpGet("note-types")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllNoteTypes(CancellationToken cancellationToken)
     {
@@ -343,6 +366,7 @@ public class SunHotelsController : ControllerBase
     /// Not tipi ID'ye göre getirir
     /// </summary>
     [HttpGet("note-types/{id:int}")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetNoteTypeById(int id, CancellationToken cancellationToken)
@@ -362,6 +386,7 @@ public class SunHotelsController : ControllerBase
     /// Otelleri sayfalanmış olarak getirir
     /// </summary>
     [HttpGet("hotels")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetHotelsPaginated(
         [FromQuery] int page = 1,
@@ -392,6 +417,7 @@ public class SunHotelsController : ControllerBase
     /// Otel ID'ye göre getirir
     /// </summary>
     [HttpGet("hotels/{id:int}")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetHotelById(int id, CancellationToken cancellationToken)
@@ -407,6 +433,7 @@ public class SunHotelsController : ControllerBase
     /// Otellerde arama yapar
     /// </summary>
     [HttpGet("hotels/search")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> SearchHotels([FromQuery] string q, CancellationToken cancellationToken)
     {
@@ -418,6 +445,7 @@ public class SunHotelsController : ControllerBase
     /// Destinasyona göre otelleri getirir
     /// </summary>
     [HttpGet("destinations/{destinationId:int}/hotels")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetHotelsByDestination(int destinationId, CancellationToken cancellationToken)
     {
@@ -429,6 +457,7 @@ public class SunHotelsController : ControllerBase
     /// Resorta göre otelleri getirir
     /// </summary>
     [HttpGet("resorts/{resortId:int}/hotels")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetHotelsByResort(int resortId, CancellationToken cancellationToken)
     {
@@ -444,6 +473,7 @@ public class SunHotelsController : ControllerBase
     /// Otele göre odaları getirir
     /// </summary>
     [HttpGet("hotels/{hotelId:int}/rooms")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetRoomsByHotel(int hotelId, CancellationToken cancellationToken)
     {
@@ -455,6 +485,7 @@ public class SunHotelsController : ControllerBase
     /// Oda ID'ye göre getirir
     /// </summary>
     [HttpGet("rooms/{id:int}")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetRoomById(int id, CancellationToken cancellationToken)
@@ -498,6 +529,7 @@ public class SunHotelsController : ControllerBase
     /// Otel detayları - Canlı fiyat ve müsaitlik
     /// </summary>
     [HttpGet("hotels/{hotelId:int}/details")]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(SunHotelsSearchResultV3), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetHotelDetails(
@@ -684,6 +716,7 @@ public class SunHotelsController : ControllerBase
     /// Özel istek sorgulama
     /// </summary>
     [HttpGet("booking/{bookingId}/special-request")]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(SunHotelsSpecialRequestResult), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetSpecialRequest(string bookingId, CancellationToken cancellationToken)
     {
@@ -772,6 +805,7 @@ public class SunHotelsController : ControllerBase
     /// Transfer rezervasyon sorgulama
     /// </summary>
     [HttpGet("transfers/bookings")]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(List<SunHotelsBookingInfo>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetTransferBookings(
         [FromQuery] string? bookingId = null,

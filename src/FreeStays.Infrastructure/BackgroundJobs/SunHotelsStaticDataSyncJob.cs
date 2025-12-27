@@ -65,6 +65,8 @@ public class SunHotelsStaticDataSyncJob
             {
                 try
                 {
+                    _logger.LogInformation("🌍 Starting synchronization for language: {Language}", language);
+
                     // Destinations sadece İngilizce'de senkronize edilir (dil bağımsız)
                     if (language == "en")
                     {
@@ -77,23 +79,37 @@ public class SunHotelsStaticDataSyncJob
                     await SyncFeaturesAsync(language);
                     await SyncTransferTypesAsync(language);
                     await SyncNoteTypesAsync(language);
+
+                    // Her dil için otel ve oda verilerini senkronize et
+                    _logger.LogInformation("🏨 Starting hotel synchronization for language: {Language}", language);
+                    await SyncAllHotelsAsync(language);
+
+                    _logger.LogInformation("✅ Completed synchronization for language: {Language}", language);
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Error syncing data for language: {Language}", language);
+                    _logger.LogError(ex, "❌ Error syncing data for language: {Language}", language);
                     // Bir dil için hata olsa bile diğer dillere devam et
                 }
             }
-
-            // Otel ve oda verilerini senkronize et (sadece İngilizce)
-            await SyncAllHotelsAsync("en");
 
             // İstatistikleri topla
             stats["languages"] = await _dbContext.SunHotelsLanguages.Select(x => x.LanguageCode).Distinct().CountAsync();
             stats["destinations"] = await _dbContext.SunHotelsDestinations.Select(x => x.DestinationId).Distinct().CountAsync();
             stats["resorts"] = await _dbContext.SunHotelsResorts.Select(x => x.ResortId).Distinct().CountAsync();
             stats["hotels"] = await _dbContext.SunHotelsHotels.Select(x => x.HotelId).Distinct().CountAsync();
-            stats["rooms"] = await _dbContext.SunHotelsRooms.Select(x => x.Id).Distinct().CountAsync();
+            stats["rooms"] = await _dbContext.SunHotelsRooms.CountAsync();
+            stats["totalHotelsAllLanguages"] = await _dbContext.SunHotelsHotels.CountAsync();
+            stats["totalRoomsAllLanguages"] = await _dbContext.SunHotelsRooms.CountAsync();
+
+            // Her dil için ayrı ayrı sayıları ekle
+            foreach (var lang in supportedLanguages)
+            {
+                var hotelCountForLang = await _dbContext.SunHotelsHotels.CountAsync(h => h.Language == lang);
+                var roomCountForLang = await _dbContext.SunHotelsRooms.CountAsync(r => r.Language == lang);
+                stats[$"hotels_{lang}"] = hotelCountForLang;
+                stats[$"rooms_{lang}"] = roomCountForLang;
+            }
 
             jobHistory.Status = JobStatus.Completed;
             jobHistory.EndTime = DateTime.UtcNow;
