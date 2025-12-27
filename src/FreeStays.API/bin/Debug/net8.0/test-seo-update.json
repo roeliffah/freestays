@@ -1,0 +1,9 @@
+{
+    "defaultMetaTitle": "Test Title",
+    "defaultMetaDescription": "Test Description",
+    "googleAnalyticsId": "GA-123",
+    "googleTagManagerId": "GTM-456",
+    "facebookPixelId": "FB-789",
+    "robotsTxt": "User-agent: *\nAllow: /",
+    "sitemapEnabled": true
+}

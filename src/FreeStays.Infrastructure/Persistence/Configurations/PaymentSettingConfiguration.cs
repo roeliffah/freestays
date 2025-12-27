@@ -16,10 +16,16 @@ public class PaymentSettingConfiguration : IEntityTypeConfiguration<PaymentSetti
             .IsRequired()
             .HasMaxLength(50);
 
-        builder.Property(p => p.PublicKey)
+        builder.Property(p => p.TestModePublicKey)
             .HasMaxLength(500);
 
-        builder.Property(p => p.SecretKey)
+        builder.Property(p => p.TestModeSecretKey)
+            .HasMaxLength(500);
+
+        builder.Property(p => p.LiveModePublicKey)
+            .HasMaxLength(500);
+
+        builder.Property(p => p.LiveModeSecretKey)
             .HasMaxLength(500);
 
         builder.Property(p => p.WebhookSecret)

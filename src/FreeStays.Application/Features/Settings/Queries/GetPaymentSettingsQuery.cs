@@ -4,9 +4,9 @@ using MediatR;
 
 namespace FreeStays.Application.Features.Settings.Queries;
 
-public record GetPaymentSettingsQuery : IRequest<List<PaymentSettingDto>>;
+public record GetPaymentSettingsQuery : IRequest<PaymentSettingDto?>;
 
-public class GetPaymentSettingsQueryHandler : IRequestHandler<GetPaymentSettingsQuery, List<PaymentSettingDto>>
+public class GetPaymentSettingsQueryHandler : IRequestHandler<GetPaymentSettingsQuery, PaymentSettingDto?>
 {
     private readonly IPaymentSettingRepository _paymentSettingRepository;
 
@@ -15,18 +15,27 @@ public class GetPaymentSettingsQueryHandler : IRequestHandler<GetPaymentSettings
         _paymentSettingRepository = paymentSettingRepository;
     }
 
-    public async Task<List<PaymentSettingDto>> Handle(GetPaymentSettingsQuery request, CancellationToken cancellationToken)
+    public async Task<PaymentSettingDto?> Handle(GetPaymentSettingsQuery request, CancellationToken cancellationToken)
     {
-        var settings = await _paymentSettingRepository.GetAllAsync(cancellationToken);
+        // Sadece stripe kullanıldığı için stripe ayarını getir
+        var setting = await _paymentSettingRepository.GetByProviderAsync("stripe", cancellationToken);
 
-        return settings.Select(s => new PaymentSettingDto
+        if (setting == null)
         {
-            Id = s.Id,
-            Provider = s.Provider,
-            PublicKey = s.PublicKey,
-            IsLive = s.IsLive,
-            IsActive = s.IsActive,
-            Settings = s.Settings
-        }).ToList();
+            return null;
+        }
+
+        return new PaymentSettingDto
+        {
+            Id = setting.Id,
+            Provider = setting.Provider,
+            TestModePublicKey = setting.TestModePublicKey,
+            TestModeSecretKey = setting.TestModeSecretKey,
+            LiveModePublicKey = setting.LiveModePublicKey,
+            LiveModeSecretKey = setting.LiveModeSecretKey,
+            WebhookSecret = setting.WebhookSecret,
+            IsLive = setting.IsLive,
+            IsActive = setting.IsActive
+        };
     }
 }

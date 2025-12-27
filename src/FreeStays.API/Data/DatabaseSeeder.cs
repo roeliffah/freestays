@@ -243,6 +243,14 @@ public static class DatabaseSeeder
                 Password = "Vision2024!@",
                 IsActive = true,
                 IntegrationMode = ServiceIntegrationMode.Api,
+                Settings = System.Text.Json.JsonSerializer.Serialize(new
+                {
+                    staticApiUrl = "http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx",
+                    nonStaticApiUrl = "http://xml.sunhotels.net/15/PostGet/NonStaticXMLAPI.asmx",
+                    version = "v15",
+                    timeout = 30000,
+                    retryCount = 3
+                }),
                 CreatedAt = DateTime.UtcNow
             },
             

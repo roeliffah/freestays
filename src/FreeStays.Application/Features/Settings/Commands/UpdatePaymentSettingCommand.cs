@@ -9,12 +9,13 @@ namespace FreeStays.Application.Features.Settings.Commands;
 public record UpdatePaymentSettingCommand : IRequest<PaymentSettingDto>
 {
     public string Provider { get; init; } = string.Empty;
-    public string? PublicKey { get; init; }
-    public string? SecretKey { get; init; }
+    public string? TestModePublicKey { get; init; }
+    public string? TestModeSecretKey { get; init; }
+    public string? LiveModePublicKey { get; init; }
+    public string? LiveModeSecretKey { get; init; }
     public string? WebhookSecret { get; init; }
     public bool IsLive { get; init; }
     public bool IsActive { get; init; }
-    public string? Settings { get; init; }
 }
 
 public class UpdatePaymentSettingCommandHandler : IRequestHandler<UpdatePaymentSettingCommand, PaymentSettingDto>
@@ -38,21 +39,34 @@ public class UpdatePaymentSettingCommandHandler : IRequestHandler<UpdatePaymentS
             {
                 Id = Guid.NewGuid(),
                 Provider = request.Provider,
-                PublicKey = request.PublicKey,
-                SecretKey = request.SecretKey,
+                TestModePublicKey = request.TestModePublicKey,
+                TestModeSecretKey = request.TestModeSecretKey,
+                LiveModePublicKey = request.LiveModePublicKey,
+                LiveModeSecretKey = request.LiveModeSecretKey,
                 WebhookSecret = request.WebhookSecret,
                 IsLive = request.IsLive,
                 IsActive = request.IsActive,
-                Settings = request.Settings
+                Settings = "{}"
             };
             await _paymentSettingRepository.AddAsync(setting, cancellationToken);
         }
         else
         {
-            setting.PublicKey = request.PublicKey;
-            if (!string.IsNullOrEmpty(request.SecretKey))
+            if (!string.IsNullOrEmpty(request.TestModePublicKey))
             {
-                setting.SecretKey = request.SecretKey;
+                setting.TestModePublicKey = request.TestModePublicKey;
+            }
+            if (!string.IsNullOrEmpty(request.TestModeSecretKey))
+            {
+                setting.TestModeSecretKey = request.TestModeSecretKey;
+            }
+            if (!string.IsNullOrEmpty(request.LiveModePublicKey))
+            {
+                setting.LiveModePublicKey = request.LiveModePublicKey;
+            }
+            if (!string.IsNullOrEmpty(request.LiveModeSecretKey))
+            {
+                setting.LiveModeSecretKey = request.LiveModeSecretKey;
             }
             if (!string.IsNullOrEmpty(request.WebhookSecret))
             {
@@ -60,7 +74,6 @@ public class UpdatePaymentSettingCommandHandler : IRequestHandler<UpdatePaymentS
             }
             setting.IsLive = request.IsLive;
             setting.IsActive = request.IsActive;
-            setting.Settings = request.Settings;
             setting.UpdatedAt = DateTime.UtcNow;
             await _paymentSettingRepository.UpdateAsync(setting, cancellationToken);
         }
@@ -71,10 +84,11 @@ public class UpdatePaymentSettingCommandHandler : IRequestHandler<UpdatePaymentS
         {
             Id = setting.Id,
             Provider = setting.Provider,
-            PublicKey = setting.PublicKey,
+            TestModePublicKey = setting.TestModePublicKey,
+            LiveModePublicKey = setting.LiveModePublicKey,
+            WebhookSecret = setting.WebhookSecret,
             IsLive = setting.IsLive,
-            IsActive = setting.IsActive,
-            Settings = setting.Settings
+            IsActive = setting.IsActive
         };
     }
 }

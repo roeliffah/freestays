@@ -27,7 +27,7 @@ public class UpdateSiteSettingCommandHandler : IRequestHandler<UpdateSiteSetting
     public async Task<SiteSettingDto> Handle(UpdateSiteSettingCommand request, CancellationToken cancellationToken)
     {
         var setting = await _siteSettingRepository.GetByKeyAsync(request.Key, cancellationToken);
-        
+
         // Ensure the value is valid JSON
         var jsonValue = EnsureJsonValue(request.Value);
 
@@ -60,9 +60,16 @@ public class UpdateSiteSettingCommandHandler : IRequestHandler<UpdateSiteSetting
             UpdatedAt = setting.UpdatedAt
         };
     }
-    
+
     private static string EnsureJsonValue(string value)
     {
+        // Check for boolean values  
+        if (value.Equals("true", StringComparison.OrdinalIgnoreCase) ||
+            value.Equals("false", StringComparison.OrdinalIgnoreCase))
+        {
+            return value.ToLower(); // Return as is, already valid JSON boolean
+        }
+
         // Check if value is already valid JSON
         try
         {

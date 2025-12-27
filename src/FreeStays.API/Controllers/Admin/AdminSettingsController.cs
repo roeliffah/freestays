@@ -1,3 +1,4 @@
+using FreeStays.Application.DTOs.Settings;
 using FreeStays.Application.Features.Settings.Commands;
 using FreeStays.Application.Features.Settings.Queries;
 using Microsoft.AspNetCore.Authorization;
@@ -24,6 +25,7 @@ public class AdminSettingsController : BaseApiController
         return Ok(new
         {
             siteName = settingsDict.GetValueOrDefault("siteName", "FreeStays"),
+            tagline = settingsDict.GetValueOrDefault("tagline", "Your Dream Stay, Our Mission"),
             siteUrl = settingsDict.GetValueOrDefault("siteUrl", "https://freestays.com"),
             supportEmail = settingsDict.GetValueOrDefault("supportEmail", "support@freestays.com"),
             supportPhone = settingsDict.GetValueOrDefault("supportPhone", "+90 555 123 4567"),
@@ -31,11 +33,14 @@ public class AdminSettingsController : BaseApiController
             availableLocales = new[] { "tr", "en", "de", "fr" },
             defaultCurrency = settingsDict.GetValueOrDefault("defaultCurrency", "TRY"),
             availableCurrencies = new[] { "TRY", "USD", "EUR", "GBP" },
+            timezone = settingsDict.GetValueOrDefault("timezone", "Europe/Amsterdam"),
             maintenanceMode = settingsDict.GetValueOrDefault("maintenanceMode", "false") == "true",
+            maintenanceMessage = settingsDict.GetValueOrDefault("maintenanceMessage", "Site is under maintenance. Please check back later."),
             logoUrl = settingsDict.GetValueOrDefault("logoUrl", "/images/logo.png"),
             faviconUrl = settingsDict.GetValueOrDefault("faviconUrl", "/images/favicon.ico"),
             profitMargin = decimal.TryParse(settingsDict.GetValueOrDefault("profitMargin", "10"), out var margin) ? margin : 10m,
-            defaultVatRate = decimal.TryParse(settingsDict.GetValueOrDefault("defaultVatRate", "20"), out var vat) ? vat : 20m
+            defaultVatRate = decimal.TryParse(settingsDict.GetValueOrDefault("defaultVatRate", "20"), out var vat) ? vat : 20m,
+            extraFee = decimal.TryParse(settingsDict.GetValueOrDefault("extraFee", "0"), out var extra) ? extra : 0m
         });
     }
 
@@ -49,6 +54,8 @@ public class AdminSettingsController : BaseApiController
     {
         if (request.SiteName != null)
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "siteName", Value = request.SiteName, Group = "site" });
+        if (request.Tagline != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "tagline", Value = request.Tagline, Group = "site" });
         if (request.SupportEmail != null)
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "supportEmail", Value = request.SupportEmail, Group = "site" });
         if (request.SupportPhone != null)
@@ -57,14 +64,20 @@ public class AdminSettingsController : BaseApiController
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "defaultLocale", Value = request.DefaultLocale, Group = "site" });
         if (request.DefaultCurrency != null)
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "defaultCurrency", Value = request.DefaultCurrency, Group = "site" });
+        if (request.Timezone != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "timezone", Value = request.Timezone, Group = "site" });
         if (request.MaintenanceMode.HasValue)
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "maintenanceMode", Value = request.MaintenanceMode.Value.ToString().ToLower(), Group = "site" });
+        if (request.MaintenanceMessage != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "maintenanceMessage", Value = request.MaintenanceMessage, Group = "site" });
         if (request.LogoUrl != null)
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "logoUrl", Value = request.LogoUrl, Group = "site" });
         if (request.ProfitMargin.HasValue)
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "profitMargin", Value = request.ProfitMargin.Value.ToString(), Group = "site" });
         if (request.DefaultVatRate.HasValue)
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "defaultVatRate", Value = request.DefaultVatRate.Value.ToString(), Group = "site" });
+        if (request.ExtraFee.HasValue)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "extraFee", Value = request.ExtraFee.Value.ToString(), Group = "site" });
 
         return Ok(new { message = "Site ayarları güncellendi." });
     }
@@ -77,22 +90,44 @@ public class AdminSettingsController : BaseApiController
     /// Genel SEO ayarlarını getir
     /// </summary>
     [HttpGet("seo")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SeoSettingsResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetSeoSettings()
     {
         var settings = await Mediator.Send(new GetSiteSettingsQuery("seo"));
         var settingsDict = settings.ToDictionary(s => s.Key, s => s.Value);
 
-        return Ok(new
+        // Helper to parse JSON or return null
+        List<string>? ParseJsonArray(string? json)
         {
-            defaultMetaTitle = settingsDict.GetValueOrDefault("defaultMetaTitle", "FreeStays - En İyi Otel Fırsatları"),
-            defaultMetaDescription = settingsDict.GetValueOrDefault("defaultMetaDescription", "FreeStays ile en uygun otel fırsatlarını keşfedin."),
-            googleAnalyticsId = settingsDict.GetValueOrDefault("googleAnalyticsId", ""),
-            googleTagManagerId = settingsDict.GetValueOrDefault("googleTagManagerId", ""),
-            facebookPixelId = settingsDict.GetValueOrDefault("facebookPixelId", ""),
-            robotsTxt = settingsDict.GetValueOrDefault("robotsTxt", "User-agent: *\nAllow: /"),
-            sitemapEnabled = settingsDict.GetValueOrDefault("sitemapEnabled", "true") == "true"
-        });
+            if (string.IsNullOrEmpty(json)) return null;
+            try { return System.Text.Json.JsonSerializer.Deserialize<List<string>>(json); }
+            catch { return null; }
+        }
+
+        var response = new SeoSettingsResponse(
+            DefaultMetaTitle: settingsDict.GetValueOrDefault("defaultMetaTitle", "FreeStays - En İyi Otel Fırsatları"),
+            DefaultMetaDescription: settingsDict.GetValueOrDefault("defaultMetaDescription", "FreeStays ile en uygun otel fırsatlarını keşfedin."),
+            GoogleAnalyticsId: settingsDict.GetValueOrDefault("googleAnalyticsId", ""),
+            GoogleTagManagerId: settingsDict.GetValueOrDefault("googleTagManagerId", ""),
+            FacebookPixelId: settingsDict.GetValueOrDefault("facebookPixelId", ""),
+            RobotsTxt: settingsDict.GetValueOrDefault("robotsTxt", "User-agent: *\nAllow: /"),
+            SitemapEnabled: settingsDict.GetValueOrDefault("sitemapEnabled", "true") == "true",
+            OrganizationName: settingsDict.GetValueOrDefault("organizationName", null),
+            OrganizationUrl: settingsDict.GetValueOrDefault("organizationUrl", null),
+            OrganizationLogo: settingsDict.GetValueOrDefault("organizationLogo", null),
+            OrganizationDescription: settingsDict.GetValueOrDefault("organizationDescription", null),
+            OrganizationSocialProfiles: ParseJsonArray(settingsDict.GetValueOrDefault("organizationSocialProfiles", null)),
+            WebsiteName: settingsDict.GetValueOrDefault("websiteName", null),
+            WebsiteUrl: settingsDict.GetValueOrDefault("websiteUrl", null),
+            WebsiteSearchActionTarget: settingsDict.GetValueOrDefault("websiteSearchActionTarget", null),
+            ContactPhone: settingsDict.GetValueOrDefault("contactPhone", null),
+            ContactEmail: settingsDict.GetValueOrDefault("contactEmail", null),
+            BusinessAddress: settingsDict.GetValueOrDefault("businessAddress", null),
+            TwitterSite: settingsDict.GetValueOrDefault("twitterSite", null),
+            TwitterCreator: settingsDict.GetValueOrDefault("twitterCreator", null)
+        );
+
+        return Ok(response);
     }
 
     /// <summary>
@@ -117,6 +152,40 @@ public class AdminSettingsController : BaseApiController
         if (request.SitemapEnabled.HasValue)
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "sitemapEnabled", Value = request.SitemapEnabled.Value.ToString().ToLower(), Group = "seo" });
 
+        // Organization Schema
+        if (request.OrganizationName != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "organizationName", Value = request.OrganizationName, Group = "seo" });
+        if (request.OrganizationUrl != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "organizationUrl", Value = request.OrganizationUrl, Group = "seo" });
+        if (request.OrganizationLogo != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "organizationLogo", Value = request.OrganizationLogo, Group = "seo" });
+        if (request.OrganizationDescription != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "organizationDescription", Value = request.OrganizationDescription, Group = "seo" });
+        if (request.OrganizationSocialProfiles != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "organizationSocialProfiles", Value = System.Text.Json.JsonSerializer.Serialize(request.OrganizationSocialProfiles), Group = "seo" });
+
+        // Website Schema
+        if (request.WebsiteName != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "websiteName", Value = request.WebsiteName, Group = "seo" });
+        if (request.WebsiteUrl != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "websiteUrl", Value = request.WebsiteUrl, Group = "seo" });
+        if (request.WebsiteSearchActionTarget != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "websiteSearchActionTarget", Value = request.WebsiteSearchActionTarget, Group = "seo" });
+
+        // Contact Info
+        if (request.ContactPhone != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "contactPhone", Value = request.ContactPhone, Group = "seo" });
+        if (request.ContactEmail != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "contactEmail", Value = request.ContactEmail, Group = "seo" });
+        if (request.BusinessAddress != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "businessAddress", Value = request.BusinessAddress, Group = "seo" });
+
+        // Twitter Card
+        if (request.TwitterSite != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "twitterSite", Value = request.TwitterSite, Group = "seo" });
+        if (request.TwitterCreator != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "twitterCreator", Value = request.TwitterCreator, Group = "seo" });
+
         return Ok(new { message = "SEO ayarları güncellendi." });
     }
 
@@ -124,23 +193,15 @@ public class AdminSettingsController : BaseApiController
     /// Belirli bir dil için SEO ayarlarını getir
     /// </summary>
     [HttpGet("seo/{locale}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(LocaleSeoSettingsResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetSeoSettingsByLocale(string locale)
     {
         var settings = await Mediator.Send(new GetSeoSettingsQuery(locale));
 
-        return Ok(new
-        {
-            locale = locale,
-            pages = settings.Select(s => new
-            {
-                pageType = s.PageType,
-                metaTitle = s.MetaTitle,
-                metaDescription = s.MetaDescription,
-                metaKeywords = s.MetaKeywords,
-                ogImage = s.OgImage
-            }).ToList()
-        });
+        return Ok(new LocaleSeoSettingsResponse(
+            Locale: locale,
+            Pages: settings
+        ));
     }
 
     /// <summary>
@@ -159,7 +220,25 @@ public class AdminSettingsController : BaseApiController
                 MetaTitle = page.MetaTitle,
                 MetaDescription = page.MetaDescription,
                 MetaKeywords = page.MetaKeywords,
-                OgImage = page.OgImage
+                OgImage = page.OgImage,
+                OgType = page.OgType,
+                OgUrl = page.OgUrl,
+                OgSiteName = page.OgSiteName,
+                OgLocale = page.OgLocale,
+                TwitterCard = page.TwitterCard,
+                TwitterImage = page.TwitterImage,
+                HotelSchemaType = page.HotelSchemaType,
+                HotelName = page.HotelName,
+                HotelImage = page.HotelImage,
+                HotelAddress = page.HotelAddress,
+                HotelTelephone = page.HotelTelephone,
+                HotelPriceRange = page.HotelPriceRange,
+                HotelStarRating = page.HotelStarRating,
+                HotelAggregateRating = page.HotelAggregateRating,
+                EnableSearchActionSchema = page.EnableSearchActionSchema,
+                SearchActionTarget = page.SearchActionTarget,
+                EnableFaqSchema = page.EnableFaqSchema,
+                StructuredDataJson = page.StructuredDataJson
             });
         }
 
@@ -178,21 +257,37 @@ public class AdminSettingsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetPaymentSettings()
     {
-        var settings = await Mediator.Send(new GetPaymentSettingsQuery());
+        var setting = await Mediator.Send(new GetPaymentSettingsQuery());
+
+        if (setting == null)
+        {
+            return Ok(new
+            {
+                provider = "stripe",
+                testMode = (object?)null,
+                liveMode = (object?)null,
+                webhookSecret = (string?)null,
+                isLive = false,
+                isActive = false
+            });
+        }
 
         return Ok(new
         {
-            providers = settings.Select(s => new
+            provider = setting.Provider,
+            testMode = setting.TestModePublicKey != null ? new
             {
-                provider = s.Provider,
-                isActive = s.IsActive,
-                isLive = s.IsLive,
-                publicKey = s.PublicKey,
-                hasSecretKey = true,
-                hasWebhookSecret = true
-            }).ToList(),
-            defaultProvider = settings.FirstOrDefault(s => s.IsActive)?.Provider ?? "stripe",
-            testMode = !settings.Any(s => s.IsLive && s.IsActive)
+                publicKey = setting.TestModePublicKey,
+                secretKey = setting.TestModeSecretKey
+            } : null,
+            liveMode = setting.LiveModePublicKey != null ? new
+            {
+                publicKey = setting.LiveModePublicKey,
+                secretKey = setting.LiveModeSecretKey
+            } : null,
+            webhookSecret = setting.WebhookSecret,
+            isLive = setting.IsLive,
+            isActive = setting.IsActive
         });
     }
 
@@ -208,11 +303,13 @@ public class AdminSettingsController : BaseApiController
         await Mediator.Send(new UpdatePaymentSettingCommand
         {
             Provider = request.Provider,
-            PublicKey = request.PublicKey,
-            SecretKey = request.SecretKey,
+            TestModePublicKey = request.TestMode?.PublicKey,
+            TestModeSecretKey = request.TestMode?.SecretKey,
+            LiveModePublicKey = request.LiveMode?.PublicKey,
+            LiveModeSecretKey = request.LiveMode?.SecretKey,
             WebhookSecret = request.WebhookSecret,
-            IsLive = request.IsLive ?? false,
-            IsActive = request.IsActive ?? false
+            IsLive = request.IsLive,
+            IsActive = request.IsActive
         });
 
         return Ok(new { message = "Ödeme ayarları güncellendi." });
@@ -489,21 +586,193 @@ public class AdminSettingsController : BaseApiController
     }
 
     #endregion
+
+    #region Social Media Settings
+
+    /// <summary>
+    /// Sosyal medya ayarlarını getir
+    /// </summary>
+    [HttpGet("social")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetSocialSettings()
+    {
+        var settings = await Mediator.Send(new GetSiteSettingsQuery("social"));
+        var settingsDict = settings.ToDictionary(s => s.Key, s => s.Value);
+
+        return Ok(new
+        {
+            facebook = settingsDict.GetValueOrDefault("facebook", ""),
+            twitter = settingsDict.GetValueOrDefault("twitter", ""),
+            instagram = settingsDict.GetValueOrDefault("instagram", ""),
+            linkedin = settingsDict.GetValueOrDefault("linkedin", ""),
+            youtube = settingsDict.GetValueOrDefault("youtube", ""),
+            tiktok = settingsDict.GetValueOrDefault("tiktok", ""),
+            pinterest = settingsDict.GetValueOrDefault("pinterest", "")
+        });
+    }
+
+    /// <summary>
+    /// Sosyal medya ayarlarını güncelle
+    /// </summary>
+    [HttpPut("social")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> UpdateSocialSettings([FromBody] UpdateSocialSettingsRequest request)
+    {
+        if (request.Facebook != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "facebook", Value = request.Facebook, Group = "social" });
+        if (request.Twitter != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "twitter", Value = request.Twitter, Group = "social" });
+        if (request.Instagram != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "instagram", Value = request.Instagram, Group = "social" });
+        if (request.LinkedIn != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "linkedin", Value = request.LinkedIn, Group = "social" });
+        if (request.YouTube != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "youtube", Value = request.YouTube, Group = "social" });
+        if (request.TikTok != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "tiktok", Value = request.TikTok, Group = "social" });
+        if (request.Pinterest != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "pinterest", Value = request.Pinterest, Group = "social" });
+
+        return Ok(new { message = "Sosyal medya ayarları güncellendi." });
+    }
+
+    #endregion
+
+    #region Branding Settings
+
+    /// <summary>
+    /// Marka ayarlarını getir
+    /// </summary>
+    [HttpGet("branding")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetBrandingSettings()
+    {
+        var settings = await Mediator.Send(new GetSiteSettingsQuery("branding"));
+        var settingsDict = settings.ToDictionary(s => s.Key, s => s.Value);
+
+        return Ok(new
+        {
+            logoUrl = settingsDict.GetValueOrDefault("logoUrl", "/images/logo.png"),
+            faviconUrl = settingsDict.GetValueOrDefault("faviconUrl", "/favicon.ico"),
+            primaryColor = settingsDict.GetValueOrDefault("primaryColor", "#1E40AF"),
+            secondaryColor = settingsDict.GetValueOrDefault("secondaryColor", "#3B82F6"),
+            accentColor = settingsDict.GetValueOrDefault("accentColor", "#60A5FA"),
+            brandName = settingsDict.GetValueOrDefault("brandName", "FreeStays"),
+            tagline = settingsDict.GetValueOrDefault("tagline", "Your Dream Stay, Our Mission"),
+            footerText = settingsDict.GetValueOrDefault("footerText", "© 2025 FreeStays. All rights reserved.")
+        });
+    }
+
+    /// <summary>
+    /// Marka ayarlarını güncelle
+    /// </summary>
+    [HttpPut("branding")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> UpdateBrandingSettings([FromBody] UpdateBrandingSettingsRequest request)
+    {
+        if (request.LogoUrl != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "logoUrl", Value = request.LogoUrl, Group = "branding" });
+        if (request.FaviconUrl != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "faviconUrl", Value = request.FaviconUrl, Group = "branding" });
+        if (request.PrimaryColor != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "primaryColor", Value = request.PrimaryColor, Group = "branding" });
+        if (request.SecondaryColor != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "secondaryColor", Value = request.SecondaryColor, Group = "branding" });
+        if (request.AccentColor != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "accentColor", Value = request.AccentColor, Group = "branding" });
+        if (request.BrandName != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "brandName", Value = request.BrandName, Group = "branding" });
+        if (request.Tagline != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "tagline", Value = request.Tagline, Group = "branding" });
+        if (request.FooterText != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "footerText", Value = request.FooterText, Group = "branding" });
+
+        return Ok(new { message = "Marka ayarları güncellendi." });
+    }
+
+    #endregion
+
+    #region Contact Settings
+
+    /// <summary>
+    /// İletişim ayarlarını getir
+    /// </summary>
+    [HttpGet("contact")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetContactSettings()
+    {
+        var settings = await Mediator.Send(new GetSiteSettingsQuery("contact"));
+        var settingsDict = settings.ToDictionary(s => s.Key, s => s.Value);
+
+        return Ok(new
+        {
+            email = settingsDict.GetValueOrDefault("email", "info@freestays.com"),
+            phone = settingsDict.GetValueOrDefault("phone", "+90 555 123 4567"),
+            whatsapp = settingsDict.GetValueOrDefault("whatsapp", "+90 555 123 4567"),
+            address = settingsDict.GetValueOrDefault("address", ""),
+            city = settingsDict.GetValueOrDefault("city", ""),
+            country = settingsDict.GetValueOrDefault("country", ""),
+            postalCode = settingsDict.GetValueOrDefault("postalCode", ""),
+            workingHours = settingsDict.GetValueOrDefault("workingHours", "Mon-Fri: 9:00-18:00"),
+            mapLatitude = settingsDict.GetValueOrDefault("mapLatitude", ""),
+            mapLongitude = settingsDict.GetValueOrDefault("mapLongitude", ""),
+            googleMapsIframe = settingsDict.GetValueOrDefault("googleMapsIframe", "")
+        });
+    }
+
+    /// <summary>
+    /// İletişim ayarlarını güncelle
+    /// </summary>
+    [HttpPut("contact")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> UpdateContactSettings([FromBody] UpdateContactSettingsRequest request)
+    {
+        if (request.Email != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "email", Value = request.Email, Group = "contact" });
+        if (request.Phone != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "phone", Value = request.Phone, Group = "contact" });
+        if (request.Whatsapp != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "whatsapp", Value = request.Whatsapp, Group = "contact" });
+        if (request.Address != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "address", Value = request.Address, Group = "contact" });
+        if (request.City != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "city", Value = request.City, Group = "contact" });
+        if (request.Country != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "country", Value = request.Country, Group = "contact" });
+        if (request.PostalCode != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "postalCode", Value = request.PostalCode, Group = "contact" });
+        if (request.WorkingHours != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "workingHours", Value = request.WorkingHours, Group = "contact" });
+        if (request.MapLatitude != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "mapLatitude", Value = request.MapLatitude, Group = "contact" });
+        if (request.MapLongitude != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "mapLongitude", Value = request.MapLongitude, Group = "contact" });
+        if (request.GoogleMapsIframe != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "googleMapsIframe", Value = request.GoogleMapsIframe, Group = "contact" });
+
+        return Ok(new { message = "İletişim ayarları güncellendi." });
+    }
+
+    #endregion
 }
 
 // Request DTOs
 public record UpdateSiteSettingsRequest(
     string? SiteName,
+    string? Tagline,
     string? SupportEmail,
     string? SupportPhone,
     string? DefaultLocale,
     string[]? AvailableLocales,
     string? DefaultCurrency,
     string[]? AvailableCurrencies,
+    string? Timezone,
     bool? MaintenanceMode,
+    string? MaintenanceMessage,
     string? LogoUrl,
     decimal? ProfitMargin,
     decimal? DefaultVatRate,
+    decimal? ExtraFee,
     SocialLinksRequest? SocialLinks);
 
 public record SocialLinksRequest(
@@ -520,7 +789,46 @@ public record UpdateSeoSettingsRequest(
     string? GoogleTagManagerId,
     string? FacebookPixelId,
     string? RobotsTxt,
-    bool? SitemapEnabled);
+    bool? SitemapEnabled,
+    // Organization Schema
+    string? OrganizationName,
+    string? OrganizationUrl,
+    string? OrganizationLogo,
+    string? OrganizationDescription,
+    List<string>? OrganizationSocialProfiles,
+    // Website Schema
+    string? WebsiteName,
+    string? WebsiteUrl,
+    string? WebsiteSearchActionTarget,
+    // Contact Info
+    string? ContactPhone,
+    string? ContactEmail,
+    string? BusinessAddress,
+    // Twitter Card
+    string? TwitterSite,
+    string? TwitterCreator);
+
+public record SeoSettingsResponse(
+    string? DefaultMetaTitle,
+    string? DefaultMetaDescription,
+    string? GoogleAnalyticsId,
+    string? GoogleTagManagerId,
+    string? FacebookPixelId,
+    string? RobotsTxt,
+    bool SitemapEnabled,
+    string? OrganizationName,
+    string? OrganizationUrl,
+    string? OrganizationLogo,
+    string? OrganizationDescription,
+    List<string>? OrganizationSocialProfiles,
+    string? WebsiteName,
+    string? WebsiteUrl,
+    string? WebsiteSearchActionTarget,
+    string? ContactPhone,
+    string? ContactEmail,
+    string? BusinessAddress,
+    string? TwitterSite,
+    string? TwitterCreator);
 
 public record UpdateLocaleSeoSettingsRequest(
     List<PageSeoRequest> Pages);
@@ -530,15 +838,47 @@ public record PageSeoRequest(
     string? MetaTitle,
     string? MetaDescription,
     string? MetaKeywords,
-    string? OgImage);
+    string? OgImage,
+    // Open Graph Extensions
+    string? OgType,
+    string? OgUrl,
+    string? OgSiteName,
+    string? OgLocale,
+    // Twitter Card
+    string? TwitterCard,
+    string? TwitterImage,
+    // Hotel Schema (for pageType = "hotel_detail")
+    string? HotelSchemaType,
+    string? HotelName,
+    string? HotelImage,
+    string? HotelAddress,
+    string? HotelTelephone,
+    string? HotelPriceRange,
+    int? HotelStarRating,
+    string? HotelAggregateRating,
+    // Search Page Schema (for pageType = "search")
+    bool? EnableSearchActionSchema,
+    string? SearchActionTarget,
+    // FAQ Page Schema
+    bool? EnableFaqSchema,
+    // Custom Schema
+    string? StructuredDataJson);
+
+public record LocaleSeoSettingsResponse(
+    string Locale,
+    List<SeoSettingDto> Pages);
+
+public record PaymentModeKeys(
+    string PublicKey,
+    string SecretKey);
 
 public record UpdatePaymentSettingsRequest(
     string Provider,
-    string? PublicKey,
-    string? SecretKey,
+    PaymentModeKeys? TestMode,
+    PaymentModeKeys? LiveMode,
     string? WebhookSecret,
-    bool? IsLive,
-    bool? IsActive);
+    bool IsLive,
+    bool IsActive);
 
 public record TestPaymentConnectionRequest(
     string Provider);
@@ -554,3 +894,35 @@ public record UpdateSmtpSettingsRequest(
 
 public record TestSmtpConnectionRequest(
     string TestEmail);
+
+public record UpdateSocialSettingsRequest(
+    string? Facebook,
+    string? Twitter,
+    string? Instagram,
+    string? LinkedIn,
+    string? YouTube,
+    string? TikTok,
+    string? Pinterest);
+
+public record UpdateBrandingSettingsRequest(
+    string? LogoUrl,
+    string? FaviconUrl,
+    string? PrimaryColor,
+    string? SecondaryColor,
+    string? AccentColor,
+    string? BrandName,
+    string? Tagline,
+    string? FooterText);
+
+public record UpdateContactSettingsRequest(
+    string? Email,
+    string? Phone,
+    string? Whatsapp,
+    string? Address,
+    string? City,
+    string? Country,
+    string? PostalCode,
+    string? WorkingHours,
+    string? MapLatitude,
+    string? MapLongitude,
+    string? GoogleMapsIframe);

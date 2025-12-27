@@ -220,6 +220,36 @@
             SMTP bağlantısını test et
             </summary>
         </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.GetSocialSettings">
+            <summary>
+            Sosyal medya ayarlarını getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.UpdateSocialSettings(FreeStays.API.Controllers.Admin.UpdateSocialSettingsRequest)">
+            <summary>
+            Sosyal medya ayarlarını güncelle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.GetBrandingSettings">
+            <summary>
+            Marka ayarlarını getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.UpdateBrandingSettings(FreeStays.API.Controllers.Admin.UpdateBrandingSettingsRequest)">
+            <summary>
+            Marka ayarlarını güncelle
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.GetContactSettings">
+            <summary>
+            İletişim ayarlarını getir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.UpdateContactSettings(FreeStays.API.Controllers.Admin.UpdateContactSettingsRequest)">
+            <summary>
+            İletişim ayarlarını güncelle
+            </summary>
+        </member>
         <member name="M:FreeStays.API.Controllers.Admin.AdminTranslationsController.GetTranslations(System.String,System.String)">
             <summary>
             Tüm çevirileri getir
@@ -358,6 +388,71 @@
         <member name="M:FreeStays.API.Controllers.Admin.FileUploadController.ValidateFile(Microsoft.AspNetCore.Http.IFormFile)">
             <summary>
             Validate file before upload (without actually uploading)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.HangfireManagementController.GetRecurringJobs">
+            <summary>
+            Tüm recurring job'ları listeler
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.HangfireManagementController.TriggerRecurringJob(System.String)">
+            <summary>
+            Belirli bir recurring job'ı tetikler (manuel başlatma)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.HangfireManagementController.RemoveRecurringJob(System.String)">
+            <summary>
+            Recurring job'ı siler (durdurur)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.HangfireManagementController.UpdateJobSchedule(System.String,FreeStays.API.Controllers.Admin.UpdateScheduleRequest)">
+            <summary>
+            Recurring job'ın cron expression'ını günceller
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.HangfireManagementController.GetProcessingJobs">
+            <summary>
+            Çalışan (processing) job'ları listeler
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.HangfireManagementController.DeleteJob(System.String)">
+            <summary>
+            Belirli bir job'ı iptal eder (çalışıyorsa)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.HangfireManagementController.GetQueueStats">
+            <summary>
+            Queue istatistiklerini getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.HangfireManagementController.ClearFailedJobs">
+            <summary>
+            Tüm başarısız job'ları siler
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.HangfireManagementController.ClearProcessingJobs">
+            <summary>
+            Tüm processing job'ları iptal eder
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.HangfireManagementController.GetJobHistory(System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Database'deki job history'yi listeler
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.HangfireManagementController.CleanupStuckJobs(System.Int32)">
+            <summary>
+            Database'deki stuck/running job'ları temizler
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.HangfireManagementController.GetCronPresets">
+            <summary>
+            Cron expression helper - yaygın kullanılan pattern'ler
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.HangfireManagementController.GetServers">
+            <summary>
+            Hangfire server istatistikleri
             </summary>
         </member>
         <member name="M:FreeStays.API.Controllers.AdminController.GetDashboard">
@@ -634,7 +729,7 @@
         </member>
         <member name="T:FreeStays.API.Controllers.SunHotelsController">
             <summary>
-            SunHotels statik veri cache API'si
+            SunHotels statik veri cache ve dinamik rezervasyon API'si
             </summary>
         </member>
         <member name="M:FreeStays.API.Controllers.SunHotelsController.GetStatistics(System.Threading.CancellationToken)">
@@ -785,6 +880,76 @@
         <member name="M:FreeStays.API.Controllers.SunHotelsController.GetRoomById(System.Int32,System.Threading.CancellationToken)">
             <summary>
             Oda ID'ye göre getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.SearchHotels(FreeStays.Infrastructure.ExternalServices.SunHotels.Models.SunHotelsSearchRequestV3,System.Threading.CancellationToken)">
+            <summary>
+            Otel arama - Canlı fiyatlar ve müsaitlik (V3)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetHotelDetails(System.Int32,System.DateTime,System.DateTime,System.Int32,System.Int32,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Otel detayları - Canlı fiyat ve müsaitlik
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.PreBook(FreeStays.Infrastructure.ExternalServices.SunHotels.Models.SunHotelsPreBookRequestV3,System.Threading.CancellationToken)">
+            <summary>
+            Ön rezervasyon - Fiyat kilitleme (V3)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.Book(FreeStays.Infrastructure.ExternalServices.SunHotels.Models.SunHotelsBookRequestV3,System.Threading.CancellationToken)">
+            <summary>
+            Rezervasyon yapma (V3)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetBookingInformation(FreeStays.Infrastructure.ExternalServices.SunHotels.Models.SunHotelsGetBookingRequest,System.Threading.CancellationToken)">
+            <summary>
+            Rezervasyon sorgulama
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.CancelBooking(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Rezervasyon iptal etme
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetAmendmentPrice(FreeStays.Infrastructure.ExternalServices.SunHotels.Models.SunHotelsAmendmentPriceRequest,System.Threading.CancellationToken)">
+            <summary>
+            Rezervasyon değişikliği fiyat sorgulama
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.AmendBooking(FreeStays.Infrastructure.ExternalServices.SunHotels.Models.SunHotelsAmendmentRequest,System.Threading.CancellationToken)">
+            <summary>
+            Rezervasyon değişikliği yapma
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.UpdateSpecialRequest(System.String,FreeStays.API.Controllers.UpdateSpecialRequestDto,System.Threading.CancellationToken)">
+            <summary>
+            Özel istek güncelleme
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetSpecialRequest(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Özel istek sorgulama
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.SearchTransfers(FreeStays.Infrastructure.ExternalServices.SunHotels.Models.SunHotelsTransferSearchRequest,System.Threading.CancellationToken)">
+            <summary>
+            Transfer arama (V2)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.AddTransfer(FreeStays.Infrastructure.ExternalServices.SunHotels.Models.SunHotelsAddTransferRequestV2,System.Threading.CancellationToken)">
+            <summary>
+            Transfer ekleme (V2)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.CancelTransfer(System.String,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Transfer iptal etme
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetTransferBookings(System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.String,System.Threading.CancellationToken)">
+            <summary>
+            Transfer rezervasyon sorgulama
             </summary>
         </member>
         <member name="M:FreeStays.API.Services.IFileUploadService.UploadFileAsync(Microsoft.AspNetCore.Http.IFormFile,System.String,System.Threading.CancellationToken)">

@@ -714,3 +714,141 @@ Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Failed to generate 
 2025-12-25 04:07:44.556 +03:00 [INF] Server macbookair:35750:bc14a1c0 All dispatchers stopped
 2025-12-25 04:07:44.560 +03:00 [INF] Server macbookair:35750:bc14a1c0 successfully reported itself as stopped in 1,043 ms
 2025-12-25 04:07:44.561 +03:00 [INF] Server macbookair:35750:bc14a1c0 has been stopped in total 14,8828 ms
+2025-12-25 21:33:50.650 +03:00 [ERR] An error occurred during database migration
+Npgsql.NpgsqlException (0x80004005): Failed to connect to 89.252.134.67:3105
+ ---> System.Net.Sockets.SocketException (51): Network is unreachable
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.CreateException(SocketError error, Boolean forAsyncThrow)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ConnectAsync(Socket socket)
+   at System.Net.Sockets.Socket.ConnectAsync(EndPoint remoteEP, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<>c__DisplayClass220_0.<ConnectAsync>g__ConnectAsync|2(CancellationToken ct)
+   at Npgsql.TaskTimeoutAndCancellation.ExecuteAsync(Func`2 getTaskFunc, NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at Npgsql.TaskTimeoutAndCancellation.ExecuteAsync(Func`2 getTaskFunc, NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.<ConnectAsync>g__OpenSocketConnectionAsync|220_1(Socket socket, EndPoint endpoint, NpgsqlTimeout perIpTimeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.RawOpen(SslMode sslMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken, Boolean isFirstAttempt)
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at Npgsql.Internal.NpgsqlConnector.RawOpen(SslMode sslMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken, Boolean isFirstAttempt)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|213_1(NpgsqlConnector conn, SslMode sslMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken, Boolean isFirstAttempt)
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|213_1(NpgsqlConnector conn, SslMode sslMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken, Boolean isFirstAttempt)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.UnpooledDataSource.Get(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at Npgsql.UnpooledDataSource.Get(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.Open(Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.OpenAsync(CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenDbConnectionAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlDatabaseCreator.Exists(Boolean async, CancellationToken cancellationToken)
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlDatabaseCreator.Exists(Boolean async, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlDatabaseCreator.ExistsAsync(CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.HistoryRepository.ExistsAsync(CancellationToken cancellationToken)
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at Microsoft.EntityFrameworkCore.Migrations.HistoryRepository.ExistsAsync(CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.HistoryRepository.GetAppliedMigrationsAsync(CancellationToken cancellationToken)
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at Microsoft.EntityFrameworkCore.Migrations.HistoryRepository.GetAppliedMigrationsAsync(CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Migrations.Internal.NpgsqlMigrator.MigrateAsync(String targetMigration, CancellationToken cancellationToken)
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Migrations.Internal.NpgsqlMigrator.MigrateAsync(String targetMigration, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.MigrateAsync(DatabaseFacade databaseFacade, CancellationToken cancellationToken)
+   at Program.<Main>$(String[] args) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Program.cs:line 311
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at Program.<Main>$(String[] args)
+   at Program.<Main>(String[] args)
+--- End of stack trace from previous location ---
+   at Npgsql.TaskTimeoutAndCancellation.ExecuteAsync(Func`2 getTaskFunc, NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.RawOpen(SslMode sslMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken, Boolean isFirstAttempt)
+   at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|213_1(NpgsqlConnector conn, SslMode sslMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken, Boolean isFirstAttempt)
+   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.UnpooledDataSource.Get(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlDatabaseCreator.Exists(Boolean async, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlDatabaseCreator.Exists(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.HistoryRepository.ExistsAsync(CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Migrations.HistoryRepository.GetAppliedMigrationsAsync(CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Migrations.Internal.NpgsqlMigrator.MigrateAsync(String targetMigration, CancellationToken cancellationToken)
+   at Program.<Main>$(String[] args) in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/Program.cs:line 311
+2025-12-25 21:33:50.683 +03:00 [INF] Checking database connectivity...
+2025-12-25 21:33:50.690 +03:00 [WRN] Database is not available. Skipping seeding.
+2025-12-25 21:33:50.690 +03:00 [INF] FreeStays API started at "2025-12-25T18:33:50.6901650Z"
+2025-12-25 21:33:50.771 +03:00 [INF] Starting Hangfire Server using job storage: 'In-Memory Storage'
+2025-12-25 21:33:50.772 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-25 21:33:50.779 +03:00 [INF] Server macbook-air:4136:9d858272 successfully announced in 1,0872 ms
+2025-12-25 21:33:50.782 +03:00 [INF] Server macbook-air:4136:9d858272 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-25 21:33:50.784 +03:00 [INF] Server macbook-air:4136:9d858272 all the dispatchers started
+2025-12-25 21:51:30.257 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-12-25 21:51:30.359 +03:00 [INF] FreeStays Request: GetFeaturedHotelsQuery {"Count":10,"$type":"GetFeaturedHotelsQuery"}
+2025-12-25 21:51:30.961 +03:00 [WRN] FreeStays Long Running Request: GetFeaturedHotelsQuery (599 ms) {"Count":10,"$type":"GetFeaturedHotelsQuery"}
+2025-12-25 21:51:30.970 +03:00 [INF] HTTP GET /api/v1/hotels/featured responded 200 in 717.9942 ms
+2025-12-25 21:51:37.341 +03:00 [ERR] JWT Authentication failed
+Microsoft.IdentityModel.Tokens.SecurityTokenSignatureKeyNotFoundException: IDX10503: Signature validation failed. Token does not have a kid. Keys tried: '[PII of type 'System.Text.StringBuilder' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]'. Number of keys in TokenValidationParameters: '1'. 
+Number of keys in Configuration: '0'. 
+Exceptions caught:
+ '[PII of type 'System.String' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]'.
+token: '[PII of type 'Microsoft.IdentityModel.JsonWebTokens.JsonWebToken' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]'. See https://aka.ms/IDX10503 for details.
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateSignature(JsonWebToken jwtToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateSignatureAndIssuerSecurityKey(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateJWSAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+2025-12-25 21:51:37.341 +03:00 [ERR] JWT Authentication failed
+Microsoft.IdentityModel.Tokens.SecurityTokenSignatureKeyNotFoundException: IDX10503: Signature validation failed. Token does not have a kid. Keys tried: '[PII of type 'System.Text.StringBuilder' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]'. Number of keys in TokenValidationParameters: '1'. 
+Number of keys in Configuration: '0'. 
+Exceptions caught:
+ '[PII of type 'System.String' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]'.
+token: '[PII of type 'Microsoft.IdentityModel.JsonWebTokens.JsonWebToken' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]'. See https://aka.ms/IDX10503 for details.
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateSignature(JsonWebToken jwtToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateSignatureAndIssuerSecurityKey(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateJWSAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+2025-12-25 21:51:37.352 +03:00 [WRN] JWT Authentication challenge: invalid_token, The signature key was not found
+2025-12-25 21:51:37.352 +03:00 [WRN] JWT Authentication challenge: invalid_token, The signature key was not found
+2025-12-25 21:51:37.353 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 401 in 82.5266 ms
+2025-12-25 21:51:37.353 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 401 in 82.3016 ms
+2025-12-25 21:51:42.897 +03:00 [INF] FreeStays Request: LoginCommand {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-25 21:51:43.506 +03:00 [WRN] FreeStays Long Running Request: LoginCommand (607 ms) {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-25 21:51:43.509 +03:00 [INF] HTTP POST /api/v1/Auth/login responded 200 in 642.5522 ms
+2025-12-25 21:51:43.907 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-25 21:51:43.907 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-25 21:51:43.911 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-25 21:51:43.911 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-25 21:51:44.058 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 169.1184 ms
+2025-12-25 21:51:44.160 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 272.3006 ms
+2025-12-25 21:54:57.920 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-25 21:54:57.920 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-25 21:54:57.957 +03:00 [INF] FreeStays Request: GetAllBookingsQuery {"Page":1,"PageSize":10,"Status":null,"Type":null,"FromDate":null,"ToDate":null,"$type":"GetAllBookingsQuery"}
+2025-12-25 21:54:57.957 +03:00 [INF] FreeStays Request: GetAllBookingsQuery {"Page":1,"PageSize":10,"Status":null,"Type":null,"FromDate":null,"ToDate":null,"$type":"GetAllBookingsQuery"}
+2025-12-25 21:54:57.998 +03:00 [INF] HTTP GET /api/v1/admin/bookings responded 200 in 80.7449 ms
+2025-12-25 21:54:57.998 +03:00 [INF] HTTP GET /api/v1/admin/bookings responded 200 in 80.7448 ms
+2025-12-25 21:55:01.945 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-25 21:55:01.945 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-25 21:55:01.980 +03:00 [INF] FreeStays Request: GetPaymentSettingsQuery {"$type":"GetPaymentSettingsQuery"}
+2025-12-25 21:55:01.980 +03:00 [INF] FreeStays Request: GetPaymentSettingsQuery {"$type":"GetPaymentSettingsQuery"}
+2025-12-25 21:55:02.025 +03:00 [INF] HTTP GET /api/v1/admin/settings/payment responded 200 in 86.0517 ms
+2025-12-25 21:55:02.025 +03:00 [INF] HTTP GET /api/v1/admin/settings/payment responded 200 in 87.5142 ms
+2025-12-25 21:55:06.228 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-25 21:55:06.247 +03:00 [INF] HTTP POST /api/v1/admin/settings/payment/test-connection responded 200 in 20.1835 ms
+2025-12-25 21:58:31.765 +03:00 [INF] HTTP GET /favicon.ico responded 404 in 8.6851 ms
+2025-12-25 21:58:31.765 +03:00 [INF] HTTP GET /apple-touch-icon.png responded 404 in 8.9835 ms
+2025-12-25 21:58:31.765 +03:00 [INF] HTTP GET /apple-touch-icon-precomposed.png responded 404 in 10.2035 ms

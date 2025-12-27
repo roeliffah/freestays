@@ -18,8 +18,8 @@ public class SunHotelsService : ISunHotelsService
     private readonly IExternalServiceConfigRepository _serviceConfigRepository;
     private bool _configLoaded = false;
 
-    private const string NonStaticApiUrl = "http://xml.sunhotels.net/15/PostGet/NonStaticXMLAPI.asmx";
-    private const string StaticApiUrl = "http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx";
+    private string _nonStaticApiUrl = "http://xml.sunhotels.net/15/PostGet/NonStaticXMLAPI.asmx";
+    private string _staticApiUrl = "http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx";
 
     public SunHotelsService(
         HttpClient httpClient,
@@ -49,6 +49,30 @@ public class SunHotelsService : ISunHotelsService
                 _config.Password = dbConfig.Password ?? string.Empty;
                 _config.BaseUrl = dbConfig.BaseUrl;
                 _config.AffiliateCode = dbConfig.AffiliateCode;
+
+                // Settings JSON'dan static ve non-static URL'leri oku
+                if (!string.IsNullOrEmpty(dbConfig.Settings))
+                {
+                    try
+                    {
+                        var settings = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(dbConfig.Settings);
+                        if (settings != null)
+                        {
+                            if (settings.TryGetValue("staticApiUrl", out var staticUrl))
+                                _staticApiUrl = staticUrl.ToString() ?? _staticApiUrl;
+
+                            if (settings.TryGetValue("nonStaticApiUrl", out var nonStaticUrl))
+                                _nonStaticApiUrl = nonStaticUrl.ToString() ?? _nonStaticApiUrl;
+
+                            _logger.LogInformation("SunHotels API URLs loaded from settings - Static: {StaticUrl}, NonStatic: {NonStaticUrl}",
+                                _staticApiUrl, _nonStaticApiUrl);
+                        }
+                    }
+                    catch (Exception settingsEx)
+                    {
+                        _logger.LogWarning(settingsEx, "Failed to parse SunHotels settings JSON, using default URLs");
+                    }
+                }
 
                 _logger.LogInformation("SunHotels configuration loaded from database for service: {ServiceName}", dbConfig.ServiceName);
             }
@@ -952,7 +976,7 @@ public class SunHotelsService : ISunHotelsService
 
     private async Task<string> SendStaticRequestAsync(string method, Dictionary<string, string> parameters, CancellationToken cancellationToken)
     {
-        var url = BuildRequestUrl(StaticApiUrl, method, parameters);
+        var url = BuildRequestUrl(_staticApiUrl, method, parameters);
         _logger.LogInformation("Sending static request to SunHotels: {Method} - URL: {Url}", method, url);
 
         var response = await _httpClient.GetAsync(url, cancellationToken);
@@ -971,7 +995,7 @@ public class SunHotelsService : ISunHotelsService
 
     private async Task<string> SendNonStaticRequestAsync(string method, Dictionary<string, string> parameters, CancellationToken cancellationToken)
     {
-        var url = BuildRequestUrl(NonStaticApiUrl, method, parameters);
+        var url = BuildRequestUrl(_nonStaticApiUrl, method, parameters);
         _logger.LogDebug("Sending non-static request to SunHotels: {Method}", method);
 
         var response = await _httpClient.GetAsync(url, cancellationToken);

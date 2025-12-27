@@ -9,12 +9,14 @@ using FreeStays.Application.Common.Interfaces;
 using FreeStays.Infrastructure;
 using Hangfire;
 using Hangfire.InMemory;
+using Hangfire.Redis.StackExchange;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -113,12 +115,50 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Hangfire - InMemory Storage (Development) - PostgreSQL opsiyonel
-builder.Services.AddHangfire(config =>
+// Hangfire - Redis Storage (Production Ready)
+var redisConnectionString = builder.Configuration.GetConnectionString("Redis");
+Log.Information("🔍 Redis Connection String: {Redis}", redisConnectionString ?? "NULL");
+
+if (!string.IsNullOrWhiteSpace(redisConnectionString))
 {
-    config.UseInMemoryStorage();
+    try
+    {
+        Log.Information("🚀 Attempting to configure Hangfire with Redis storage...");
+
+        builder.Services.AddHangfire(config =>
+        {
+            config.UseRedisStorage(redisConnectionString, new RedisStorageOptions
+            {
+                Prefix = "hangfire:",
+                ExpiryCheckInterval = TimeSpan.FromHours(1),
+                DeletedListSize = 5000,
+                SucceededListSize = 5000,
+                InvisibilityTimeout = TimeSpan.FromMinutes(30)
+            });
+        });
+
+        Log.Information("✅ Hangfire configured with Redis storage successfully");
+    }
+    catch (Exception ex)
+    {
+        Log.Error(ex, "⚠️ Redis connection failed, falling back to InMemory storage. Error: {Message}", ex.Message);
+        builder.Services.AddHangfire(config => config.UseInMemoryStorage());
+    }
+}
+else
+{
+    // Development fallback
+    builder.Services.AddHangfire(config => config.UseInMemoryStorage());
+    Log.Information("Hangfire configured with InMemory storage (Development)");
+}
+
+builder.Services.AddHangfireServer(options =>
+{
+    options.ServerName = $"{Environment.MachineName}-{Guid.NewGuid().ToString()[..8]}";
+    options.WorkerCount = Environment.ProcessorCount * 2;
+    options.Queues = new[] { "default", "critical" };
+    options.SchedulePollingInterval = TimeSpan.FromSeconds(15);
 });
-builder.Services.AddHangfireServer();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();

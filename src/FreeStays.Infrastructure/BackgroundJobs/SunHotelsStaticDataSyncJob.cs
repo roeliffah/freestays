@@ -3,6 +3,7 @@ using FreeStays.Domain.Entities;
 using FreeStays.Domain.Entities.Cache;
 using FreeStays.Infrastructure.ExternalServices.SunHotels;
 using FreeStays.Infrastructure.Persistence.Context;
+using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -31,6 +32,8 @@ public class SunHotelsStaticDataSyncJob
     /// <summary>
     /// Tüm statik verileri senkronize eder
     /// </summary>
+    [DisableConcurrentExecution(timeoutInSeconds: 7200)] // 2 saat timeout - aynı anda sadece 1 instance çalışabilir
+    [AutomaticRetry(Attempts = 0)] // Otomatik retry yapma, başarısız olursa manuel kontrol et
     public async Task SyncAllStaticDataAsync()
     {
         var jobHistory = new JobHistory
@@ -118,6 +121,8 @@ public class SunHotelsStaticDataSyncJob
     /// <summary>
     /// Sadece temel verileri senkronize eder (hızlı sync)
     /// </summary>
+    [DisableConcurrentExecution(timeoutInSeconds: 3600)] // 1 saat timeout
+    [AutomaticRetry(Attempts = 0)]
     public async Task SyncBasicDataAsync()
     {
         var jobHistory = new JobHistory
@@ -1003,118 +1008,169 @@ public class SunHotelsStaticDataSyncJob
 
             foreach (var hotel in hotels)
             {
-                var existing = await _dbContext.SunHotelsHotels
-                    .Include(x => x.Rooms)
-                    .FirstOrDefaultAsync(x => x.HotelId == hotel.HotelId && x.Language == language);
-
-                var featureIdsJson = System.Text.Json.JsonSerializer.Serialize(hotel.FeatureIds);
-                var themeIdsJson = System.Text.Json.JsonSerializer.Serialize(hotel.ThemeIds);
-                var imageUrlsJson = System.Text.Json.JsonSerializer.Serialize(hotel.Images.Select(x => x.Url).ToList());
-
-                if (existing != null)
+                try
                 {
-                    existing.Name = hotel.Name;
-                    existing.Description = hotel.Description;
-                    existing.Address = hotel.Address;
-                    existing.ZipCode = hotel.ZipCode;
-                    existing.City = hotel.City;
-                    existing.Country = hotel.Country;
-                    existing.CountryCode = hotel.CountryCode;
-                    existing.Category = hotel.Category;
-                    existing.Latitude = hotel.Latitude;
-                    existing.Longitude = hotel.Longitude;
-                    existing.GiataCode = hotel.GiataCode;
-                    existing.ResortId = hotel.ResortId;
-                    existing.ResortName = hotel.ResortName;
-                    existing.Phone = hotel.Phone;
-                    existing.Fax = hotel.Fax;
-                    existing.Email = hotel.Email;
-                    existing.Website = hotel.Website;
-                    existing.FeatureIds = featureIdsJson;
-                    existing.ThemeIds = themeIdsJson;
-                    existing.ImageUrls = imageUrlsJson;
-                    existing.LastSyncedAt = now;
-                    existing.UpdatedAt = now;
+                    var existing = await _dbContext.SunHotelsHotels
+                        .Include(x => x.Rooms)
+                        .AsNoTracking() // AsNoTracking ekledik
+                        .FirstOrDefaultAsync(x => x.HotelId == hotel.HotelId && x.Language == language);
 
-                    // Remove old rooms and add new ones
-                    _dbContext.SunHotelsRooms.RemoveRange(existing.Rooms);
+                    var featureIdsJson = System.Text.Json.JsonSerializer.Serialize(hotel.FeatureIds);
+                    var themeIdsJson = System.Text.Json.JsonSerializer.Serialize(hotel.ThemeIds);
+                    var imageUrlsJson = System.Text.Json.JsonSerializer.Serialize(hotel.Images.Select(x => x.Url).ToList());
 
-                    foreach (var room in hotel.Rooms)
+                    if (existing != null)
                     {
-                        existing.Rooms.Add(new SunHotelsRoomCache
+                        // Detach any tracked entity for this hotel
+                        var trackedEntity = _dbContext.ChangeTracker.Entries<SunHotelsHotelCache>()
+                            .FirstOrDefault(e => e.Entity.HotelId == hotel.HotelId && e.Entity.Language == language);
+
+                        if (trackedEntity != null)
                         {
-                            HotelCacheId = existing.Id,
+                            _dbContext.Entry(trackedEntity.Entity).State = EntityState.Detached;
+                        }
+
+                        existing.Name = hotel.Name;
+                        existing.Description = hotel.Description;
+                        existing.Address = hotel.Address;
+                        existing.ZipCode = hotel.ZipCode;
+                        existing.City = hotel.City;
+                        existing.Country = hotel.Country;
+                        existing.CountryCode = hotel.CountryCode;
+                        existing.Category = hotel.Category;
+                        existing.Latitude = hotel.Latitude;
+                        existing.Longitude = hotel.Longitude;
+                        existing.GiataCode = hotel.GiataCode;
+                        existing.ResortId = hotel.ResortId;
+                        existing.ResortName = hotel.ResortName;
+                        existing.Phone = hotel.Phone;
+                        existing.Fax = hotel.Fax;
+                        existing.Email = hotel.Email;
+                        existing.Website = hotel.Website;
+                        existing.FeatureIds = featureIdsJson;
+                        existing.ThemeIds = themeIdsJson;
+                        existing.ImageUrls = imageUrlsJson;
+                        existing.LastSyncedAt = now;
+                        existing.UpdatedAt = now;
+
+                        // Attach the detached entity back to context for update
+                        _dbContext.SunHotelsHotels.Attach(existing);
+                        _dbContext.Entry(existing).State = EntityState.Modified;
+
+                        // Remove old rooms - query separately to avoid tracking conflicts
+                        var existingRoomIds = await _dbContext.SunHotelsRooms
+                            .Where(r => r.HotelId == existing.HotelId && r.Language == language)
+                            .Select(r => r.Id)
+                            .ToListAsync();
+
+                        if (existingRoomIds.Any())
+                        {
+                            await _dbContext.Database.ExecuteSqlRawAsync(
+                                $"DELETE FROM sun_hotels_rooms WHERE id = ANY(@ids)",
+                                new Npgsql.NpgsqlParameter("@ids", existingRoomIds.ToArray()));
+                        }
+
+                        // Add new rooms
+                        foreach (var room in hotel.Rooms)
+                        {
+                            await _dbContext.SunHotelsRooms.AddAsync(new SunHotelsRoomCache
+                            {
+                                HotelCacheId = existing.Id,
+                                HotelId = hotel.HotelId,
+                                RoomTypeId = room.RoomTypeId,
+                                Name = room.Name,
+                                EnglishName = room.EnglishName,
+                                Description = room.Description,
+                                MaxOccupancy = room.MaxOccupancy,
+                                MinOccupancy = room.MinOccupancy,
+                                FeatureIds = System.Text.Json.JsonSerializer.Serialize(room.FeatureIds),
+                                ImageUrls = System.Text.Json.JsonSerializer.Serialize(room.Images.Select(x => x.Url).ToList()),
+                                Language = language,
+                                LastSyncedAt = now,
+                                CreatedAt = now
+                            });
+                        }
+                    }
+                    else
+                    {
+                        var newHotel = new SunHotelsHotelCache
+                        {
                             HotelId = hotel.HotelId,
-                            RoomTypeId = room.RoomTypeId,
-                            Name = room.Name,
-                            EnglishName = room.EnglishName,
-                            Description = room.Description,
-                            MaxOccupancy = room.MaxOccupancy,
-                            MinOccupancy = room.MinOccupancy,
-                            FeatureIds = System.Text.Json.JsonSerializer.Serialize(room.FeatureIds),
-                            ImageUrls = System.Text.Json.JsonSerializer.Serialize(room.Images.Select(x => x.Url).ToList()),
+                            Name = hotel.Name,
+                            Description = hotel.Description,
+                            Address = hotel.Address,
+                            ZipCode = hotel.ZipCode,
+                            City = hotel.City,
+                            Country = hotel.Country,
+                            CountryCode = hotel.CountryCode,
+                            Category = hotel.Category,
+                            Latitude = hotel.Latitude,
+                            Longitude = hotel.Longitude,
+                            GiataCode = hotel.GiataCode,
+                            ResortId = hotel.ResortId,
+                            ResortName = hotel.ResortName,
+                            Phone = hotel.Phone,
+                            Fax = hotel.Fax,
+                            Email = hotel.Email,
+                            Website = hotel.Website,
+                            FeatureIds = featureIdsJson,
+                            ThemeIds = themeIdsJson,
+                            ImageUrls = imageUrlsJson,
                             Language = language,
                             LastSyncedAt = now,
                             CreatedAt = now
-                        });
+                        };
+
+                        foreach (var room in hotel.Rooms)
+                        {
+                            newHotel.Rooms.Add(new SunHotelsRoomCache
+                            {
+                                HotelId = hotel.HotelId,
+                                RoomTypeId = room.RoomTypeId,
+                                Name = room.Name,
+                                EnglishName = room.EnglishName,
+                                Description = room.Description,
+                                MaxOccupancy = room.MaxOccupancy,
+                                MinOccupancy = room.MinOccupancy,
+                                FeatureIds = System.Text.Json.JsonSerializer.Serialize(room.FeatureIds),
+                                ImageUrls = System.Text.Json.JsonSerializer.Serialize(room.Images.Select(x => x.Url).ToList()),
+                                Language = language,
+                                LastSyncedAt = now,
+                                CreatedAt = now
+                            });
+                        }
+
+                        _dbContext.SunHotelsHotels.Add(newHotel);
                     }
                 }
-                else
+                catch (DbUpdateConcurrencyException ex)
                 {
-                    var newHotel = new SunHotelsHotelCache
-                    {
-                        HotelId = hotel.HotelId,
-                        Name = hotel.Name,
-                        Description = hotel.Description,
-                        Address = hotel.Address,
-                        ZipCode = hotel.ZipCode,
-                        City = hotel.City,
-                        Country = hotel.Country,
-                        CountryCode = hotel.CountryCode,
-                        Category = hotel.Category,
-                        Latitude = hotel.Latitude,
-                        Longitude = hotel.Longitude,
-                        GiataCode = hotel.GiataCode,
-                        ResortId = hotel.ResortId,
-                        ResortName = hotel.ResortName,
-                        Phone = hotel.Phone,
-                        Fax = hotel.Fax,
-                        Email = hotel.Email,
-                        Website = hotel.Website,
-                        FeatureIds = featureIdsJson,
-                        ThemeIds = themeIdsJson,
-                        ImageUrls = imageUrlsJson,
-                        Language = language,
-                        LastSyncedAt = now,
-                        CreatedAt = now
-                    };
-
-                    foreach (var room in hotel.Rooms)
-                    {
-                        newHotel.Rooms.Add(new SunHotelsRoomCache
-                        {
-                            HotelId = hotel.HotelId,
-                            RoomTypeId = room.RoomTypeId,
-                            Name = room.Name,
-                            EnglishName = room.EnglishName,
-                            Description = room.Description,
-                            MaxOccupancy = room.MaxOccupancy,
-                            MinOccupancy = room.MinOccupancy,
-                            FeatureIds = System.Text.Json.JsonSerializer.Serialize(room.FeatureIds),
-                            ImageUrls = System.Text.Json.JsonSerializer.Serialize(room.Images.Select(x => x.Url).ToList()),
-                            Language = language,
-                            LastSyncedAt = now,
-                            CreatedAt = now
-                        });
-                    }
-
-                    _dbContext.SunHotelsHotels.Add(newHotel);
+                    _logger.LogDebug(ex, "Concurrency conflict for hotel {HotelId} in destination {DestinationId}, skipping as it was updated by another thread",
+                        hotel.HotelId, destinationId);
+                    // Skip this hotel - another thread already updated it
+                    continue;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error syncing hotel {HotelId} for destination {DestinationId}",
+                        hotel.HotelId, destinationId);
+                    // Continue with other hotels
+                    continue;
                 }
             }
 
-            await _dbContext.SaveChangesAsync();
-            _logger.LogInformation("Synced {Count} hotels for destination: {DestinationId}, language: {Language}",
-                hotels.Count, destinationId, language);
+            try
+            {
+                await _dbContext.SaveChangesAsync();
+                _logger.LogInformation("Synced {Count} hotels for destination: {DestinationId}, language: {Language}",
+                    hotels.Count, destinationId, language);
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                _logger.LogDebug(ex, "Concurrency conflict while saving hotels for destination: {DestinationId}, language: {Language}. Normal when destinations share hotels.",
+                    destinationId, language);
+                // This is expected when multiple destinations share the same hotels
+            }
         }
         catch (Exception ex)
         {

@@ -62,11 +62,11 @@
             },
             "Hangfire.AspNetCore": {
               "target": "Package",
-              "version": "[1.8.9, )"
+              "version": "[1.8.12, )"
             },
             "Hangfire.Core": {
               "target": "Package",
-              "version": "[1.8.9, )"
+              "version": "[1.8.12, )"
             },
             "Hangfire.InMemory": {
               "target": "Package",
@@ -75,6 +75,10 @@
             "Hangfire.PostgreSql": {
               "target": "Package",
               "version": "[1.20.8, )"
+            },
+            "Hangfire.Redis.StackExchange": {
+              "target": "Package",
+              "version": "[1.10.2, )"
             },
             "MailKit": {
               "target": "Package",

@@ -37,13 +37,14 @@ public class ExternalServicesController : BaseApiController
             s.Id,
             s.ServiceName,
             s.BaseUrl,
-            HasApiKey = !string.IsNullOrEmpty(s.ApiKey),
-            HasApiSecret = !string.IsNullOrEmpty(s.ApiSecret),
-            HasUsername = !string.IsNullOrEmpty(s.Username),
-            HasPassword = !string.IsNullOrEmpty(s.Password),
+            s.ApiKey,
+            s.ApiSecret,
+            s.Username,
+            s.Password,
             s.AffiliateCode,
             s.IntegrationMode,
             s.IsActive,
+            s.Settings,
             s.CreatedAt,
             s.UpdatedAt
         }).ToList();
