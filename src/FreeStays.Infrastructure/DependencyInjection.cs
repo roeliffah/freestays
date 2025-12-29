@@ -74,6 +74,9 @@ public static class DependencyInjection
         services.AddHttpClient<ISunHotelsService, SunHotelsService>();
         services.AddScoped<ISunHotelsCacheService, SunHotelsCacheService>();
 
+        // Media Service
+        services.AddScoped<IMediaService, Services.MediaService>();
+
         // Background Jobs
         services.AddScoped<BackgroundJobs.SunHotelsStaticDataSyncJob>();
 

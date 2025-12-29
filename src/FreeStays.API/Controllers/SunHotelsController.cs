@@ -1,4 +1,6 @@
 using FreeStays.Application.Common.Interfaces;
+using FreeStays.Application.DTOs.SunHotels;
+using FreeStays.Domain.Interfaces;
 using FreeStays.Infrastructure.ExternalServices.SunHotels;
 using FreeStays.Infrastructure.ExternalServices.SunHotels.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -16,15 +18,18 @@ public class SunHotelsController : ControllerBase
 {
     private readonly ISunHotelsCacheService _cacheService;
     private readonly ISunHotelsService _sunHotelsService;
+    private readonly ITranslationRepository _translationRepository;
     private readonly ILogger<SunHotelsController> _logger;
 
     public SunHotelsController(
         ISunHotelsCacheService cacheService,
         ISunHotelsService sunHotelsService,
+        ITranslationRepository translationRepository,
         ILogger<SunHotelsController> logger)
     {
         _cacheService = cacheService;
         _sunHotelsService = sunHotelsService;
+        _translationRepository = translationRepository;
         _logger = logger;
     }
 
@@ -52,7 +57,7 @@ public class SunHotelsController : ControllerBase
     [HttpGet("destinations")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAllDestinations(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllDestinations(CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
         var destinations = await _cacheService.GetAllDestinationsAsync(cancellationToken);
         return Ok(destinations);
@@ -80,10 +85,35 @@ public class SunHotelsController : ControllerBase
     [HttpGet("destinations/search")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> SearchDestinations([FromQuery] string q, CancellationToken cancellationToken)
+    public async Task<IActionResult> SearchDestinations([FromQuery] string q, CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
         var destinations = await _cacheService.SearchDestinationsAsync(q, cancellationToken);
         return Ok(destinations);
+    }
+
+    /// <summary>
+    /// Tüm ülkeleri getirir (destinasyonlardan gruplandırılmış)
+    /// </summary>
+    [HttpGet("countries")]
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAllCountries(CancellationToken cancellationToken, [FromQuery] string language = "en")
+    {
+        var destinations = await _cacheService.GetAllDestinationsAsync(cancellationToken);
+
+        var countries = destinations
+            .GroupBy(d => new { d.Country, d.CountryCode, d.CountryId })
+            .Select(g => new
+            {
+                name = g.Key.Country,
+                code = g.Key.CountryCode,
+                countryId = g.Key.CountryId,
+                destinationCount = g.Count()
+            })
+            .OrderBy(c => c.name)
+            .ToList();
+
+        return Ok(countries);
     }
 
     #endregion
@@ -96,7 +126,7 @@ public class SunHotelsController : ControllerBase
     [HttpGet("resorts")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAllResorts(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllResorts(CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
         var resorts = await _cacheService.GetAllResortsAsync(cancellationToken);
         return Ok(resorts);
@@ -124,7 +154,7 @@ public class SunHotelsController : ControllerBase
     [HttpGet("destinations/{destinationId:int}/resorts")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetResortsByDestination(int destinationId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetResortsByDestination(int destinationId, CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
         var resorts = await _cacheService.GetResortsByDestinationAsync(destinationId, cancellationToken);
         return Ok(resorts);
@@ -136,7 +166,7 @@ public class SunHotelsController : ControllerBase
     [HttpGet("resorts/search")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> SearchResorts([FromQuery] string q, CancellationToken cancellationToken)
+    public async Task<IActionResult> SearchResorts([FromQuery] string q, CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
         var resorts = await _cacheService.SearchResortsAsync(q, cancellationToken);
         return Ok(resorts);
@@ -152,7 +182,7 @@ public class SunHotelsController : ControllerBase
     [HttpGet("meals")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAllMeals(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllMeals(CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
         var meals = await _cacheService.GetAllMealsAsync(cancellationToken);
         return Ok(meals);
@@ -184,7 +214,7 @@ public class SunHotelsController : ControllerBase
     [HttpGet("room-types")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAllRoomTypes(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllRoomTypes(CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
         var roomTypes = await _cacheService.GetAllRoomTypesAsync(cancellationToken);
         return Ok(roomTypes);
@@ -216,7 +246,7 @@ public class SunHotelsController : ControllerBase
     [HttpGet("features")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAllFeatures(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllFeatures(CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
         var features = await _cacheService.GetAllFeaturesAsync(cancellationToken);
         return Ok(features);
@@ -244,7 +274,7 @@ public class SunHotelsController : ControllerBase
     [HttpGet("features/by-type/{featureType}")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetFeaturesByType(string featureType, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetFeaturesByType(string featureType, CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
         var features = await _cacheService.GetFeaturesByTypeAsync(featureType, cancellationToken);
         return Ok(features);
@@ -260,7 +290,7 @@ public class SunHotelsController : ControllerBase
     [HttpGet("themes")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAllThemes(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllThemes(CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
         var themes = await _cacheService.GetAllThemesAsync(cancellationToken);
         return Ok(themes);
@@ -292,7 +322,7 @@ public class SunHotelsController : ControllerBase
     [HttpGet("languages")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAllLanguages(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllLanguages(CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
         var languages = await _cacheService.GetAllLanguagesAsync(cancellationToken);
         return Ok(languages);
@@ -324,7 +354,7 @@ public class SunHotelsController : ControllerBase
     [HttpGet("transfer-types")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAllTransferTypes(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllTransferTypes(CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
         var transferTypes = await _cacheService.GetAllTransferTypesAsync(cancellationToken);
         return Ok(transferTypes);
@@ -356,7 +386,7 @@ public class SunHotelsController : ControllerBase
     [HttpGet("note-types")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAllNoteTypes(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllNoteTypes(CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
         var noteTypes = await _cacheService.GetAllNoteTypesAsync(cancellationToken);
         return Ok(noteTypes);
@@ -394,7 +424,8 @@ public class SunHotelsController : ControllerBase
         [FromQuery] int? destinationId = null,
         [FromQuery] int? resortId = null,
         [FromQuery] int? minStars = null,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        [FromQuery] string language = "en")
     {
         if (page < 1) page = 1;
         if (pageSize < 1) pageSize = 20;
@@ -435,7 +466,7 @@ public class SunHotelsController : ControllerBase
     [HttpGet("hotels/search")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> SearchHotels([FromQuery] string q, CancellationToken cancellationToken)
+    public async Task<IActionResult> SearchHotels([FromQuery] string q, CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
         var hotels = await _cacheService.SearchHotelsAsync(q, cancellationToken);
         return Ok(hotels);
@@ -447,7 +478,7 @@ public class SunHotelsController : ControllerBase
     [HttpGet("destinations/{destinationId:int}/hotels")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetHotelsByDestination(int destinationId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetHotelsByDestination(int destinationId, CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
         var hotels = await _cacheService.GetHotelsByDestinationAsync(destinationId, cancellationToken);
         return Ok(hotels);
@@ -459,7 +490,7 @@ public class SunHotelsController : ControllerBase
     [HttpGet("resorts/{resortId:int}/hotels")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetHotelsByResort(int resortId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetHotelsByResort(int resortId, CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
         var hotels = await _cacheService.GetHotelsByResortAsync(resortId, cancellationToken);
         return Ok(hotels);
@@ -475,7 +506,7 @@ public class SunHotelsController : ControllerBase
     [HttpGet("hotels/{hotelId:int}/rooms")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetRoomsByHotel(int hotelId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetRoomsByHotel(int hotelId, CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
         var rooms = await _cacheService.GetRoomsByHotelAsync(hotelId, cancellationToken);
         return Ok(rooms);
@@ -495,6 +526,136 @@ public class SunHotelsController : ControllerBase
             return NotFound(new { message = $"Room with ID {id} not found" });
 
         return Ok(room);
+    }
+
+    #endregion
+
+    #region Unified Search Endpoint (Next.js)
+
+    /// <summary>
+    /// Unified Hotel Search - Next.js için
+    /// Tarih varsa: Dinamik arama (non-static API ile canlı fiyatlar)
+    /// Tarih yoksa: Statik arama (cache tablolardan tema, konum, ülke, özellik filtreleme)
+    /// </summary>
+    [HttpPost("search/unified")]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(HotelSearchResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> UnifiedHotelSearch(
+        [FromBody] HotelSearchRequest request,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            // Tarih kriteri varsa: Dinamik arama (non-static API)
+            if (request.HasDateCriteria)
+            {
+                _logger.LogInformation(
+                    "Dynamic hotel search - Destination: {Destinations}, CheckIn: {CheckIn}, CheckOut: {CheckOut}, Language: {Language}",
+                    request.DestinationIds != null ? string.Join(",", request.DestinationIds) : "All",
+                    request.CheckInDate,
+                    request.CheckOutDate,
+                    request.Language);
+
+                // SunHotels API için request oluştur
+                var sunHotelsRequest = new SunHotelsSearchRequestV3
+                {
+                    DestinationId = request.DestinationIds?.FirstOrDefault() ?? "10025", // İlk destination veya default
+                    CheckIn = request.CheckInDate!.Value,
+                    CheckOut = request.CheckOutDate!.Value,
+                    Language = request.Language,
+                    Currency = request.Currency ?? "EUR",
+                    Adults = request.Adults ?? 2,
+                    Children = request.Children ?? 0,
+                    NumberOfRooms = request.NumberOfRooms ?? 1,
+                    ChildrenAges = string.Empty,
+                    B2C = true,
+                    ShowCoordinates = true,
+                    ShowReviews = true,
+                    ShowRoomTypeName = true
+                };
+
+                var apiResults = await _sunHotelsService.SearchHotelsV3Async(sunHotelsRequest, cancellationToken);
+
+                // API sonuçlarını DTO'ya dönüştür
+                var response = new HotelSearchResponse
+                {
+                    Hotels = apiResults.Select(r => new HotelSearchResultDto
+                    {
+                        HotelId = r.HotelId,
+                        Name = r.Name,
+                        Description = r.Description,
+                        Address = r.Address,
+                        City = r.City,
+                        Country = r.Country,
+                        CountryCode = r.CountryCode,
+                        Category = r.Category,
+                        Latitude = r.Latitude,
+                        Longitude = r.Longitude,
+                        ResortId = r.ResortId,
+                        ResortName = r.ResortName,
+                        MinPrice = r.MinPrice,
+                        ThemeIds = r.ThemeIds,
+                        FeatureIds = r.FeatureIds,
+                        ImageUrls = r.Images?.Select(img => img.Url).ToList() ?? new List<string>()
+                    }).ToList(),
+                    TotalCount = apiResults.Count,
+                    TotalPages = (int)Math.Ceiling((double)apiResults.Count / request.PageSize),
+                    CurrentPage = request.Page,
+                    PageSize = request.PageSize,
+                    SearchType = "dynamic",
+                    HasPricing = true
+                };
+
+                // Fiyat gösterimlerini ayarla
+                var fromText = await _translationRepository.GetTranslationAsync("hotel_search.price.from", request.Language);
+                var perNightText = await _translationRepository.GetTranslationAsync("hotel_search.price.per_night", request.Language);
+
+                foreach (var hotel in response.Hotels)
+                {
+                    if (hotel.MinPrice.HasValue)
+                    {
+                        hotel.PriceDisplay = $"{fromText} ${hotel.MinPrice:F2}{perNightText}";
+                    }
+                }
+
+                _logger.LogInformation("Dynamic search completed - Found {Count} hotels", response.TotalCount);
+                return Ok(response);
+            }
+            else
+            {
+                // Tarih yoksa: Statik arama (cache tablolardan)
+                _logger.LogInformation(
+                    "Static hotel search - Themes: {Themes}, Features: {Features}, Country: {Country}, Language: {Language}",
+                    request.ThemeIds != null ? string.Join(",", request.ThemeIds) : "All",
+                    request.FeatureIds != null ? string.Join(",", request.FeatureIds) : "All",
+                    request.CountryCodes != null ? string.Join(",", request.CountryCodes) : "All",
+                    request.Language);
+
+                var response = await _cacheService.SearchHotelsAdvancedAsync(request, cancellationToken);
+
+                // Fiyat bilgisi yok - tarih seçim mesajı ekle
+                var priceMessage = await _translationRepository.GetTranslationAsync(
+                    "hotel_search.price.select_dates",
+                    request.Language);
+
+                response.HasPricing = false;
+                response.PriceMessage = priceMessage;
+
+                // Her otel için fiyat gösterim mesajı
+                foreach (var hotel in response.Hotels)
+                {
+                    hotel.PriceDisplay = priceMessage;
+                }
+
+                _logger.LogInformation("Static search completed - Found {Count} hotels", response.TotalCount);
+                return Ok(response);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error in unified hotel search");
+            return StatusCode(500, new { message = "Error searching hotels", error = ex.Message });
+        }
     }
 
     #endregion

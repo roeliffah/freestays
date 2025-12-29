@@ -376,16 +376,20 @@ public class SunHotelsService : ISunHotelsService
 
         try
         {
+            _logger.LogInformation("SearchHotelsV3Async - DestinationId: {DestinationId}, CheckIn: {CheckIn}, CheckOut: {CheckOut}, Adults: {Adults}, Children: {Children}",
+                request.DestinationId, request.CheckIn, request.CheckOut, request.Adults, request.Children);
+
             var parameters = new Dictionary<string, string>
             {
                 { "destination", request.DestinationId },
                 { "checkInDate", request.CheckIn.ToString("yyyy-MM-dd") },
                 { "checkOutDate", request.CheckOut.ToString("yyyy-MM-dd") },
-                { "rooms", request.NumberOfRooms.ToString() },
-                { "adults", request.Adults.ToString() },
-                { "children", request.Children.ToString() },
+                { "numberOfRooms", request.NumberOfRooms.ToString() },
+                { "numberOfAdults", request.Adults.ToString() },
+                { "numberOfChildren", request.Children.ToString() },
                 { "infant", request.Infant.ToString() },
                 { "currency", request.Currency },
+                { "currencies", request.Currency }, // Required parameter
                 { "language", request.Language },
                 { "b2c", request.B2C ? "1" : "0" },
                 { "showCoordinates", request.ShowCoordinates ? "1" : "0" },
@@ -428,7 +432,11 @@ public class SunHotelsService : ISunHotelsService
                 parameters.Add("paymentMethodId", request.PaymentMethodId.Value.ToString());
 
             var response = await SendNonStaticRequestAsync("searchV3", parameters, cancellationToken);
-            return ParseSearchResultsV3(response);
+
+            var results = ParseSearchResultsV3(response);
+            _logger.LogInformation("SearchHotelsV3Async - Parsed {Count} hotels from response", results.Count);
+
+            return results;
         }
         catch (Exception ex)
         {
@@ -996,12 +1004,23 @@ public class SunHotelsService : ISunHotelsService
     private async Task<string> SendNonStaticRequestAsync(string method, Dictionary<string, string> parameters, CancellationToken cancellationToken)
     {
         var url = BuildRequestUrl(_nonStaticApiUrl, method, parameters);
-        _logger.LogDebug("Sending non-static request to SunHotels: {Method}", method);
+        _logger.LogInformation("Sending non-static request to SunHotels: {Method} - URL: {Url}", method, url);
 
         var response = await _httpClient.GetAsync(url, cancellationToken);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var errorContent = await response.Content.ReadAsStringAsync(cancellationToken);
+            _logger.LogError("SunHotels NonStatic API error - Status: {StatusCode}, Response: {Response}",
+                response.StatusCode, errorContent);
+        }
+
         response.EnsureSuccessStatusCode();
 
-        return await response.Content.ReadAsStringAsync(cancellationToken);
+        var responseContent = await response.Content.ReadAsStringAsync(cancellationToken);
+        _logger.LogInformation("SunHotels NonStatic API response length: {Length} characters", responseContent.Length);
+
+        return responseContent;
     }
 
     #endregion

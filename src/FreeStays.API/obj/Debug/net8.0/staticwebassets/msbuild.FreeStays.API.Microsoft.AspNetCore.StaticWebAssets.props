@@ -1,40 +1,76 @@
 ﻿<Project>
   <ItemGroup>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\swagger-ui\custom.css'))">
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\media\general\28c5cda0-d746-4529-9108-0436feae2fbd.png'))">
       <SourceType>Package</SourceType>
       <SourceId>FreeStays.API</SourceId>
       <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
       <BasePath>_content/FreeStays.API</BasePath>
-      <RelativePath>swagger-ui/custom.css</RelativePath>
+      <RelativePath>media/general/28c5cda0-d746-4529-9108-0436feae2fbd.png</RelativePath>
       <AssetKind>All</AssetKind>
       <AssetMode>All</AssetMode>
       <AssetRole>Primary</AssetRole>
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>ph3d3oxnn8</Fingerprint>
-      <Integrity>E5racAOIKRmHqEjoYEJW5DFTCMFdsZdxMwHEo6Psxtw=</Integrity>
+      <Fingerprint>wo8hdzruk5</Fingerprint>
+      <Integrity>wPAHVWc/eiuP8ZvSxoIT2CQJWvhQIXlKSyPSyXFn/BA=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\swagger-ui\custom.css'))</OriginalItemSpec>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\media\general\28c5cda0-d746-4529-9108-0436feae2fbd.png'))</OriginalItemSpec>
     </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\swagger-ui\custom.js'))">
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\media\general\28c5cda0-d746-4529-9108-0436feae2fbd_thumb.png'))">
       <SourceType>Package</SourceType>
       <SourceId>FreeStays.API</SourceId>
       <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
       <BasePath>_content/FreeStays.API</BasePath>
-      <RelativePath>swagger-ui/custom.js</RelativePath>
+      <RelativePath>media/general/28c5cda0-d746-4529-9108-0436feae2fbd_thumb.png</RelativePath>
       <AssetKind>All</AssetKind>
       <AssetMode>All</AssetMode>
       <AssetRole>Primary</AssetRole>
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>0sozvnechm</Fingerprint>
-      <Integrity>0HzAl3mIWizD/N6hIg8VRDW4FFslYstC5OdJny6ToSc=</Integrity>
+      <Fingerprint>8a7xg13mk5</Fingerprint>
+      <Integrity>IAcr4W97LxYca+eO2h3PmHRr/b3iBpSvjpkFc8sfCBw=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\swagger-ui\custom.js'))</OriginalItemSpec>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\media\general\28c5cda0-d746-4529-9108-0436feae2fbd_thumb.png'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\media\test\41d16007-68fa-4b25-a548-086999372d5a.png'))">
+      <SourceType>Package</SourceType>
+      <SourceId>FreeStays.API</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/FreeStays.API</BasePath>
+      <RelativePath>media/test/41d16007-68fa-4b25-a548-086999372d5a.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>es2ufhmpwz</Fingerprint>
+      <Integrity>YqPpLbOsTNXI0S+f5DL+grQBzjshC2uiXDWisjH3XfM=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\media\test\41d16007-68fa-4b25-a548-086999372d5a.png'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\media\test\41d16007-68fa-4b25-a548-086999372d5a_thumb.png'))">
+      <SourceType>Package</SourceType>
+      <SourceId>FreeStays.API</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/FreeStays.API</BasePath>
+      <RelativePath>media/test/41d16007-68fa-4b25-a548-086999372d5a_thumb.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>s32f1ase47</Fingerprint>
+      <Integrity>mP6TmEC9R0SpAt30QcmYk+g/xxkFAKyx6ttbBQAsgxY=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\media\test\41d16007-68fa-4b25-a548-086999372d5a_thumb.png'))</OriginalItemSpec>
     </StaticWebAsset>
   </ItemGroup>
 </Project>

@@ -51,4 +51,20 @@ public class TranslationRepository : Repository<Translation>, ITranslationReposi
             .OrderBy(n => n)
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<string> GetTranslationAsync(string fullKey, string locale, CancellationToken cancellationToken = default)
+    {
+        // fullKey format: "namespace.key" örn: "hotel_search.price.select_dates"
+        var parts = fullKey.Split('.', 2);
+        if (parts.Length < 2)
+        {
+            return fullKey; // Format hatalıysa key'i döndür
+        }
+
+        var @namespace = parts[0];
+        var key = parts[1];
+
+        var translation = await GetByKeyAsync(locale, @namespace, key, cancellationToken);
+        return translation?.Value ?? fullKey; // Translation yoksa key'i döndür
+    }
 }

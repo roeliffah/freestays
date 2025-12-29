@@ -33,6 +33,7 @@ COPY --from=build /app/publish .
 # Create necessary directories
 RUN mkdir -p /app/logs && chmod 777 /app/logs
 RUN mkdir -p /app/wwwroot/uploads && chmod 777 /app/wwwroot/uploads
+RUN mkdir -p /app/wwwroot/media && chmod 777 /app/wwwroot/media
 
 # Expose ports
 EXPOSE 8080

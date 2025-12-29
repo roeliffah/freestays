@@ -1082,7 +1082,7 @@ public class SunHotelsStaticDataSyncJob
                         if (existingRoomIds.Any())
                         {
                             await _dbContext.Database.ExecuteSqlRawAsync(
-                                $"DELETE FROM sun_hotels_rooms WHERE id = ANY(@ids)",
+                                $"DELETE FROM sunhotels_rooms_cache WHERE id = ANY(@ids)",
                                 new Npgsql.NpgsqlParameter("@ids", existingRoomIds.ToArray()));
                         }
 

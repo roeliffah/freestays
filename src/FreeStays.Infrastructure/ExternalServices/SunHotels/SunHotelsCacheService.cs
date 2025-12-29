@@ -1,4 +1,5 @@
 using FreeStays.Application.Common.Interfaces;
+using FreeStays.Application.DTOs.SunHotels;
 using FreeStays.Domain.Entities.Cache;
 using FreeStays.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
@@ -306,6 +307,10 @@ public class SunHotelsCacheService : ISunHotelsCacheService
         int? minStars = null,
         CancellationToken cancellationToken = default)
     {
+        // Validate pagination parameters
+        page = Math.Max(1, page);
+        pageSize = Math.Clamp(pageSize, 1, 100);
+
         var query = _context.SunHotelsHotels.AsNoTracking();
 
         // DestinationId alan\u0131 entity'de yok, atlaniyor
@@ -327,6 +332,124 @@ public class SunHotelsCacheService : ISunHotelsCacheService
             .ToListAsync(cancellationToken);
 
         return (hotels, totalCount);
+    }
+
+    /// <summary>
+    /// Gelişmiş otel arama - Cache tablolardan statik arama
+    /// Tema, konum, ülke, yemek türü, özellik gibi kriterlere göre filtreler
+    /// </summary>
+    public async Task<HotelSearchResponse> SearchHotelsAdvancedAsync(
+        HotelSearchRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var query = _context.SunHotelsHotels.AsNoTracking();
+
+        // Dil filtresi
+        if (!string.IsNullOrWhiteSpace(request.Language))
+        {
+            query = query.Where(h => h.Language == request.Language);
+        }
+
+        // Destinasyon filtresi
+        if (request.DestinationIds != null && request.DestinationIds.Any())
+        {
+            // Resort üzerinden destination bağlantısı yapılacak
+            var resortIds = await _context.SunHotelsResorts
+                .Where(r => request.DestinationIds.Contains(r.DestinationId))
+                .Select(r => r.ResortId)
+                .Distinct()
+                .ToListAsync(cancellationToken);
+
+            if (resortIds.Any())
+            {
+                query = query.Where(h => resortIds.Contains(h.ResortId));
+            }
+        }
+
+        // Resort filtresi
+        if (request.ResortIds != null && request.ResortIds.Any())
+        {
+            query = query.Where(h => request.ResortIds.Contains(h.ResortId));
+        }
+
+        // Ülke kodu filtresi
+        if (request.CountryCodes != null && request.CountryCodes.Any())
+        {
+            query = query.Where(h => request.CountryCodes.Contains(h.CountryCode));
+        }
+
+        // Ülke ismi filtresi
+        if (request.CountryNames != null && request.CountryNames.Any())
+        {
+            query = query.Where(h => request.CountryNames.Contains(h.Country));
+        }
+
+        // Yıldız filtresi
+        if (request.MinStars.HasValue)
+        {
+            query = query.Where(h => h.Category >= request.MinStars.Value);
+        }
+
+        if (request.MaxStars.HasValue)
+        {
+            query = query.Where(h => h.Category <= request.MaxStars.Value);
+        }
+
+        // Tema filtresi (JSONB array içinde arama)
+        if (request.ThemeIds != null && request.ThemeIds.Any())
+        {
+            foreach (var themeId in request.ThemeIds)
+            {
+                // PostgreSQL JSONB array contains operatörü (@>)
+                query = query.Where(h => EF.Functions.JsonContains(h.ThemeIds, $"[{themeId}]"));
+            }
+        }
+
+        // Özellik filtresi (JSONB array içinde arama)
+        if (request.FeatureIds != null && request.FeatureIds.Any())
+        {
+            foreach (var featureId in request.FeatureIds)
+            {
+                // PostgreSQL JSONB array contains operatörü (@>)
+                query = query.Where(h => EF.Functions.JsonContains(h.FeatureIds, $"[{featureId}]"));
+            }
+        }
+
+        // Serbest metin arama
+        if (!string.IsNullOrWhiteSpace(request.SearchTerm))
+        {
+            query = query.Where(h =>
+                EF.Functions.ILike(h.Name, $"%{request.SearchTerm}%") ||
+                EF.Functions.ILike(h.City, $"%{request.SearchTerm}%") ||
+                (h.Address != null && EF.Functions.ILike(h.Address, $"%{request.SearchTerm}%")));
+        }
+
+        // Toplam kayıt sayısı
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        // Sayfalama parametrelerini validate et
+        var page = Math.Max(1, request.Page); // Minimum 1
+        var pageSize = Math.Clamp(request.PageSize, 1, 100); // 1-100 arası
+
+        // Sayfalama
+        var hotels = await query
+            .OrderBy(h => h.Name)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        // Response oluştur
+        var response = new HotelSearchResponse
+        {
+            Hotels = hotels.Select(HotelSearchResultDto.FromCache).ToList(),
+            TotalCount = totalCount,
+            TotalPages = (int)Math.Ceiling((double)totalCount / pageSize),
+            CurrentPage = page,
+            PageSize = pageSize,
+            SearchType = "static"
+        };
+
+        return response;
     }
 
     #endregion

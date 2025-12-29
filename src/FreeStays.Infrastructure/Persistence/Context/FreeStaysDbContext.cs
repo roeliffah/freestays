@@ -38,6 +38,10 @@ public class FreeStaysDbContext : DbContext
     public DbSet<SeoSetting> SeoSettings => Set<SeoSetting>();
     public DbSet<PaymentSetting> PaymentSettings => Set<PaymentSetting>();
     public DbSet<JobHistory> JobHistories => Set<JobHistory>();
+
+    // Media Management
+    public DbSet<MediaFile> MediaFiles => Set<MediaFile>();
+
     // HomePage Management Entities
     public DbSet<HomePageSection> HomePageSections => Set<HomePageSection>();
     public DbSet<HomePageSectionTranslation> HomePageSectionTranslations => Set<HomePageSectionTranslation>();

@@ -1,3 +1,4 @@
+using FreeStays.Application.DTOs.SunHotels;
 using FreeStays.Domain.Entities.Cache;
 
 namespace FreeStays.Application.Common.Interfaces;
@@ -54,6 +55,12 @@ public interface ISunHotelsCacheService
     Task<List<SunHotelsHotelCache>> GetHotelsByResortAsync(int resortId, CancellationToken cancellationToken = default);
     Task<List<SunHotelsHotelCache>> SearchHotelsAsync(string searchTerm, CancellationToken cancellationToken = default);
     Task<(List<SunHotelsHotelCache> Hotels, int TotalCount)> GetHotelsPaginatedAsync(int page, int pageSize, int? destinationId = null, int? resortId = null, int? minStars = null, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gelişmiş otel arama - Statik cache tablolardan
+    /// Tema, konum, ülke, yemek türü, özellik gibi kriterlere göre arama yapar
+    /// </summary>
+    Task<HotelSearchResponse> SearchHotelsAdvancedAsync(HotelSearchRequest request, CancellationToken cancellationToken = default);
 
     // Rooms
     Task<List<SunHotelsRoomCache>> GetAllRoomsAsync(CancellationToken cancellationToken = default);

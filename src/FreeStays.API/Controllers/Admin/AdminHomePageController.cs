@@ -76,7 +76,7 @@ public class AdminHomePageController : ControllerBase
         try
         {
             var validTypes = new[] { "hero", "room-types", "features", "popular-hotels",
-                "popular-destinations", "romantic-tours", "campaign-banner",
+                "popular-destinations", "popular-countries","themed-hotels", "romantic-tours", "campaign-banner",
                 "travel-cta", "final-cta", "custom-html" };
 
             if (!validTypes.Contains(request.SectionType))
