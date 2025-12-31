@@ -1,41 +1,5 @@
 ﻿<Project>
   <ItemGroup>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\media\general\28c5cda0-d746-4529-9108-0436feae2fbd.png'))">
-      <SourceType>Package</SourceType>
-      <SourceId>FreeStays.API</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/FreeStays.API</BasePath>
-      <RelativePath>media/general/28c5cda0-d746-4529-9108-0436feae2fbd.png</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>wo8hdzruk5</Fingerprint>
-      <Integrity>wPAHVWc/eiuP8ZvSxoIT2CQJWvhQIXlKSyPSyXFn/BA=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\media\general\28c5cda0-d746-4529-9108-0436feae2fbd.png'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\media\general\28c5cda0-d746-4529-9108-0436feae2fbd_thumb.png'))">
-      <SourceType>Package</SourceType>
-      <SourceId>FreeStays.API</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/FreeStays.API</BasePath>
-      <RelativePath>media/general/28c5cda0-d746-4529-9108-0436feae2fbd_thumb.png</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>8a7xg13mk5</Fingerprint>
-      <Integrity>IAcr4W97LxYca+eO2h3PmHRr/b3iBpSvjpkFc8sfCBw=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\media\general\28c5cda0-d746-4529-9108-0436feae2fbd_thumb.png'))</OriginalItemSpec>
-    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\media\test\41d16007-68fa-4b25-a548-086999372d5a.png'))">
       <SourceType>Package</SourceType>
       <SourceId>FreeStays.API</SourceId>

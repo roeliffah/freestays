@@ -1,0 +1,807 @@
+2025-12-30 19:24:40.436 +03:00 [INF] 🔍 Redis Connection String: 3.72.175.63:6379,password=Barneveld2026,defaultDatabase=0,ssl=false,abortConnect=false,connectRetry=3,connectTimeout=5000
+2025-12-30 19:24:40.462 +03:00 [INF] 🚀 Attempting to configure Hangfire with Redis storage...
+2025-12-30 19:24:40.463 +03:00 [INF] ✅ Hangfire configured with Redis storage successfully
+2025-12-30 19:24:44.840 +03:00 [INF] Database migration completed successfully
+2025-12-30 19:24:44.848 +03:00 [INF] Checking database connectivity...
+2025-12-30 19:24:45.228 +03:00 [INF] Ensuring database schema exists...
+2025-12-30 19:24:45.729 +03:00 [INF] Database is ready.
+2025-12-30 19:24:46.109 +03:00 [INF] Admin user already exists, skipping...
+2025-12-30 19:24:46.188 +03:00 [INF] Email templates already exist, skipping...
+2025-12-30 19:24:46.261 +03:00 [INF] Site settings already exist, skipping...
+2025-12-30 19:24:46.344 +03:00 [INF] External service configs already exist, skipping...
+2025-12-30 19:24:46.344 +03:00 [INF] Database seeding completed successfully.
+2025-12-30 19:24:46.345 +03:00 [INF] FreeStays API started at "2025-12-30T16:24:46.3449800Z"
+2025-12-30 19:24:46.446 +03:00 [INF] Starting Hangfire Server using job storage: 'redis://3.72.175.63:6379,connectTimeout=5000,password=*****,ssl=False,abortConnect=False,connectRetry=3,defaultDatabase=0/0'
+2025-12-30 19:24:46.447 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 16
+    Listening queues: 'default', 'critical'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-30 19:24:46.501 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-12-30 19:24:46.524 +03:00 [INF] Server macbookair-25afbc24:21586:527513b6 successfully announced in 67,628 ms
+2025-12-30 19:24:46.527 +03:00 [INF] Server macbookair-25afbc24:21586:527513b6 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, FetchedJobsWatcher, ExpiredJobsWatcher, RedisSubscription, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-30 19:24:46.536 +03:00 [INF] Server macbookair-25afbc24:21586:527513b6 all the dispatchers started
+2025-12-30 19:24:46.591 +03:00 [INF] Removing expired records from the 'succeeded' list...
+2025-12-30 19:24:46.602 +03:00 [INF] FreeStays Request: LoginCommand {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-30 19:24:47.884 +03:00 [WRN] FreeStays Long Running Request: LoginCommand (1280 ms) {"Email":"bilgi@teybilisim.com","Password":"20110303Tey48!.","$type":"LoginCommand"}
+2025-12-30 19:24:47.896 +03:00 [INF] HTTP POST /api/v1/auth/login responded 200 in 1395.2350 ms
+2025-12-30 19:24:48.574 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:24:48.578 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-30 19:24:49.006 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 466.0438 ms
+2025-12-30 19:24:49.018 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:24:49.023 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-30 19:24:49.283 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 272.5361 ms
+2025-12-30 19:25:04.482 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:25:04.481 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:25:04.754 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 279.4008 ms
+2025-12-30 19:25:04.756 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:25:04.903 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 147.9765 ms
+2025-12-30 19:25:09.847 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:25:10.025 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 178.3875 ms
+2025-12-30 19:25:14.843 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:25:14.983 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 140.0547 ms
+2025-12-30 19:25:17.329 +03:00 [INF] HTTP GET /api/v1/sunhotels/statistics responded 200 in 12853.9705 ms
+2025-12-30 19:25:17.335 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:25:17.339 +03:00 [INF] HTTP GET /api/v1/sunhotels/statistics responded 200 in 6.5028 ms
+2025-12-30 19:25:19.846 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:25:20.022 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 176.6751 ms
+2025-12-30 19:25:24.844 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:25:24.981 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 137.9052 ms
+2025-12-30 19:25:29.845 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:25:30.030 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 186.0084 ms
+2025-12-30 19:25:34.843 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:25:34.982 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 139.6283 ms
+2025-12-30 19:25:36.797 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:25:36.799 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:25:36.799 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:25:36.908 +03:00 [INF] HTTP GET /api/v1/admin/hangfire/processing-jobs responded 200 in 110.6618 ms
+2025-12-30 19:25:37.148 +03:00 [INF] HTTP GET /api/v1/admin/hangfire/queue/stats responded 200 in 351.3318 ms
+2025-12-30 19:25:37.229 +03:00 [INF] HTTP GET /api/v1/admin/hangfire/recurring-jobs responded 200 in 431.9508 ms
+2025-12-30 19:25:39.843 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:25:40.022 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 178.7769 ms
+2025-12-30 19:25:44.841 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:25:44.985 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 145.0615 ms
+2025-12-30 19:25:45.953 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:25:49.220 +03:00 [INF] Cleared 6 failed jobs
+2025-12-30 19:25:49.225 +03:00 [INF] HTTP DELETE /api/v1/admin/hangfire/queue/failed responded 200 in 3273.8819 ms
+2025-12-30 19:25:49.237 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:25:49.237 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:25:49.238 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:25:49.300 +03:00 [INF] HTTP GET /api/v1/admin/hangfire/processing-jobs responded 200 in 64.1670 ms
+2025-12-30 19:25:49.540 +03:00 [INF] HTTP GET /api/v1/admin/hangfire/queue/stats responded 200 in 302.5781 ms
+2025-12-30 19:25:49.620 +03:00 [INF] HTTP GET /api/v1/admin/hangfire/recurring-jobs responded 200 in 384.7552 ms
+2025-12-30 19:25:49.843 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:25:50.022 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 180.4139 ms
+2025-12-30 19:25:54.845 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:25:54.982 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 139.7668 ms
+2025-12-30 19:25:59.846 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:25:59.976 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 131.2723 ms
+2025-12-30 19:26:04.841 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:26:04.983 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 141.9360 ms
+2025-12-30 19:26:05.898 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:26:05.898 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:26:05.902 +03:00 [INF] HTTP GET /api/v1/sunhotels/statistics responded 200 in 4.3965 ms
+2025-12-30 19:26:05.904 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:26:05.907 +03:00 [INF] HTTP GET /api/v1/sunhotels/statistics responded 200 in 3.8236 ms
+2025-12-30 19:26:06.021 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 123.4655 ms
+2025-12-30 19:26:06.023 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:26:06.182 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 158.9688 ms
+2025-12-30 19:26:11.084 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:26:11.221 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 138.3933 ms
+2025-12-30 19:26:16.083 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:26:16.227 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 144.8104 ms
+2025-12-30 19:26:21.084 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:26:21.221 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 138.1687 ms
+2025-12-30 19:26:26.081 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:26:26.261 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 180.3054 ms
+2025-12-30 19:26:31.088 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:26:31.225 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 137.5523 ms
+2025-12-30 19:26:36.081 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:26:36.242 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 161.1264 ms
+2025-12-30 19:26:41.091 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:26:41.221 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 133.5997 ms
+2025-12-30 19:26:46.081 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:26:46.261 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 179.7323 ms
+2025-12-30 19:26:51.080 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:26:51.221 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 140.7441 ms
+2025-12-30 19:26:56.081 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:26:56.262 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 181.1299 ms
+2025-12-30 19:27:01.089 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:27:01.221 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 133.0103 ms
+2025-12-30 19:27:06.081 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:27:06.262 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 181.4405 ms
+2025-12-30 19:27:11.099 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:27:11.231 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 133.2039 ms
+2025-12-30 19:27:16.091 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:27:16.262 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 177.0618 ms
+2025-12-30 19:27:21.081 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:27:21.221 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 141.0767 ms
+2025-12-30 19:27:26.080 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:27:26.261 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 181.2982 ms
+2025-12-30 19:27:31.080 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:27:31.221 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 140.5566 ms
+2025-12-30 19:27:36.080 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:27:36.203 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 123.5741 ms
+2025-12-30 19:27:41.079 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:27:41.221 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 142.2716 ms
+2025-12-30 19:27:46.078 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:27:46.207 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 129.9827 ms
+2025-12-30 19:27:51.081 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:27:51.220 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 139.4750 ms
+2025-12-30 19:27:56.079 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:27:56.241 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 162.5263 ms
+2025-12-30 19:28:01.081 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:28:01.209 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 128.1174 ms
+2025-12-30 19:28:06.079 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:28:06.261 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 181.7998 ms
+2025-12-30 19:28:11.085 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:28:11.222 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 138.3137 ms
+2025-12-30 19:28:16.080 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:28:16.264 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 185.0927 ms
+2025-12-30 19:28:21.079 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:28:21.221 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 142.1648 ms
+2025-12-30 19:28:26.080 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:28:26.261 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 181.6551 ms
+2025-12-30 19:28:31.086 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:28:31.217 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 135.3107 ms
+2025-12-30 19:28:36.144 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:28:36.325 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 182.6632 ms
+2025-12-30 19:28:41.090 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:28:41.302 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 215.1328 ms
+2025-12-30 19:28:46.149 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:28:46.324 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 180.9340 ms
+2025-12-30 19:28:51.140 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:28:51.302 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 169.4488 ms
+2025-12-30 19:28:56.082 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:28:56.260 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 179.1716 ms
+2025-12-30 19:29:01.079 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:29:01.211 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 131.9839 ms
+2025-12-30 19:29:06.080 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:29:06.261 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 181.8088 ms
+2025-12-30 19:29:11.076 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:29:11.223 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 146.7771 ms
+2025-12-30 19:29:16.078 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:29:16.260 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 182.6406 ms
+2025-12-30 19:29:21.085 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:29:21.227 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 144.7737 ms
+2025-12-30 19:29:26.078 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:29:26.201 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 123.9529 ms
+2025-12-30 19:29:31.084 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:29:31.220 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 137.4176 ms
+2025-12-30 19:29:36.076 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:29:36.201 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 125.9070 ms
+2025-12-30 19:29:41.078 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:29:41.221 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 143.6045 ms
+2025-12-30 19:29:46.077 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:29:46.661 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 584.2790 ms
+2025-12-30 19:29:51.078 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:29:51.221 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 144.0315 ms
+2025-12-30 19:29:56.076 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:29:56.200 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 124.2489 ms
+2025-12-30 19:30:01.077 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:30:01.198 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 120.6868 ms
+2025-12-30 19:30:06.080 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:30:06.261 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 181.9493 ms
+2025-12-30 19:30:11.076 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:30:11.221 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 145.0222 ms
+2025-12-30 19:30:16.077 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:30:16.260 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 182.6669 ms
+2025-12-30 19:30:21.075 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:30:21.221 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 146.1036 ms
+2025-12-30 19:30:26.077 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:30:26.198 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 122.1771 ms
+2025-12-30 19:30:31.079 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:30:31.210 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 131.2559 ms
+2025-12-30 19:30:36.076 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:30:36.260 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 184.2818 ms
+2025-12-30 19:30:41.079 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:30:41.219 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 140.0853 ms
+2025-12-30 19:30:46.074 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:30:46.204 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 130.1908 ms
+2025-12-30 19:30:51.075 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:30:51.219 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 144.4505 ms
+2025-12-30 19:30:56.075 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:30:56.197 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 122.4785 ms
+2025-12-30 19:31:01.075 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:31:01.219 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 144.3203 ms
+2025-12-30 19:31:06.074 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:31:06.203 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 128.4189 ms
+2025-12-30 19:31:11.075 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:31:11.220 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 145.0248 ms
+2025-12-30 19:31:16.074 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:31:16.238 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 164.4198 ms
+2025-12-30 19:31:21.076 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:31:21.220 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 144.0875 ms
+2025-12-30 19:31:26.075 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:31:26.197 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 122.8890 ms
+2025-12-30 19:31:31.076 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:31:31.219 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 142.6395 ms
+2025-12-30 19:31:36.073 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:31:36.259 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 186.3034 ms
+2025-12-30 19:31:41.074 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:31:41.218 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 144.5673 ms
+2025-12-30 19:31:46.072 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:31:46.201 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 128.3045 ms
+2025-12-30 19:31:51.074 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:31:51.218 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 144.7259 ms
+2025-12-30 19:31:56.076 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:31:56.259 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 182.7088 ms
+2025-12-30 19:32:01.075 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:32:01.220 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 145.3925 ms
+2025-12-30 19:32:06.076 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:32:06.259 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 183.5808 ms
+2025-12-30 19:32:11.075 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:32:11.219 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 144.4018 ms
+2025-12-30 19:32:16.073 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:32:16.258 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 185.1309 ms
+2025-12-30 19:32:21.074 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:32:21.219 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 145.5161 ms
+2025-12-30 19:32:26.077 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:32:26.259 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 183.0522 ms
+2025-12-30 19:32:31.075 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:32:31.218 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 143.2556 ms
+2025-12-30 19:32:36.075 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:32:36.259 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 184.3820 ms
+2025-12-30 19:32:41.072 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:32:41.218 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 146.1850 ms
+2025-12-30 19:32:46.074 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:32:46.204 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 130.4955 ms
+2025-12-30 19:32:51.072 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:32:51.219 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 147.1314 ms
+2025-12-30 19:32:56.073 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:32:56.260 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 186.6996 ms
+2025-12-30 19:33:01.073 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:33:01.218 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 145.0420 ms
+2025-12-30 19:33:06.073 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:33:06.258 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 185.4723 ms
+2025-12-30 19:33:11.076 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:33:11.219 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 142.9538 ms
+2025-12-30 19:33:16.074 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:33:16.196 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 122.7543 ms
+2025-12-30 19:33:21.077 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:33:21.219 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 141.8991 ms
+2025-12-30 19:33:26.073 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:33:26.201 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 127.5680 ms
+2025-12-30 19:33:31.073 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:33:31.203 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 130.0478 ms
+2025-12-30 19:33:36.071 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:33:36.198 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 126.8514 ms
+2025-12-30 19:33:41.074 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:33:41.206 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 132.2254 ms
+2025-12-30 19:33:46.071 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:33:46.193 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 122.2019 ms
+2025-12-30 19:33:51.085 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:33:51.219 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 136.1693 ms
+2025-12-30 19:33:52.511 +03:00 [INF] Server macbookair-25afbc24:21586:527513b6 caught stopping signal...
+2025-12-30 19:33:52.586 +03:00 [INF] Server macbookair-25afbc24:21586:527513b6 All dispatchers stopped
+2025-12-30 19:33:52.656 +03:00 [INF] Server macbookair-25afbc24:21586:527513b6 successfully reported itself as stopped in 68,6802 ms
+2025-12-30 19:33:52.656 +03:00 [INF] Server macbookair-25afbc24:21586:527513b6 has been stopped in total 144,2997 ms
+2025-12-30 19:34:09.798 +03:00 [INF] 🔍 Redis Connection String: 3.72.175.63:6379,password=Barneveld2026,defaultDatabase=0,ssl=false,abortConnect=false,connectRetry=3,connectTimeout=5000
+2025-12-30 19:34:09.823 +03:00 [INF] 🚀 Attempting to configure Hangfire with Redis storage...
+2025-12-30 19:34:09.824 +03:00 [INF] ✅ Hangfire configured with Redis storage successfully
+2025-12-30 19:34:13.633 +03:00 [INF] Database migration completed successfully
+2025-12-30 19:34:13.643 +03:00 [INF] Checking database connectivity...
+2025-12-30 19:34:14.019 +03:00 [INF] Ensuring database schema exists...
+2025-12-30 19:34:14.509 +03:00 [INF] Database is ready.
+2025-12-30 19:34:14.741 +03:00 [INF] Admin user already exists, skipping...
+2025-12-30 19:34:14.821 +03:00 [INF] Email templates already exist, skipping...
+2025-12-30 19:34:14.897 +03:00 [INF] Site settings already exist, skipping...
+2025-12-30 19:34:14.980 +03:00 [INF] External service configs already exist, skipping...
+2025-12-30 19:34:14.980 +03:00 [INF] Database seeding completed successfully.
+2025-12-30 19:34:14.980 +03:00 [INF] FreeStays API started at "2025-12-30T16:34:14.9805630Z"
+2025-12-30 19:34:15.029 +03:00 [INF] Starting Hangfire Server using job storage: 'redis://3.72.175.63:6379,connectTimeout=5000,password=*****,ssl=False,abortConnect=False,connectRetry=3,defaultDatabase=0/0'
+2025-12-30 19:34:15.030 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 16
+    Listening queues: 'default', 'critical'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-30 19:34:15.140 +03:00 [INF] Server macbookair-ba9f5fcb:22694:8f12b317 successfully announced in 104,0488 ms
+2025-12-30 19:34:15.142 +03:00 [INF] Server macbookair-ba9f5fcb:22694:8f12b317 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, FetchedJobsWatcher, ExpiredJobsWatcher, RedisSubscription, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-30 19:34:15.145 +03:00 [INF] Server macbookair-ba9f5fcb:22694:8f12b317 all the dispatchers started
+2025-12-30 19:34:15.223 +03:00 [INF] Removing expired records from the 'succeeded' list...
+2025-12-30 19:34:15.537 +03:00 [INF] Removing expired records from the 'deleted' list...
+2025-12-30 19:34:16.130 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-12-30 19:34:16.178 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:34:16.449 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 319.5418 ms
+2025-12-30 19:34:21.082 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:34:21.220 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 146.9330 ms
+2025-12-30 19:34:26.077 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:34:26.662 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 588.5067 ms
+2025-12-30 19:34:31.071 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:34:31.218 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 147.3124 ms
+2025-12-30 19:34:36.075 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:34:36.259 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 184.5745 ms
+2025-12-30 19:34:41.074 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:34:41.218 +03:00 [INF] HTTP GET /api/v1/admin/jobs/history responded 200 in 144.7918 ms
+2025-12-30 19:34:45.980 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:34:46.024 +03:00 [INF] FreeStays Request: GetAllCouponsQuery {"Page":1,"PageSize":20,"IsActive":null,"$type":"GetAllCouponsQuery"}
+2025-12-30 19:34:46.238 +03:00 [INF] HTTP GET /api/v1/admin/coupons responded 200 in 258.7955 ms
+2025-12-30 19:34:46.239 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:34:46.239 +03:00 [INF] FreeStays Request: GetAllCouponsQuery {"Page":1,"PageSize":20,"IsActive":null,"$type":"GetAllCouponsQuery"}
+2025-12-30 19:34:46.301 +03:00 [INF] HTTP GET /api/v1/admin/coupons responded 200 in 62.4566 ms
+2025-12-30 19:34:54.829 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:34:54.832 +03:00 [INF] FreeStays Request: GetAllCouponsQuery {"Page":1,"PageSize":20,"IsActive":null,"$type":"GetAllCouponsQuery"}
+2025-12-30 19:34:54.939 +03:00 [INF] HTTP GET /api/v1/admin/coupons responded 200 in 111.1467 ms
+2025-12-30 19:34:54.946 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:34:54.971 +03:00 [INF] FreeStays Request: GetAllCouponsQuery {"Page":1,"PageSize":20,"IsActive":null,"$type":"GetAllCouponsQuery"}
+2025-12-30 19:34:55.137 +03:00 [INF] HTTP GET /api/v1/admin/coupons responded 200 in 192.0283 ms
+2025-12-30 19:35:25.319 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:35:25.319 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:35:25.319 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:35:25.319 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:35:25.321 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:35:25.377 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":"branding","$type":"GetSiteSettingsQuery"}
+2025-12-30 19:35:25.377 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":"social","$type":"GetSiteSettingsQuery"}
+2025-12-30 19:35:25.377 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":"contact","$type":"GetSiteSettingsQuery"}
+2025-12-30 19:35:25.377 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-30 19:35:25.377 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":"smtp","$type":"GetSiteSettingsQuery"}
+2025-12-30 19:35:25.490 +03:00 [INF] HTTP GET /api/v1/admin/settings/site responded 200 in 172.9281 ms
+2025-12-30 19:35:25.491 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:35:25.491 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-30 19:35:25.555 +03:00 [INF] HTTP GET /api/v1/admin/settings/site responded 200 in 63.6328 ms
+2025-12-30 19:35:25.866 +03:00 [INF] HTTP GET /api/v1/admin/settings/smtp responded 200 in 548.9343 ms
+2025-12-30 19:35:25.868 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:35:25.868 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":"smtp","$type":"GetSiteSettingsQuery"}
+2025-12-30 19:35:25.877 +03:00 [INF] HTTP GET /api/v1/admin/settings/contact responded 200 in 558.2718 ms
+2025-12-30 19:35:25.879 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:35:25.879 +03:00 [WRN] FreeStays Long Running Request: GetSiteSettingsQuery (502 ms) {"Group":"branding","$type":"GetSiteSettingsQuery"}
+2025-12-30 19:35:25.879 +03:00 [INF] HTTP GET /api/v1/admin/settings/social responded 200 in 561.2865 ms
+2025-12-30 19:35:25.879 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":"contact","$type":"GetSiteSettingsQuery"}
+2025-12-30 19:35:25.881 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:35:25.881 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":"social","$type":"GetSiteSettingsQuery"}
+2025-12-30 19:35:25.881 +03:00 [INF] HTTP GET /api/v1/admin/settings/branding responded 200 in 564.5840 ms
+2025-12-30 19:35:25.882 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:35:25.883 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":"branding","$type":"GetSiteSettingsQuery"}
+2025-12-30 19:35:25.937 +03:00 [INF] HTTP GET /api/v1/admin/settings/smtp responded 200 in 69.4667 ms
+2025-12-30 19:35:25.941 +03:00 [INF] HTTP GET /api/v1/admin/settings/branding responded 200 in 58.7150 ms
+2025-12-30 19:35:25.941 +03:00 [INF] HTTP GET /api/v1/admin/settings/contact responded 200 in 62.6363 ms
+2025-12-30 19:35:25.942 +03:00 [INF] HTTP GET /api/v1/admin/settings/social responded 200 in 61.7370 ms
+2025-12-30 19:35:38.605 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:35:38.615 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-30 19:35:38.988 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 383.7861 ms
+2025-12-30 19:35:38.990 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:35:38.991 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-30 19:35:39.296 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 306.0925 ms
+2025-12-30 19:35:44.283 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:35:44.309 +03:00 [INF] FreeStays Request: GetAllBookingsQuery {"Page":1,"PageSize":10,"Status":null,"Type":null,"FromDate":null,"ToDate":null,"$type":"GetAllBookingsQuery"}
+2025-12-30 19:35:44.430 +03:00 [INF] HTTP GET /api/v1/admin/bookings responded 200 in 148.1283 ms
+2025-12-30 19:35:44.431 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:35:44.432 +03:00 [INF] FreeStays Request: GetAllBookingsQuery {"Page":1,"PageSize":10,"Status":null,"Type":null,"FromDate":null,"ToDate":null,"$type":"GetAllBookingsQuery"}
+2025-12-30 19:35:44.497 +03:00 [INF] HTTP GET /api/v1/admin/bookings responded 200 in 65.7519 ms
+2025-12-30 19:35:45.529 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:35:45.529 +03:00 [INF] FreeStays Request: GetAllCouponsQuery {"Page":1,"PageSize":20,"IsActive":null,"$type":"GetAllCouponsQuery"}
+2025-12-30 19:35:45.618 +03:00 [INF] HTTP GET /api/v1/admin/coupons responded 200 in 89.7682 ms
+2025-12-30 19:35:45.620 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:35:45.620 +03:00 [INF] FreeStays Request: GetAllCouponsQuery {"Page":1,"PageSize":20,"IsActive":null,"$type":"GetAllCouponsQuery"}
+2025-12-30 19:35:45.701 +03:00 [INF] HTTP GET /api/v1/admin/coupons responded 200 in 81.5463 ms
+2025-12-30 19:35:49.077 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:35:49.242 +03:00 [INF] HTTP GET /api/v1/admin/homepage/sections responded 200 in 183.8251 ms
+2025-12-30 19:35:49.243 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:35:49.306 +03:00 [INF] HTTP GET /api/v1/admin/homepage/sections responded 200 in 63.2278 ms
+2025-12-30 19:35:53.714 +03:00 [INF] HTTP GET /api/v1/sunhotels/themes responded 200 in 128.8962 ms
+2025-12-30 19:36:01.553 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:36:01.655 +03:00 [INF] HTTP GET /api/v1/admin/homepage/sections/b1bb7dfa-3295-45fe-9608-baa53cd23ab9/translations responded 200 in 104.0081 ms
+2025-12-30 19:37:42.159 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:37:42.178 +03:00 [INF] FreeStays Request: GetAllFaqsQuery {"$type":"GetAllFaqsQuery"}
+2025-12-30 19:37:42.308 +03:00 [INF] HTTP GET /api/v1/admin/faqs responded 200 in 161.3730 ms
+2025-12-30 19:37:42.310 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:37:42.310 +03:00 [INF] FreeStays Request: GetAllFaqsQuery {"$type":"GetAllFaqsQuery"}
+2025-12-30 19:37:42.369 +03:00 [INF] HTTP GET /api/v1/admin/faqs responded 200 in 59.6941 ms
+2025-12-30 19:38:16.279 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:38:16.281 +03:00 [INF] FreeStays Request: GetAllFaqsQuery {"$type":"GetAllFaqsQuery"}
+2025-12-30 19:38:16.352 +03:00 [INF] HTTP GET /api/v1/admin/faqs responded 200 in 74.1444 ms
+2025-12-30 19:38:18.937 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:38:18.942 +03:00 [INF] FreeStays Request: GetAllFaqsQuery {"$type":"GetAllFaqsQuery"}
+2025-12-30 19:38:19.027 +03:00 [INF] HTTP GET /api/v1/admin/faqs responded 200 in 95.4550 ms
+2025-12-30 19:38:21.867 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:38:21.868 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-30 19:38:22.191 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 323.6590 ms
+2025-12-30 19:38:22.192 +03:00 [INF] JWT Token validated successfully for user: Halit YILMAZ
+2025-12-30 19:38:22.193 +03:00 [INF] FreeStays Request: GetDashboardQuery {"$type":"GetDashboardQuery"}
+2025-12-30 19:38:22.508 +03:00 [INF] HTTP GET /api/v1/admin/dashboard responded 200 in 315.9576 ms
+2025-12-30 19:38:28.231 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-30 19:38:28.257 +03:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2025-12-30 19:38:28.359 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 131.8184 ms
+2025-12-30 19:38:28.369 +03:00 [INF] HTTP GET /api/v1/public/homepage/sections responded 200 in 141.4457 ms
+2025-12-30 19:38:28.390 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-30 19:38:28.393 +03:00 [INF] HTTP GET /api/v1/sunhotels/themes responded 200 in 3.8760 ms
+2025-12-30 19:38:28.397 +03:00 [INF] HTTP GET /api/v1/sunhotels/themes responded 200 in 3.1213 ms
+2025-12-30 19:38:28.460 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 70.9061 ms
+2025-12-30 19:38:28.461 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-30 19:38:28.524 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 63.8161 ms
+2025-12-30 19:38:47.515 +03:00 [INF] HTTP GET /api/v1/sunhotels/themes responded 200 in 1.7763 ms
+2025-12-30 19:38:47.518 +03:00 [INF] HTTP GET /api/v1/sunhotels/themes responded 200 in 1.0726 ms
+2025-12-30 19:38:47.565 +03:00 [INF] Static hotel search - Themes: 8, Features: All, Country: All, Language: en
+2025-12-30 19:38:47.565 +03:00 [INF] Static hotel search - Themes: 8, Features: All, Country: All, Language: en
+2025-12-30 19:38:47.565 +03:00 [INF] Static hotel search - Themes: 8, Features: All, Country: All, Language: en
+2025-12-30 19:38:47.565 +03:00 [INF] Static hotel search - Themes: 8, Features: All, Country: All, Language: en
+2025-12-30 19:38:47.880 +03:00 [INF] HTTP GET /api/v1/sunhotels/features responded 200 in 1.4746 ms
+2025-12-30 19:38:47.882 +03:00 [INF] HTTP GET /api/v1/sunhotels/features responded 200 in 349.0950 ms
+2025-12-30 19:38:55.328 +03:00 [INF] Static search completed - Found 44 hotels
+2025-12-30 19:38:55.344 +03:00 [INF] HTTP POST /api/v1/sunhotels/search/unified responded 200 in 7830.3771 ms
+2025-12-30 19:38:55.642 +03:00 [INF] Static search completed - Found 44 hotels
+2025-12-30 19:38:55.643 +03:00 [INF] HTTP POST /api/v1/sunhotels/search/unified responded 200 in 8128.9789 ms
+2025-12-30 19:38:55.872 +03:00 [INF] Static search completed - Found 44 hotels
+2025-12-30 19:38:55.873 +03:00 [INF] HTTP POST /api/v1/sunhotels/search/unified responded 200 in 8357.4888 ms
+2025-12-30 19:38:55.874 +03:00 [INF] Static search completed - Found 44 hotels
+2025-12-30 19:38:55.874 +03:00 [INF] HTTP POST /api/v1/sunhotels/search/unified responded 200 in 8360.1810 ms
+2025-12-30 19:39:21.173 +03:00 [ERR] Failed executing DbCommand (33,265ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT s."Id", s."CreatedAt", s."Language", s."LastSyncedAt", s."Name", s."RoomTypeId", s."UpdatedAt"
+FROM sunhotels_roomtypes_cache AS s
+ORDER BY s."Name"
+2025-12-30 19:39:21.196 +03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'FreeStays.Infrastructure.Persistence.Context.FreeStaysDbContext'.
+System.InvalidOperationException: An exception has been raised that is likely due to a transient failure.
+ ---> Npgsql.NpgsqlException (0x80004005): Exception while reading from stream
+ ---> System.TimeoutException: Timeout during reading attempt
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+System.InvalidOperationException: An exception has been raised that is likely due to a transient failure.
+ ---> Npgsql.NpgsqlException (0x80004005): Exception while reading from stream
+ ---> System.TimeoutException: Timeout during reading attempt
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+2025-12-30 19:39:21.200 +03:00 [ERR] Error fetching data for cache key: sunhotels_roomtypes
+System.InvalidOperationException: An exception has been raised that is likely due to a transient failure.
+ ---> Npgsql.NpgsqlException (0x80004005): Exception while reading from stream
+ ---> System.TimeoutException: Timeout during reading attempt
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsCacheService.<>c__DisplayClass53_0`1.<<GetFromCacheOrDbAsync>b__0>d.MoveNext() in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsCacheService.cs:line 578
+2025-12-30 19:39:21.217 +03:00 [INF] HTTP GET /api/v1/sunhotels/room-types responded 200 in 33327.9013 ms
+2025-12-30 19:39:38.768 +03:00 [ERR] Failed executing DbCommand (30,865ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT s."Id", s."CreatedAt", s."Language", s."LastSyncedAt", s."Name", s."RoomTypeId", s."UpdatedAt"
+FROM sunhotels_roomtypes_cache AS s
+ORDER BY s."Name"
+2025-12-30 19:39:38.772 +03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'FreeStays.Infrastructure.Persistence.Context.FreeStaysDbContext'.
+System.InvalidOperationException: An exception has been raised that is likely due to a transient failure.
+ ---> Npgsql.NpgsqlException (0x80004005): Exception while reading from stream
+ ---> System.TimeoutException: Timeout during reading attempt
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+System.InvalidOperationException: An exception has been raised that is likely due to a transient failure.
+ ---> Npgsql.NpgsqlException (0x80004005): Exception while reading from stream
+ ---> System.TimeoutException: Timeout during reading attempt
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+2025-12-30 19:39:38.778 +03:00 [ERR] Error fetching data for cache key: sunhotels_roomtypes
+System.InvalidOperationException: An exception has been raised that is likely due to a transient failure.
+ ---> Npgsql.NpgsqlException (0x80004005): Exception while reading from stream
+ ---> System.TimeoutException: Timeout during reading attempt
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at FreeStays.Infrastructure.ExternalServices.SunHotels.SunHotelsCacheService.<>c__DisplayClass53_0`1.<<GetFromCacheOrDbAsync>b__0>d.MoveNext() in /Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.Infrastructure/ExternalServices/SunHotels/SunHotelsCacheService.cs:line 578
+2025-12-30 19:39:38.783 +03:00 [INF] HTTP GET /api/v1/sunhotels/room-types responded 200 in 30886.8786 ms
+2025-12-30 19:40:17.967 +03:00 [INF] Dynamic hotel search - Destination: All, CheckIn: "2026-01-03T00:00:00.0000000", CheckOut: "2026-01-10T00:00:00.0000000", Language: en
+2025-12-30 19:40:18.455 +03:00 [INF] SunHotels API URLs loaded from settings - Static: http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx, NonStatic: http://xml.sunhotels.net/15/PostGet/NonStaticXMLAPI.asmx
+2025-12-30 19:40:18.456 +03:00 [INF] SunHotels configuration loaded from database for service: SunHotels
+2025-12-30 19:40:18.456 +03:00 [INF] SearchHotelsV3Async - DestinationId: 10025, CheckIn: "2026-01-03T00:00:00.0000000", CheckOut: "2026-01-10T00:00:00.0000000", Adults: 2, Children: 0
+2025-12-30 19:40:18.458 +03:00 [INF] Sending non-static request to SunHotels: searchV3 - URL: http://xml.sunhotels.net/15/PostGet/NonStaticXMLAPI.asmx/searchV3?userName=FreestaysTEST&password=Vision2024!@&destination=10025&checkInDate=2026-01-03&checkOutDate=2026-01-10&numberOfRooms=1&numberOfAdults=2&numberOfChildren=0&infant=0&currency=EUR&currencies=EUR&language=en&b2c=1&showCoordinates=1&showReviews=1&showRoomTypeName=1&excludeSharedRooms=0&excludeSharedFacilities=0
+2025-12-30 19:40:18.731 +03:00 [INF] SunHotels NonStatic API response length: 213 characters
+2025-12-30 19:40:18.737 +03:00 [INF] SearchHotelsV3Async - Parsed 0 hotels from response
+2025-12-30 19:40:18.912 +03:00 [INF] Dynamic search completed - Found 0 hotels
+2025-12-30 19:40:18.913 +03:00 [INF] HTTP POST /api/v1/sunhotels/search/unified responded 200 in 954.2626 ms
+2025-12-30 19:40:36.600 +03:00 [INF] HTTP GET /api/v1/sunhotels/resorts responded 200 in 75365.5707 ms
+2025-12-30 19:43:54.688 +03:00 [INF] HTTP GET /api/v1/sunhotels/resorts responded 200 in 235894.6998 ms
+2025-12-30 20:34:15.824 +03:00 [INF] Removing expired records from the 'succeeded' list...
+2025-12-30 20:34:16.061 +03:00 [INF] Removing expired records from the 'deleted' list...
+2025-12-30 20:55:37.355 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-30 20:55:37.452 +03:00 [INF] HTTP GET /api/v1/sunhotels/themes responded 200 in 45.0607 ms
+2025-12-30 20:55:37.458 +03:00 [INF] Static hotel search - Themes: 8, Features: All, Country: All, Language: en
+2025-12-30 20:55:37.458 +03:00 [INF] Static hotel search - Themes: 8, Features: All, Country: All, Language: en
+2025-12-30 20:55:37.475 +03:00 [INF] HTTP GET /api/v1/sunhotels/features responded 200 in 13.9922 ms
+2025-12-30 20:55:37.527 +03:00 [INF] HTTP GET /api/v1/sunhotels/room-types responded 200 in 3.1162 ms
+2025-12-30 20:55:37.951 +03:00 [WRN] FreeStays Long Running Request: GetSiteSettingsQuery (589 ms) {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-30 20:55:37.953 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 650.8952 ms
+2025-12-30 20:55:39.784 +03:00 [INF] Static search completed - Found 44 hotels
+2025-12-30 20:55:39.784 +03:00 [INF] Static search completed - Found 44 hotels
+2025-12-30 20:55:39.803 +03:00 [INF] HTTP POST /api/v1/sunhotels/search/unified responded 200 in 2399.3168 ms
+2025-12-30 20:55:39.803 +03:00 [INF] HTTP POST /api/v1/sunhotels/search/unified responded 200 in 2415.8945 ms
+2025-12-30 20:55:40.492 +03:00 [INF] HTTP GET /api/v1/sunhotels/resorts responded 200 in 2262.1795 ms
+2025-12-30 20:55:51.599 +03:00 [INF] HTTP GET /api/v1/sunhotels/features responded 200 in 18.5383 ms
+2025-12-30 20:55:51.846 +03:00 [INF] HTTP GET /favicon.ico responded 404 in 60.4263 ms
+2025-12-30 20:55:56.563 +03:00 [INF] HTTP GET /api/v1/sunhotels/features responded 200 in 12.0418 ms
+2025-12-30 21:15:02.596 +03:00 [INF] Server macbookair-ba9f5fcb:22694:8f12b317 caught stopping signal...
+2025-12-30 21:15:02.715 +03:00 [INF] Server macbookair-ba9f5fcb:22694:8f12b317 All dispatchers stopped
+2025-12-30 21:15:02.794 +03:00 [INF] Server macbookair-ba9f5fcb:22694:8f12b317 successfully reported itself as stopped in 75,8122 ms
+2025-12-30 21:15:02.794 +03:00 [INF] Server macbookair-ba9f5fcb:22694:8f12b317 has been stopped in total 191,9997 ms
+2025-12-30 21:22:10.143 +03:00 [INF] 🔍 Redis Connection String: 3.72.175.63:6379,password=Barneveld2026,defaultDatabase=0,ssl=false,abortConnect=false,connectRetry=3,connectTimeout=5000
+2025-12-30 21:22:10.170 +03:00 [INF] 🚀 Attempting to configure Hangfire with Redis storage...
+2025-12-30 21:22:10.171 +03:00 [INF] ✅ Hangfire configured with Redis storage successfully
+2025-12-30 21:22:13.937 +03:00 [INF] Database migration completed successfully
+2025-12-30 21:22:13.946 +03:00 [INF] Checking database connectivity...
+2025-12-30 21:22:14.322 +03:00 [INF] Ensuring database schema exists...
+2025-12-30 21:22:14.814 +03:00 [INF] Database is ready.
+2025-12-30 21:22:15.051 +03:00 [INF] Admin user already exists, skipping...
+2025-12-30 21:22:15.125 +03:00 [INF] Email templates already exist, skipping...
+2025-12-30 21:22:15.205 +03:00 [INF] Site settings already exist, skipping...
+2025-12-30 21:22:15.283 +03:00 [INF] External service configs already exist, skipping...
+2025-12-30 21:22:15.283 +03:00 [INF] Database seeding completed successfully.
+2025-12-30 21:22:15.283 +03:00 [INF] FreeStays API started at "2025-12-30T18:22:15.2833460Z"
+2025-12-30 21:22:15.338 +03:00 [INF] Starting Hangfire Server using job storage: 'redis://3.72.175.63:6379,connectTimeout=5000,password=*****,ssl=False,abortConnect=False,connectRetry=3,defaultDatabase=0/0'
+2025-12-30 21:22:15.339 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 16
+    Listening queues: 'default', 'critical'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-12-30 21:22:15.443 +03:00 [INF] Server macbookair-e3ee7330:24660:7c80bbda successfully announced in 98,3521 ms
+2025-12-30 21:22:15.445 +03:00 [INF] Server macbookair-e3ee7330:24660:7c80bbda is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, FetchedJobsWatcher, ExpiredJobsWatcher, RedisSubscription, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-12-30 21:22:15.449 +03:00 [INF] Server macbookair-e3ee7330:24660:7c80bbda all the dispatchers started
+2025-12-30 21:22:15.523 +03:00 [INF] Removing expired records from the 'succeeded' list...
+2025-12-30 21:22:15.841 +03:00 [INF] Removing expired records from the 'deleted' list...
+2025-12-30 21:22:18.516 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-12-30 21:22:18.753 +03:00 [INF] HTTP GET /api/v1/sunhotels/features responded 200 in 238.4125 ms
+2025-12-30 21:22:31.537 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-30 21:22:31.770 +03:00 [INF] Static hotel search - Themes: 8, Features: All, Country: All, Language: en
+2025-12-30 21:22:31.770 +03:00 [INF] Static hotel search - Themes: 8, Features: All, Country: All, Language: en
+2025-12-30 21:22:31.835 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 372.2683 ms
+2025-12-30 21:22:32.250 +03:00 [INF] HTTP GET /api/v1/sunhotels/themes responded 200 in 560.3435 ms
+2025-12-30 21:22:32.256 +03:00 [INF] HTTP GET /api/v1/sunhotels/features responded 200 in 3.1568 ms
+2025-12-30 21:22:33.608 +03:00 [INF] Static search completed - Found 44 hotels
+2025-12-30 21:22:33.629 +03:00 [INF] HTTP POST /api/v1/sunhotels/search/unified responded 200 in 1939.2085 ms
+2025-12-30 21:22:33.921 +03:00 [INF] Static search completed - Found 44 hotels
+2025-12-30 21:22:33.922 +03:00 [INF] HTTP POST /api/v1/sunhotels/search/unified responded 200 in 2232.5648 ms
+2025-12-30 21:23:01.452 +03:00 [INF] HTTP GET /api/v1/sunhotels/room-types responded 200 in 29147.4911 ms
+2025-12-30 21:24:48.383 +03:00 [INF] HTTP GET /api/v1/sunhotels/resorts responded 200 in 106756.1257 ms
+2025-12-30 21:29:17.928 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-30 21:29:18.118 +03:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2025-12-30 21:29:18.376 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 484.3908 ms
+2025-12-30 21:29:18.697 +03:00 [INF] HTTP GET /api/v1/public/homepage/sections responded 200 in 805.5802 ms
+2025-12-30 21:29:18.715 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-30 21:29:18.717 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-30 21:29:18.721 +03:00 [INF] HTTP GET /api/v1/sunhotels/themes responded 200 in 7.6238 ms
+2025-12-30 21:29:18.721 +03:00 [INF] HTTP GET /api/v1/sunhotels/themes responded 200 in 5.3878 ms
+2025-12-30 21:29:18.797 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 83.7025 ms
+2025-12-30 21:29:18.798 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 81.9498 ms
+2025-12-30 21:29:26.097 +03:00 [INF] HTTP GET /api/v1/sunhotels/themes responded 200 in 1.3511 ms
+2025-12-30 21:29:26.100 +03:00 [INF] Static hotel search - Themes: 2, Features: All, Country: All, Language: en
+2025-12-30 21:29:26.101 +03:00 [INF] Static hotel search - Themes: 2, Features: All, Country: All, Language: en
+2025-12-30 21:29:26.100 +03:00 [INF] Static hotel search - Themes: 2, Features: All, Country: All, Language: en
+2025-12-30 21:29:26.101 +03:00 [INF] Static hotel search - Themes: 2, Features: All, Country: All, Language: en
+2025-12-30 21:29:26.103 +03:00 [INF] HTTP GET /api/v1/sunhotels/themes responded 200 in 1.2590 ms
+2025-12-30 21:29:26.119 +03:00 [INF] HTTP GET /api/v1/sunhotels/features responded 200 in 2.3358 ms
+2025-12-30 21:29:26.119 +03:00 [INF] HTTP GET /api/v1/sunhotels/features responded 200 in 1.6255 ms
+2025-12-30 21:29:26.405 +03:00 [INF] HTTP GET /api/v1/sunhotels/room-types responded 200 in 270.0547 ms
+2025-12-30 21:29:26.405 +03:00 [INF] HTTP GET /api/v1/sunhotels/room-types responded 200 in 269.7492 ms
+2025-12-30 21:29:26.766 +03:00 [INF] HTTP GET /api/v1/sunhotels/resorts responded 200 in 138.3770 ms
+2025-12-30 21:29:26.766 +03:00 [INF] HTTP GET /api/v1/sunhotels/resorts responded 200 in 137.6148 ms
+2025-12-30 21:29:29.125 +03:00 [INF] Static search completed - Found 21 hotels
+2025-12-30 21:29:29.142 +03:00 [INF] HTTP POST /api/v1/sunhotels/search/unified responded 200 in 3042.5464 ms
+2025-12-30 21:29:29.197 +03:00 [INF] Static search completed - Found 21 hotels
+2025-12-30 21:29:29.197 +03:00 [INF] HTTP POST /api/v1/sunhotels/search/unified responded 200 in 3102.3759 ms
+2025-12-30 21:29:29.272 +03:00 [INF] Static search completed - Found 21 hotels
+2025-12-30 21:29:29.273 +03:00 [INF] HTTP POST /api/v1/sunhotels/search/unified responded 200 in 3177.7081 ms
+2025-12-30 21:29:29.277 +03:00 [INF] Static search completed - Found 21 hotels
+2025-12-30 21:29:29.281 +03:00 [INF] HTTP POST /api/v1/sunhotels/search/unified responded 200 in 3184.0842 ms
+2025-12-30 21:32:07.535 +03:00 [ERR] JWT Authentication failed
+Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '30.12.2025 18:24:47', Current time (UTC): '30.12.2025 18:32:07'.
+   at Microsoft.IdentityModel.Tokens.Validators.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateTokenPayloadAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateJWSAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+2025-12-30 21:32:07.605 +03:00 [WRN] JWT Authentication challenge: invalid_token, The token expired at '12/30/2025 18:24:47'
+2025-12-30 21:32:07.606 +03:00 [INF] HTTP GET /api/v1/admin/users responded 401 in 290.2194 ms
+2025-12-30 21:32:07.624 +03:00 [ERR] JWT Authentication failed
+Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '30.12.2025 18:24:47', Current time (UTC): '30.12.2025 18:32:07'.
+   at Microsoft.IdentityModel.Tokens.Validators.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateTokenPayloadAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateJWSAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+2025-12-30 21:32:07.629 +03:00 [WRN] JWT Authentication challenge: invalid_token, The token expired at '12/30/2025 18:24:47'
+2025-12-30 21:32:07.629 +03:00 [INF] HTTP GET /api/v1/admin/users responded 401 in 19.0913 ms
+2025-12-30 21:32:18.568 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-30 21:32:18.798 +03:00 [INF] HTTP GET /api/v1/public/homepage/sections responded 200 in 258.3228 ms
+2025-12-30 21:32:18.802 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 262.7010 ms
+2025-12-30 21:32:18.823 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-30 21:32:18.829 +03:00 [INF] HTTP GET /api/v1/sunhotels/themes responded 200 in 6.2137 ms
+2025-12-30 21:32:18.832 +03:00 [INF] HTTP GET /api/v1/sunhotels/themes responded 200 in 1.6841 ms
+2025-12-30 21:32:18.933 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 110.2630 ms
+2025-12-30 21:32:18.934 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-30 21:32:19.011 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 77.2470 ms
+2025-12-30 21:34:26.684 +03:00 [INF] HTTP GET /api/v1/sunhotels/themes responded 200 in 23.6439 ms
+2025-12-30 21:34:26.685 +03:00 [INF] Static hotel search - Themes: All, Features: All, Country: All, Language: en
+2025-12-30 21:34:26.685 +03:00 [INF] Static hotel search - Themes: All, Features: All, Country: All, Language: en
+2025-12-30 21:34:26.685 +03:00 [INF] Static hotel search - Themes: All, Features: All, Country: All, Language: en
+2025-12-30 21:34:26.686 +03:00 [INF] Static hotel search - Themes: All, Features: All, Country: All, Language: en
+2025-12-30 21:34:26.706 +03:00 [INF] HTTP GET /api/v1/sunhotels/themes responded 200 in 18.1271 ms
+2025-12-30 21:34:26.730 +03:00 [INF] HTTP GET /api/v1/sunhotels/features responded 200 in 9.1238 ms
+2025-12-30 21:34:26.784 +03:00 [INF] HTTP GET /api/v1/sunhotels/features responded 200 in 1.7421 ms
+2025-12-30 21:34:27.522 +03:00 [INF] HTTP GET /api/v1/sunhotels/room-types responded 200 in 691.7633 ms
+2025-12-30 21:34:27.529 +03:00 [INF] HTTP GET /api/v1/sunhotels/room-types responded 200 in 508.8324 ms
+2025-12-30 21:34:30.453 +03:00 [INF] Static search completed - Found 52757 hotels
+2025-12-30 21:34:30.458 +03:00 [INF] HTTP POST /api/v1/sunhotels/search/unified responded 200 in 3799.9595 ms
+2025-12-30 21:34:30.843 +03:00 [INF] Static search completed - Found 52757 hotels
+2025-12-30 21:34:30.845 +03:00 [INF] HTTP POST /api/v1/sunhotels/search/unified responded 200 in 4187.4990 ms
+2025-12-30 21:34:31.002 +03:00 [INF] Static search completed - Found 52757 hotels
+2025-12-30 21:34:31.002 +03:00 [INF] HTTP POST /api/v1/sunhotels/search/unified responded 200 in 4344.6043 ms
+2025-12-30 21:34:31.640 +03:00 [INF] Static search completed - Found 52757 hotels
+2025-12-30 21:34:31.641 +03:00 [INF] HTTP POST /api/v1/sunhotels/search/unified responded 200 in 4980.4918 ms
+2025-12-30 21:34:38.804 +03:00 [INF] HTTP GET /api/v1/sunhotels/features responded 200 in 4.8555 ms
+2025-12-30 21:34:38.907 +03:00 [INF] HTTP GET /favicon.ico responded 404 in 38.1202 ms
+2025-12-30 21:34:47.024 +03:00 [INF] HTTP GET /api/v1/sunhotels/room-types responded 200 in 375.8542 ms
+2025-12-30 21:34:58.783 +03:00 [INF] HTTP GET /api/v1/sunhotels/room-types responded 200 in 6337.5021 ms
+2025-12-30 21:35:08.262 +03:00 [INF] HTTP GET /api/v1/sunhotels/room-types responded 200 in 4861.5292 ms
+2025-12-30 21:37:00.200 +03:00 [INF] HTTP GET /api/v1/sunhotels/resorts responded 200 in 152351.2741 ms
+2025-12-30 21:37:00.200 +03:00 [INF] HTTP GET /api/v1/sunhotels/resorts responded 200 in 152374.5603 ms
+2025-12-30 21:50:13.498 +03:00 [WRN] Server macbookair-e3ee7330:24660:7c80bbda encountered an exception while sending heartbeat
+StackExchange.Redis.RedisTimeoutException: Timeout performing HSET (5000ms), next: SELECT, inst: 0, qu: 0, qs: 27, aw: False, bw: SpinningDown, rs: ReadAsync, ws: Idle, in: 0, in-pipe: 0, out-pipe: 0, last-in: 0, cur-in: 0, sync-ops: 759, async-ops: 0, serverEndpoint: 3.72.175.63:6379, conn-sec: 1683,21, aoc: 0, mc: 1/1/0, mgr: 10 of 10 available, clientName: MacBookAir(SE.Redis-v2.7.33.41805), IOCP: (Busy=0,Free=1000,Min=1,Max=1000), WORKER: (Busy=1,Free=32766,Min=8,Max=32767), POOL: (Threads=5,QueuedItems=0,CompletedItems=52862,Timers=5), v: 2.7.33.41805 (Please take a look at this article for some common client-side issues that can cause timeouts: https://stackexchange.github.io/StackExchange.Redis/Timeouts)
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 2105
+   at StackExchange.Redis.RedisDatabase.HashSet(RedisKey key, RedisValue hashField, RedisValue value, When when, CommandFlags flags) in /_/src/StackExchange.Redis/RedisDatabase.cs:line 556
+   at Hangfire.Redis.StackExchange.RedisConnection.Heartbeat(String serverId)
+   at Hangfire.Server.ServerHeartbeatProcess.Execute(BackgroundProcessContext context) in C:\projects\hangfire-525\src\Hangfire.Core\Server\ServerHeartbeatProcess.cs:line 50
+2025-12-30 21:50:20.924 +03:00 [ERR] Execution DelayedJobScheduler is in the Failed state now due to an exception, execution will be retried no more than in 00:00:09
+StackExchange.Redis.RedisTimeoutException: Timeout performing SET (5000ms), next: SELECT, inst: 0, qu: 0, qs: 31, aw: False, bw: SpinningDown, rs: ReadAsync, ws: Idle, in: 0, in-pipe: 0, out-pipe: 0, last-in: 0, cur-in: 0, sync-ops: 763, async-ops: 0, serverEndpoint: 3.72.175.63:6379, conn-sec: 1690,65, aoc: 0, mc: 1/1/0, mgr: 10 of 10 available, clientName: MacBookAir(SE.Redis-v2.7.33.41805), IOCP: (Busy=0,Free=1000,Min=1,Max=1000), WORKER: (Busy=1,Free=32766,Min=8,Max=32767), POOL: (Threads=5,QueuedItems=0,CompletedItems=52974,Timers=5), v: 2.7.33.41805 (Please take a look at this article for some common client-side issues that can cause timeouts: https://stackexchange.github.io/StackExchange.Redis/Timeouts)
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 2105
+   at Hangfire.Redis.StackExchange.RedisLock.Acquire(IDatabase redis, RedisKey key, TimeSpan timeOut, TimeSpan holdDuration)
+   at Hangfire.Redis.StackExchange.RedisConnection.AcquireDistributedLock(String resource, TimeSpan timeout)
+   at Hangfire.Server.DelayedJobScheduler.UseConnectionDistributedLock[T](JobStorage storage, Func`2 action) in C:\projects\hangfire-525\src\Hangfire.Core\Server\DelayedJobScheduler.cs:line 409
+   at Hangfire.Server.DelayedJobScheduler.EnqueueNextScheduledJobs(BackgroundProcessContext context) in C:\projects\hangfire-525\src\Hangfire.Core\Server\DelayedJobScheduler.cs:line 165
+   at Hangfire.Server.DelayedJobScheduler.Execute(BackgroundProcessContext context) in C:\projects\hangfire-525\src\Hangfire.Core\Server\DelayedJobScheduler.cs:line 146
+   at Hangfire.Server.BackgroundProcessDispatcherBuilder.ExecuteProcess(Guid executionId, Object state) in C:\projects\hangfire-525\src\Hangfire.Core\Server\BackgroundProcessDispatcherBuilder.cs:line 82
+   at Hangfire.Processing.BackgroundExecution.Run(Action`2 callback, Object state) in C:\projects\hangfire-525\src\Hangfire.Core\Processing\BackgroundExecution.cs:line 118
+2025-12-30 21:50:21.009 +03:00 [ERR] Execution RecurringJobScheduler is in the Failed state now due to an exception, execution will be retried no more than in 00:00:09
+StackExchange.Redis.RedisTimeoutException: Timeout performing SET (5000ms), next: SELECT, inst: 1, qu: 0, qs: 32, aw: False, bw: SpinningDown, rs: ReadAsync, ws: Idle, in: 0, in-pipe: 0, out-pipe: 0, last-in: 0, cur-in: 0, sync-ops: 764, async-ops: 0, serverEndpoint: 3.72.175.63:6379, conn-sec: 1690,74, aoc: 0, mc: 1/1/0, mgr: 10 of 10 available, clientName: MacBookAir(SE.Redis-v2.7.33.41805), IOCP: (Busy=0,Free=1000,Min=1,Max=1000), WORKER: (Busy=1,Free=32766,Min=8,Max=32767), POOL: (Threads=5,QueuedItems=0,CompletedItems=52975,Timers=5), v: 2.7.33.41805 (Please take a look at this article for some common client-side issues that can cause timeouts: https://stackexchange.github.io/StackExchange.Redis/Timeouts)
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 2105
+   at Hangfire.Redis.StackExchange.RedisLock.Acquire(IDatabase redis, RedisKey key, TimeSpan timeOut, TimeSpan holdDuration)
+   at Hangfire.Redis.StackExchange.RedisConnection.AcquireDistributedLock(String resource, TimeSpan timeout)
+   at Hangfire.Server.RecurringJobScheduler.UseConnectionDistributedLock[T](JobStorage storage, Func`2 action) in C:\projects\hangfire-525\src\Hangfire.Core\Server\RecurringJobScheduler.cs:line 423
+   at Hangfire.Server.RecurringJobScheduler.EnqueueNextRecurringJobs(BackgroundProcessContext context) in C:\projects\hangfire-525\src\Hangfire.Core\Server\RecurringJobScheduler.cs:line 203
+   at Hangfire.Server.RecurringJobScheduler.Execute(BackgroundProcessContext context) in C:\projects\hangfire-525\src\Hangfire.Core\Server\RecurringJobScheduler.cs:line 176
+   at Hangfire.Server.BackgroundProcessDispatcherBuilder.ExecuteProcess(Guid executionId, Object state) in C:\projects\hangfire-525\src\Hangfire.Core\Server\BackgroundProcessDispatcherBuilder.cs:line 82
+   at Hangfire.Processing.BackgroundExecution.Run(Action`2 callback, Object state) in C:\projects\hangfire-525\src\Hangfire.Core\Processing\BackgroundExecution.cs:line 118
+2025-12-30 21:50:26.974 +03:00 [ERR] Execution ServerWatchdog is in the Failed state now due to an exception, execution will be retried no more than in 00:00:09
+StackExchange.Redis.RedisTimeoutException: Timeout performing SMEMBERS (5000ms), next: SELECT, inst: 0, qu: 0, qs: 33, aw: False, bw: SpinningDown, rs: ReadAsync, ws: Idle, in: 0, in-pipe: 0, out-pipe: 0, last-in: 0, cur-in: 0, sync-ops: 765, async-ops: 0, serverEndpoint: 3.72.175.63:6379, conn-sec: 1696,71, aoc: 0, mc: 1/1/0, mgr: 10 of 10 available, clientName: MacBookAir(SE.Redis-v2.7.33.41805), IOCP: (Busy=0,Free=1000,Min=1,Max=1000), WORKER: (Busy=1,Free=32766,Min=8,Max=32767), POOL: (Threads=4,QueuedItems=0,CompletedItems=53064,Timers=5), v: 2.7.33.41805 (Please take a look at this article for some common client-side issues that can cause timeouts: https://stackexchange.github.io/StackExchange.Redis/Timeouts)
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 2105
+   at StackExchange.Redis.RedisDatabase.SetMembers(RedisKey key, CommandFlags flags) in /_/src/StackExchange.Redis/RedisDatabase.cs:line 1735
+   at Hangfire.Redis.StackExchange.RedisConnection.RemoveTimedOutServers(TimeSpan timeOut)
+   at Hangfire.Server.ServerWatchdog.Execute(BackgroundProcessContext context) in C:\projects\hangfire-525\src\Hangfire.Core\Server\ServerWatchdog.cs:line 44
+   at Hangfire.Server.BackgroundProcessDispatcherBuilder.ExecuteProcess(Guid executionId, Object state) in C:\projects\hangfire-525\src\Hangfire.Core\Server\BackgroundProcessDispatcherBuilder.cs:line 82
+   at Hangfire.Processing.BackgroundExecution.Run(Action`2 callback, Object state) in C:\projects\hangfire-525\src\Hangfire.Core\Processing\BackgroundExecution.cs:line 118
+2025-12-30 21:50:28.476 +03:00 [INF] HTTP GET /api/v1/public/homepage/sections responded 200 in 248.3664 ms
+2025-12-30 21:50:28.588 +03:00 [INF] HTTP GET /api/v1/public/homepage/sections responded 200 in 90.9291 ms
+2025-12-30 21:50:28.967 +03:00 [ERR] Execution Worker is in the Failed state now due to an exception, execution will be retried no more than in 00:05:00
+StackExchange.Redis.RedisConnectionException: SocketFailure (ReadSocketError/TimedOut, last-recv: 22) on 3.72.175.63:6379/Interactive, Idle/Faulted, last: RPOPLPUSH, origin: ReadFromPipe, outstanding: 35, last-read: 44s ago, last-write: 0s ago, keep-alive: 60s, state: ConnectedEstablished, mgr: 9 of 10 available, in: 0, in-pipe: 0, out-pipe: 0, last-heartbeat: 0s ago, last-mbeat: 0s ago, global: 0s ago, v: 2.7.33.41805
+ ---> System.Net.Sockets.SocketException (60): Operation timed out
+   at Pipelines.Sockets.Unofficial.Internal.Throw.Socket(Int32 errorCode) in /_/src/Pipelines.Sockets.Unofficial/Internal/Throw.cs:line 59
+   at Pipelines.Sockets.Unofficial.SocketConnection.DoReceiveAsync() in /_/src/Pipelines.Sockets.Unofficial/SocketConnection.Receive.cs:line 64
+   at System.IO.Pipelines.Pipe.GetReadResult(ReadResult& result)
+   at System.IO.Pipelines.Pipe.GetReadAsyncResult()
+   at StackExchange.Redis.PhysicalConnection.ReadFromPipe()
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 2109
+   at StackExchange.Redis.RedisDatabase.SetMembers(RedisKey key, CommandFlags flags) in /_/src/StackExchange.Redis/RedisDatabase.cs:line 1735
+   at Hangfire.Redis.StackExchange.FetchedJobsWatcher.Execute(CancellationToken cancellationToken)
+   at Hangfire.Server.ServerProcessDispatcherBuilder.ExecuteComponent(Guid executionId, Object state) in C:\projects\hangfire-525\src\Hangfire.Core\Server\ServerProcessDispatcherBuilder.cs:line 65
+   at Hangfire.Processing.BackgroundExecution.Run(Action`2 callback, Object state) in C:\projects\hangfire-525\src\Hangfire.Core\Processing\BackgroundExecution.cs:line 118
+2025-12-30 21:50:33.273 +03:00 [INF] FreeStays Request: GetSiteSettingsQuery {"Group":null,"$type":"GetSiteSettingsQuery"}
+2025-12-30 21:50:33.481 +03:00 [INF] HTTP GET /api/v1/public/settings/affiliate-programs responded 200 in 219.4970 ms
+2025-12-30 21:50:33.499 +03:00 [INF] HTTP GET /api/v1/sunhotels/themes responded 200 in 17.9248 ms
+2025-12-30 21:50:33.505 +03:00 [INF] Static hotel search - Themes: All, Features: All, Country: All, Language: en
+2025-12-30 21:50:33.505 +03:00 [INF] Static hotel search - Themes: All, Features: All, Country: All, Language: en
+2025-12-30 21:50:33.541 +03:00 [INF] HTTP GET /api/v1/sunhotels/features responded 200 in 3.0558 ms
+2025-12-30 21:50:35.070 +03:00 [INF] HTTP GET /api/v1/sunhotels/room-types responded 200 in 1360.7379 ms
+2025-12-30 21:50:35.552 +03:00 [INF] Static search completed - Found 52757 hotels
+2025-12-30 21:50:35.556 +03:00 [INF] HTTP POST /api/v1/sunhotels/search/unified responded 200 in 2072.4603 ms
+2025-12-30 21:50:36.032 +03:00 [INF] Static search completed - Found 52757 hotels
+2025-12-30 21:50:36.047 +03:00 [INF] HTTP POST /api/v1/sunhotels/search/unified responded 200 in 2567.2868 ms
+2025-12-30 21:50:43.864 +03:00 [INF] Server macbookair-e3ee7330:24660:7c80bbda is now able to continue sending heartbeats
+2025-12-30 21:50:45.301 +03:00 [INF] Execution DelayedJobScheduler recovered from the Failed state after 00:00:24.3560529 and is in the Running state now
+2025-12-30 21:50:45.355 +03:00 [INF] Execution RecurringJobScheduler recovered from the Failed state after 00:00:24.3409787 and is in the Running state now
+2025-12-30 21:51:31.506 +03:00 [INF] HTTP GET /api/v1/sunhotels/resorts responded 200 in 54968.4129 ms
+2025-12-30 21:52:53.662 +03:00 [INF] Execution FetchedJobsWatcher recovered from the Faulted state after 00:01:21.2839283 and is in the Running state now
+2025-12-30 22:23:58.908 +03:00 [WRN] Server macbookair-e3ee7330:24660:7c80bbda encountered an exception while sending heartbeat
+StackExchange.Redis.RedisTimeoutException: Timeout performing HSET (5000ms), next: SELECT, inst: 0, qu: 0, qs: 8, aw: False, bw: SpinningDown, rs: ReadAsync, ws: Idle, in: 0, in-pipe: 0, out-pipe: 0, last-in: 0, cur-in: 0, sync-ops: 989, async-ops: 0, serverEndpoint: 3.72.175.63:6379, conn-sec: 2009,92, aoc: 0, mc: 1/1/0, mgr: 10 of 10 available, clientName: MacBookAir(SE.Redis-v2.7.33.41805), IOCP: (Busy=0,Free=1000,Min=1,Max=1000), WORKER: (Busy=1,Free=32766,Min=8,Max=32767), POOL: (Threads=4,QueuedItems=0,CompletedItems=63382,Timers=4), v: 2.7.33.41805 (Please take a look at this article for some common client-side issues that can cause timeouts: https://stackexchange.github.io/StackExchange.Redis/Timeouts)
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 2105
+   at StackExchange.Redis.RedisDatabase.HashSet(RedisKey key, RedisValue hashField, RedisValue value, When when, CommandFlags flags) in /_/src/StackExchange.Redis/RedisDatabase.cs:line 556
+   at Hangfire.Redis.StackExchange.RedisConnection.Heartbeat(String serverId)
+   at Hangfire.Server.ServerHeartbeatProcess.Execute(BackgroundProcessContext context) in C:\projects\hangfire-525\src\Hangfire.Core\Server\ServerHeartbeatProcess.cs:line 50
+2025-12-30 22:24:06.681 +03:00 [ERR] Execution DelayedJobScheduler is in the Failed state now due to an exception, execution will be retried no more than in 00:00:09
+StackExchange.Redis.RedisTimeoutException: Timeout performing SET (5000ms), next: SELECT, inst: 0, qu: 0, qs: 12, aw: False, bw: SpinningDown, rs: ReadAsync, ws: Idle, in: 0, in-pipe: 0, out-pipe: 0, last-in: 0, cur-in: 0, sync-ops: 993, async-ops: 0, serverEndpoint: 3.72.175.63:6379, conn-sec: 2017,7, aoc: 0, mc: 1/1/0, mgr: 10 of 10 available, clientName: MacBookAir(SE.Redis-v2.7.33.41805), IOCP: (Busy=0,Free=1000,Min=1,Max=1000), WORKER: (Busy=1,Free=32766,Min=8,Max=32767), POOL: (Threads=4,QueuedItems=0,CompletedItems=63499,Timers=4), v: 2.7.33.41805 (Please take a look at this article for some common client-side issues that can cause timeouts: https://stackexchange.github.io/StackExchange.Redis/Timeouts)
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 2105
+   at Hangfire.Redis.StackExchange.RedisLock.Acquire(IDatabase redis, RedisKey key, TimeSpan timeOut, TimeSpan holdDuration)
+   at Hangfire.Server.DelayedJobScheduler.UseConnectionDistributedLock[T](JobStorage storage, Func`2 action) in C:\projects\hangfire-525\src\Hangfire.Core\Server\DelayedJobScheduler.cs:line 405
+   at Hangfire.Server.DelayedJobScheduler.Execute(BackgroundProcessContext context) in C:\projects\hangfire-525\src\Hangfire.Core\Server\DelayedJobScheduler.cs:line 146
+   at Hangfire.Server.BackgroundProcessDispatcherBuilder.ExecuteProcess(Guid executionId, Object state) in C:\projects\hangfire-525\src\Hangfire.Core\Server\BackgroundProcessDispatcherBuilder.cs:line 82
+   at Hangfire.Processing.BackgroundExecution.Run(Action`2 callback, Object state) in C:\projects\hangfire-525\src\Hangfire.Core\Processing\BackgroundExecution.cs:line 118
+2025-12-30 22:24:07.009 +03:00 [ERR] Execution RecurringJobScheduler is in the Failed state now due to an exception, execution will be retried no more than in 00:00:09
+StackExchange.Redis.RedisTimeoutException: Timeout performing SET (5000ms), next: SELECT, inst: 0, qu: 0, qs: 12, aw: False, bw: SpinningDown, rs: ReadAsync, ws: Idle, in: 0, in-pipe: 0, out-pipe: 0, last-in: 0, cur-in: 0, sync-ops: 993, async-ops: 0, serverEndpoint: 3.72.175.63:6379, conn-sec: 2018,02, aoc: 0, mc: 1/1/0, mgr: 10 of 10 available, clientName: MacBookAir(SE.Redis-v2.7.33.41805), IOCP: (Busy=0,Free=1000,Min=1,Max=1000), WORKER: (Busy=1,Free=32766,Min=8,Max=32767), POOL: (Threads=4,QueuedItems=0,CompletedItems=63503,Timers=4), v: 2.7.33.41805 (Please take a look at this article for some common client-side issues that can cause timeouts: https://stackexchange.github.io/StackExchange.Redis/Timeouts)
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 2105
+   at Hangfire.Redis.StackExchange.RedisLock.Acquire(IDatabase redis, RedisKey key, TimeSpan timeOut, TimeSpan holdDuration)
+   at Hangfire.Server.RecurringJobScheduler.UseConnectionDistributedLock[T](JobStorage storage, Func`2 action)
+   at Hangfire.Server.RecurringJobScheduler.Execute(BackgroundProcessContext context) in C:\projects\hangfire-525\src\Hangfire.Core\Server\RecurringJobScheduler.cs:line 176
+   at Hangfire.Server.BackgroundProcessDispatcherBuilder.ExecuteProcess(Guid executionId, Object state) in C:\projects\hangfire-525\src\Hangfire.Core\Server\BackgroundProcessDispatcherBuilder.cs:line 82
+   at Hangfire.Processing.BackgroundExecution.Run(Action`2 callback, Object state) in C:\projects\hangfire-525\src\Hangfire.Core\Processing\BackgroundExecution.cs:line 118
+2025-12-30 22:24:14.754 +03:00 [INF] Execution ServerWatchdog recovered from the Failed state after 00:05:09.2096622 and is in the Running state now
+2025-12-30 22:24:29.005 +03:00 [INF] Server macbookair-e3ee7330:24660:7c80bbda is now able to continue sending heartbeats
+2025-12-30 22:24:31.080 +03:00 [INF] Execution DelayedJobScheduler recovered from the Failed state after 00:00:24.3888522 and is in the Running state now
+2025-12-30 22:24:31.419 +03:00 [INF] Execution RecurringJobScheduler recovered from the Failed state after 00:00:24.4018159 and is in the Running state now
+2025-12-30 22:57:17.311 +03:00 [ERR] Execution ServerWatchdog is in the Failed state now due to an exception, execution will be retried no more than in 00:00:09
+StackExchange.Redis.RedisTimeoutException: Timeout performing SMEMBERS (5000ms), next: INFO, inst: 0, qu: 0, qs: 13, aw: False, bw: SpinningDown, rs: ReadAsync, ws: Idle, in: 0, in-pipe: 0, out-pipe: 0, last-in: 0, cur-in: 0, sync-ops: 1725, async-ops: 0, serverEndpoint: 3.72.175.63:6379, conn-sec: 1985,48, aoc: 0, mc: 1/1/0, mgr: 10 of 10 available, clientName: MacBookAir(SE.Redis-v2.7.33.41805), IOCP: (Busy=0,Free=1000,Min=1,Max=1000), WORKER: (Busy=1,Free=32766,Min=8,Max=32767), POOL: (Threads=4,QueuedItems=0,CompletedItems=80191,Timers=4), v: 2.7.33.41805 (Please take a look at this article for some common client-side issues that can cause timeouts: https://stackexchange.github.io/StackExchange.Redis/Timeouts)
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 2105
+   at StackExchange.Redis.RedisDatabase.SetMembers(RedisKey key, CommandFlags flags) in /_/src/StackExchange.Redis/RedisDatabase.cs:line 1735
+   at Hangfire.Redis.StackExchange.RedisConnection.RemoveTimedOutServers(TimeSpan timeOut)
+   at Hangfire.Server.ServerWatchdog.Execute(BackgroundProcessContext context) in C:\projects\hangfire-525\src\Hangfire.Core\Server\ServerWatchdog.cs:line 44
+   at Hangfire.Server.BackgroundProcessDispatcherBuilder.ExecuteProcess(Guid executionId, Object state) in C:\projects\hangfire-525\src\Hangfire.Core\Server\BackgroundProcessDispatcherBuilder.cs:line 82
+   at Hangfire.Processing.BackgroundExecution.Run(Action`2 callback, Object state) in C:\projects\hangfire-525\src\Hangfire.Core\Processing\BackgroundExecution.cs:line 118
+2025-12-30 22:57:18.293 +03:00 [WRN] Server macbookair-e3ee7330:24660:7c80bbda encountered an exception while sending heartbeat
+StackExchange.Redis.RedisTimeoutException: Timeout performing HSET (5000ms), next: INFO, inst: 0, qu: 0, qs: 13, aw: False, bw: SpinningDown, rs: ReadAsync, ws: Idle, in: 0, in-pipe: 0, out-pipe: 0, last-in: 0, cur-in: 0, sync-ops: 1725, async-ops: 0, serverEndpoint: 3.72.175.63:6379, conn-sec: 1986,46, aoc: 0, mc: 1/1/0, mgr: 10 of 10 available, clientName: MacBookAir(SE.Redis-v2.7.33.41805), IOCP: (Busy=0,Free=1000,Min=1,Max=1000), WORKER: (Busy=1,Free=32766,Min=8,Max=32767), POOL: (Threads=4,QueuedItems=0,CompletedItems=80205,Timers=4), v: 2.7.33.41805 (Please take a look at this article for some common client-side issues that can cause timeouts: https://stackexchange.github.io/StackExchange.Redis/Timeouts)
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 2105
+   at StackExchange.Redis.RedisDatabase.HashSet(RedisKey key, RedisValue hashField, RedisValue value, When when, CommandFlags flags) in /_/src/StackExchange.Redis/RedisDatabase.cs:line 556
+   at Hangfire.Server.ServerHeartbeatProcess.Execute(BackgroundProcessContext context) in C:\projects\hangfire-525\src\Hangfire.Core\Server\ServerHeartbeatProcess.cs:line 42
+2025-12-30 22:57:47.200 +03:00 [INF] Execution DelayedJobScheduler recovered from the Faulted state after 00:00:37.2715338 and is in the Running state now
+2025-12-30 22:57:47.280 +03:00 [INF] Execution RecurringJobScheduler recovered from the Faulted state after 00:00:36.9515430 and is in the Running state now
+2025-12-30 22:57:48.358 +03:00 [INF] Server macbookair-e3ee7330:24660:7c80bbda is now able to continue sending heartbeats
+2025-12-30 23:14:09.987 +03:00 [INF] Execution FetchedJobsWatcher recovered from the Faulted state after 00:01:20.6290451 and is in the Running state now

@@ -1072,7 +1072,6 @@ public class SunHotelsStaticDataSyncJob
                         // Attach the detached entity back to context for update
                         _dbContext.SunHotelsHotels.Attach(existing);
                         _dbContext.Entry(existing).State = EntityState.Modified;
-
                         // Remove old rooms - query separately to avoid tracking conflicts
                         var existingRoomIds = await _dbContext.SunHotelsRooms
                             .Where(r => r.HotelId == existing.HotelId && r.Language == language)
@@ -1082,7 +1081,7 @@ public class SunHotelsStaticDataSyncJob
                         if (existingRoomIds.Any())
                         {
                             await _dbContext.Database.ExecuteSqlRawAsync(
-                                $"DELETE FROM sunhotels_rooms_cache WHERE id = ANY(@ids)",
+                                $"DELETE FROM \"SunHotelsRooms\" WHERE \"Id\" = ANY(@ids)",
                                 new Npgsql.NpgsqlParameter("@ids", existingRoomIds.ToArray()));
                         }
 

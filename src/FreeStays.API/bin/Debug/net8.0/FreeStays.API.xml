@@ -928,7 +928,7 @@
             Cache istatistiklerini getirir
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetAllDestinations(System.Threading.CancellationToken,System.String)">
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetAllDestinations(System.Threading.CancellationToken)">
             <summary>
             Tüm destinasyonları getirir
             </summary>
@@ -938,12 +938,12 @@
             Destinasyon ID'ye göre getirir
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.SunHotelsController.SearchDestinations(System.String,System.Threading.CancellationToken,System.String)">
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.SearchDestinations(System.String,System.Threading.CancellationToken)">
             <summary>
             Destinasyonlarda arama yapar
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetAllCountries(System.Threading.CancellationToken,System.String)">
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetAllCountries(System.Threading.CancellationToken)">
             <summary>
             Tüm ülkeleri getirir (destinasyonlardan gruplandırılmış)
             </summary>
@@ -953,7 +953,7 @@
             Tüm resortları getirir
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetResortById(System.Int32,System.Threading.CancellationToken)">
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetResortById(System.Int32,System.String,System.Threading.CancellationToken)">
             <summary>
             Resort ID'ye göre getirir
             </summary>
@@ -973,7 +973,7 @@
             Tüm yemek tiplerini getirir
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetMealById(System.Int32,System.Threading.CancellationToken)">
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetMealById(System.Int32,System.String,System.Threading.CancellationToken)">
             <summary>
             Yemek tipi ID'ye göre getirir
             </summary>
@@ -983,7 +983,7 @@
             Tüm oda tiplerini getirir
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetRoomTypeById(System.Int32,System.Threading.CancellationToken)">
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetRoomTypeById(System.Int32,System.String,System.Threading.CancellationToken)">
             <summary>
             Oda tipi ID'ye göre getirir
             </summary>
@@ -993,7 +993,7 @@
             Tüm özellikleri getirir
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetFeatureById(System.Int32,System.Threading.CancellationToken)">
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetFeatureById(System.Int32,System.String,System.Threading.CancellationToken)">
             <summary>
             Özellik ID'ye göre getirir
             </summary>
@@ -1028,7 +1028,7 @@
             Tüm transfer tiplerini getirir
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetTransferTypeById(System.Int32,System.Threading.CancellationToken)">
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetTransferTypeById(System.Int32,System.String,System.Threading.CancellationToken)">
             <summary>
             Transfer tipi ID'ye göre getirir
             </summary>
@@ -1038,7 +1038,7 @@
             Tüm not tiplerini getirir
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetNoteTypeById(System.Int32,System.Threading.CancellationToken)">
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetNoteTypeById(System.Int32,System.String,System.Threading.CancellationToken)">
             <summary>
             Not tipi ID'ye göre getirir
             </summary>
@@ -1048,7 +1048,7 @@
             Otelleri sayfalanmış olarak getirir
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetHotelById(System.Int32,System.Threading.CancellationToken)">
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetHotelById(System.Int32,System.String,System.Threading.CancellationToken)">
             <summary>
             Otel ID'ye göre getirir
             </summary>
@@ -1073,7 +1073,7 @@
             Otele göre odaları getirir
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetRoomById(System.Int32,System.Threading.CancellationToken)">
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetRoomById(System.Int32,System.String,System.Threading.CancellationToken)">
             <summary>
             Oda ID'ye göre getirir
             </summary>
@@ -1153,6 +1153,11 @@
         <member name="M:FreeStays.API.Controllers.SunHotelsController.GetTransferBookings(System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.String,System.Threading.CancellationToken)">
             <summary>
             Transfer rezervasyon sorgulama
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.ParseLanguage(System.String)">
+            <summary>
+            Accept-Language header'dan dil kodunu parse eder
             </summary>
         </member>
         <member name="M:FreeStays.API.Services.IFileUploadService.UploadFileAsync(Microsoft.AspNetCore.Http.IFormFile,System.String,System.Threading.CancellationToken)">

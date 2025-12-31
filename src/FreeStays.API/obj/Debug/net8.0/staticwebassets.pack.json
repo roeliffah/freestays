@@ -1,14 +1,6 @@
 {
   "Files": [
     {
-      "Id": "/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/wwwroot/media/general/28c5cda0-d746-4529-9108-0436feae2fbd.png",
-      "PackagePath": "staticwebassets/media/general/28c5cda0-d746-4529-9108-0436feae2fbd.png"
-    },
-    {
-      "Id": "/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/wwwroot/media/general/28c5cda0-d746-4529-9108-0436feae2fbd_thumb.png",
-      "PackagePath": "staticwebassets/media/general/28c5cda0-d746-4529-9108-0436feae2fbd_thumb.png"
-    },
-    {
       "Id": "/Users/halityilmaz/Programlar/Web/freestaysapi/src/FreeStays.API/wwwroot/media/test/41d16007-68fa-4b25-a548-086999372d5a.png",
       "PackagePath": "staticwebassets/media/test/41d16007-68fa-4b25-a548-086999372d5a.png"
     },

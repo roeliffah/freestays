@@ -1,29 +1,5 @@
 ﻿<Project>
   <ItemGroup>
-    <StaticWebAssetEndpoint Include="_content/FreeStays.API/media/general/28c5cda0-d746-4529-9108-0436feae2fbd.png">
-      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\media\general\28c5cda0-d746-4529-9108-0436feae2fbd.png'))</AssetFile>
-      <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-wPAHVWc/eiuP8ZvSxoIT2CQJWvhQIXlKSyPSyXFn/BA="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"5640"},{"Name":"Content-Type","Value":"image/png"},{"Name":"ETag","Value":"\u0022wPAHVWc/eiuP8ZvSxoIT2CQJWvhQIXlKSyPSyXFn/BA=\u0022"},{"Name":"Last-Modified","Value":"Sun, 28 Dec 2025 22:18:09 GMT"}]]]></ResponseHeaders>
-    </StaticWebAssetEndpoint>
-    <StaticWebAssetEndpoint Include="_content/FreeStays.API/media/general/28c5cda0-d746-4529-9108-0436feae2fbd.wo8hdzruk5.png">
-      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\media\general\28c5cda0-d746-4529-9108-0436feae2fbd.png'))</AssetFile>
-      <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"wo8hdzruk5"},{"Name":"integrity","Value":"sha256-wPAHVWc/eiuP8ZvSxoIT2CQJWvhQIXlKSyPSyXFn/BA="},{"Name":"label","Value":"_content/FreeStays.API/media/general/28c5cda0-d746-4529-9108-0436feae2fbd.png"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"5640"},{"Name":"Content-Type","Value":"image/png"},{"Name":"ETag","Value":"\u0022wPAHVWc/eiuP8ZvSxoIT2CQJWvhQIXlKSyPSyXFn/BA=\u0022"},{"Name":"Last-Modified","Value":"Sun, 28 Dec 2025 22:18:09 GMT"}]]]></ResponseHeaders>
-    </StaticWebAssetEndpoint>
-    <StaticWebAssetEndpoint Include="_content/FreeStays.API/media/general/28c5cda0-d746-4529-9108-0436feae2fbd_thumb.8a7xg13mk5.png">
-      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\media\general\28c5cda0-d746-4529-9108-0436feae2fbd_thumb.png'))</AssetFile>
-      <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"8a7xg13mk5"},{"Name":"integrity","Value":"sha256-IAcr4W97LxYca\u002BeO2h3PmHRr/b3iBpSvjpkFc8sfCBw="},{"Name":"label","Value":"_content/FreeStays.API/media/general/28c5cda0-d746-4529-9108-0436feae2fbd_thumb.png"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"2638"},{"Name":"Content-Type","Value":"image/png"},{"Name":"ETag","Value":"\u0022IAcr4W97LxYca\u002BeO2h3PmHRr/b3iBpSvjpkFc8sfCBw=\u0022"},{"Name":"Last-Modified","Value":"Sun, 28 Dec 2025 22:18:10 GMT"}]]]></ResponseHeaders>
-    </StaticWebAssetEndpoint>
-    <StaticWebAssetEndpoint Include="_content/FreeStays.API/media/general/28c5cda0-d746-4529-9108-0436feae2fbd_thumb.png">
-      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\media\general\28c5cda0-d746-4529-9108-0436feae2fbd_thumb.png'))</AssetFile>
-      <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-IAcr4W97LxYca\u002BeO2h3PmHRr/b3iBpSvjpkFc8sfCBw="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"2638"},{"Name":"Content-Type","Value":"image/png"},{"Name":"ETag","Value":"\u0022IAcr4W97LxYca\u002BeO2h3PmHRr/b3iBpSvjpkFc8sfCBw=\u0022"},{"Name":"Last-Modified","Value":"Sun, 28 Dec 2025 22:18:10 GMT"}]]]></ResponseHeaders>
-    </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/FreeStays.API/media/test/41d16007-68fa-4b25-a548-086999372d5a.es2ufhmpwz.png">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\media\test\41d16007-68fa-4b25-a548-086999372d5a.png'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
