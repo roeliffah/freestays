@@ -114,7 +114,7 @@ public class SunHotelsStaticDataSyncJob
             jobHistory.Status = JobStatus.Completed;
             jobHistory.EndTime = DateTime.UtcNow;
             jobHistory.DurationSeconds = (int)(jobHistory.EndTime.Value - jobHistory.StartTime).TotalSeconds;
-            jobHistory.Message = "Senkronizasyon başarıyla tamamlandı.";
+            jobHistory.Message = "SunHotels static data synchronization completed successfully.";
             jobHistory.Details = JsonSerializer.Serialize(stats);
             await _dbContext.SaveChangesAsync();
 
@@ -172,7 +172,7 @@ public class SunHotelsStaticDataSyncJob
             jobHistory.Status = JobStatus.Completed;
             jobHistory.EndTime = DateTime.UtcNow;
             jobHistory.DurationSeconds = (int)(jobHistory.EndTime.Value - jobHistory.StartTime).TotalSeconds;
-            jobHistory.Message = "Temel veri senkronizasyonu başarıyla tamamlandı.";
+            jobHistory.Message = "SunHotels basic data synchronization completed successfully.";
             jobHistory.Details = JsonSerializer.Serialize(stats);
             await _dbContext.SaveChangesAsync();
 

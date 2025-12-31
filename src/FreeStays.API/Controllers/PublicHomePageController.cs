@@ -47,7 +47,9 @@ public class PublicHomePageController : ControllerBase
                 .Include(s => s.Translations.Where(t => t.Locale == locale))
                 .Include(s => s.Hotels)
                 .Include(s => s.Destinations)
+                .AsSplitQuery() // Birden fazla JOIN yerine ayrı sorgular kullan
                 .OrderBy(s => s.DisplayOrder)
+                .AsNoTracking() // Change tracking'i kapat, sadece okuma
                 .ToListAsync(cancellationToken);
 
             var result = new List<object>();
@@ -109,6 +111,8 @@ public class PublicHomePageController : ControllerBase
                 .Include(s => s.Translations.Where(t => t.Locale == locale))
                 .Include(s => s.Hotels)
                 .Include(s => s.Destinations)
+                .AsSplitQuery()
+                .AsNoTracking()
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (section == null)
@@ -156,14 +160,23 @@ public class PublicHomePageController : ControllerBase
         string locale,
         CancellationToken cancellationToken)
     {
+        // Paralel olarak tüm otelleri çek
+        var orderedHotels = sectionHotels.OrderBy(h => h.DisplayOrder).ToList();
+        var hotelTasks = orderedHotels
+            .Where(sh => int.TryParse(sh.HotelId, out _))
+            .Select(async sh =>
+            {
+                var hotelIdInt = int.Parse(sh.HotelId);
+                var hotel = await _cacheService.GetHotelByIdAsync(hotelIdInt, locale, cancellationToken);
+                return new { SectionHotel = sh, Hotel = hotel };
+            });
+
+        var hotelResults = await Task.WhenAll(hotelTasks);
+
         var result = new List<object>();
-
-        foreach (var sh in sectionHotels.OrderBy(h => h.DisplayOrder))
+        foreach (var hr in hotelResults)
         {
-            if (!int.TryParse(sh.HotelId, out var hotelIdInt))
-                continue;
-
-            var hotel = await _cacheService.GetHotelByIdAsync(hotelIdInt, cancellationToken);
+            var hotel = hr.Hotel;
             if (hotel != null && hotel.Language.Equals(locale, StringComparison.OrdinalIgnoreCase))
             {
                 var images = ParseJsonArray(hotel.ImageUrls);
@@ -208,14 +221,21 @@ public class PublicHomePageController : ControllerBase
         ICollection<Domain.Entities.HomePageSectionDestination> sectionDestinations,
         CancellationToken cancellationToken)
     {
+        // Paralel olarak tüm destinasyonları çek
+        var orderedDestinations = sectionDestinations.OrderBy(d => d.DisplayOrder).ToList();
+        var destinationTasks = orderedDestinations
+            .Where(sd => int.TryParse(sd.DestinationId, out _))
+            .Select(async sd =>
+            {
+                var destIdInt = int.Parse(sd.DestinationId);
+                return await _cacheService.GetDestinationByIdAsync(destIdInt, cancellationToken);
+            });
+
+        var destinations = await Task.WhenAll(destinationTasks);
+
         var result = new List<object>();
-
-        foreach (var sd in sectionDestinations.OrderBy(d => d.DisplayOrder))
+        foreach (var destination in destinations)
         {
-            if (!int.TryParse(sd.DestinationId, out var destIdInt))
-                continue;
-
-            var destination = await _cacheService.GetDestinationByIdAsync(destIdInt, cancellationToken);
             if (destination != null)
             {
                 result.Add(new

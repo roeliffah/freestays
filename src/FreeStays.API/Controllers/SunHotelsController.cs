@@ -57,7 +57,7 @@ public class SunHotelsController : ControllerBase
     [HttpGet("destinations")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAllDestinations(CancellationToken cancellationToken, [FromQuery] string language = "en")
+    public async Task<IActionResult> GetAllDestinations(CancellationToken cancellationToken)
     {
         var destinations = await _cacheService.GetAllDestinationsAsync(cancellationToken);
         return Ok(destinations);
@@ -85,7 +85,7 @@ public class SunHotelsController : ControllerBase
     [HttpGet("destinations/search")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> SearchDestinations([FromQuery] string q, CancellationToken cancellationToken, [FromQuery] string language = "en")
+    public async Task<IActionResult> SearchDestinations([FromQuery] string q, CancellationToken cancellationToken)
     {
         var destinations = await _cacheService.SearchDestinationsAsync(q, cancellationToken);
         return Ok(destinations);
@@ -97,7 +97,7 @@ public class SunHotelsController : ControllerBase
     [HttpGet("countries")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAllCountries(CancellationToken cancellationToken, [FromQuery] string language = "en")
+    public async Task<IActionResult> GetAllCountries(CancellationToken cancellationToken)
     {
         var destinations = await _cacheService.GetAllDestinationsAsync(cancellationToken);
 
@@ -128,7 +128,7 @@ public class SunHotelsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllResorts(CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
-        var resorts = await _cacheService.GetAllResortsAsync(cancellationToken);
+        var resorts = await _cacheService.GetAllResortsAsync(language, cancellationToken);
         return Ok(resorts);
     }
 
@@ -139,9 +139,10 @@ public class SunHotelsController : ControllerBase
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetResortById(int id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetResortById(int id, [FromHeader(Name = "Accept-Language")] string? acceptLanguage = null, CancellationToken cancellationToken = default)
     {
-        var resort = await _cacheService.GetResortByIdAsync(id, cancellationToken);
+        var language = ParseLanguage(acceptLanguage);
+        var resort = await _cacheService.GetResortByIdAsync(id, language, cancellationToken);
         if (resort == null)
             return NotFound(new { message = $"Resort with ID {id} not found" });
 
@@ -156,7 +157,7 @@ public class SunHotelsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetResortsByDestination(int destinationId, CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
-        var resorts = await _cacheService.GetResortsByDestinationAsync(destinationId, cancellationToken);
+        var resorts = await _cacheService.GetResortsByDestinationAsync(destinationId, language, cancellationToken);
         return Ok(resorts);
     }
 
@@ -168,7 +169,7 @@ public class SunHotelsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> SearchResorts([FromQuery] string q, CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
-        var resorts = await _cacheService.SearchResortsAsync(q, cancellationToken);
+        var resorts = await _cacheService.SearchResortsAsync(q, language, cancellationToken);
         return Ok(resorts);
     }
 
@@ -184,7 +185,7 @@ public class SunHotelsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllMeals(CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
-        var meals = await _cacheService.GetAllMealsAsync(cancellationToken);
+        var meals = await _cacheService.GetAllMealsAsync(language, cancellationToken);
         return Ok(meals);
     }
 
@@ -195,9 +196,10 @@ public class SunHotelsController : ControllerBase
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetMealById(int id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetMealById(int id, [FromHeader(Name = "Accept-Language")] string? acceptLanguage = null, CancellationToken cancellationToken = default)
     {
-        var meal = await _cacheService.GetMealByIdAsync(id, cancellationToken);
+        var language = ParseLanguage(acceptLanguage);
+        var meal = await _cacheService.GetMealByIdAsync(id, language, cancellationToken);
         if (meal == null)
             return NotFound(new { message = $"Meal with ID {id} not found" });
 
@@ -216,7 +218,7 @@ public class SunHotelsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllRoomTypes(CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
-        var roomTypes = await _cacheService.GetAllRoomTypesAsync(cancellationToken);
+        var roomTypes = await _cacheService.GetAllRoomTypesAsync(language, cancellationToken);
         return Ok(roomTypes);
     }
 
@@ -227,9 +229,10 @@ public class SunHotelsController : ControllerBase
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetRoomTypeById(int id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetRoomTypeById(int id, [FromHeader(Name = "Accept-Language")] string? acceptLanguage = null, CancellationToken cancellationToken = default)
     {
-        var roomType = await _cacheService.GetRoomTypeByIdAsync(id, cancellationToken);
+        var language = ParseLanguage(acceptLanguage);
+        var roomType = await _cacheService.GetRoomTypeByIdAsync(id, language, cancellationToken);
         if (roomType == null)
             return NotFound(new { message = $"Room type with ID {id} not found" });
 
@@ -248,7 +251,7 @@ public class SunHotelsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllFeatures(CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
-        var features = await _cacheService.GetAllFeaturesAsync(cancellationToken);
+        var features = await _cacheService.GetAllFeaturesAsync(language, cancellationToken);
         return Ok(features);
     }
 
@@ -259,9 +262,10 @@ public class SunHotelsController : ControllerBase
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetFeatureById(int id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetFeatureById(int id, [FromHeader(Name = "Accept-Language")] string? acceptLanguage = null, CancellationToken cancellationToken = default)
     {
-        var feature = await _cacheService.GetFeatureByIdAsync(id, cancellationToken);
+        var language = ParseLanguage(acceptLanguage);
+        var feature = await _cacheService.GetFeatureByIdAsync(id, language, cancellationToken);
         if (feature == null)
             return NotFound(new { message = $"Feature with ID {id} not found" });
 
@@ -276,7 +280,7 @@ public class SunHotelsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetFeaturesByType(string featureType, CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
-        var features = await _cacheService.GetFeaturesByTypeAsync(featureType, cancellationToken);
+        var features = await _cacheService.GetFeaturesByTypeAsync(featureType, language, cancellationToken);
         return Ok(features);
     }
 
@@ -356,7 +360,7 @@ public class SunHotelsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllTransferTypes(CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
-        var transferTypes = await _cacheService.GetAllTransferTypesAsync(cancellationToken);
+        var transferTypes = await _cacheService.GetAllTransferTypesAsync(language, cancellationToken);
         return Ok(transferTypes);
     }
 
@@ -367,9 +371,10 @@ public class SunHotelsController : ControllerBase
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetTransferTypeById(int id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetTransferTypeById(int id, [FromHeader(Name = "Accept-Language")] string? acceptLanguage = null, CancellationToken cancellationToken = default)
     {
-        var transferType = await _cacheService.GetTransferTypeByIdAsync(id, cancellationToken);
+        var language = ParseLanguage(acceptLanguage);
+        var transferType = await _cacheService.GetTransferTypeByIdAsync(id, language, cancellationToken);
         if (transferType == null)
             return NotFound(new { message = $"Transfer type with ID {id} not found" });
 
@@ -388,7 +393,7 @@ public class SunHotelsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllNoteTypes(CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
-        var noteTypes = await _cacheService.GetAllNoteTypesAsync(cancellationToken);
+        var noteTypes = await _cacheService.GetAllNoteTypesAsync(language, cancellationToken);
         return Ok(noteTypes);
     }
 
@@ -399,9 +404,10 @@ public class SunHotelsController : ControllerBase
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetNoteTypeById(int id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetNoteTypeById(int id, [FromHeader(Name = "Accept-Language")] string? acceptLanguage = null, CancellationToken cancellationToken = default)
     {
-        var noteType = await _cacheService.GetNoteTypeByIdAsync(id, cancellationToken);
+        var language = ParseLanguage(acceptLanguage);
+        var noteType = await _cacheService.GetNoteTypeByIdAsync(id, language, cancellationToken);
         if (noteType == null)
             return NotFound(new { message = $"Note type with ID {id} not found" });
 
@@ -432,7 +438,7 @@ public class SunHotelsController : ControllerBase
         if (pageSize > 100) pageSize = 100;
 
         var (hotels, totalCount) = await _cacheService.GetHotelsPaginatedAsync(
-            page, pageSize, destinationId, resortId, minStars, cancellationToken);
+            page, pageSize, language, destinationId, resortId, minStars, cancellationToken);
 
         return Ok(new
         {
@@ -451,9 +457,10 @@ public class SunHotelsController : ControllerBase
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetHotelById(int id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetHotelById(int id, [FromHeader(Name = "Accept-Language")] string? acceptLanguage = null, CancellationToken cancellationToken = default)
     {
-        var hotel = await _cacheService.GetHotelByIdAsync(id, cancellationToken);
+        var language = ParseLanguage(acceptLanguage);
+        var hotel = await _cacheService.GetHotelByIdAsync(id, language, cancellationToken);
         if (hotel == null)
             return NotFound(new { message = $"Hotel with ID {id} not found" });
 
@@ -468,7 +475,7 @@ public class SunHotelsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> SearchHotels([FromQuery] string q, CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
-        var hotels = await _cacheService.SearchHotelsAsync(q, cancellationToken);
+        var hotels = await _cacheService.SearchHotelsAsync(q, language, cancellationToken);
         return Ok(hotels);
     }
 
@@ -480,7 +487,7 @@ public class SunHotelsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetHotelsByDestination(int destinationId, CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
-        var hotels = await _cacheService.GetHotelsByDestinationAsync(destinationId, cancellationToken);
+        var hotels = await _cacheService.GetHotelsByDestinationAsync(destinationId, language, cancellationToken);
         return Ok(hotels);
     }
 
@@ -492,7 +499,7 @@ public class SunHotelsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetHotelsByResort(int resortId, CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
-        var hotels = await _cacheService.GetHotelsByResortAsync(resortId, cancellationToken);
+        var hotels = await _cacheService.GetHotelsByResortAsync(resortId, language, cancellationToken);
         return Ok(hotels);
     }
 
@@ -508,7 +515,7 @@ public class SunHotelsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetRoomsByHotel(int hotelId, CancellationToken cancellationToken, [FromQuery] string language = "en")
     {
-        var rooms = await _cacheService.GetRoomsByHotelAsync(hotelId, cancellationToken);
+        var rooms = await _cacheService.GetRoomsByHotelAsync(hotelId, language, cancellationToken);
         return Ok(rooms);
     }
 
@@ -519,9 +526,10 @@ public class SunHotelsController : ControllerBase
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetRoomById(int id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetRoomById(int id, [FromHeader(Name = "Accept-Language")] string? acceptLanguage = null, CancellationToken cancellationToken = default)
     {
-        var room = await _cacheService.GetRoomByIdAsync(id, cancellationToken);
+        var language = ParseLanguage(acceptLanguage);
+        var room = await _cacheService.GetRoomByIdAsync(id, language, cancellationToken);
         if (room == null)
             return NotFound(new { message = $"Room with ID {id} not found" });
 
@@ -559,7 +567,6 @@ public class SunHotelsController : ControllerBase
                 // SunHotels API için request oluştur
                 var sunHotelsRequest = new SunHotelsSearchRequestV3
                 {
-                    DestinationId = request.DestinationIds?.FirstOrDefault() ?? "10025", // İlk destination veya default
                     CheckIn = request.CheckInDate!.Value,
                     CheckOut = request.CheckOutDate!.Value,
                     Language = request.Language,
@@ -567,12 +574,59 @@ public class SunHotelsController : ControllerBase
                     Adults = request.Adults ?? 2,
                     Children = request.Children ?? 0,
                     NumberOfRooms = request.NumberOfRooms ?? 1,
-                    ChildrenAges = string.Empty,
-                    B2C = true,
-                    ShowCoordinates = true,
-                    ShowReviews = true,
-                    ShowRoomTypeName = true
+                    ChildrenAges = request.ChildrenAges ?? string.Empty,
+                    Infant = request.Infant ?? 0,
+                    CustomerCountry = request.CustomerCountry,
+                    B2C = false,
+
+                    // Filtreler
+                    MealIds = request.MealIds != null ? string.Join(",", request.MealIds) : null,
+                    FeatureIds = request.FeatureIds != null ? string.Join(",", request.FeatureIds) : null,
+                    ThemeIds = request.ThemeIds != null ? string.Join(",", request.ThemeIds) : null,
+                    MinStarRating = request.MinStars,
+                    MaxStarRating = request.MaxStars,
+                    MinPrice = request.MinPrice,
+                    MaxPrice = request.MaxPrice,
+
+                    // Konum bazlı arama
+                    ReferenceLatitude = request.ReferencePointLatitude,
+                    ReferenceLongitude = request.ReferencePointLongitude,
+                    MaxDistanceKm = request.MaxDistanceFromReferencePoint,
+
+                    // Sıralama
+                    SortBy = request.SortBy ?? "price",
+                    SortOrder = request.SortOrder ?? "asc",
+
+                    // Özel filtreler
+                    AccommodationTypes = request.AccommodationTypes,
+                    ExactDestinationMatch = request.ExactDestinationMatch,
+                    BlockSuperdeal = request.BlockSuperdeal,
+                    ExcludeSharedRooms = request.ExcludeSharedRooms ?? false,
+                    ExcludeSharedFacilities = request.ExcludeSharedFacilities ?? false,
+                    PrioritizedHotelIds = request.PrioritizedHotelIds,
+                    TotalRoomsInBatch = request.TotalRoomsInBatch,
+                    PaymentMethodId = request.PaymentMethodId,
+
+                    // Gösterim ayarları
+                    ShowCoordinates = request.ShowCoordinates ?? true,
+                    ShowReviews = request.ShowReviews ?? true,
+                    ShowRoomTypeName = request.ShowRoomTypeName ?? true
                 };
+
+                // SunHotels API sadece destination, destinationID, hotelIDs veya resortIDs'den BİRİNİ kabul eder
+                // Öncelik sırası: HotelIds > ResortIds > DestinationId
+                if (request.HotelIds != null && request.HotelIds.Any())
+                {
+                    sunHotelsRequest.HotelIds = string.Join(",", request.HotelIds);
+                }
+                else if (request.ResortIds != null && request.ResortIds.Any())
+                {
+                    sunHotelsRequest.ResortIds = string.Join(",", request.ResortIds);
+                }
+                else
+                {
+                    sunHotelsRequest.DestinationId = request.DestinationIds?.FirstOrDefault() ?? "10025";
+                }
 
                 var apiResults = await _sunHotelsService.SearchHotelsV3Async(sunHotelsRequest, cancellationToken);
 
@@ -989,6 +1043,27 @@ public class SunHotelsController : ControllerBase
             _logger.LogError(ex, "Error getting transfer bookings");
             return StatusCode(500, new { message = "Error getting transfer bookings", error = ex.Message });
         }
+    }
+
+    /// <summary>
+    /// Accept-Language header'dan dil kodunu parse eder
+    /// </summary>
+    private static string ParseLanguage(string? acceptLanguage)
+    {
+        if (string.IsNullOrEmpty(acceptLanguage))
+            return "en";
+
+        var parts = acceptLanguage.Split(',');
+        if (parts.Length > 0)
+        {
+            var firstLocale = parts[0].Split(';')[0].Trim();
+            if (firstLocale.Contains('-'))
+            {
+                firstLocale = firstLocale.Split('-')[0];
+            }
+            return firstLocale.ToLowerInvariant();
+        }
+        return "en";
     }
 
     #endregion

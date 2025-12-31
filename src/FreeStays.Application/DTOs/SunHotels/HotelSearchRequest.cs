@@ -42,6 +42,21 @@ public class HotelSearchRequest
     /// </summary>
     public string? Currency { get; set; }
 
+    /// <summary>
+    /// Çocuk yaşları (virgülle ayrılmış: "5,8,12")
+    /// </summary>
+    public string? ChildrenAges { get; set; }
+
+    /// <summary>
+    /// Bebek sayısı
+    /// </summary>
+    public int? Infant { get; set; }
+
+    /// <summary>
+    /// Müşteri ülkesi (ISO kodu: TR, GB, DE vs.)
+    /// </summary>
+    public string? CustomerCountry { get; set; }
+
     #endregion
 
     #region Statik Arama Kriterleri (Cache tablolardan arama)
@@ -55,6 +70,11 @@ public class HotelSearchRequest
     /// Resort ID'leri
     /// </summary>
     public List<int>? ResortIds { get; set; }
+
+    /// <summary>
+    /// Otel ID'leri
+    /// </summary>
+    public List<int>? HotelIds { get; set; }
 
     /// <summary>
     /// Ülke kodları (TR, GR, ES vs.)
@@ -95,6 +115,96 @@ public class HotelSearchRequest
     /// Otel adı / Serbest metin arama
     /// </summary>
     public string? SearchTerm { get; set; }
+
+    /// <summary>
+    /// Konaklama tipleri (virgülle ayrılmış)
+    /// </summary>
+    public string? AccommodationTypes { get; set; }
+
+    /// <summary>
+    /// Kesin destinasyon eşleşmesi (true/false)
+    /// </summary>
+    public bool? ExactDestinationMatch { get; set; }
+
+    /// <summary>
+    /// Süper fırsatları engelle
+    /// </summary>
+    public bool? BlockSuperdeal { get; set; }
+
+    /// <summary>
+    /// Referans noktası enlemi (latitude)
+    /// </summary>
+    public double? ReferencePointLatitude { get; set; }
+
+    /// <summary>
+    /// Referans noktası boylamı (longitude)
+    /// </summary>
+    public double? ReferencePointLongitude { get; set; }
+
+    /// <summary>
+    /// Referans noktasından maksimum mesafe (km)
+    /// </summary>
+    public int? MaxDistanceFromReferencePoint { get; set; }
+
+    /// <summary>
+    /// Minimum fiyat
+    /// </summary>
+    public decimal? MinPrice { get; set; }
+
+    /// <summary>
+    /// Maksimum fiyat
+    /// </summary>
+    public decimal? MaxPrice { get; set; }
+
+    /// <summary>
+    /// Paylaşımlı odaları hariç tut
+    /// </summary>
+    public bool? ExcludeSharedRooms { get; set; }
+
+    /// <summary>
+    /// Paylaşımlı tesisleri hariç tut
+    /// </summary>
+    public bool? ExcludeSharedFacilities { get; set; }
+
+    /// <summary>
+    /// Öncelikli otel ID'leri (virgülle ayrılmış)
+    /// </summary>
+    public string? PrioritizedHotelIds { get; set; }
+
+    /// <summary>
+    /// Toplu işlemde toplam oda sayısı
+    /// </summary>
+    public int? TotalRoomsInBatch { get; set; }
+
+    /// <summary>
+    /// Ödeme yöntemi ID'si
+    /// </summary>
+    public int? PaymentMethodId { get; set; }
+
+    /// <summary>
+    /// Koordinatları göster
+    /// </summary>
+    public bool? ShowCoordinates { get; set; }
+
+    /// <summary>
+    /// Yorumları göster
+    /// </summary>
+    public bool? ShowReviews { get; set; }
+
+    /// <summary>
+    /// Oda tipi adını göster
+    /// </summary>
+    public bool? ShowRoomTypeName { get; set; }
+
+    /// <summary>
+    /// Sıralama kriteri (price, name, stars, distance)
+    /// </summary>
+    public string? SortBy { get; set; }
+
+    /// <summary>
+    /// Sıralama yönü (asc, desc)
+    /// </summary>
+    public string? SortOrder { get; set; }
 
     #endregion
 

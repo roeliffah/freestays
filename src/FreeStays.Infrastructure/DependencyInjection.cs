@@ -71,7 +71,11 @@ public static class DependencyInjection
 
         // External Services - SunHotels Configuration
         services.Configure<SunHotelsConfig>(configuration.GetSection("SunHotels"));
-        services.AddHttpClient<ISunHotelsService, SunHotelsService>();
+        services.AddHttpClient<ISunHotelsService, SunHotelsService>()
+            .ConfigureHttpClient(client =>
+            {
+                client.Timeout = TimeSpan.FromMinutes(5); // SunHotels API yavaş olabilir, 5 dakika timeout
+            });
         services.AddScoped<ISunHotelsCacheService, SunHotelsCacheService>();
 
         // Media Service

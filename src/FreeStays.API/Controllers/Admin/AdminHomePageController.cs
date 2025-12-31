@@ -332,7 +332,7 @@ public class AdminHomePageController : ControllerBase
 
             foreach (var sh in sectionHotels)
             {
-                var hotel = await _cacheService.GetHotelByIdAsync(int.Parse(sh.HotelId), cancellationToken);
+                var hotel = await _cacheService.GetHotelByIdAsync(int.Parse(sh.HotelId), "en", cancellationToken);
                 result.Add(new SectionHotelDto
                 {
                     Id = sh.Id,

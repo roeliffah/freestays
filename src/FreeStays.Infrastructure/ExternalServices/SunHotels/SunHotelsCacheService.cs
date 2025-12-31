@@ -81,32 +81,32 @@ public class SunHotelsCacheService : ISunHotelsCacheService
 
     #region Resorts
 
-    public async Task<List<SunHotelsResortCache>> GetAllResortsAsync(CancellationToken cancellationToken = default)
+    public async Task<List<SunHotelsResortCache>> GetAllResortsAsync(string language = "en", CancellationToken cancellationToken = default)
     {
         return await GetFromCacheOrDbAsync(
-            ResortsCacheKey,
-            () => _context.SunHotelsResorts.AsNoTracking().OrderBy(r => r.Name).ToListAsync(cancellationToken),
+            $"{ResortsCacheKey}_{language}",
+            () => _context.SunHotelsResorts.Where(r => r.Language == language).AsNoTracking().OrderBy(r => r.Name).ToListAsync(cancellationToken),
             LongCacheDuration);
     }
 
-    public async Task<SunHotelsResortCache?> GetResortByIdAsync(int externalId, CancellationToken cancellationToken = default)
+    public async Task<SunHotelsResortCache?> GetResortByIdAsync(int externalId, string language = "en", CancellationToken cancellationToken = default)
     {
-        var resorts = await GetAllResortsAsync(cancellationToken);
+        var resorts = await GetAllResortsAsync(language, cancellationToken);
         return resorts.FirstOrDefault(r => r.ResortId == externalId);
     }
 
-    public async Task<List<SunHotelsResortCache>> GetResortsByDestinationAsync(int destinationId, CancellationToken cancellationToken = default)
+    public async Task<List<SunHotelsResortCache>> GetResortsByDestinationAsync(int destinationId, string language = "en", CancellationToken cancellationToken = default)
     {
-        var resorts = await GetAllResortsAsync(cancellationToken);
+        var resorts = await GetAllResortsAsync(language, cancellationToken);
         return resorts.Where(r => r.DestinationId == destinationId.ToString()).ToList();
     }
 
-    public async Task<List<SunHotelsResortCache>> SearchResortsAsync(string searchTerm, CancellationToken cancellationToken = default)
+    public async Task<List<SunHotelsResortCache>> SearchResortsAsync(string searchTerm, string language = "en", CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(searchTerm))
-            return await GetAllResortsAsync(cancellationToken);
+            return await GetAllResortsAsync(language, cancellationToken);
 
-        var resorts = await GetAllResortsAsync(cancellationToken);
+        var resorts = await GetAllResortsAsync(language, cancellationToken);
         var lowerSearch = searchTerm.ToLowerInvariant();
 
         return resorts
@@ -118,17 +118,17 @@ public class SunHotelsCacheService : ISunHotelsCacheService
 
     #region Meals
 
-    public async Task<List<SunHotelsMealCache>> GetAllMealsAsync(CancellationToken cancellationToken = default)
+    public async Task<List<SunHotelsMealCache>> GetAllMealsAsync(string language = "en", CancellationToken cancellationToken = default)
     {
         return await GetFromCacheOrDbAsync(
-            MealsCacheKey,
-            () => _context.SunHotelsMeals.AsNoTracking().OrderBy(m => m.Name).ToListAsync(cancellationToken),
+            $"{MealsCacheKey}_{language}",
+            () => _context.SunHotelsMeals.Where(m => m.Language == language).AsNoTracking().OrderBy(m => m.Name).ToListAsync(cancellationToken),
             LongCacheDuration);
     }
 
-    public async Task<SunHotelsMealCache?> GetMealByIdAsync(int externalId, CancellationToken cancellationToken = default)
+    public async Task<SunHotelsMealCache?> GetMealByIdAsync(int externalId, string language = "en", CancellationToken cancellationToken = default)
     {
-        var meals = await GetAllMealsAsync(cancellationToken);
+        var meals = await GetAllMealsAsync(language, cancellationToken);
         return meals.FirstOrDefault(m => m.MealId == externalId);
     }
 
@@ -136,17 +136,17 @@ public class SunHotelsCacheService : ISunHotelsCacheService
 
     #region Room Types
 
-    public async Task<List<SunHotelsRoomTypeCache>> GetAllRoomTypesAsync(CancellationToken cancellationToken = default)
+    public async Task<List<SunHotelsRoomTypeCache>> GetAllRoomTypesAsync(string language = "en", CancellationToken cancellationToken = default)
     {
         return await GetFromCacheOrDbAsync(
-            RoomTypesCacheKey,
-            () => _context.SunHotelsRoomTypes.AsNoTracking().OrderBy(r => r.Name).ToListAsync(cancellationToken),
+            $"{RoomTypesCacheKey}_{language}",
+            () => _context.SunHotelsRoomTypes.Where(r => r.Language == language).AsNoTracking().OrderBy(r => r.Name).ToListAsync(cancellationToken),
             LongCacheDuration);
     }
 
-    public async Task<SunHotelsRoomTypeCache?> GetRoomTypeByIdAsync(int externalId, CancellationToken cancellationToken = default)
+    public async Task<SunHotelsRoomTypeCache?> GetRoomTypeByIdAsync(int externalId, string language = "en", CancellationToken cancellationToken = default)
     {
-        var roomTypes = await GetAllRoomTypesAsync(cancellationToken);
+        var roomTypes = await GetAllRoomTypesAsync(language, cancellationToken);
         return roomTypes.FirstOrDefault(r => r.RoomTypeId == externalId);
     }
 
@@ -154,23 +154,23 @@ public class SunHotelsCacheService : ISunHotelsCacheService
 
     #region Features
 
-    public async Task<List<SunHotelsFeatureCache>> GetAllFeaturesAsync(CancellationToken cancellationToken = default)
+    public async Task<List<SunHotelsFeatureCache>> GetAllFeaturesAsync(string language = "en", CancellationToken cancellationToken = default)
     {
         return await GetFromCacheOrDbAsync(
             FeaturesCacheKey,
-            () => _context.SunHotelsFeatures.AsNoTracking().OrderBy(f => f.Name).ToListAsync(cancellationToken),
+            () => _context.SunHotelsFeatures.Where(f => f.Language == language).AsNoTracking().OrderBy(f => f.Name).ToListAsync(cancellationToken),
             LongCacheDuration);
     }
 
-    public async Task<SunHotelsFeatureCache?> GetFeatureByIdAsync(int externalId, CancellationToken cancellationToken = default)
+    public async Task<SunHotelsFeatureCache?> GetFeatureByIdAsync(int externalId, string language = "en", CancellationToken cancellationToken = default)
     {
-        var features = await GetAllFeaturesAsync(cancellationToken);
+        var features = await GetAllFeaturesAsync(language, cancellationToken);
         return features.FirstOrDefault(f => f.FeatureId == externalId);
     }
 
-    public async Task<List<SunHotelsFeatureCache>> GetFeaturesByTypeAsync(string featureType, CancellationToken cancellationToken = default)
+    public async Task<List<SunHotelsFeatureCache>> GetFeaturesByTypeAsync(string featureType, string language = "en", CancellationToken cancellationToken = default)
     {
-        var features = await GetAllFeaturesAsync(cancellationToken);
+        var features = await GetAllFeaturesAsync(language, cancellationToken);
         // TODO: Category field will be added later based on API response
         return features.ToList();
     }
@@ -215,17 +215,17 @@ public class SunHotelsCacheService : ISunHotelsCacheService
 
     #region Transfer Types
 
-    public async Task<List<SunHotelsTransferTypeCache>> GetAllTransferTypesAsync(CancellationToken cancellationToken = default)
+    public async Task<List<SunHotelsTransferTypeCache>> GetAllTransferTypesAsync(string language = "en", CancellationToken cancellationToken = default)
     {
         return await GetFromCacheOrDbAsync(
-            TransferTypesCacheKey,
-            () => _context.SunHotelsTransferTypes.AsNoTracking().OrderBy(t => t.Name).ToListAsync(cancellationToken),
+            $"{TransferTypesCacheKey}_{language}",
+            () => _context.SunHotelsTransferTypes.Where(t => t.Language == language).AsNoTracking().OrderBy(t => t.Name).ToListAsync(cancellationToken),
             LongCacheDuration);
     }
 
-    public async Task<SunHotelsTransferTypeCache?> GetTransferTypeByIdAsync(int externalId, CancellationToken cancellationToken = default)
+    public async Task<SunHotelsTransferTypeCache?> GetTransferTypeByIdAsync(int externalId, string language = "en", CancellationToken cancellationToken = default)
     {
-        var transferTypes = await GetAllTransferTypesAsync(cancellationToken);
+        var transferTypes = await GetAllTransferTypesAsync(language, cancellationToken);
         return transferTypes.FirstOrDefault(t => t.TransferTypeId == externalId);
     }
 
@@ -233,17 +233,17 @@ public class SunHotelsCacheService : ISunHotelsCacheService
 
     #region Note Types
 
-    public async Task<List<SunHotelsNoteTypeCache>> GetAllNoteTypesAsync(CancellationToken cancellationToken = default)
+    public async Task<List<SunHotelsNoteTypeCache>> GetAllNoteTypesAsync(string language = "en", CancellationToken cancellationToken = default)
     {
         return await GetFromCacheOrDbAsync(
-            NoteTypesCacheKey,
-            () => _context.SunHotelsNoteTypes.AsNoTracking().OrderBy(n => n.Name).ToListAsync(cancellationToken),
+            $"{NoteTypesCacheKey}_{language}",
+            () => _context.SunHotelsNoteTypes.Where(n => n.Language == language).AsNoTracking().OrderBy(n => n.Name).ToListAsync(cancellationToken),
             LongCacheDuration);
     }
 
-    public async Task<SunHotelsNoteTypeCache?> GetNoteTypeByIdAsync(int externalId, CancellationToken cancellationToken = default)
+    public async Task<SunHotelsNoteTypeCache?> GetNoteTypeByIdAsync(int externalId, string language = "en", CancellationToken cancellationToken = default)
     {
-        var noteTypes = await GetAllNoteTypesAsync(cancellationToken);
+        var noteTypes = await GetAllNoteTypesAsync(language, cancellationToken);
         return noteTypes.FirstOrDefault(n => n.NoteTypeId == externalId);
     }
 
@@ -251,39 +251,105 @@ public class SunHotelsCacheService : ISunHotelsCacheService
 
     #region Hotels
 
-    public async Task<List<SunHotelsHotelCache>> GetAllHotelsAsync(CancellationToken cancellationToken = default)
+    public async Task<List<SunHotelsHotelCache>> GetAllHotelsAsync(string language = "en", CancellationToken cancellationToken = default)
     {
         // Oteller için memory cache kullanmıyoruz çünkü çok fazla veri olabilir
         return await _context.SunHotelsHotels
+            .Where(h => h.Language == language)
             .AsNoTracking()
             .OrderBy(h => h.Name)
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<SunHotelsHotelCache?> GetHotelByIdAsync(int externalId, CancellationToken cancellationToken = default)
+    public async Task<SunHotelsHotelCache?> GetHotelByIdAsync(int externalId, string language = "en", CancellationToken cancellationToken = default)
     {
-        return await _context.SunHotelsHotels
+        _logger.LogInformation("GetHotelByIdAsync - Looking for hotel {HotelId} with language {Language}", externalId, language);
+
+        var result = await _context.SunHotelsHotels
+            .Where(h => h.Language == language)
             .AsNoTracking()
             .FirstOrDefaultAsync(h => h.HotelId == externalId, cancellationToken);
+
+        _logger.LogInformation("GetHotelByIdAsync - Hotel {HotelId} found: {Found}", externalId, result != null);
+
+        return result;
     }
 
-    public async Task<List<SunHotelsHotelCache>> GetHotelsByDestinationAsync(int destinationId, CancellationToken cancellationToken = default)
+    public async Task<Dictionary<int, SunHotelsHotelCache>> GetHotelsByIdsAsync(IEnumerable<int> hotelIds, string language = "en", CancellationToken cancellationToken = default)
+    {
+        var ids = hotelIds.ToList();
+        if (!ids.Any()) return new Dictionary<int, SunHotelsHotelCache>();
+
+        _logger.LogInformation("GetHotelsByIdsAsync - Looking for {Count} hotels with language {Language}, IDs: {Ids}",
+            ids.Count, language, string.Join(", ", ids.Take(5)));
+
+        var hotels = await _context.SunHotelsHotels
+            .Where(h => h.Language == language && ids.Contains(h.HotelId))
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+
+        _logger.LogInformation("GetHotelsByIdsAsync - Found {Count} hotels in database", hotels.Count);
+
+        return hotels.ToDictionary(h => h.HotelId, h => h);
+    }
+
+    public async Task<Dictionary<int, SunHotelsResortCache>> GetResortsByIdsAsync(IEnumerable<int> resortIds, string language = "en", CancellationToken cancellationToken = default)
+    {
+        var ids = resortIds.ToList();
+        if (!ids.Any()) return new Dictionary<int, SunHotelsResortCache>();
+
+        var resorts = await _context.SunHotelsResorts
+            .Where(r => r.Language == language && ids.Contains(r.ResortId))
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+
+        return resorts.ToDictionary(r => r.ResortId, r => r);
+    }
+
+    public async Task<Dictionary<int, SunHotelsMealCache>> GetMealsByIdsAsync(IEnumerable<int> mealIds, string language = "en", CancellationToken cancellationToken = default)
+    {
+        var ids = mealIds.ToList();
+        if (!ids.Any()) return new Dictionary<int, SunHotelsMealCache>();
+
+        var meals = await _context.SunHotelsMeals
+            .Where(m => m.Language == language && ids.Contains(m.MealId))
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+
+        return meals.ToDictionary(m => m.MealId, m => m);
+    }
+
+    public async Task<Dictionary<int, SunHotelsRoomTypeCache>> GetRoomTypesByIdsAsync(IEnumerable<int> roomTypeIds, string language = "en", CancellationToken cancellationToken = default)
+    {
+        var ids = roomTypeIds.ToList();
+        if (!ids.Any()) return new Dictionary<int, SunHotelsRoomTypeCache>();
+
+        var roomTypes = await _context.SunHotelsRoomTypes
+            .Where(rt => rt.Language == language && ids.Contains(rt.RoomTypeId))
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+
+        return roomTypes.ToDictionary(rt => rt.RoomTypeId, rt => rt);
+    }
+
+    public async Task<List<SunHotelsHotelCache>> GetHotelsByDestinationAsync(int destinationId, string language = "en", CancellationToken cancellationToken = default)
     {
         // Hotel entity'de DestinationId yok, sadece ResortId var
         // Bu metod şu an için boş liste döndürüyor
         return new List<SunHotelsHotelCache>();
     }
 
-    public async Task<List<SunHotelsHotelCache>> GetHotelsByResortAsync(int resortId, CancellationToken cancellationToken = default)
+    public async Task<List<SunHotelsHotelCache>> GetHotelsByResortAsync(int resortId, string language = "en", CancellationToken cancellationToken = default)
     {
         return await _context.SunHotelsHotels
+            .Where(h => h.Language == language)
             .AsNoTracking()
             .Where(h => h.ResortId == resortId)
             .OrderBy(h => h.Name)
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<List<SunHotelsHotelCache>> SearchHotelsAsync(string searchTerm, CancellationToken cancellationToken = default)
+    public async Task<List<SunHotelsHotelCache>> SearchHotelsAsync(string searchTerm, string language = "en", CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(searchTerm))
             return new List<SunHotelsHotelCache>();
@@ -291,6 +357,7 @@ public class SunHotelsCacheService : ISunHotelsCacheService
         var lowerSearch = searchTerm.ToLowerInvariant();
 
         return await _context.SunHotelsHotels
+            .Where(h => h.Language == language)
             .AsNoTracking()
             .Where(h => EF.Functions.ILike(h.Name, $"%{searchTerm}%") ||
                        (h.Address != null && EF.Functions.ILike(h.Address, $"%{searchTerm}%")))
@@ -302,6 +369,7 @@ public class SunHotelsCacheService : ISunHotelsCacheService
     public async Task<(List<SunHotelsHotelCache> Hotels, int TotalCount)> GetHotelsPaginatedAsync(
         int page,
         int pageSize,
+        string language = "en",
         int? destinationId = null,
         int? resortId = null,
         int? minStars = null,
@@ -311,7 +379,7 @@ public class SunHotelsCacheService : ISunHotelsCacheService
         page = Math.Max(1, page);
         pageSize = Math.Clamp(pageSize, 1, 100);
 
-        var query = _context.SunHotelsHotels.AsNoTracking();
+        var query = _context.SunHotelsHotels.Where(h => h.Language == language).AsNoTracking();
 
         // DestinationId alan\u0131 entity'de yok, atlaniyor
         // if (destinationId.HasValue)
@@ -456,25 +524,28 @@ public class SunHotelsCacheService : ISunHotelsCacheService
 
     #region Rooms
 
-    public async Task<List<SunHotelsRoomCache>> GetAllRoomsAsync(CancellationToken cancellationToken = default)
+    public async Task<List<SunHotelsRoomCache>> GetAllRoomsAsync(string language = "en", CancellationToken cancellationToken = default)
     {
         // Odalar için memory cache kullanmıyoruz çünkü çok fazla veri olabilir
         return await _context.SunHotelsRooms
+            .Where(r => r.Language == language)
             .AsNoTracking()
             .OrderBy(r => r.Name)
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<SunHotelsRoomCache?> GetRoomByIdAsync(int externalId, CancellationToken cancellationToken = default)
+    public async Task<SunHotelsRoomCache?> GetRoomByIdAsync(int externalId, string language = "en", CancellationToken cancellationToken = default)
     {
         return await _context.SunHotelsRooms
+            .Where(r => r.Language == language)
             .AsNoTracking()
             .FirstOrDefaultAsync(r => r.RoomTypeId == externalId, cancellationToken);
     }
 
-    public async Task<List<SunHotelsRoomCache>> GetRoomsByHotelAsync(int hotelId, CancellationToken cancellationToken = default)
+    public async Task<List<SunHotelsRoomCache>> GetRoomsByHotelAsync(int hotelId, string language = "en", CancellationToken cancellationToken = default)
     {
         return await _context.SunHotelsRooms
+            .Where(r => r.Language == language)
             .AsNoTracking()
             .Where(r => r.HotelId == hotelId)
             .OrderBy(r => r.Name)

@@ -47,7 +47,7 @@ public class PublicHotelsController : ControllerBase
             var language = ParseLanguage(acceptLanguage);
             _logger.LogInformation("Getting featured hotels with {Stars} stars, language: {Language}", stars, language);
 
-            var allHotels = await _cacheService.GetAllHotelsAsync(cancellationToken);
+            var allHotels = await _cacheService.GetAllHotelsAsync(language, cancellationToken);
 
             // Dil filtrelemesi
             var filteredByLanguage = allHotels
@@ -147,7 +147,7 @@ public class PublicHotelsController : ControllerBase
             _logger.LogInformation("Getting popular destinations for country: {Country}, language: {Language}", country, language);
 
             var allDestinations = await _cacheService.GetAllDestinationsAsync(cancellationToken);
-            var allHotels = await _cacheService.GetAllHotelsAsync(cancellationToken);
+            var allHotels = await _cacheService.GetAllHotelsAsync(language, cancellationToken);
 
             // Dil filtrelemesi (hoteller üzerinden)
             var languageHotels = allHotels
@@ -224,7 +224,7 @@ public class PublicHotelsController : ControllerBase
             var language = ParseLanguage(acceptLanguage);
             _logger.LogInformation("Getting romantic hotels, language: {Language}", language);
 
-            var allHotels = await _cacheService.GetAllHotelsAsync(cancellationToken);
+            var allHotels = await _cacheService.GetAllHotelsAsync(language, cancellationToken);
             var allThemes = await _cacheService.GetAllThemesAsync(cancellationToken);
 
             // Romantik temalı tema ID'lerini bul
@@ -321,8 +321,8 @@ public class PublicHotelsController : ControllerBase
             _logger.LogInformation("Getting accommodation types, language: {Language}", language);
 
             var allThemes = await _cacheService.GetAllThemesAsync(cancellationToken);
-            var allFeatures = await _cacheService.GetAllFeaturesAsync(cancellationToken);
-            var allHotels = await _cacheService.GetAllHotelsAsync(cancellationToken);
+            var allFeatures = await _cacheService.GetAllFeaturesAsync(language, cancellationToken);
+            var allHotels = await _cacheService.GetAllHotelsAsync(language, cancellationToken);
 
             // Dil bazlı features
             var languageFeatures = allFeatures

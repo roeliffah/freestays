@@ -130,6 +130,11 @@ public class SunHotelsSearchRequestV3
     public bool ShowReviews { get; set; } = true;
     public bool ShowRoomTypeName { get; set; } = true;
     public int? PaymentMethodId { get; set; }
+    public string? AccommodationTypes { get; set; }
+    public bool? ExactDestinationMatch { get; set; }
+    public bool? BlockSuperdeal { get; set; }
+    public string? PrioritizedHotelIds { get; set; }
+    public int? TotalRoomsInBatch { get; set; }
 }
 
 /// <summary>
@@ -150,6 +155,9 @@ public class SunHotelsSearchResultV3
     public string? GiataCode { get; set; }
     public int ResortId { get; set; }
     public string ResortName { get; set; } = string.Empty;
+    public string? Phone { get; set; }
+    public string? Email { get; set; }
+    public string? Website { get; set; }
 
     // Fiyat bilgileri
     public decimal MinPrice { get; set; }
@@ -161,6 +169,7 @@ public class SunHotelsSearchResultV3
 
     // İlişkili veriler
     public List<SunHotelsImage> Images { get; set; } = new();
+    public List<string> ImageUrls { get; set; } = new();
     public List<SunHotelsRoomV3> Rooms { get; set; } = new();
     public List<int> FeatureIds { get; set; } = new();
     public List<int> ThemeIds { get; set; } = new();

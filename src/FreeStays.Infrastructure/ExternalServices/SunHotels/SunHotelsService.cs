@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Xml.Linq;
+using FreeStays.Application.Common.Interfaces;
 using FreeStays.Domain.Exceptions;
 using FreeStays.Domain.Interfaces;
 using FreeStays.Infrastructure.ExternalServices.SunHotels.Models;
@@ -16,6 +17,7 @@ public class SunHotelsService : ISunHotelsService
     private SunHotelsConfig _config;
     private readonly ILogger<SunHotelsService> _logger;
     private readonly IExternalServiceConfigRepository _serviceConfigRepository;
+    private readonly ISunHotelsCacheService _cacheService;
     private bool _configLoaded = false;
 
     private string _nonStaticApiUrl = "http://xml.sunhotels.net/15/PostGet/NonStaticXMLAPI.asmx";
@@ -25,12 +27,14 @@ public class SunHotelsService : ISunHotelsService
         HttpClient httpClient,
         IOptions<SunHotelsConfig> config,
         ILogger<SunHotelsService> logger,
-        IExternalServiceConfigRepository serviceConfigRepository)
+        IExternalServiceConfigRepository serviceConfigRepository,
+        ISunHotelsCacheService cacheService)
     {
         _httpClient = httpClient;
         _config = config.Value;
         _logger = logger;
         _serviceConfigRepository = serviceConfigRepository;
+        _cacheService = cacheService;
 
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
     }
@@ -376,14 +380,17 @@ public class SunHotelsService : ISunHotelsService
 
         try
         {
+            var checkInFormatted = request.CheckIn.ToString("yyyy-MM-dd");
+            var checkOutFormatted = request.CheckOut.ToString("yyyy-MM-dd");
+
             _logger.LogInformation("SearchHotelsV3Async - DestinationId: {DestinationId}, CheckIn: {CheckIn}, CheckOut: {CheckOut}, Adults: {Adults}, Children: {Children}",
-                request.DestinationId, request.CheckIn, request.CheckOut, request.Adults, request.Children);
+                request.DestinationId, checkInFormatted, checkOutFormatted, request.Adults, request.Children);
 
             var parameters = new Dictionary<string, string>
             {
-                { "destination", request.DestinationId },
-                { "checkInDate", request.CheckIn.ToString("yyyy-MM-dd") },
-                { "checkOutDate", request.CheckOut.ToString("yyyy-MM-dd") },
+                { "destinationID", request.DestinationId },  // Büyük harf ID
+                { "checkInDate", checkInFormatted },
+                { "checkOutDate", checkOutFormatted },
                 { "numberOfRooms", request.NumberOfRooms.ToString() },
                 { "numberOfAdults", request.Adults.ToString() },
                 { "numberOfChildren", request.Children.ToString() },
@@ -402,9 +409,9 @@ public class SunHotelsService : ISunHotelsService
             if (!string.IsNullOrEmpty(request.ChildrenAges))
                 parameters.Add("childrenAges", request.ChildrenAges);
             if (!string.IsNullOrEmpty(request.HotelIds))
-                parameters.Add("hotelIds", request.HotelIds);
+                parameters.Add("hotelIDs", request.HotelIds);  // Büyük harf IDs
             if (!string.IsNullOrEmpty(request.ResortIds))
-                parameters.Add("resortIds", request.ResortIds);
+                parameters.Add("resortIDs", request.ResortIds);  // Büyük harf IDs
             if (!string.IsNullOrEmpty(request.MealIds))
                 parameters.Add("mealIds", request.MealIds);
             if (!string.IsNullOrEmpty(request.FeatureIds))
@@ -435,6 +442,9 @@ public class SunHotelsService : ISunHotelsService
 
             var results = ParseSearchResultsV3(response);
             _logger.LogInformation("SearchHotelsV3Async - Parsed {Count} hotels from response", results.Count);
+
+            // Static datayı cache'den al ve doldur
+            await EnrichHotelsWithStaticDataAsync(results, request.Language, cancellationToken);
 
             return results;
         }
@@ -1003,10 +1013,19 @@ public class SunHotelsService : ISunHotelsService
 
     private async Task<string> SendNonStaticRequestAsync(string method, Dictionary<string, string> parameters, CancellationToken cancellationToken)
     {
-        var url = BuildRequestUrl(_nonStaticApiUrl, method, parameters);
+        var url = $"{_nonStaticApiUrl}/{method}";
         _logger.LogInformation("Sending non-static request to SunHotels: {Method} - URL: {Url}", method, url);
 
-        var response = await _httpClient.GetAsync(url, cancellationToken);
+        // Username ve password ekle
+        var allParameters = new Dictionary<string, string>(parameters)
+        {
+            { "userName", _config.Username },
+            { "password", _config.Password }
+        };
+
+        // POST ile form-encoded data gönder
+        var content = new FormUrlEncodedContent(allParameters);
+        var response = await _httpClient.PostAsync(url, content, cancellationToken);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -1019,6 +1038,10 @@ public class SunHotelsService : ISunHotelsService
 
         var responseContent = await response.Content.ReadAsStringAsync(cancellationToken);
         _logger.LogInformation("SunHotels NonStatic API response length: {Length} characters", responseContent.Length);
+
+        // Response body'yi debug için log'la (ilk 2000 karakter)
+        var preview = responseContent.Length > 2000 ? responseContent.Substring(0, 2000) : responseContent;
+        _logger.LogInformation("SunHotels NonStatic API response preview: {Response}", preview);
 
         return responseContent;
     }
@@ -1578,88 +1601,146 @@ public class SunHotelsService : ISunHotelsService
         try
         {
             var doc = XDocument.Parse(xmlResponse);
-            var hotelElements = doc.Descendants("hotel");
+
+            // Namespace'i al (varsa)
+            var ns = doc.Root?.GetDefaultNamespace() ?? XNamespace.None;
+
+            // hotel elementlerini bul (namespace ile veya namespace'siz)
+            var hotelElements = doc.Descendants(ns + "hotel");
+            if (!hotelElements.Any())
+            {
+                hotelElements = doc.Descendants("hotel"); // Namespace olmadan dene
+            }
+
+            _logger.LogInformation("Found {Count} hotel elements in XML response", hotelElements.Count());
 
             foreach (var elem in hotelElements)
             {
                 var hotel = new SunHotelsSearchResultV3
                 {
-                    HotelId = int.TryParse(elem.Element("hotelId")?.Value, out var id) ? id : 0,
-                    Name = elem.Element("hotelName")?.Value ?? "",
-                    Description = elem.Element("description")?.Value ?? "",
-                    Address = elem.Element("address")?.Value ?? "",
-                    City = elem.Element("city")?.Value ?? "",
-                    Country = elem.Element("countryName")?.Value ?? "",
-                    CountryCode = elem.Element("countryCode")?.Value ?? "",
-                    Category = int.TryParse(elem.Element("category")?.Value, out var cat) ? cat : 0,
-                    Latitude = double.TryParse(elem.Element("latitude")?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var lat) ? lat : 0,
-                    Longitude = double.TryParse(elem.Element("longitude")?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var lng) ? lng : 0,
-                    GiataCode = elem.Element("giataCode")?.Value,
-                    ResortId = int.TryParse(elem.Element("resortId")?.Value, out var resortId) ? resortId : 0,
-                    ResortName = elem.Element("resortName")?.Value ?? "",
-                    MinPrice = decimal.TryParse(elem.Element("minPrice")?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var price) ? price : 0,
-                    Currency = elem.Element("currency")?.Value ?? "EUR",
-                    ReviewScore = double.TryParse(elem.Element("reviewScore")?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var score) ? score : null,
-                    ReviewCount = int.TryParse(elem.Element("reviewCount")?.Value, out var count) ? count : null
+                    HotelId = int.TryParse(elem.Element(ns + "hotel.id")?.Value, out var id) ? id : 0,
+                    Name = "", // Statik datadan alınacak
+                    Description = "",
+                    Address = "",
+                    City = "",
+                    Country = "",
+                    CountryCode = "",
+                    Category = 0,
+                    Latitude = 0,
+                    Longitude = 0,
+                    GiataCode = null,
+                    ResortId = int.TryParse(elem.Element(ns + "resort_id")?.Value, out var resortId) ? resortId : 0,
+                    ResortName = "",
+                    MinPrice = 0, // Odalardan hesaplanacak
+                    Currency = "EUR",
+                    ReviewScore = null,
+                    ReviewCount = null
                 };
 
-                // Parse images
-                int order = 0;
-                foreach (var imgElem in elem.Descendants("image"))
+                // Parse roomtypes
+                var roomtypesElem = elem.Element(ns + "roomtypes");
+                if (roomtypesElem != null)
                 {
-                    hotel.Images.Add(new SunHotelsImage
+                    foreach (var roomtypeElem in roomtypesElem.Elements(ns + "roomtype"))
                     {
-                        Url = imgElem.Element("url")?.Value ?? imgElem.Value,
-                        Order = order++
-                    });
-                }
+                        var roomTypeId = int.TryParse(roomtypeElem.Element(ns + "roomtype.ID")?.Value, out var rtId) ? rtId : 0;
 
-                // Parse rooms
-                foreach (var roomElem in elem.Descendants("room"))
-                {
-                    var room = new SunHotelsRoomV3
-                    {
-                        RoomId = int.TryParse(roomElem.Element("roomId")?.Value, out var roomId) ? roomId : 0,
-                        RoomTypeId = int.TryParse(roomElem.Element("roomTypeId")?.Value, out var roomTypeId) ? roomTypeId : 0,
-                        RoomTypeName = roomElem.Element("roomTypeName")?.Value ?? "",
-                        Name = roomElem.Element("roomName")?.Value ?? "",
-                        Description = roomElem.Element("description")?.Value ?? "",
-                        MealId = int.TryParse(roomElem.Element("mealId")?.Value, out var mealId) ? mealId : 0,
-                        MealName = roomElem.Element("mealName")?.Value ?? "",
-                        Price = decimal.TryParse(roomElem.Element("price")?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var roomPrice) ? roomPrice : 0,
-                        Currency = roomElem.Element("currency")?.Value ?? "EUR",
-                        IsRefundable = roomElem.Element("nonRefundable")?.Value?.ToLower() != "true",
-                        IsSuperDeal = roomElem.Element("isSuperDeal")?.Value?.ToLower() == "true",
-                        AvailableRooms = int.TryParse(roomElem.Element("availableRooms")?.Value, out var avail) ? avail : 0
-                    };
+                        var roomsElem = roomtypeElem.Element(ns + "rooms");
+                        if (roomsElem != null)
+                        {
+                            foreach (var roomElem in roomsElem.Elements(ns + "room"))
+                            {
+                                var roomId = int.TryParse(roomElem.Element(ns + "id")?.Value, out var rId) ? rId : 0;
+                                var beds = int.TryParse(roomElem.Element(ns + "beds")?.Value, out var b) ? b : 0;
+                                var extraBeds = int.TryParse(roomElem.Element(ns + "extrabeds")?.Value, out var eb) ? eb : 0;
+                                var isSuperDeal = roomElem.Element(ns + "isSuperDeal")?.Value?.ToLower() == "true";
+                                var isBestBuy = roomElem.Element(ns + "isBestBuy")?.Value?.ToLower() == "true";
 
-                    if (decimal.TryParse(roomElem.Element("originalPrice")?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var origPrice))
-                        room.OriginalPrice = origPrice;
+                                // Parse meals - her meal için ayrı room olarak ekle
+                                var mealsElem = roomElem.Element(ns + "meals");
+                                if (mealsElem != null)
+                                {
+                                    foreach (var mealElem in mealsElem.Elements(ns + "meal"))
+                                    {
+                                        var mealId = int.TryParse(mealElem.Element(ns + "id")?.Value, out var mId) ? mId : 0;
 
-                    if (DateTime.TryParse(roomElem.Element("earliestNonFreeCancellationDate")?.Value, out var cancelDate))
-                        room.EarliestNonFreeCancellationDate = cancelDate;
+                                        // Price parse et
+                                        var priceElem = mealElem.Descendants(ns + "price").FirstOrDefault();
+                                        var price = decimal.TryParse(priceElem?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var p) ? p : 0;
+                                        var currency = priceElem?.Attribute("currency")?.Value ?? "EUR";
 
-                    // Parse cancellation policies
-                    foreach (var policyElem in roomElem.Descendants("cancellationPolicy"))
-                    {
-                        room.CancellationPolicies.Add(ParseCancellationPolicy(policyElem));
+                                        // Discount varsa
+                                        var discountElem = mealElem.Element(ns + "discount");
+                                        decimal? discountAmount = null;
+                                        if (discountElem != null && !discountElem.IsEmpty)
+                                        {
+                                            var amountElem = discountElem.Descendants(ns + "amount").FirstOrDefault();
+                                            if (decimal.TryParse(amountElem?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var da))
+                                                discountAmount = da;
+                                        }
+
+                                        var room = new SunHotelsRoomV3
+                                        {
+                                            RoomId = roomId,
+                                            RoomTypeId = roomTypeId,
+                                            RoomTypeName = "", // Statik datadan alınacak
+                                            Name = "",
+                                            Description = "",
+                                            MealId = mealId,
+                                            MealName = "", // Statik datadan alınacak
+                                            Price = price,
+                                            Currency = currency,
+                                            IsRefundable = true,
+                                            IsSuperDeal = isSuperDeal || isBestBuy,
+                                            AvailableRooms = beds,
+                                            OriginalPrice = discountAmount.HasValue ? price + discountAmount.Value : null
+                                        };
+
+                                        // Parse cancellation policies
+                                        var policiesElem = roomElem.Element(ns + "cancellation_policies");
+                                        if (policiesElem != null)
+                                        {
+                                            foreach (var policyElem in policiesElem.Elements(ns + "cancellation_policy"))
+                                            {
+                                                var deadline = int.TryParse(policyElem.Element(ns + "deadline")?.Value, out var dl) ? dl : 0;
+                                                var percentage = decimal.TryParse(policyElem.Element(ns + "percentage")?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var pct) ? pct : 0;
+
+                                                room.CancellationPolicies.Add(new SunHotelsCancellationPolicy
+                                                {
+                                                    FromDate = DateTime.Now.AddHours(deadline), // Deadline saat cinsinden
+                                                    Percentage = percentage,
+                                                    FixedAmount = null,
+                                                    NightsCharged = 0
+                                                });
+                                            }
+                                        }
+
+                                        hotel.Rooms.Add(room);
+                                    }
+                                }
+                            }
+                        }
                     }
-
-                    hotel.Rooms.Add(room);
                 }
 
-                // Parse feature IDs
-                foreach (var featureElem in elem.Descendants("featureId"))
+                // Parse feature IDs (eğer varsa)
+                foreach (var featureElem in elem.Descendants(ns + "featureId"))
                 {
                     if (int.TryParse(featureElem.Value, out var featureId))
                         hotel.FeatureIds.Add(featureId);
                 }
 
-                // Parse theme IDs
-                foreach (var themeElem in elem.Descendants("themeId"))
+                // Parse theme IDs (eğer varsa)
+                foreach (var themeElem in elem.Descendants(ns + "themeId"))
                 {
                     if (int.TryParse(themeElem.Value, out var themeId))
                         hotel.ThemeIds.Add(themeId);
+                }
+
+                // MinPrice'ı hesapla - tüm odaların en düşük fiyatı
+                if (hotel.Rooms.Any())
+                {
+                    hotel.MinPrice = hotel.Rooms.Min(r => r.Price);
                 }
 
                 results.Add(hotel);
@@ -1677,10 +1758,10 @@ public class SunHotelsService : ISunHotelsService
     {
         return new SunHotelsCancellationPolicy
         {
-            FromDate = DateTime.TryParse(elem.Element("fromDate")?.Value, out var fromDate) ? fromDate : DateTime.MinValue,
+            FromDate = DateTime.TryParse(elem.Element("deadline")?.Value, out var deadline) ? deadline : DateTime.MinValue,
             Percentage = decimal.TryParse(elem.Element("percentage")?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var pct) ? pct : 0,
-            FixedAmount = decimal.TryParse(elem.Element("fixedAmount")?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var amt) ? amt : null,
-            NightsCharged = int.TryParse(elem.Element("nightsCharged")?.Value, out var nights) ? nights : 0
+            FixedAmount = null,
+            NightsCharged = 0
         };
     }
 
@@ -2115,6 +2196,155 @@ public class SunHotelsService : ISunHotelsService
         }
 
         return result;
+    }
+
+    #endregion
+
+    #region Helper Methods
+
+    /// <summary>
+    /// Arama sonuçlarını static cache verileriyle zenginleştirir (name, description, vs.)
+    /// Batch query kullanarak N+1 problemini önler
+    /// </summary>
+    private async Task EnrichHotelsWithStaticDataAsync(List<SunHotelsSearchResultV3> hotels, string language, CancellationToken cancellationToken)
+    {
+        try
+        {
+            if (!hotels.Any())
+            {
+                _logger.LogInformation("EnrichHotelsWithStaticDataAsync - No hotels to enrich");
+                return;
+            }
+
+            _logger.LogInformation("EnrichHotelsWithStaticDataAsync - Enriching {Count} hotels with language {Language}", hotels.Count, language);
+
+            // Tüm gerekli ID'leri topla
+            var hotelIds = hotels.Select(h => h.HotelId).Distinct().ToList();
+            var resortIds = hotels.Where(h => h.ResortId > 0).Select(h => h.ResortId).Distinct().ToList();
+            var mealIds = hotels.SelectMany(h => h.Rooms).Where(r => r.MealId > 0).Select(r => r.MealId).Distinct().ToList();
+            var roomTypeIds = hotels.SelectMany(h => h.Rooms).Where(r => r.RoomTypeId > 0).Select(r => r.RoomTypeId).Distinct().ToList();
+
+            _logger.LogInformation("EnrichHotelsWithStaticDataAsync - Need to fetch: {HotelCount} hotels, {ResortCount} resorts, {MealCount} meals, {RoomTypeCount} room types",
+                hotelIds.Count, resortIds.Count, mealIds.Count, roomTypeIds.Count);
+            _logger.LogInformation("EnrichHotelsWithStaticDataAsync - Hotel IDs: {HotelIds}", string.Join(", ", hotelIds.Take(10)));
+
+            // Batch query ile tüm datayı al (tek seferde 4 sorgu)
+            var hotelsDict = await _cacheService.GetHotelsByIdsAsync(hotelIds, language, cancellationToken);
+            var resortsDict = await _cacheService.GetResortsByIdsAsync(resortIds, language, cancellationToken);
+            var mealsDict = await _cacheService.GetMealsByIdsAsync(mealIds, language, cancellationToken);
+            var roomTypesDict = await _cacheService.GetRoomTypesByIdsAsync(roomTypeIds, language, cancellationToken);
+
+            _logger.LogInformation("EnrichHotelsWithStaticDataAsync - Fetched {HotelCount} hotels, {ResortCount} resorts, {MealCount} meals, {RoomTypeCount} room types from cache",
+                hotelsDict.Count, resortsDict.Count, mealsDict.Count, roomTypesDict.Count);
+
+            if (hotelsDict.Count == 0)
+            {
+                _logger.LogWarning("EnrichHotelsWithStaticDataAsync - No hotels found in cache! Database might be empty or language mismatch");
+            }
+
+            // Her otel için static datayı memory'den join et
+            foreach (var hotel in hotels)
+            {
+                // Hotel bilgilerini cache'den al
+                if (hotelsDict.TryGetValue(hotel.HotelId, out var hotelCache))
+                {
+                    hotel.Name = hotelCache.Name;
+                    hotel.Description = hotelCache.Description ?? "";
+                    hotel.Address = hotelCache.Address ?? "";
+                    hotel.City = hotelCache.City ?? "";
+                    hotel.Country = hotelCache.Country ?? "";
+                    hotel.CountryCode = hotelCache.CountryCode ?? "";
+                    hotel.Category = hotelCache.Category;
+                    hotel.Latitude = hotelCache.Latitude ?? 0;
+                    hotel.Longitude = hotelCache.Longitude ?? 0;
+                    hotel.Phone = hotelCache.Phone;
+                    hotel.Email = hotelCache.Email;
+                    hotel.Website = hotelCache.Website;
+                    hotel.GiataCode = hotelCache.GiataCode;
+
+                    // Image URL'lerini parse et (JSON array'den)
+                    if (!string.IsNullOrEmpty(hotelCache.ImageUrls) && hotelCache.ImageUrls != "[]")
+                    {
+                        try
+                        {
+                            var imageUrls = System.Text.Json.JsonSerializer.Deserialize<List<string>>(hotelCache.ImageUrls);
+                            if (imageUrls != null && imageUrls.Any())
+                            {
+                                hotel.ImageUrls.AddRange(imageUrls);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogWarning(ex, "Failed to parse ImageUrls JSON for hotel {HotelId}", hotel.HotelId);
+                        }
+                    }
+
+                    // Feature ID'lerini parse et (JSON array'den)
+                    if (!string.IsNullOrEmpty(hotelCache.FeatureIds) && hotelCache.FeatureIds != "[]")
+                    {
+                        try
+                        {
+                            var featureIds = System.Text.Json.JsonSerializer.Deserialize<List<int>>(hotelCache.FeatureIds);
+                            if (featureIds != null && featureIds.Any())
+                            {
+                                hotel.FeatureIds.AddRange(featureIds);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogWarning(ex, "Failed to parse FeatureIds JSON for hotel {HotelId}", hotel.HotelId);
+                        }
+                    }
+
+                    // Theme ID'lerini parse et (JSON array'den)
+                    if (!string.IsNullOrEmpty(hotelCache.ThemeIds) && hotelCache.ThemeIds != "[]")
+                    {
+                        try
+                        {
+                            var themeIds = System.Text.Json.JsonSerializer.Deserialize<List<int>>(hotelCache.ThemeIds);
+                            if (themeIds != null && themeIds.Any())
+                            {
+                                hotel.ThemeIds.AddRange(themeIds);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogWarning(ex, "Failed to parse ThemeIds JSON for hotel {HotelId}", hotel.HotelId);
+                        }
+                    }
+                }
+
+                // Resort bilgisini al
+                if (hotel.ResortId > 0 && resortsDict.TryGetValue(hotel.ResortId, out var resort))
+                {
+                    hotel.ResortName = resort.Name;
+                }
+
+                // Her oda için meal ve room type bilgilerini al
+                foreach (var room in hotel.Rooms)
+                {
+                    // Meal name
+                    if (room.MealId > 0 && mealsDict.TryGetValue(room.MealId, out var meal))
+                    {
+                        room.MealName = meal.Name;
+                    }
+
+                    // Room type name
+                    if (room.RoomTypeId > 0 && roomTypesDict.TryGetValue(room.RoomTypeId, out var roomType))
+                    {
+                        room.RoomTypeName = roomType.Name;
+                        room.Name = roomType.Name; // Room name olarak da kullan
+                    }
+                }
+            }
+
+            _logger.LogInformation("EnrichHotelsWithStaticDataAsync - Enrichment completed successfully");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error enriching hotels with static data");
+            // Hata durumunda devam et, static data olmadan da çalışabilir
+        }
     }
 
     #endregion
