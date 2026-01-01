@@ -2234,13 +2234,80 @@ public class SunHotelsService : ISunHotelsService
             var mealsDict = await _cacheService.GetMealsByIdsAsync(mealIds, language, cancellationToken);
             var roomTypesDict = await _cacheService.GetRoomTypesByIdsAsync(roomTypeIds, language, cancellationToken);
 
-            _logger.LogInformation("EnrichHotelsWithStaticDataAsync - Fetched {HotelCount} hotels, {ResortCount} resorts, {MealCount} meals, {RoomTypeCount} room types from cache",
-                hotelsDict.Count, resortsDict.Count, mealsDict.Count, roomTypesDict.Count);
+            _logger.LogInformation("EnrichHotelsWithStaticDataAsync - Fetched {HotelCount} hotels, {ResortCount} resorts, {MealCount} meals, {RoomTypeCount} room types from cache (language: {Language})",
+                hotelsDict.Count, resortsDict.Count, mealsDict.Count, roomTypesDict.Count, language);
 
-            if (hotelsDict.Count == 0)
+            // Eğer otel data bulunmazsa fallback: İngilizce dilinde ara
+            var missingHotelCount = hotelIds.Count - hotelsDict.Count;
+            if (missingHotelCount > 0 && language != "en")
             {
-                _logger.LogWarning("EnrichHotelsWithStaticDataAsync - No hotels found in cache! Database might be empty or language mismatch");
+                _logger.LogWarning("EnrichHotelsWithStaticDataAsync - {MissingCount} hotels not found in {Language} language, falling back to 'en'",
+                    missingHotelCount, language);
+
+                // İngilizce'de bulunamayan hotel'leri ara
+                var missingHotelIds = hotelIds.Where(id => !hotelsDict.ContainsKey(id)).ToList();
+                var fallbackHotelsDict = await _cacheService.GetHotelsByIdsAsync(missingHotelIds, "en", cancellationToken);
+
+                _logger.LogInformation("EnrichHotelsWithStaticDataAsync - Found {FallbackCount} hotels in English fallback", fallbackHotelsDict.Count);
+
+                // Fallback'ten bulunan hotel'leri dictionary'ye ekle
+                foreach (var kvp in fallbackHotelsDict)
+                {
+                    if (!hotelsDict.ContainsKey(kvp.Key))
+                    {
+                        hotelsDict[kvp.Key] = kvp.Value;
+                    }
+                }
             }
+
+            // Aynı şekilde resort, meal ve roomtype için fallback
+            if (missingHotelCount > 0 && language != "en")
+            {
+                // Resort fallback
+                var missingResortIds = resortIds.Where(id => !resortsDict.ContainsKey(id)).ToList();
+                if (missingResortIds.Any())
+                {
+                    var fallbackResortsDict = await _cacheService.GetResortsByIdsAsync(missingResortIds, "en", cancellationToken);
+                    foreach (var kvp in fallbackResortsDict)
+                    {
+                        if (!resortsDict.ContainsKey(kvp.Key))
+                        {
+                            resortsDict[kvp.Key] = kvp.Value;
+                        }
+                    }
+                }
+
+                // Meal fallback
+                var missingMealIds = mealIds.Where(id => !mealsDict.ContainsKey(id)).ToList();
+                if (missingMealIds.Any())
+                {
+                    var fallbackMealsDict = await _cacheService.GetMealsByIdsAsync(missingMealIds, "en", cancellationToken);
+                    foreach (var kvp in fallbackMealsDict)
+                    {
+                        if (!mealsDict.ContainsKey(kvp.Key))
+                        {
+                            mealsDict[kvp.Key] = kvp.Value;
+                        }
+                    }
+                }
+
+                // Room type fallback
+                var missingRoomTypeIds = roomTypeIds.Where(id => !roomTypesDict.ContainsKey(id)).ToList();
+                if (missingRoomTypeIds.Any())
+                {
+                    var fallbackRoomTypesDict = await _cacheService.GetRoomTypesByIdsAsync(missingRoomTypeIds, "en", cancellationToken);
+                    foreach (var kvp in fallbackRoomTypesDict)
+                    {
+                        if (!roomTypesDict.ContainsKey(kvp.Key))
+                        {
+                            roomTypesDict[kvp.Key] = kvp.Value;
+                        }
+                    }
+                }
+            }
+
+            _logger.LogInformation("EnrichHotelsWithStaticDataAsync - After fallback: {HotelCount} hotels, {ResortCount} resorts, {MealCount} meals, {RoomTypeCount} room types available",
+                hotelsDict.Count, resortsDict.Count, mealsDict.Count, roomTypesDict.Count);
 
             // Her otel için static datayı memory'den join et
             foreach (var hotel in hotels)
