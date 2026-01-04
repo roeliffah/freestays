@@ -1429,10 +1429,24 @@ public class SunHotelsService : ISunHotelsService
 
                             if (!string.IsNullOrEmpty(imageUrl))
                             {
-                                // If URL is relative (starts with ?), construct full URL
+                                // ✅ DÜZELTİLDİ: SunHotels resim URL formatı değiştirildi
+                                // Eski format: http://xml.sunhotels.net/15/GetImage.aspx?id=12345 (500 hatası veriyor)
+                                // Yeni format: https://hotelimages.sunhotels.net/HotelInfo/hotelImage.aspx?id=12345&full=1 (çalışıyor)
                                 if (imageUrl.StartsWith("?"))
                                 {
-                                    imageUrl = $"http://xml.sunhotels.net/15/GetImage.aspx{imageUrl}";
+                                    // Extract the ID from ?id=12345
+                                    var imageId = imageUrl.TrimStart('?').Replace("id=", "");
+                                    imageUrl = $"https://hotelimages.sunhotels.net/HotelInfo/hotelImage.aspx?id={imageId}&full=1";
+                                }
+                                else if (imageUrl.Contains("GetImage.aspx"))
+                                {
+                                    // Convert old format to new format
+                                    var idMatch = System.Text.RegularExpressions.Regex.Match(imageUrl, @"id=(\d+)");
+                                    if (idMatch.Success)
+                                    {
+                                        var imageId = idMatch.Groups[1].Value;
+                                        imageUrl = $"https://hotelimages.sunhotels.net/HotelInfo/hotelImage.aspx?id={imageId}&full=1";
+                                    }
                                 }
 
                                 hotel.Images.Add(new SunHotelsImage
@@ -1576,11 +1590,32 @@ public class SunHotelsService : ISunHotelsService
                 int order = 0;
                 foreach (var imgElem in elem.Descendants("image"))
                 {
-                    hotel.Images.Add(new SunHotelsImage
+                    var imageUrl = imgElem.Element("url")?.Value ?? imgElem.Value;
+
+                    // ✅ DÜZELTİLDİ: Resim URL formatını düzelt
+                    if (!string.IsNullOrEmpty(imageUrl))
                     {
-                        Url = imgElem.Element("url")?.Value ?? imgElem.Value,
-                        Order = order++
-                    });
+                        if (imageUrl.StartsWith("?"))
+                        {
+                            var imageId = imageUrl.TrimStart('?').Replace("id=", "");
+                            imageUrl = $"https://hotelimages.sunhotels.net/HotelInfo/hotelImage.aspx?id={imageId}&full=1";
+                        }
+                        else if (imageUrl.Contains("GetImage.aspx"))
+                        {
+                            var idMatch = System.Text.RegularExpressions.Regex.Match(imageUrl, @"id=(\d+)");
+                            if (idMatch.Success)
+                            {
+                                var imageId = idMatch.Groups[1].Value;
+                                imageUrl = $"https://hotelimages.sunhotels.net/HotelInfo/hotelImage.aspx?id={imageId}&full=1";
+                            }
+                        }
+
+                        hotel.Images.Add(new SunHotelsImage
+                        {
+                            Url = imageUrl,
+                            Order = order++
+                        });
+                    }
                 }
 
                 results.Add(hotel);

@@ -460,6 +460,11 @@
             Tüm recurring job'ları listeler
             </summary>
         </member>
+        <member name="M:FreeStays.API.Controllers.Admin.HangfireManagementController.GetRecurringJobById(System.String)">
+            <summary>
+            Belirli bir recurring job'ın detaylarını getirir
+            </summary>
+        </member>
         <member name="M:FreeStays.API.Controllers.Admin.HangfireManagementController.TriggerRecurringJob(System.String)">
             <summary>
             Belirli bir recurring job'ı tetikler (manuel başlatma)
@@ -892,6 +897,13 @@
             <param name="acceptLanguage">Dil kodu (Accept-Language header'dan)</param>
             <param name="cancellationToken"></param>
         </member>
+        <member name="M:FreeStays.API.Controllers.PublicHotelsController.GetLastMinuteDeals(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Son dakika otel fırsatlarını getirir (b2c=1)
+            </summary>
+            <param name="acceptLanguage">Dil kodu (Accept-Language header'dan)</param>
+            <param name="cancellationToken"></param>
+        </member>
         <member name="M:FreeStays.API.Controllers.PublicHotelsController.ParseLanguage(System.String)">
             <summary>
             Accept-Language header'dan dil kodunu parse eder
@@ -902,6 +914,7 @@
             JSON array string'i List&lt;string&gt;'e parse eder
             </summary>
         </member>
+        <!-- Badly formed XML comment ignored for member "M:FreeStays.API.Controllers.PublicHotelsController.FixImageUrls(System.Collections.Generic.List{System.String})" -->
         <member name="M:FreeStays.API.Controllers.PublicSettingsController.GetPublicSiteSettings">
             <summary>
             Frontend için genel site ayarlarını getir (anonim erişim)
@@ -913,9 +926,9 @@
             Widget kodları ve affiliate linkleri için kullanılır
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.PublicSettingsController.GetSocialLinks">
+        <member name="M:FreeStays.API.Controllers.PublicSettingsController.GetContactSettings">
             <summary>
-            Frontend için sosyal medya linklerini getir (anonim erişim)
+            Frontend için iletişim ve yasal bilgileri getir (anonim erişim)
             </summary>
         </member>
         <member name="T:FreeStays.API.Controllers.SunHotelsController">
@@ -1090,7 +1103,7 @@
             Otel arama - Canlı fiyatlar ve müsaitlik (V3)
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetHotelDetails(System.Int32,System.DateTime,System.DateTime,System.Int32,System.Int32,System.String,System.Threading.CancellationToken)">
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetHotelDetails(System.Int32,System.DateTime,System.DateTime,System.Int32,System.Int32,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Otel detayları - Canlı fiyat ve müsaitlik
             </summary>
@@ -1158,6 +1171,13 @@
         <member name="M:FreeStays.API.Controllers.SunHotelsController.ParseLanguage(System.String)">
             <summary>
             Accept-Language header'dan dil kodunu parse eder
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.FixImageUrls(System.Collections.Generic.List{System.String})">
+            <summary>
+            SunHotels resim URL'lerini düzgün formata dönüştürür
+            http://xml.sunhotels.net/15/GetImage.aspx?id=78713614 
+            → https://hotelimages.sunhotels.net/HotelInfo/hotelImage.aspx?id=78713614&amp;full=1
             </summary>
         </member>
         <member name="M:FreeStays.API.Services.IFileUploadService.UploadFileAsync(Microsoft.AspNetCore.Http.IFormFile,System.String,System.Threading.CancellationToken)">

@@ -78,6 +78,36 @@ public class HotelSearchResultDto
     public decimal? MinPrice { get; set; }
 
     /// <summary>
+    /// Para birimi (EUR, USD, vs.)
+    /// </summary>
+    public string? Currency { get; set; }
+
+    /// <summary>
+    /// İnceleme puanı (0-10)
+    /// </summary>
+    public decimal? ReviewScore { get; set; }
+
+    /// <summary>
+    /// İnceleme sayısı
+    /// </summary>
+    public int? ReviewCount { get; set; }
+
+    /// <summary>
+    /// Giriş tarihi (dinamik arama için)
+    /// </summary>
+    public string? CheckInDate { get; set; }
+
+    /// <summary>
+    /// Çıkış tarihi (dinamik arama için)
+    /// </summary>
+    public string? CheckOutDate { get; set; }
+
+    /// <summary>
+    /// Odalar (dinamik arama için)
+    /// </summary>
+    public List<HotelRoomDto>? Rooms { get; set; }
+
+    /// <summary>
     /// Fiyat ekran metni ("Fiyat için tarih seçin" veya fiyat)
     /// </summary>
     public string? PriceDisplay { get; set; }
@@ -109,4 +139,19 @@ public class HotelSearchResultDto
             Website = hotel.Website
         };
     }
+}
+
+/// <summary>
+/// Otel odası DTO (dinamik arama için)
+/// </summary>
+public class HotelRoomDto
+{
+    public string RoomId { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+    public string? RoomTypeName { get; set; }
+    public string? MealName { get; set; }
+    public decimal Price { get; set; }
+    public int? AvailableRooms { get; set; }
+    public bool? IsRefundable { get; set; }
+    public bool? IsSuperDeal { get; set; }
 }

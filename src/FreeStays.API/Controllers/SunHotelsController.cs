@@ -1,8 +1,10 @@
 using FreeStays.Application.Common.Interfaces;
 using FreeStays.Application.DTOs.SunHotels;
+using FreeStays.Application.Features.Settings.Queries;
 using FreeStays.Domain.Interfaces;
 using FreeStays.Infrastructure.ExternalServices.SunHotels;
 using FreeStays.Infrastructure.ExternalServices.SunHotels.Models;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,15 +21,18 @@ public class SunHotelsController : ControllerBase
     private readonly ISunHotelsCacheService _cacheService;
     private readonly ISunHotelsService _sunHotelsService;
     private readonly ITranslationRepository _translationRepository;
+    private readonly IMediator _mediator;
     private readonly ILogger<SunHotelsController> _logger;
 
     public SunHotelsController(
         ISunHotelsCacheService cacheService,
         ISunHotelsService sunHotelsService,
         ITranslationRepository translationRepository,
+        IMediator mediator,
         ILogger<SunHotelsController> logger)
     {
         _cacheService = cacheService;
+        _mediator = mediator;
         _sunHotelsService = sunHotelsService;
         _translationRepository = translationRepository;
         _logger = logger;
@@ -628,29 +633,75 @@ public class SunHotelsController : ControllerBase
                     sunHotelsRequest.DestinationId = request.DestinationIds?.FirstOrDefault() ?? "10025";
                 }
 
+                // Get pricing settings
+                var allSettings = await _mediator.Send(new GetSiteSettingsQuery("site"), cancellationToken);
+                var settingsDict = allSettings.ToDictionary(s => s.Key, s => s.Value);
+
+                var profitMarginStr = settingsDict.GetValueOrDefault("profitMargin", "0");
+                var defaultVatRateStr = settingsDict.GetValueOrDefault("defaultVatRate", "0");
+                var extraFeeStr = settingsDict.GetValueOrDefault("extraFee", "0");
+
+                var profitMargin = decimal.TryParse(profitMarginStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var pm) ? pm / 100 : 0m;
+                var defaultVatRate = decimal.TryParse(defaultVatRateStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var vat) ? vat / 100 : 0m;
+                var extraFee = decimal.TryParse(extraFeeStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var ef) ? ef : 0m;
+
                 var apiResults = await _sunHotelsService.SearchHotelsV3Async(sunHotelsRequest, cancellationToken);
 
-                // API sonuçlarını DTO'ya dönüştür
+                // API sonuçlarını DTO'ya dönüştür ve fiyat hesapla
                 var response = new HotelSearchResponse
                 {
-                    Hotels = apiResults.Select(r => new HotelSearchResultDto
+                    Hotels = apiResults.Select(r =>
                     {
-                        HotelId = r.HotelId,
-                        Name = r.Name,
-                        Description = r.Description,
-                        Address = r.Address,
-                        City = r.City,
-                        Country = r.Country,
-                        CountryCode = r.CountryCode,
-                        Category = r.Category,
-                        Latitude = r.Latitude,
-                        Longitude = r.Longitude,
-                        ResortId = r.ResortId,
-                        ResortName = r.ResortName,
-                        MinPrice = r.MinPrice,
-                        ThemeIds = r.ThemeIds,
-                        FeatureIds = r.FeatureIds,
-                        ImageUrls = r.Images?.Select(img => img.Url).ToList() ?? new List<string>()
+                        // Calculate final price with profit margin and VAT
+                        var basePrice = r.MinPrice == 0 ? 0m : r.MinPrice;
+                        var profitAmount = basePrice * profitMargin;
+                        var taxAmount = profitAmount * defaultVatRate;
+                        var finalPrice = basePrice + profitAmount + taxAmount + extraFee;
+
+                        return new HotelSearchResultDto
+                        {
+                            HotelId = r.HotelId,
+                            Name = r.Name,
+                            Description = r.Description,
+                            Address = r.Address,
+                            City = r.City,
+                            Country = r.Country,
+                            CountryCode = r.CountryCode,
+                            Category = r.Category,
+                            Latitude = r.Latitude,
+                            Longitude = r.Longitude,
+                            ResortId = r.ResortId,
+                            ResortName = r.ResortName,
+                            MinPrice = finalPrice,
+                            Currency = r.Currency,
+                            ReviewScore = r.ReviewScore.HasValue ? (decimal?)r.ReviewScore.Value : null,
+                            ReviewCount = r.ReviewCount,
+                            CheckInDate = request.CheckInDate?.ToString("yyyy-MM-dd"),
+                            CheckOutDate = request.CheckOutDate?.ToString("yyyy-MM-dd"),
+                            ThemeIds = r.ThemeIds,
+                            FeatureIds = r.FeatureIds,
+                            ImageUrls = FixImageUrls(r.ImageUrls),
+                            Rooms = r.Rooms?.Select(room =>
+                            {
+                                // Calculate room price with profit margin and VAT
+                                var roomBasePrice = room.Price == 0 ? 0m : room.Price;
+                                var roomProfitAmount = roomBasePrice * profitMargin;
+                                var roomTaxAmount = roomProfitAmount * defaultVatRate;
+                                var roomFinalPrice = roomBasePrice + roomProfitAmount + roomTaxAmount + extraFee;
+
+                                return new HotelRoomDto
+                                {
+                                    RoomId = room.RoomId.ToString(),
+                                    Name = room.Name,
+                                    RoomTypeName = room.RoomTypeName,
+                                    MealName = room.MealName,
+                                    Price = roomFinalPrice,
+                                    AvailableRooms = room.AvailableRooms,
+                                    IsRefundable = room.IsRefundable,
+                                    IsSuperDeal = room.IsSuperDeal
+                                };
+                            }).ToList()
+                        };
                     }).ToList(),
                     TotalCount = apiResults.Count,
                     TotalPages = (int)Math.Ceiling((double)apiResults.Count / request.PageSize),
@@ -745,7 +796,7 @@ public class SunHotelsController : ControllerBase
     /// </summary>
     [HttpGet("hotels/{hotelId:int}/details")]
     [AllowAnonymous]
-    [ProducesResponseType(typeof(SunHotelsSearchResultV3), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetHotelDetails(
         int hotelId,
@@ -754,22 +805,207 @@ public class SunHotelsController : ControllerBase
         [FromQuery] int adults = 2,
         [FromQuery] int children = 0,
         [FromQuery] string currency = "EUR",
+        [FromHeader(Name = "Accept-Language")] string? acceptLanguage = null,
         CancellationToken cancellationToken = default)
     {
         try
         {
+            var language = ParseLanguage(acceptLanguage);
+
+            // Get pricing settings
+            var allSettings = await _mediator.Send(new GetSiteSettingsQuery("site"), cancellationToken);
+            var settingsDict = allSettings.ToDictionary(s => s.Key, s => s.Value);
+
+            var profitMarginStr = settingsDict.GetValueOrDefault("profitMargin", "0");
+            var defaultVatRateStr = settingsDict.GetValueOrDefault("defaultVatRate", "0");
+            var extraFeeStr = settingsDict.GetValueOrDefault("extraFee", "0");
+
+            var profitMargin = decimal.TryParse(profitMarginStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var pm) ? pm / 100 : 0m;
+            var defaultVatRate = decimal.TryParse(defaultVatRateStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var vat) ? vat / 100 : 0m;
+            var extraFee = decimal.TryParse(extraFeeStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var ef) ? ef : 0m;
+
+            // Get live hotel data
             var result = await _sunHotelsService.GetHotelDetailsAsync(hotelId, checkIn, checkOut, adults, children, currency, cancellationToken);
 
             if (result == null)
                 return NotFound(new { message = $"Hotel {hotelId} not found or not available for the selected dates" });
 
-            return Ok(result);
+            // Get additional details from cache (features, themes)
+            var allFeatures = await _cacheService.GetAllFeaturesAsync(language, cancellationToken);
+            var allThemes = await _cacheService.GetAllThemesAsync(cancellationToken);
+
+            // Calculate final prices
+            var basePrice = result.MinPrice == 0 ? 0m : result.MinPrice;
+            var profitAmount = basePrice * profitMargin;
+            var taxAmount = profitAmount * defaultVatRate;
+            var finalMinPrice = basePrice + profitAmount + taxAmount + extraFee;
+
+            // Fix image URLs
+            var fixedImages = FixImageUrls(result.ImageUrls);
+
+            // Calculate room prices and build room details
+            var roomsWithDetails = result.Rooms?.Select(room =>
+            {
+                var roomBasePrice = room.Price == 0 ? 0m : room.Price;
+                var roomProfitAmount = roomBasePrice * profitMargin;
+                var roomTaxAmount = roomProfitAmount * defaultVatRate;
+                var roomFinalPrice = roomBasePrice + roomProfitAmount + roomTaxAmount + extraFee;
+
+                // Calculate nights
+                var nights = (checkOut - checkIn).Days;
+                var pricePerNight = nights > 0 ? roomFinalPrice / nights : roomFinalPrice;
+
+                return new
+                {
+                    roomId = room.RoomId,
+                    roomTypeId = room.RoomTypeId,
+                    roomTypeName = room.RoomTypeName,
+                    name = room.Name,
+                    description = room.Description,
+                    mealId = room.MealId,
+                    mealName = room.MealName,
+                    price = new
+                    {
+                        total = roomFinalPrice,
+                        perNight = pricePerNight,
+                        currency = room.Currency,
+                        nights = nights
+                    },
+                    pricing = new
+                    {
+                        originalPrice = room.OriginalPrice,
+                        currentPrice = roomFinalPrice,
+                        discount = room.OriginalPrice.HasValue && room.OriginalPrice.Value > roomFinalPrice
+                            ? room.OriginalPrice.Value - roomFinalPrice
+                            : (decimal?)null,
+                        discountPercentage = room.OriginalPrice.HasValue && room.OriginalPrice.Value > 0
+                            ? Math.Round(((room.OriginalPrice.Value - roomFinalPrice) / room.OriginalPrice.Value) * 100, 2)
+                            : (decimal?)null
+                    },
+                    availability = new
+                    {
+                        availableRooms = room.AvailableRooms,
+                        isAvailable = room.AvailableRooms > 0
+                    },
+                    policies = new
+                    {
+                        isRefundable = room.IsRefundable,
+                        isSuperDeal = room.IsSuperDeal,
+                        cancellationPolicies = room.CancellationPolicies?.Select(p => new
+                        {
+                            fromDate = p.FromDate.ToString("yyyy-MM-dd"),
+                            percentage = p.Percentage,
+                            fixedAmount = p.FixedAmount,
+                            nightsCharged = p.NightsCharged
+                        }).ToList(),
+                        earliestFreeCancellation = room.EarliestNonFreeCancellationDate?.ToString("yyyy-MM-dd")
+                    },
+                    paymentMethods = room.PaymentMethodIds
+                };
+            }).ToList();
+
+            // Get feature details
+            var hotelFeatures = allFeatures
+                .Where(f => result.FeatureIds.Contains(f.FeatureId) && f.Language.Equals(language, StringComparison.OrdinalIgnoreCase))
+                .Select(f => new
+                {
+                    id = f.FeatureId,
+                    name = f.Name
+                })
+                .ToList();
+
+            // Get theme details
+            var hotelThemes = allThemes
+                .Where(t => result.ThemeIds.Contains(t.ThemeId))
+                .Select(t => new
+                {
+                    id = t.ThemeId,
+                    name = t.Name,
+                    englishName = t.EnglishName
+                })
+                .ToList();
+
+            // Build enhanced response
+            var response = new
+            {
+                hotel = new
+                {
+                    id = result.HotelId,
+                    name = result.Name,
+                    description = result.Description,
+                    category = result.Category,
+                    stars = result.Category,
+                    contact = new
+                    {
+                        address = result.Address,
+                        city = result.City,
+                        country = result.Country,
+                        countryCode = result.CountryCode,
+                        phone = result.Phone,
+                        email = result.Email,
+                        website = result.Website
+                    },
+                    location = new
+                    {
+                        latitude = result.Latitude,
+                        longitude = result.Longitude,
+                        resort = new
+                        {
+                            id = result.ResortId,
+                            name = result.ResortName
+                        },
+                        giataCode = result.GiataCode
+                    },
+                    images = fixedImages,
+                    pricing = new
+                    {
+                        minPrice = finalMinPrice,
+                        currency = result.Currency,
+                        checkIn = checkIn.ToString("yyyy-MM-dd"),
+                        checkOut = checkOut.ToString("yyyy-MM-dd"),
+                        nights = (checkOut - checkIn).Days,
+                        adults,
+                        children
+                    },
+                    reviews = result.ReviewScore.HasValue || result.ReviewCount.HasValue
+                        ? new
+                        {
+                            score = result.ReviewScore,
+                            count = result.ReviewCount,
+                            rating = result.ReviewScore.HasValue ? GetRatingText(result.ReviewScore.Value) : null
+                        }
+                        : null,
+                    features = hotelFeatures,
+                    themes = hotelThemes,
+                    totalRooms = roomsWithDetails?.Count ?? 0
+                },
+                rooms = roomsWithDetails,
+                availability = new
+                {
+                    hasAvailableRooms = roomsWithDetails?.Any(r => r.availability.isAvailable) ?? false,
+                    totalAvailableRooms = roomsWithDetails?.Sum(r => r.availability.availableRooms) ?? 0
+                }
+            };
+
+            return Ok(response);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error getting hotel details for hotel {HotelId}", hotelId);
             return StatusCode(500, new { message = "Error getting hotel details", error = ex.Message });
         }
+    }
+
+    private static string GetRatingText(double score)
+    {
+        return score switch
+        {
+            >= 9.0 => "Excellent",
+            >= 8.0 => "Very Good",
+            >= 7.0 => "Good",
+            >= 6.0 => "Pleasant",
+            _ => "Fair"
+        };
     }
 
     /// <summary>
@@ -1064,6 +1300,36 @@ public class SunHotelsController : ControllerBase
             return firstLocale.ToLowerInvariant();
         }
         return "en";
+    }
+
+    /// <summary>
+    /// SunHotels resim URL'lerini düzgün formata dönüştürür
+    /// http://xml.sunhotels.net/15/GetImage.aspx?id=78713614 
+    /// → https://hotelimages.sunhotels.net/HotelInfo/hotelImage.aspx?id=78713614&amp;full=1
+    /// </summary>
+    private static List<string> FixImageUrls(List<string>? imageUrls)
+    {
+        if (imageUrls == null || !imageUrls.Any())
+            return new List<string>();
+
+        return imageUrls.Select(url =>
+        {
+            if (string.IsNullOrEmpty(url))
+                return url;
+
+            // Eski format: http://xml.sunhotels.net/15/GetImage.aspx?id=78713614
+            if (url.Contains("xml.sunhotels.net") && url.Contains("GetImage.aspx"))
+            {
+                var match = System.Text.RegularExpressions.Regex.Match(url, @"id=(\d+)");
+                if (match.Success)
+                {
+                    var imageId = match.Groups[1].Value;
+                    return $"https://hotelimages.sunhotels.net/HotelInfo/hotelImage.aspx?id={imageId}&full=1";
+                }
+            }
+
+            return url;
+        }).ToList();
     }
 
     #endregion

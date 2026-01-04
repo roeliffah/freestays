@@ -1033,7 +1033,10 @@ public class SunHotelsStaticDataSyncJob
 
                     var featureIdsJson = System.Text.Json.JsonSerializer.Serialize(hotel.FeatureIds);
                     var themeIdsJson = System.Text.Json.JsonSerializer.Serialize(hotel.ThemeIds);
-                    var imageUrlsJson = System.Text.Json.JsonSerializer.Serialize(hotel.Images.Select(x => x.Url).ToList());
+                    // ✅ YENİ: Eğer API resim döndürüyorsa güncelle, yoksa mevcut resimleri koru
+                    var imageUrlsJson = hotel.Images.Any()
+                        ? System.Text.Json.JsonSerializer.Serialize(FixImageUrls(hotel.Images.Select(x => x.Url).ToList()))
+                        : null; // null bırak, update'de koşullu olarak kontrol et
 
                     if (existing != null)
                     {
@@ -1065,45 +1068,88 @@ public class SunHotelsStaticDataSyncJob
                         existing.Website = hotel.Website;
                         existing.FeatureIds = featureIdsJson;
                         existing.ThemeIds = themeIdsJson;
-                        existing.ImageUrls = imageUrlsJson;
+                        // ✅ Resimler: API'den yeni resim geliyorsa güncelle, yoksa eski resimleri koru
+                        if (!string.IsNullOrEmpty(imageUrlsJson))
+                        {
+                            existing.ImageUrls = imageUrlsJson;
+                        }
                         existing.LastSyncedAt = now;
                         existing.UpdatedAt = now;
 
                         // Attach the detached entity back to context for update
                         _dbContext.SunHotelsHotels.Attach(existing);
                         _dbContext.Entry(existing).State = EntityState.Modified;
-                        // Remove old rooms - query separately to avoid tracking conflicts
-                        var existingRoomIds = await _dbContext.SunHotelsRooms
+
+                        // ✅ YENİ: Odaları SİLMEK yerine GÜNCELLE veya EKLE
+                        // API'den gelen odaları al (duplicate RoomTypeId'leri kaldır - sonuncusunu al)
+                        var apiRoomsByTypeId = hotel.Rooms
+                            .GroupBy(r => r.RoomTypeId)
+                            .ToDictionary(g => g.Key, g => g.Last());
+
+                        // Mevcut odaları kontrol et
+                        var existingRooms = await _dbContext.SunHotelsRooms
                             .Where(r => r.HotelId == existing.HotelId && r.Language == language)
-                            .Select(r => r.Id)
                             .ToListAsync();
 
-                        if (existingRoomIds.Any())
+                        // Duplicate RoomTypeId'leri kaldır - sonuncusunu al
+                        var existingRoomsByTypeId = existingRooms
+                            .GroupBy(r => r.RoomTypeId)
+                            .ToDictionary(g => g.Key, g => g.Last());
+
+                        // 1. Mevcut odaları güncelle
+                        foreach (var existingRoom in existingRooms)
                         {
-                            await _dbContext.Database.ExecuteSqlRawAsync(
-                                $"DELETE FROM sunhotels_rooms_cache WHERE \"Id\" = ANY(@ids)",
-                                new Npgsql.NpgsqlParameter("@ids", existingRoomIds.ToArray()));
+                            if (apiRoomsByTypeId.TryGetValue(existingRoom.RoomTypeId, out var apiRoom))
+                            {
+                                // Oda hala API'de var - güncelle
+                                existingRoom.Name = apiRoom.Name;
+                                existingRoom.EnglishName = apiRoom.EnglishName;
+                                existingRoom.Description = apiRoom.Description;
+                                existingRoom.MaxOccupancy = apiRoom.MaxOccupancy;
+                                existingRoom.MinOccupancy = apiRoom.MinOccupancy;
+                                existingRoom.FeatureIds = System.Text.Json.JsonSerializer.Serialize(apiRoom.FeatureIds);
+                                // ✅ Resimler: API'den yeni resim geliyorsa güncelle, yoksa eski resimleri koru
+                                if (apiRoom.Images.Any())
+                                {
+                                    existingRoom.ImageUrls = System.Text.Json.JsonSerializer.Serialize(FixImageUrls(apiRoom.Images.Select(x => x.Url).ToList()));
+                                }
+                                existingRoom.LastSyncedAt = now;
+                                _dbContext.SunHotelsRooms.Update(existingRoom);
+                            }
+                            else
+                            {
+                                // Oda artık API'de yok - sil
+                                _dbContext.SunHotelsRooms.Remove(existingRoom);
+                            }
                         }
 
-                        // Add new rooms
-                        foreach (var room in hotel.Rooms)
+                        // 2. Yeni odaları ekle
+                        foreach (var apiRoom in hotel.Rooms)
                         {
-                            await _dbContext.SunHotelsRooms.AddAsync(new SunHotelsRoomCache
+                            if (!existingRoomsByTypeId.ContainsKey(apiRoom.RoomTypeId))
                             {
-                                HotelCacheId = existing.Id,
-                                HotelId = hotel.HotelId,
-                                RoomTypeId = room.RoomTypeId,
-                                Name = room.Name,
-                                EnglishName = room.EnglishName,
-                                Description = room.Description,
-                                MaxOccupancy = room.MaxOccupancy,
-                                MinOccupancy = room.MinOccupancy,
-                                FeatureIds = System.Text.Json.JsonSerializer.Serialize(room.FeatureIds),
-                                ImageUrls = System.Text.Json.JsonSerializer.Serialize(room.Images.Select(x => x.Url).ToList()),
-                                Language = language,
-                                LastSyncedAt = now,
-                                CreatedAt = now
-                            });
+                                var roomImageUrlsJson = apiRoom.Images.Any()
+                                    ? System.Text.Json.JsonSerializer.Serialize(FixImageUrls(apiRoom.Images.Select(x => x.Url).ToList()))
+                                    : "[]";
+
+                                // Bu oda daha önce yoktu - ekle
+                                await _dbContext.SunHotelsRooms.AddAsync(new SunHotelsRoomCache
+                                {
+                                    HotelCacheId = existing.Id,
+                                    HotelId = hotel.HotelId,
+                                    RoomTypeId = apiRoom.RoomTypeId,
+                                    Name = apiRoom.Name,
+                                    EnglishName = apiRoom.EnglishName,
+                                    Description = apiRoom.Description,
+                                    MaxOccupancy = apiRoom.MaxOccupancy,
+                                    MinOccupancy = apiRoom.MinOccupancy,
+                                    FeatureIds = System.Text.Json.JsonSerializer.Serialize(apiRoom.FeatureIds),
+                                    ImageUrls = roomImageUrlsJson,
+                                    Language = language,
+                                    LastSyncedAt = now,
+                                    CreatedAt = now
+                                });
+                            }
                         }
                     }
                     else
@@ -1138,6 +1184,10 @@ public class SunHotelsStaticDataSyncJob
 
                         foreach (var room in hotel.Rooms)
                         {
+                            var roomImageUrlsJson = room.Images.Any()
+                                ? System.Text.Json.JsonSerializer.Serialize(FixImageUrls(room.Images.Select(x => x.Url).ToList()))
+                                : "[]";
+
                             newHotel.Rooms.Add(new SunHotelsRoomCache
                             {
                                 HotelId = hotel.HotelId,
@@ -1148,7 +1198,7 @@ public class SunHotelsStaticDataSyncJob
                                 MaxOccupancy = room.MaxOccupancy,
                                 MinOccupancy = room.MinOccupancy,
                                 FeatureIds = System.Text.Json.JsonSerializer.Serialize(room.FeatureIds),
-                                ImageUrls = System.Text.Json.JsonSerializer.Serialize(room.Images.Select(x => x.Url).ToList()),
+                                ImageUrls = roomImageUrlsJson,
                                 Language = language,
                                 LastSyncedAt = now,
                                 CreatedAt = now
@@ -1229,5 +1279,35 @@ public class SunHotelsStaticDataSyncJob
             _logger.LogError(ex, "Error getting supported languages from API, using default language 'en'");
             return new List<string> { "en" };
         }
+    }
+
+    /// <summary>
+    /// SunHotels resim URL'lerini düzgün formata dönüştürür
+    /// http://xml.sunhotels.net/15/GetImage.aspx?id=78713614 
+    /// → https://hotelimages.sunhotels.net/HotelInfo/hotelImage.aspx?id=78713614&full=1
+    /// </summary>
+    private static List<string> FixImageUrls(List<string>? imageUrls)
+    {
+        if (imageUrls == null || !imageUrls.Any())
+            return new List<string>();
+
+        return imageUrls.Select(url =>
+        {
+            if (string.IsNullOrEmpty(url))
+                return url;
+
+            // Eski format: http://xml.sunhotels.net/15/GetImage.aspx?id=78713614
+            if (url.Contains("xml.sunhotels.net") && url.Contains("GetImage.aspx"))
+            {
+                var match = System.Text.RegularExpressions.Regex.Match(url, @"id=(\d+)");
+                if (match.Success)
+                {
+                    var imageId = match.Groups[1].Value;
+                    return $"https://hotelimages.sunhotels.net/HotelInfo/hotelImage.aspx?id={imageId}&full=1";
+                }
+            }
+
+            return url;
+        }).ToList();
     }
 }

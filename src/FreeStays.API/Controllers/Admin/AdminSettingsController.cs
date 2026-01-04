@@ -50,7 +50,20 @@ public class AdminSettingsController : BaseApiController
             carRentalWidgetCode = settingsDict.GetValueOrDefault("carRentalWidgetCode", null),
             flightBookingActive = settingsDict.GetValueOrDefault("flightBookingActive", "false") == "true",
             flightBookingAffiliateCode = settingsDict.GetValueOrDefault("flightBookingAffiliateCode", null),
-            flightBookingWidgetCode = settingsDict.GetValueOrDefault("flightBookingWidgetCode", null)
+            flightBookingWidgetCode = settingsDict.GetValueOrDefault("flightBookingWidgetCode", null),
+            // Statik Sayfalar
+            privacyPolicy = settingsDict.GetValueOrDefault("privacyPolicy", ""),
+            termsOfService = settingsDict.GetValueOrDefault("termsOfService", ""),
+            cancellationPolicy = settingsDict.GetValueOrDefault("cancellationPolicy", ""),
+            // Sosyal Medya Linkleri
+            social = new
+            {
+                facebook = settingsDict.GetValueOrDefault("facebook", null),
+                twitter = settingsDict.GetValueOrDefault("twitter", null),
+                instagram = settingsDict.GetValueOrDefault("instagram", null),
+                linkedin = settingsDict.GetValueOrDefault("linkedin", null),
+                youtube = settingsDict.GetValueOrDefault("youtube", null)
+            }
         });
     }
 
@@ -110,6 +123,29 @@ public class AdminSettingsController : BaseApiController
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "flightBookingAffiliateCode", Value = request.FlightBookingAffiliateCode, Group = "site" });
         if (request.FlightBookingWidgetCode != null)
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "flightBookingWidgetCode", Value = request.FlightBookingWidgetCode, Group = "site" });
+
+        // Statik Sayfalar
+        if (request.PrivacyPolicy != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "privacyPolicy", Value = request.PrivacyPolicy, Group = "site" });
+        if (request.TermsOfService != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "termsOfService", Value = request.TermsOfService, Group = "site" });
+        if (request.CancellationPolicy != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "cancellationPolicy", Value = request.CancellationPolicy, Group = "site" });
+
+        // Sosyal Medya Linkleri
+        if (request.SocialLinks != null)
+        {
+            if (request.SocialLinks.Facebook != null)
+                await Mediator.Send(new UpdateSiteSettingCommand { Key = "facebook", Value = request.SocialLinks.Facebook, Group = "site" });
+            if (request.SocialLinks.Twitter != null)
+                await Mediator.Send(new UpdateSiteSettingCommand { Key = "twitter", Value = request.SocialLinks.Twitter, Group = "site" });
+            if (request.SocialLinks.Instagram != null)
+                await Mediator.Send(new UpdateSiteSettingCommand { Key = "instagram", Value = request.SocialLinks.Instagram, Group = "site" });
+            if (request.SocialLinks.LinkedIn != null)
+                await Mediator.Send(new UpdateSiteSettingCommand { Key = "linkedin", Value = request.SocialLinks.LinkedIn, Group = "site" });
+            if (request.SocialLinks.YouTube != null)
+                await Mediator.Send(new UpdateSiteSettingCommand { Key = "youtube", Value = request.SocialLinks.YouTube, Group = "site" });
+        }
 
         return Ok(new { message = "Site ayarları güncellendi." });
     }
@@ -748,7 +784,10 @@ public class AdminSettingsController : BaseApiController
             workingHours = settingsDict.GetValueOrDefault("workingHours", "Mon-Fri: 9:00-18:00"),
             mapLatitude = settingsDict.GetValueOrDefault("mapLatitude", ""),
             mapLongitude = settingsDict.GetValueOrDefault("mapLongitude", ""),
-            googleMapsIframe = settingsDict.GetValueOrDefault("googleMapsIframe", "")
+            googleMapsIframe = settingsDict.GetValueOrDefault("googleMapsIframe", ""),
+            privacyPolicy = settingsDict.GetValueOrDefault("privacyPolicy", ""),
+            termsOfService = settingsDict.GetValueOrDefault("termsOfService", ""),
+            cancellationPolicy = settingsDict.GetValueOrDefault("cancellationPolicy", "")
         });
     }
 
@@ -781,6 +820,12 @@ public class AdminSettingsController : BaseApiController
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "mapLongitude", Value = request.MapLongitude, Group = "contact" });
         if (request.GoogleMapsIframe != null)
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "googleMapsIframe", Value = request.GoogleMapsIframe, Group = "contact" });
+        if (request.PrivacyPolicy != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "privacyPolicy", Value = request.PrivacyPolicy, Group = "contact" });
+        if (request.TermsOfService != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "termsOfService", Value = request.TermsOfService, Group = "contact" });
+        if (request.CancellationPolicy != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "cancellationPolicy", Value = request.CancellationPolicy, Group = "contact" });
 
         return Ok(new { message = "İletişim ayarları güncellendi." });
     }
@@ -815,6 +860,11 @@ public record UpdateSiteSettingsRequest(
     bool? FlightBookingActive,
     string? FlightBookingAffiliateCode,
     string? FlightBookingWidgetCode,
+    // Statik Sayfalar
+    string? PrivacyPolicy,
+    string? TermsOfService,
+    string? CancellationPolicy,
+    // Sosyal Medya Linkleri
     SocialLinksRequest? SocialLinks);
 
 public record SocialLinksRequest(
@@ -967,4 +1017,7 @@ public record UpdateContactSettingsRequest(
     string? WorkingHours,
     string? MapLatitude,
     string? MapLongitude,
-    string? GoogleMapsIframe);
+    string? GoogleMapsIframe,
+    string? PrivacyPolicy,
+    string? TermsOfService,
+    string? CancellationPolicy);

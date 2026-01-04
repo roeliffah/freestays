@@ -18,16 +18,64 @@ public class PublicSettingsController : BaseApiController
 
         return Ok(new
         {
+            // Site Temel Bilgileri
             siteName = settingsDict.GetValueOrDefault("siteName", "FreeStays"),
             tagline = settingsDict.GetValueOrDefault("tagline", "Your Dream Stay, Our Mission"),
+            siteUrl = settingsDict.GetValueOrDefault("siteUrl", "https://freestays.com"),
+            logoUrl = settingsDict.GetValueOrDefault("logoUrl", "/images/logo.png"),
+            faviconUrl = settingsDict.GetValueOrDefault("faviconUrl", "/images/favicon.ico"),
+            maintenanceMode = settingsDict.GetValueOrDefault("maintenanceMode", "false") == "true",
+            maintenanceMessage = settingsDict.GetValueOrDefault("maintenanceMessage", "Site is under maintenance. Please check back later."),
+
+            // İletişim Bilgileri
             supportEmail = settingsDict.GetValueOrDefault("supportEmail", "support@freestays.com"),
             supportPhone = settingsDict.GetValueOrDefault("supportPhone", "+90 555 123 4567"),
+            contactEmail = settingsDict.GetValueOrDefault("contactEmail", "contact@freestays.com"),
+
+            // Firma/İşletme Bilgileri
+            companyName = settingsDict.GetValueOrDefault("companyName", "FreeStays Ltd."),
+            businessAddress = settingsDict.GetValueOrDefault("businessAddress", ""),
+            businessPhone = settingsDict.GetValueOrDefault("businessPhone", ""),
+            taxId = settingsDict.GetValueOrDefault("taxId", ""),
+            registrationNumber = settingsDict.GetValueOrDefault("registrationNumber", ""),
+
+            // Dil ve Para Birimi
             defaultLocale = settingsDict.GetValueOrDefault("defaultLocale", "tr"),
             availableLocales = new[] { "tr", "en", "de", "fr" },
             defaultCurrency = settingsDict.GetValueOrDefault("defaultCurrency", "TRY"),
             availableCurrencies = new[] { "TRY", "USD", "EUR", "GBP" },
-            logoUrl = settingsDict.GetValueOrDefault("logoUrl", "/images/logo.png"),
-            faviconUrl = settingsDict.GetValueOrDefault("faviconUrl", "/images/favicon.ico")
+            timezone = settingsDict.GetValueOrDefault("timezone", "Europe/Amsterdam"),
+
+            // İletişim Detayları
+            contact = new
+            {
+                email = settingsDict.GetValueOrDefault("email", null),
+                phone = settingsDict.GetValueOrDefault("phone", null),
+                whatsapp = settingsDict.GetValueOrDefault("whatsapp", null),
+                address = settingsDict.GetValueOrDefault("address", null),
+                city = settingsDict.GetValueOrDefault("city", null),
+                country = settingsDict.GetValueOrDefault("country", null),
+                postalCode = settingsDict.GetValueOrDefault("postalCode", null),
+                workingHours = settingsDict.GetValueOrDefault("workingHours", null),
+                mapLatitude = decimal.TryParse(settingsDict.GetValueOrDefault("mapLatitude", null)?.Replace(",", "."), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var lat) ? lat : (decimal?)null,
+                mapLongitude = decimal.TryParse(settingsDict.GetValueOrDefault("mapLongitude", null)?.Replace(",", "."), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var lng) ? lng : (decimal?)null,
+                googleMapsIframe = settingsDict.GetValueOrDefault("googleMapsIframe", null)
+            },
+
+            // Statik Sayfalar
+            privacyPolicy = settingsDict.GetValueOrDefault("privacyPolicy", ""),
+            termsOfService = settingsDict.GetValueOrDefault("termsOfService", ""),
+            cancellationPolicy = settingsDict.GetValueOrDefault("cancellationPolicy", ""),
+
+            // Sosyal Medya Linkleri
+            social = new
+            {
+                facebook = settingsDict.GetValueOrDefault("facebook", null),
+                twitter = settingsDict.GetValueOrDefault("twitter", null),
+                instagram = settingsDict.GetValueOrDefault("instagram", null),
+                linkedin = settingsDict.GetValueOrDefault("linkedin", null),
+                youtube = settingsDict.GetValueOrDefault("youtube", null)
+            }
         });
     }
 
@@ -66,22 +114,31 @@ public class PublicSettingsController : BaseApiController
     }
 
     /// <summary>
-    /// Frontend için sosyal medya linklerini getir (anonim erişim)
+    /// Frontend için iletişim ve yasal bilgileri getir (anonim erişim)
     /// </summary>
-    [HttpGet("social")]
+    [HttpGet("contact")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetSocialLinks()
+    public async Task<IActionResult> GetContactSettings()
     {
-        var settings = await Mediator.Send(new GetSiteSettingsQuery("social"));
+        var settings = await Mediator.Send(new GetSiteSettingsQuery("contact"));
         var settingsDict = settings.ToDictionary(s => s.Key, s => s.Value);
 
         return Ok(new
         {
-            facebook = settingsDict.GetValueOrDefault("facebook", null),
-            twitter = settingsDict.GetValueOrDefault("twitter", null),
-            instagram = settingsDict.GetValueOrDefault("instagram", null),
-            linkedin = settingsDict.GetValueOrDefault("linkedin", null),
-            youtube = settingsDict.GetValueOrDefault("youtube", null)
+            email = settingsDict.GetValueOrDefault("email", null),
+            phone = settingsDict.GetValueOrDefault("phone", null),
+            whatsapp = settingsDict.GetValueOrDefault("whatsapp", null),
+            address = settingsDict.GetValueOrDefault("address", null),
+            city = settingsDict.GetValueOrDefault("city", null),
+            country = settingsDict.GetValueOrDefault("country", null),
+            postalCode = settingsDict.GetValueOrDefault("postalCode", null),
+            workingHours = settingsDict.GetValueOrDefault("workingHours", null),
+            mapLatitude = decimal.TryParse(settingsDict.GetValueOrDefault("mapLatitude", null)?.Replace(",", "."), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var lat) ? lat : (decimal?)null,
+            mapLongitude = decimal.TryParse(settingsDict.GetValueOrDefault("mapLongitude", null)?.Replace(",", "."), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var lng) ? lng : (decimal?)null,
+            googleMapsIframe = settingsDict.GetValueOrDefault("googleMapsIframe", null),
+            privacyPolicy = settingsDict.GetValueOrDefault("privacyPolicy", null),
+            termsOfService = settingsDict.GetValueOrDefault("termsOfService", null),
+            cancellationPolicy = settingsDict.GetValueOrDefault("cancellationPolicy", null)
         });
     }
 }

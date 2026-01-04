@@ -33,21 +33,36 @@ public class HangfireManagementController : BaseApiController
         var connection = JobStorage.Current.GetConnection();
         var recurringJobs = connection.GetRecurringJobs();
 
-        var jobs = recurringJobs.Select(job => new
-        {
-            id = job.Id,
-            cron = job.Cron,
-            nextExecution = job.NextExecution,
-            lastExecution = job.LastExecution,
-            lastJobId = job.LastJobId,
-            lastJobState = job.LastJobState,
-            createdAt = job.CreatedAt,
-            removed = job.Removed,
-            job = job.Job?.Method?.Name,
-            error = job.Error
-        }).ToList();
+        var jobs = recurringJobs.Select(MapRecurringJob).ToList();
 
         return Ok(jobs);
+    }
+
+    /// <summary>
+    /// Belirli bir recurring job'ın detaylarını getirir
+    /// </summary>
+    [HttpGet("recurring-jobs/{jobId}")]
+    public IActionResult GetRecurringJobById(string jobId)
+    {
+        try
+        {
+            var connection = JobStorage.Current.GetConnection();
+            var recurringJobs = connection.GetRecurringJobs();
+
+            var job = recurringJobs.FirstOrDefault(j => j.Id == jobId);
+
+            if (job == null)
+            {
+                return NotFound(new { error = $"Job with id '{jobId}' not found" });
+            }
+
+            return Ok(MapRecurringJob(job));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to get recurring job: {JobId}", jobId);
+            return BadRequest(new { error = ex.Message });
+        }
     }
 
     /// <summary>
@@ -395,6 +410,23 @@ public class HangfireManagementController : BaseApiController
             startedAt = s.StartedAt,
             heartbeat = s.Heartbeat
         }));
+    }
+
+    private static object MapRecurringJob(RecurringJobDto job)
+    {
+        return new
+        {
+            id = job.Id,
+            cron = job.Cron,
+            nextExecution = job.NextExecution,
+            lastExecution = job.LastExecution,
+            lastJobId = job.LastJobId,
+            lastJobState = job.LastJobState,
+            createdAt = job.CreatedAt,
+            removed = job.Removed,
+            job = job.Job?.Method?.Name,
+            error = job.Error
+        };
     }
 }
 

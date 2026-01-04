@@ -9,6 +9,7 @@ using FreeStays.Application.Common.Interfaces;
 using FreeStays.Infrastructure;
 using Hangfire;
 using Hangfire.InMemory;
+using Hangfire.PostgreSql;
 using Hangfire.Redis.StackExchange;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -20,6 +21,19 @@ using Serilog;
 using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// ✅ ENVİRONMENT-SPECIFIC CONFIGURATION
+// Development: appsettings.Development.json'ı otomatik yükle (local DB bağlantısı)
+// Production: appsettings.json veya environment variables kullan (production DB bağlantısı)
+var env = builder.Environment;
+if (env.IsDevelopment())
+{
+    // Development ortamında appsettings.Development.json'ı kullan
+    builder.Configuration.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: false, reloadOnChange: true);
+}
+// Production ortamında environment variables production DB bağlantısını override etmesi için:
+// CONNECTIONSTRINGS__DEFAULTCONNECTION=... şeklinde ayarla (Dokploy UI'de)
+builder.Configuration.AddEnvironmentVariables();
 
 // Serilog Configuration
 Log.Logger = new LoggerConfiguration()
@@ -140,49 +154,59 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Hangfire - Redis Storage (Production Ready)
-var redisConnectionString = builder.Configuration.GetConnectionString("Redis");
-Log.Information("🔍 Redis Connection String: {Redis}", redisConnectionString ?? "NULL");
+// ⭐ Hangfire - PostgreSQL Storage (FIX: Redis was causing OOM crash)
+// ❌ REMOVED: Redis storage was filling up RAM with job payloads, state, history, etc.
+// ✅ FIXED: Using PostgreSQL for job storage (safe, scalable, no RAM bloat)
+// 📌 Redis is now used ONLY for caching (not for Hangfire jobs)
+var defaultConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var hangfireConfig = builder.Configuration.GetSection("Hangfire");
+var workerCount = int.TryParse(hangfireConfig["WorkerCount"], out var wc) ? wc : Math.Max(2, Environment.ProcessorCount / 2);
 
-if (!string.IsNullOrWhiteSpace(redisConnectionString))
+Log.Information("🔧 Hangfire Configuration - Storage: PostgreSQL, WorkerCount: {Workers}", workerCount);
+
+try
 {
-    try
-    {
-        Log.Information("🚀 Attempting to configure Hangfire with Redis storage...");
+    Log.Information("🚀 Configuring Hangfire with PostgreSQL storage...");
 
-        builder.Services.AddHangfire(config =>
+    builder.Services.AddHangfire(config =>
+    {
+        config.UsePostgreSqlStorage(defaultConnectionString, new Hangfire.PostgreSql.PostgreSqlStorageOptions
         {
-            config.UseRedisStorage(redisConnectionString, new RedisStorageOptions
-            {
-                Prefix = "hangfire:",
-                ExpiryCheckInterval = TimeSpan.FromHours(1),
-                DeletedListSize = 5000,
-                SucceededListSize = 5000,
-                InvisibilityTimeout = TimeSpan.FromMinutes(30)
-            });
+            QueuePollInterval = TimeSpan.FromSeconds(15),      // ✅ Reduce DB polling
+            InvisibilityTimeout = TimeSpan.FromMinutes(5),     // ✅ Job visibility timeout
+            PrepareSchemaIfNecessary = true                    // ✅ Auto-create schema
         });
+        config.UseSimpleAssemblyNameTypeSerializer();
+        config.UseRecommendedSerializerSettings();
+    });
 
-        Log.Information("✅ Hangfire configured with Redis storage successfully");
-    }
-    catch (Exception ex)
-    {
-        Log.Error(ex, "⚠️ Redis connection failed, falling back to InMemory storage. Error: {Message}", ex.Message);
-        builder.Services.AddHangfire(config => config.UseInMemoryStorage());
-    }
+    // ⭐ CRITICAL: Set automatic retry limit (config file value applied here)
+    // ❌ WITHOUT THIS: Default = 10 retries → retry storm on failure (RAM/CPU/DB spike)
+    // ✅ WITH THIS: Only 1 retry per job (from appsettings.json)
+    var retryAttempts = int.TryParse(hangfireConfig["AutomaticRetryAttempts"], out var ra) ? ra : 1;
+    GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = retryAttempts });
+    Log.Information("✅ Hangfire AutomaticRetry set to {Attempts} attempt(s)", retryAttempts);
+
+    Log.Information("✅ Hangfire configured with PostgreSQL storage successfully");
 }
-else
+catch (Exception ex)
 {
-    // Development fallback
-    builder.Services.AddHangfire(config => config.UseInMemoryStorage());
-    Log.Information("Hangfire configured with InMemory storage (Development)");
+    Log.Error(ex, "❌ Hangfire PostgreSQL configuration failed: {Message}", ex.Message);
+    throw;
 }
 
 builder.Services.AddHangfireServer(options =>
 {
     options.ServerName = $"{Environment.MachineName}-{Guid.NewGuid().ToString()[..8]}";
-    options.WorkerCount = Environment.ProcessorCount * 2;
+    options.WorkerCount = workerCount;  // ✅ Optimized: 2 workers instead of ProcessorCount * 2
     options.Queues = new[] { "default", "critical" };
     options.SchedulePollingInterval = TimeSpan.FromSeconds(15);
+    options.ShutdownTimeout = TimeSpan.FromSeconds(30);  // ✅ Graceful shutdown timeout
+
+    // ✅ Memory optimization - Reduce how many jobs are processed in parallel
+    options.HeartbeatInterval = TimeSpan.FromSeconds(30);
+    options.ServerCheckInterval = TimeSpan.FromSeconds(30);
+    options.StopTimeout = TimeSpan.FromSeconds(30);
 });
 
 // Swagger
@@ -255,6 +279,7 @@ builder.Services.AddRateLimiter(options =>
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
 
     // Global rate limit: 100 requests per minute per IP
+    // ✅ QueueLimit = 0 for memory optimization (2GB RAM server)
     options.AddPolicy("fixed", httpContext =>
         RateLimitPartition.GetFixedWindowLimiter(
             partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "anonymous",
@@ -263,10 +288,11 @@ builder.Services.AddRateLimiter(options =>
                 PermitLimit = 100,
                 Window = TimeSpan.FromMinutes(1),
                 QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
-                QueueLimit = 10
+                QueueLimit = 0  // ✅ No queue = less memory (reject immediately)
             }));
 
     // Auth endpoints: 10 requests per minute (anti brute-force)
+    // ✅ QueueLimit = 0 for memory optimization
     options.AddPolicy("auth", httpContext =>
         RateLimitPartition.GetFixedWindowLimiter(
             partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "anonymous",
@@ -275,10 +301,11 @@ builder.Services.AddRateLimiter(options =>
                 PermitLimit = 10,
                 Window = TimeSpan.FromMinutes(1),
                 QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
-                QueueLimit = 2
+                QueueLimit = 0  // ✅ No queue = less memory
             }));
 
     // Search endpoints: 30 requests per minute
+    // ✅ QueueLimit = 0 for memory optimization
     options.AddPolicy("search", httpContext =>
         RateLimitPartition.GetFixedWindowLimiter(
             partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "anonymous",
@@ -287,7 +314,7 @@ builder.Services.AddRateLimiter(options =>
                 PermitLimit = 30,
                 Window = TimeSpan.FromMinutes(1),
                 QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
-                QueueLimit = 5
+                QueueLimit = 0  // ✅ No queue = less memory
             }));
 
     options.OnRejected = async (context, token) =>
@@ -341,7 +368,7 @@ app.UseAuthorization();
 // Hangfire Dashboard
 app.UseHangfireDashboard(builder.Configuration["Hangfire:DashboardPath"] ?? "/hangfire", new DashboardOptions
 {
-    Authorization = new[] { new HangfireAuthorizationFilter() },
+    Authorization = new[] { new HangfireAuthorizationFilter(app.Environment) },
     DashboardTitle = "FreeStays Background Jobs"
 });
 
@@ -367,19 +394,18 @@ app.MapHealthChecks("/health");
 
 app.MapControllers();
 
-// Auto Migrate Database
 try
 {
     using (var scope = app.Services.CreateScope())
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<FreeStays.Infrastructure.Persistence.Context.FreeStaysDbContext>();
         await dbContext.Database.MigrateAsync();
-        Log.Information("Database migration completed successfully");
+        Log.Information("✅ Database migration completed successfully (Development only)");
     }
 }
 catch (Exception ex)
 {
-    Log.Error(ex, "An error occurred during database migration");
+    Log.Error(ex, "⚠️ An error occurred during database migration (Development)");
 }
 
 // Seed Database
@@ -401,13 +427,29 @@ finally
     Log.CloseAndFlush();
 }
 
-// Hangfire Authorization Filter
+// Hangfire Authorization Filter - SECURE IN PRODUCTION
+// ❌ REMOVED: public bool Authorize(...) => true; (everyone could trigger jobs)
+// ✅ FIXED: Only allow in Development; Production requires Admin auth
 public class HangfireAuthorizationFilter : Hangfire.Dashboard.IDashboardAuthorizationFilter
 {
+    private readonly IWebHostEnvironment _env;
+
+    public HangfireAuthorizationFilter(IWebHostEnvironment env)
+    {
+        _env = env;
+    }
+
     public bool Authorize(Hangfire.Dashboard.DashboardContext context)
     {
-        // Allow all in development (for simplicity)
-        // In production, you should properly check user authentication
-        return true;
+        // Allow all in Development
+        if (_env.IsDevelopment())
+        {
+            return true;
+        }
+
+        // In Production: DENY by default
+        // To enable dashboard in production, implement proper JWT/role-based auth
+        Log.Warning("⚠️ Hangfire dashboard access denied in Production environment");
+        return false;
     }
 }

@@ -75,9 +75,24 @@ public class AdminHomePageController : ControllerBase
     {
         try
         {
-            var validTypes = new[] { "hero", "room-types", "features", "popular-hotels",
-                "popular-destinations", "popular-countries","themed-hotels", "romantic-tours", "campaign-banner",
-                "travel-cta", "final-cta", "custom-html" };
+            var validTypes = new[] {
+                "hero",
+                "room-types",
+                "features",
+                "how-it-works",
+                "last-minute-deals",
+                "price-comparison",
+                "cta-section",
+                "featured-hotels",
+                "popular-destinations",
+                "popular-countries",
+                "romantic-tours",
+                "themed-hotels",
+                "campaign-banner",
+                "travel-cta",
+                "final-cta",
+                "custom-html"
+            };
 
             if (!validTypes.Contains(request.SectionType))
             {
