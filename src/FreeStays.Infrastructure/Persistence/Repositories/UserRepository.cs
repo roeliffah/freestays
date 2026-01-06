@@ -26,6 +26,16 @@ public class UserRepository : Repository<User>, IUserRepository
         return await _dbSet.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken, cancellationToken);
     }
 
+    public async Task<User?> GetByReferralCodeAsync(string referralCode, CancellationToken cancellationToken = default)
+    {
+        return await _dbSet.FirstOrDefaultAsync(u => u.ReferralCode == referralCode, cancellationToken);
+    }
+
+    public async Task<bool> ReferralCodeExistsAsync(string referralCode, CancellationToken cancellationToken = default)
+    {
+        return await _dbSet.AnyAsync(u => u.ReferralCode == referralCode, cancellationToken);
+    }
+
     public async Task<(IReadOnlyList<User> Items, int TotalCount)> GetAdminUsersPagedAsync(
         int page,
         int pageSize,

@@ -41,6 +41,9 @@ public class AdminSettingsController : BaseApiController
             profitMargin = decimal.TryParse(settingsDict.GetValueOrDefault("profitMargin", "10"), out var margin) ? margin : 10m,
             defaultVatRate = decimal.TryParse(settingsDict.GetValueOrDefault("defaultVatRate", "20"), out var vat) ? vat : 20m,
             extraFee = decimal.TryParse(settingsDict.GetValueOrDefault("extraFee", "0"), out var extra) ? extra : 0m,
+            // Coupon Prices
+            oneTimeCouponPrice = decimal.TryParse(settingsDict.GetValueOrDefault("oneTimePriceEUR", "19.99"), out var oneTimePrice) ? oneTimePrice : 19.99m,
+            annualCouponPrice = decimal.TryParse(settingsDict.GetValueOrDefault("annualPriceEUR", "99.99"), out var annualPrice) ? annualPrice : 99.99m,
             // Affiliate Programs
             excursionsActive = settingsDict.GetValueOrDefault("excursionsActive", "false") == "true",
             excursionsAffiliateCode = settingsDict.GetValueOrDefault("excursionsAffiliateCode", null),
@@ -101,6 +104,12 @@ public class AdminSettingsController : BaseApiController
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "defaultVatRate", Value = request.DefaultVatRate.Value.ToString(), Group = "site" });
         if (request.ExtraFee.HasValue)
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "extraFee", Value = request.ExtraFee.Value.ToString(), Group = "site" });
+
+        // Coupon Prices
+        if (request.OneTimeCouponPrice.HasValue)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "oneTimePriceEUR", Value = request.OneTimeCouponPrice.Value.ToString(), Group = "coupons" });
+        if (request.AnnualCouponPrice.HasValue)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "annualPriceEUR", Value = request.AnnualCouponPrice.Value.ToString(), Group = "coupons" });
 
         // Affiliate Programs
         if (request.ExcursionsActive.HasValue)
@@ -850,6 +859,9 @@ public record UpdateSiteSettingsRequest(
     decimal? ProfitMargin,
     decimal? DefaultVatRate,
     decimal? ExtraFee,
+    // Coupon Prices
+    decimal? OneTimeCouponPrice,
+    decimal? AnnualCouponPrice,
     // Affiliate Programs
     bool? ExcursionsActive,
     string? ExcursionsAffiliateCode,

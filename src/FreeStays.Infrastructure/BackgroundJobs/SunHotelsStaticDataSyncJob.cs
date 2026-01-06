@@ -254,7 +254,7 @@ public class SunHotelsStaticDataSyncJob
             }
 
             // Batch processing to avoid connection reset
-            const int batchSize = 5000;
+            const int batchSize = 50; // ✅ Reduced from 5000 to 50 for better memory management
 
             if (toAdd.Any())
             {
@@ -263,6 +263,7 @@ public class SunHotelsStaticDataSyncJob
                     var batch = toAdd.Skip(i).Take(batchSize).ToList();
                     await _dbContext.SunHotelsDestinations.AddRangeAsync(batch);
                     await _dbContext.SaveChangesAsync();
+                    _dbContext.ChangeTracker.Clear(); // ✅ Clear tracked entities to free memory
                     _logger.LogInformation("Added batch of {Count} destinations (Progress: {Current}/{Total})",
                         batch.Count, Math.Min(i + batchSize, toAdd.Count), toAdd.Count);
                 }
@@ -275,6 +276,7 @@ public class SunHotelsStaticDataSyncJob
                     var batch = toUpdate.Skip(i).Take(batchSize).ToList();
                     _dbContext.SunHotelsDestinations.UpdateRange(batch);
                     await _dbContext.SaveChangesAsync();
+                    _dbContext.ChangeTracker.Clear(); // ✅ Clear tracked entities to free memory
                     _logger.LogInformation("Updated batch of {Count} destinations (Progress: {Current}/{Total})",
                         batch.Count, Math.Min(i + batchSize, toUpdate.Count), toUpdate.Count);
                 }
@@ -349,7 +351,7 @@ public class SunHotelsStaticDataSyncJob
             }
 
             // Batch processing to avoid connection reset
-            const int batchSize = 5000;
+            const int batchSize = 50; // ✅ Reduced from 5000 to 50 for better memory management
 
             if (toAdd.Any())
             {
@@ -358,6 +360,7 @@ public class SunHotelsStaticDataSyncJob
                     var batch = toAdd.Skip(i).Take(batchSize).ToList();
                     await _dbContext.SunHotelsResorts.AddRangeAsync(batch);
                     await _dbContext.SaveChangesAsync();
+                    _dbContext.ChangeTracker.Clear(); // ✅ Clear tracked entities to free memory
                     _logger.LogInformation("Added batch of {Count} resorts for language: {Language} (Progress: {Current}/{Total})",
                         batch.Count, language, Math.Min(i + batchSize, toAdd.Count), toAdd.Count);
                 }
@@ -370,6 +373,7 @@ public class SunHotelsStaticDataSyncJob
                     var batch = toUpdate.Skip(i).Take(batchSize).ToList();
                     _dbContext.SunHotelsResorts.UpdateRange(batch);
                     await _dbContext.SaveChangesAsync();
+                    _dbContext.ChangeTracker.Clear(); // ✅ Clear tracked entities to free memory
                     _logger.LogInformation("Updated batch of {Count} resorts for language: {Language} (Progress: {Current}/{Total})",
                         batch.Count, language, Math.Min(i + batchSize, toUpdate.Count), toUpdate.Count);
                 }
@@ -507,7 +511,7 @@ public class SunHotelsStaticDataSyncJob
             }
 
             // Batch processing to avoid connection reset
-            const int batchSize = 5000;
+            const int batchSize = 50; // ✅ Reduced from 5000 to 50 for better memory management
 
             if (toAdd.Any())
             {
@@ -516,6 +520,7 @@ public class SunHotelsStaticDataSyncJob
                     var batch = toAdd.Skip(i).Take(batchSize).ToList();
                     await _dbContext.SunHotelsRoomTypes.AddRangeAsync(batch);
                     await _dbContext.SaveChangesAsync();
+                    _dbContext.ChangeTracker.Clear(); // ✅ Clear tracked entities to free memory
                     _logger.LogInformation("Added batch of {Count} room types for language: {Language} (Progress: {Current}/{Total})",
                         batch.Count, language, Math.Min(i + batchSize, toAdd.Count), toAdd.Count);
                 }
@@ -528,6 +533,7 @@ public class SunHotelsStaticDataSyncJob
                     var batch = toUpdate.Skip(i).Take(batchSize).ToList();
                     _dbContext.SunHotelsRoomTypes.UpdateRange(batch);
                     await _dbContext.SaveChangesAsync();
+                    _dbContext.ChangeTracker.Clear(); // ✅ Clear tracked entities to free memory
                     _logger.LogInformation("Updated batch of {Count} room types for language: {Language} (Progress: {Current}/{Total})",
                         batch.Count, language, Math.Min(i + batchSize, toUpdate.Count), toUpdate.Count);
                 }
@@ -938,36 +944,59 @@ public class SunHotelsStaticDataSyncJob
             var totalRooms = 0;
             var processedDestinations = 0;
 
-            foreach (var destinationId in destinations)
+            // ✅ Process destinations in batches of 50 to avoid memory overload
+            const int destinationBatchSize = 50;
+            var destinationBatches = destinations
+                .Select((d, i) => new { Destination = d, Index = i })
+                .GroupBy(x => x.Index / destinationBatchSize)
+                .Select(g => g.Select(x => x.Destination).ToList())
+                .ToList();
+
+            _logger.LogInformation("Processing {TotalBatches} destination batches (50 per batch)", destinationBatches.Count);
+
+            foreach (var batchIndex in Enumerable.Range(0, destinationBatches.Count))
             {
-                try
+                var destinationBatch = destinationBatches[batchIndex];
+                _logger.LogInformation("Processing destination batch {BatchNumber}/{TotalBatches} ({Count} destinations)",
+                    batchIndex + 1, destinationBatches.Count, destinationBatch.Count);
+
+                foreach (var destinationId in destinationBatch)
                 {
-                    var beforeHotelCount = await _dbContext.SunHotelsHotels.CountAsync(h => h.Language == language);
-                    var beforeRoomCount = await _dbContext.SunHotelsRooms.CountAsync(r => r.Language == language);
-
-                    await SyncHotelsForDestinationAsync(destinationId, language);
-
-                    var afterHotelCount = await _dbContext.SunHotelsHotels.CountAsync(h => h.Language == language);
-                    var afterRoomCount = await _dbContext.SunHotelsRooms.CountAsync(r => r.Language == language);
-
-                    var hotelsDiff = afterHotelCount - beforeHotelCount;
-                    var roomsDiff = afterRoomCount - beforeRoomCount;
-
-                    totalHotels += hotelsDiff;
-                    totalRooms += roomsDiff;
-                    processedDestinations++;
-
-                    if (hotelsDiff > 0 || roomsDiff > 0)
+                    try
                     {
-                        _logger.LogInformation("Destination {DestinationId} sync completed. Hotels: +{Hotels}, Rooms: +{Rooms}. Progress: {Progress}/{Total}",
-                            destinationId, hotelsDiff, roomsDiff, processedDestinations, destinations.Count);
+                        var beforeHotelCount = await _dbContext.SunHotelsHotels.CountAsync(h => h.Language == language);
+                        var beforeRoomCount = await _dbContext.SunHotelsRooms.CountAsync(r => r.Language == language);
+
+                        await SyncHotelsForDestinationAsync(destinationId, language);
+
+                        var afterHotelCount = await _dbContext.SunHotelsHotels.CountAsync(h => h.Language == language);
+                        var afterRoomCount = await _dbContext.SunHotelsRooms.CountAsync(r => r.Language == language);
+
+                        var hotelsDiff = afterHotelCount - beforeHotelCount;
+                        var roomsDiff = afterRoomCount - beforeRoomCount;
+
+                        totalHotels += hotelsDiff;
+                        totalRooms += roomsDiff;
+                        processedDestinations++;
+
+                        if (hotelsDiff > 0 || roomsDiff > 0)
+                        {
+                            _logger.LogInformation("Destination {DestinationId} sync completed. Hotels: +{Hotels}, Rooms: +{Rooms}. Progress: {Progress}/{Total}",
+                                destinationId, hotelsDiff, roomsDiff, processedDestinations, destinations.Count);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Error syncing hotels for destination: {DestinationId}", destinationId);
+                        // Hata olsa bile diğer destinasyonlara devam et
                     }
                 }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Error syncing hotels for destination: {DestinationId}", destinationId);
-                    // Hata olsa bile diğer destinasyonlara devam et
-                }
+
+                // ✅ Clear memory after each batch
+                _dbContext.ChangeTracker.Clear();
+                GC.Collect(0); // ✅ Suggest garbage collection for generation 0 (lightweight objects)
+                _logger.LogInformation("Completed destination batch {BatchNumber}/{TotalBatches}. Memory check...",
+                    batchIndex + 1, destinationBatches.Count);
             }
 
             var stats = new Dictionary<string, int>
@@ -1176,7 +1205,7 @@ public class SunHotelsStaticDataSyncJob
                             Website = hotel.Website,
                             FeatureIds = featureIdsJson,
                             ThemeIds = themeIdsJson,
-                            ImageUrls = imageUrlsJson,
+                            ImageUrls = imageUrlsJson ?? "[]",
                             Language = language,
                             LastSyncedAt = now,
                             CreatedAt = now
@@ -1227,6 +1256,7 @@ public class SunHotelsStaticDataSyncJob
             try
             {
                 await _dbContext.SaveChangesAsync();
+                _dbContext.ChangeTracker.Clear(); // ✅ Critical: Clear tracked entities after batch save to prevent OOM
                 _logger.LogInformation("Synced {Count} hotels for destination: {DestinationId}, language: {Language}",
                     hotels.Count, destinationId, language);
             }
@@ -1235,6 +1265,7 @@ public class SunHotelsStaticDataSyncJob
                 _logger.LogDebug(ex, "Concurrency conflict while saving hotels for destination: {DestinationId}, language: {Language}. Normal when destinations share hotels.",
                     destinationId, language);
                 // This is expected when multiple destinations share the same hotels
+                _dbContext.ChangeTracker.Clear(); // ✅ Clear even on concurrency errors
             }
         }
         catch (Exception ex)

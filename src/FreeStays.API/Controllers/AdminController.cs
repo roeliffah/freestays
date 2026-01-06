@@ -109,12 +109,16 @@ public class AdminController : BaseApiController
         {
             Code = request.Code,
             Description = request.Description,
+            Kind = request.Kind,
             DiscountType = request.DiscountType,
             DiscountValue = request.DiscountValue,
             MinBookingAmount = request.MinimumAmount,
             MaxUses = request.UsageLimit,
             ValidFrom = request.ValidFrom,
-            ValidUntil = request.ValidUntil
+            ValidUntil = request.ValidUntil,
+            AssignedUserId = request.AssignedUserId,
+            AssignedEmail = request.AssignedEmail,
+            StripePaymentIntentId = request.StripePaymentIntentId
         });
         return CreatedAtAction(nameof(GetCoupon), new { id = result.Id }, result);
     }
@@ -149,6 +153,18 @@ public class AdminController : BaseApiController
             ValidUntil = request.ValidUntil,
             IsActive = request.IsActive
         });
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Kuponu kullanıcıya ata
+    /// </summary>
+    [HttpPost("coupons/{id}/assign")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> AssignCoupon(Guid id, [FromBody] AssignCouponRequest request)
+    {
+        var result = await Mediator.Send(new AssignCouponCommand(id, request.UserId, request.Email));
         return Ok(result);
     }
 
@@ -196,6 +212,17 @@ public class AdminController : BaseApiController
             flightRevenue = 0m,
             carRevenue = 0m
         });
+    }
+
+    /// <summary>
+    /// Kupon istatistikleri
+    /// </summary>
+    [HttpGet("coupons/stats")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetCouponStats()
+    {
+        var result = await Mediator.Send(new GetCouponStatsQuery());
+        return Ok(result);
     }
 
     #endregion
@@ -344,13 +371,17 @@ public record UpdateBookingStatusRequest(BookingStatus Status, string? Notes);
 public record CreateCouponRequest(
     string Code,
     string Description,
+    CouponKind Kind,
     DiscountType DiscountType,
     decimal DiscountValue,
     decimal? MinimumAmount,
     decimal? MaximumDiscount,
     int? UsageLimit,
     DateTime ValidFrom,
-    DateTime ValidUntil);
+    DateTime ValidUntil,
+    Guid? AssignedUserId,
+    string? AssignedEmail,
+    string? StripePaymentIntentId);
 public record UpdateCouponRequest(
     string? Description,
     decimal? DiscountValue,
@@ -359,6 +390,7 @@ public record UpdateCouponRequest(
     int? UsageLimit,
     DateTime? ValidUntil,
     bool? IsActive);
+public record AssignCouponRequest(Guid? UserId, string? Email);
 public record UpdateExternalServiceRequest(
     string? BaseUrl,
     string? Username,

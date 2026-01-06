@@ -17,7 +17,6 @@ services:
       - ./logs:/app/logs
       - ./wwwroot/media:/app/wwwroot/media
       - ./wwwroot/uploads:/app/wwwroot/uploads
-    restart: unless-stopped
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/health" ]
       interval: 30s
@@ -26,6 +25,14 @@ services:
       start_period: 40s
     networks:
       - freestays-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50' # İşlemcinin %50'sini geçemesin
+          memory: 1024M # 1GB RAM'i geçince konteyner kendini restlesin (Sunucuyu kilitlemez)
+        reservations:
+          memory: 512M # Minimum 512MB ayır
+    restart: always # limit aşılırsa otomatik yeniden başlar
 
 networks:
   freestays-network:

@@ -560,6 +560,11 @@
             Kupon güncelle
             </summary>
         </member>
+        <member name="M:FreeStays.API.Controllers.AdminController.AssignCoupon(System.Guid,FreeStays.API.Controllers.AssignCouponRequest)">
+            <summary>
+            Kuponu kullanıcıya ata
+            </summary>
+        </member>
         <member name="M:FreeStays.API.Controllers.AdminController.DeleteCoupon(System.Guid)">
             <summary>
             Kupon sil
@@ -573,6 +578,11 @@
         <member name="M:FreeStays.API.Controllers.AdminController.GetRevenueReport(System.DateTime,System.DateTime)">
             <summary>
             Gelir raporu
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.AdminController.GetCouponStats">
+            <summary>
+            Kupon istatistikleri
             </summary>
         </member>
         <member name="M:FreeStays.API.Controllers.AdminController.GetExternalServices">

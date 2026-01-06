@@ -4,15 +4,16 @@ public record CouponDto
 {
     public Guid Id { get; init; }
     public string Code { get; init; } = string.Empty;
-    public string DiscountType { get; init; } = string.Empty;
-    public decimal DiscountValue { get; init; }
-    public int? MaxUses { get; init; }
-    public int UsedCount { get; init; }
-    public decimal? MinBookingAmount { get; init; }
+    public string Kind { get; init; } = string.Empty;
     public DateTime ValidFrom { get; init; }
     public DateTime ValidUntil { get; init; }
     public bool IsActive { get; init; }
-    public string? Description { get; init; }
+    public Guid? AssignedUserId { get; init; }
+    public string? AssignedEmail { get; init; }
+    public DateTime? UsedAt { get; init; }
+    public decimal PriceAmount { get; init; }
+    public string PriceCurrency { get; init; } = "EUR";
+    public string? StripePaymentIntentId { get; init; }
 }
 
 public record CouponValidationResultDto

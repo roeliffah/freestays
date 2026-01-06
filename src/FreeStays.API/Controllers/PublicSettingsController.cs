@@ -46,6 +46,15 @@ public class PublicSettingsController : BaseApiController
             availableCurrencies = new[] { "TRY", "USD", "EUR", "GBP" },
             timezone = settingsDict.GetValueOrDefault("timezone", "Europe/Amsterdam"),
 
+            // Coupon Prices
+            oneTimeCouponPrice = decimal.TryParse(settingsDict.GetValueOrDefault("oneTimePriceEUR", "19.99"), out var oneTimePrice) ? oneTimePrice : 19.99m,
+            annualCouponPrice = decimal.TryParse(settingsDict.GetValueOrDefault("annualPriceEUR", "99.99"), out var annualPrice) ? annualPrice : 99.99m,
+
+            // Pricing Information
+            profitMargin = decimal.TryParse(settingsDict.GetValueOrDefault("profitMargin", "10"), out var margin) ? margin : 10m,
+            defaultVatRate = decimal.TryParse(settingsDict.GetValueOrDefault("defaultVatRate", "20"), out var vat) ? vat : 20m,
+            extraFee = decimal.TryParse(settingsDict.GetValueOrDefault("extraFee", "0"), out var extra) ? extra : 0m,
+
             // İletişim Detayları
             contact = new
             {

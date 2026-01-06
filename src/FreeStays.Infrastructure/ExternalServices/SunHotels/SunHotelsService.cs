@@ -22,6 +22,8 @@ public class SunHotelsService : ISunHotelsService
 
     private string _nonStaticApiUrl = "http://xml.sunhotels.net/15/PostGet/NonStaticXMLAPI.asmx";
     private string _staticApiUrl = "http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx";
+    private const string NonStaticLanguage = "en";
+    private const string NonStaticCurrency = "EUR";
 
     public SunHotelsService(
         HttpClient httpClient,
@@ -155,7 +157,7 @@ public class SunHotelsService : ISunHotelsService
         {
             var parameters = new Dictionary<string, string>
             {
-                { "language", language }
+                { "language", NonStaticLanguage }
             };
 
             var response = await SendStaticRequestAsync("GetMeals", parameters, cancellationToken);
@@ -176,7 +178,7 @@ public class SunHotelsService : ISunHotelsService
         {
             var parameters = new Dictionary<string, string>
             {
-                { "language", language }
+                { "language", NonStaticLanguage }
             };
 
             var response = await SendStaticRequestAsync("GetRoomTypes", parameters, cancellationToken);
@@ -395,9 +397,9 @@ public class SunHotelsService : ISunHotelsService
                 { "numberOfAdults", request.Adults.ToString() },
                 { "numberOfChildren", request.Children.ToString() },
                 { "infant", request.Infant.ToString() },
-                { "currency", request.Currency },
-                { "currencies", request.Currency }, // Required parameter
-                { "language", request.Language },
+                { "currency", NonStaticCurrency },
+                { "currencies", NonStaticCurrency }, // Required parameter
+                { "language", NonStaticLanguage },
                 { "b2c", request.B2C ? "1" : "0" },
                 { "showCoordinates", request.ShowCoordinates ? "1" : "0" },
                 { "showReviews", request.ShowReviews ? "1" : "0" },
@@ -531,8 +533,8 @@ public class SunHotelsService : ISunHotelsService
                 { "adults", request.Adults.ToString() },
                 { "children", request.Children.ToString() },
                 { "infant", request.Infant.ToString() },
-                { "currency", request.Currency },
-                { "language", request.Language },
+                { "currency", NonStaticCurrency },
+                { "language", NonStaticLanguage },
                 { "b2c", request.B2C ? "1" : "0" },
                 { "searchPrice", request.SearchPrice.ToString(CultureInfo.InvariantCulture) },
                 { "blockSuperDeal", request.BlockSuperDeal ? "1" : "0" },
@@ -600,8 +602,8 @@ public class SunHotelsService : ISunHotelsService
                 { "adults", request.Adults.ToString() },
                 { "children", request.Children.ToString() },
                 { "infant", request.Infant.ToString() },
-                { "currency", request.Currency },
-                { "language", request.Language },
+                { "currency", NonStaticCurrency },
+                { "language", NonStaticLanguage },
                 { "email", request.Email },
                 { "b2c", request.B2C ? "1" : "0" },
                 { "paymentMethodId", request.PaymentMethodId.ToString() }
@@ -688,7 +690,7 @@ public class SunHotelsService : ISunHotelsService
         {
             var parameters = new Dictionary<string, string>
             {
-                { "language", request.Language },
+                { "language", NonStaticLanguage },
                 { "showGuests", request.ShowGuests ? "1" : "0" }
             };
 
@@ -730,7 +732,7 @@ public class SunHotelsService : ISunHotelsService
                 { "bookingnumber", request.BookingId },
                 { "newCheckInDate", request.NewCheckIn.ToString("yyyy-MM-dd") },
                 { "newCheckOutDate", request.NewCheckOut.ToString("yyyy-MM-dd") },
-                { "language", request.Language }
+                { "language", NonStaticLanguage }
             };
 
             var response = await SendNonStaticRequestAsync("amendmentPriceRequest", parameters, cancellationToken);
@@ -753,7 +755,7 @@ public class SunHotelsService : ISunHotelsService
                 { "newCheckInDate", request.NewCheckIn.ToString("yyyy-MM-dd") },
                 { "newCheckOutDate", request.NewCheckOut.ToString("yyyy-MM-dd") },
                 { "maxPrice", request.MaxPrice.ToString(CultureInfo.InvariantCulture) },
-                { "language", request.Language },
+                { "language", NonStaticLanguage },
                 { "bookingType", request.BookingType }
             };
 
@@ -825,8 +827,8 @@ public class SunHotelsService : ISunHotelsService
             {
                 { "arrivalDate", request.ArrivalDate.ToString("yyyy-MM-dd") },
                 { "arrivalTime", request.ArrivalTime },
-                { "currency", request.Currency },
-                { "language", request.Language }
+                { "currency", NonStaticCurrency },
+                { "language", NonStaticLanguage }
             };
 
             if (request.HotelId.HasValue)
@@ -874,8 +876,8 @@ public class SunHotelsService : ISunHotelsService
                 { "passengers", request.Passengers.ToString() },
                 { "transferId", request.TransferId.ToString() },
                 { "returnTransfer", request.ReturnTransfer ? "1" : "0" },
-                { "currency", request.Currency },
-                { "language", request.Language },
+                { "currency", NonStaticCurrency },
+                { "language", NonStaticLanguage },
                 { "email", request.Email }
             };
 

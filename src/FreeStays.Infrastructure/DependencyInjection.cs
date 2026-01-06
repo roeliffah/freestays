@@ -55,6 +55,7 @@ public static class DependencyInjection
         services.AddScoped<IBookingRepository, BookingRepository>();
         services.AddScoped<IDestinationRepository, DestinationRepository>();
         services.AddScoped<ICouponRepository, CouponRepository>();
+        services.AddScoped<IReferralEarningRepository, ReferralEarningRepository>();
 
         // New CMS Repositories
         services.AddScoped<ITranslationRepository, TranslationRepository>();

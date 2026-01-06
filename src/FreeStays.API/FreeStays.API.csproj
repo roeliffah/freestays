@@ -33,5 +33,9 @@
     <ProjectReference Include="..\FreeStays.Application\FreeStays.Application.csproj" />
     <ProjectReference Include="..\FreeStays.Infrastructure\FreeStays.Infrastructure.csproj" />
   </ItemGroup>
+  <PropertyGroup>
+    <ServerGarbageCollection>false</ServerGarbageCollection>
+  </PropertyGroup>
+
 
 </Project>

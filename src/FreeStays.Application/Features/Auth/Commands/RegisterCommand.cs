@@ -16,6 +16,7 @@ public record RegisterCommand : IRequest<AuthResponseDto>
     public string Name { get; init; } = string.Empty;
     public string? Phone { get; init; }
     public string Locale { get; init; } = "en";
+    public string? ReferralCode { get; init; } // Opsiyonel referans kodu
 }
 
 public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
@@ -65,6 +66,17 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
             throw new DomainValidationException("Email", "Email already exists.");
         }
 
+        // Referral code validation
+        User? referrerUser = null;
+        if (!string.IsNullOrWhiteSpace(request.ReferralCode))
+        {
+            referrerUser = await _userRepository.GetByReferralCodeAsync(request.ReferralCode, cancellationToken);
+            if (referrerUser == null)
+            {
+                throw new DomainValidationException("ReferralCode", "Invalid referral code.");
+            }
+        }
+
         var user = new User
         {
             Id = Guid.NewGuid(),
@@ -74,7 +86,9 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
             Phone = request.Phone,
             Locale = request.Locale,
             Role = UserRole.Customer,
-            IsActive = true
+            IsActive = true,
+            ReferralCode = await GenerateUniqueReferralCodeAsync(cancellationToken),
+            ReferredByUserId = referrerUser?.Id
         };
 
         var refreshToken = _tokenService.GenerateRefreshToken();
@@ -117,5 +131,21 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
                 Locale = user.Locale
             }
         };
+    }
+
+    private async Task<string> GenerateUniqueReferralCodeAsync(CancellationToken cancellationToken)
+    {
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        var random = new Random();
+        string code;
+
+        do
+        {
+            code = new string(Enumerable.Repeat(chars, 8)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+        while (await _userRepository.ReferralCodeExistsAsync(code, cancellationToken));
+
+        return code;
     }
 }

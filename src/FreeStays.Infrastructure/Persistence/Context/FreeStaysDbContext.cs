@@ -23,6 +23,7 @@ public class FreeStaysDbContext : DbContext
     public DbSet<Payment> Payments => Set<Payment>();
     public DbSet<Coupon> Coupons => Set<Coupon>();
     public DbSet<ExternalServiceConfig> ExternalServiceConfigs => Set<ExternalServiceConfig>();
+    public DbSet<ReferralEarning> ReferralEarnings => Set<ReferralEarning>();
 
     // Admin & CMS Entities
     public DbSet<Translation> Translations => Set<Translation>();

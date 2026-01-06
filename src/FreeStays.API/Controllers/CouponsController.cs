@@ -1,3 +1,6 @@
+using FreeStays.Application.DTOs.Coupons;
+using FreeStays.Application.Features.Coupons.Commands;
+using FreeStays.Application.Features.Coupons.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,15 +17,8 @@ public class CouponsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ValidateCoupon([FromBody] ValidateCouponRequest request)
     {
-        // TODO: Implement coupon validation
-        return Ok(new 
-        { 
-            isValid = true,
-            code = request.Code,
-            discountType = "Percentage",
-            discountValue = 10,
-            message = "Kupon geçerli"
-        });
+        var result = await Mediator.Send(new ValidateCouponQuery(request.Code, request.Amount));
+        return Ok(result);
     }
 
     /// <summary>
@@ -33,13 +29,12 @@ public class CouponsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ApplyCoupon([FromBody] ApplyCouponRequest request)
     {
-        // TODO: Implement coupon application
-        return Ok(new 
-        { 
+        await Mediator.Send(new UseCouponCommand(request.Code, request.UserId, request.Email));
+
+        return Ok(new
+        {
             success = true,
-            originalAmount = request.Amount,
-            discountAmount = request.Amount * 0.1m,
-            finalAmount = request.Amount * 0.9m,
+            code = request.Code,
             message = "Kupon uygulandı"
         });
     }
@@ -56,5 +51,5 @@ public class CouponsController : BaseApiController
     }
 }
 
-public record ValidateCouponRequest(string Code);
-public record ApplyCouponRequest(string Code, decimal Amount, string BookingType);
+public record ValidateCouponRequest(string Code, decimal? Amount);
+public record ApplyCouponRequest(string Code, decimal Amount, string BookingType, Guid? UserId, string? Email);

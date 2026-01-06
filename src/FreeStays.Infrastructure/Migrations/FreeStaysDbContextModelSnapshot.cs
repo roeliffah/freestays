@@ -755,6 +755,15 @@ namespace FreeStays.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<string>("AssignedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)")
+                        .HasColumnName("assigned_email");
+
+                    b.Property<Guid?>("AssignedUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("assigned_user_id");
+
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -784,6 +793,10 @@ namespace FreeStays.Infrastructure.Migrations
                         .HasDefaultValue(true)
                         .HasColumnName("is_active");
 
+                    b.Property<int>("Kind")
+                        .HasColumnType("integer")
+                        .HasColumnName("kind");
+
                     b.Property<int?>("MaxUses")
                         .HasColumnType("integer")
                         .HasColumnName("max_uses");
@@ -792,9 +805,39 @@ namespace FreeStays.Infrastructure.Migrations
                         .HasColumnType("decimal(18,2)")
                         .HasColumnName("min_booking_amount");
 
+                    b.Property<decimal>("PriceAmount")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("price_amount");
+
+                    b.Property<string>("PriceCurrency")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)")
+                        .HasDefaultValue("EUR")
+                        .HasColumnName("price_currency");
+
+                    b.Property<string>("StripePaymentIntentId")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("stripe_payment_intent_id");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
+
+                    b.Property<DateTime?>("UsedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("used_at");
+
+                    b.Property<string>("UsedByEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)")
+                        .HasColumnName("used_by_email");
+
+                    b.Property<Guid?>("UsedByUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("used_by_user_id");
 
                     b.Property<int>("UsedCount")
                         .ValueGeneratedOnAdd()
@@ -1915,6 +1958,67 @@ namespace FreeStays.Infrastructure.Migrations
                     b.ToTable("PaymentSettings", (string)null);
                 });
 
+            modelBuilder.Entity("FreeStays.Domain.Entities.ReferralEarning", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)")
+                        .HasColumnName("amount");
+
+                    b.Property<Guid?>("BookingId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("booking_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)")
+                        .HasDefaultValue("EUR")
+                        .HasColumnName("currency");
+
+                    b.Property<DateTime?>("PaidAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("paid_at");
+
+                    b.Property<Guid>("ReferredUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("referred_user_id");
+
+                    b.Property<Guid>("ReferrerUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("referrer_user_id");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookingId");
+
+                    b.HasIndex("ReferredUserId");
+
+                    b.HasIndex("ReferrerUserId");
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("referral_earnings", (string)null);
+                });
+
             modelBuilder.Entity("FreeStays.Domain.Entities.SeoSetting", b =>
                 {
                     b.Property<Guid>("Id")
@@ -2235,6 +2339,31 @@ namespace FreeStays.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<string>("BillingAddress")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("billing_address");
+
+                    b.Property<string>("BillingCity")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("billing_city");
+
+                    b.Property<string>("BillingCountry")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("billing_country");
+
+                    b.Property<string>("BillingPhone")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("billing_phone");
+
+                    b.Property<string>("BillingPostalCode")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("billing_postal_code");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
@@ -2276,6 +2405,15 @@ namespace FreeStays.Infrastructure.Migrations
                         .HasColumnType("character varying(20)")
                         .HasColumnName("phone");
 
+                    b.Property<string>("ReferralCode")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("referral_code");
+
+                    b.Property<Guid?>("ReferredByUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("referred_by_user_id");
+
                     b.Property<string>("RefreshToken")
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)")
@@ -2297,6 +2435,11 @@ namespace FreeStays.Infrastructure.Migrations
 
                     b.HasIndex("Email")
                         .IsUnique();
+
+                    b.HasIndex("ReferralCode")
+                        .IsUnique();
+
+                    b.HasIndex("ReferredByUserId");
 
                     b.ToTable("users", (string)null);
                 });
@@ -2481,6 +2624,32 @@ namespace FreeStays.Infrastructure.Migrations
                     b.Navigation("Booking");
                 });
 
+            modelBuilder.Entity("FreeStays.Domain.Entities.ReferralEarning", b =>
+                {
+                    b.HasOne("FreeStays.Domain.Entities.Booking", "Booking")
+                        .WithMany()
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("FreeStays.Domain.Entities.User", "ReferredUser")
+                        .WithMany()
+                        .HasForeignKey("ReferredUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FreeStays.Domain.Entities.User", "ReferrerUser")
+                        .WithMany("ReferralEarnings")
+                        .HasForeignKey("ReferrerUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Booking");
+
+                    b.Navigation("ReferredUser");
+
+                    b.Navigation("ReferrerUser");
+                });
+
             modelBuilder.Entity("FreeStays.Domain.Entities.StaticPageTranslation", b =>
                 {
                     b.HasOne("FreeStays.Domain.Entities.StaticPage", "Page")
@@ -2500,6 +2669,16 @@ namespace FreeStays.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("UpdatedByUser");
+                });
+
+            modelBuilder.Entity("FreeStays.Domain.Entities.User", b =>
+                {
+                    b.HasOne("FreeStays.Domain.Entities.User", "ReferredByUser")
+                        .WithMany("ReferredUsers")
+                        .HasForeignKey("ReferredByUserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("ReferredByUser");
                 });
 
             modelBuilder.Entity("FreeStays.Domain.Entities.Booking", b =>
@@ -2554,6 +2733,10 @@ namespace FreeStays.Infrastructure.Migrations
             modelBuilder.Entity("FreeStays.Domain.Entities.User", b =>
                 {
                     b.Navigation("Bookings");
+
+                    b.Navigation("ReferralEarnings");
+
+                    b.Navigation("ReferredUsers");
                 });
 #pragma warning restore 612, 618
         }

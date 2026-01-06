@@ -214,7 +214,9 @@ public static class DatabaseSeeder
             new() { Id = Guid.NewGuid(), Key = "defaultCurrency", Value = "\"TRY\"", Group = "site", CreatedAt = DateTime.UtcNow },
             new() { Id = Guid.NewGuid(), Key = "maintenanceMode", Value = "false", Group = "site", CreatedAt = DateTime.UtcNow },
             new() { Id = Guid.NewGuid(), Key = "defaultMetaTitle", Value = "\"FreeStays - En İyi Otel Fırsatları\"", Group = "seo", CreatedAt = DateTime.UtcNow },
-            new() { Id = Guid.NewGuid(), Key = "defaultMetaDescription", Value = "\"FreeStays ile en uygun otel fırsatlarını keşfedin.\"", Group = "seo", CreatedAt = DateTime.UtcNow }
+            new() { Id = Guid.NewGuid(), Key = "defaultMetaDescription", Value = "\"FreeStays ile en uygun otel fırsatlarını keşfedin.\"", Group = "seo", CreatedAt = DateTime.UtcNow },
+            new() { Id = Guid.NewGuid(), Key = "annualPriceEUR", Value = "99.99", Group = "coupons", CreatedAt = DateTime.UtcNow },
+            new() { Id = Guid.NewGuid(), Key = "oneTimePriceEUR", Value = "19.99", Group = "coupons", CreatedAt = DateTime.UtcNow }
         };
 
         await context.SiteSettings.AddRangeAsync(settings);

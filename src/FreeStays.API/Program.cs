@@ -159,8 +159,11 @@ builder.Services.AddCors(options =>
 // ✅ FIXED: Using PostgreSQL for job storage (safe, scalable, no RAM bloat)
 // 📌 Redis is now used ONLY for caching (not for Hangfire jobs)
 var defaultConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-var hangfireConfig = builder.Configuration.GetSection("Hangfire");
-var workerCount = int.TryParse(hangfireConfig["WorkerCount"], out var wc) ? wc : Math.Max(2, Environment.ProcessorCount / 2);
+
+// ✅ FIXED: Set worker count to 2 (fixed, not dynamic)
+// ❌ REASON: SunHotels sync is memory-intensive; dynamic ProcessorCount causes OOM crashes
+// 📌 Even 4 workers can spike RAM to 2GB+; keeping it at 2 prevents container restart loops
+const int workerCount = 2;
 
 Log.Information("🔧 Hangfire Configuration - Storage: PostgreSQL, WorkerCount: {Workers}", workerCount);
 
@@ -180,10 +183,10 @@ try
         config.UseRecommendedSerializerSettings();
     });
 
-    // ⭐ CRITICAL: Set automatic retry limit (config file value applied here)
+    // ⭐ CRITICAL: Set automatic retry limit
     // ❌ WITHOUT THIS: Default = 10 retries → retry storm on failure (RAM/CPU/DB spike)
     // ✅ WITH THIS: Only 1 retry per job (from appsettings.json)
-    var retryAttempts = int.TryParse(hangfireConfig["AutomaticRetryAttempts"], out var ra) ? ra : 1;
+    var retryAttempts = 1; // ✅ Fixed: only 1 automatic retry per job
     GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = retryAttempts });
     Log.Information("✅ Hangfire AutomaticRetry set to {Attempts} attempt(s)", retryAttempts);
 
@@ -198,7 +201,7 @@ catch (Exception ex)
 builder.Services.AddHangfireServer(options =>
 {
     options.ServerName = $"{Environment.MachineName}-{Guid.NewGuid().ToString()[..8]}";
-    options.WorkerCount = workerCount;  // ✅ Optimized: 2 workers instead of ProcessorCount * 2
+    options.WorkerCount = 2;  // ✅ Optimized: 2 workers instead of ProcessorCount * 2
     options.Queues = new[] { "default", "critical" };
     options.SchedulePollingInterval = TimeSpan.FromSeconds(15);
     options.ShutdownTimeout = TimeSpan.FromSeconds(30);  // ✅ Graceful shutdown timeout
