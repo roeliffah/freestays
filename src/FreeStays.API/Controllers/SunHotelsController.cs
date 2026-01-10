@@ -793,6 +793,7 @@ public class SunHotelsController : ControllerBase
 
     /// <summary>
     /// Otel detayları - Canlı fiyat ve müsaitlik
+    /// ÖNEMLİ: destinationId veya resortId parametrelerinden en az biri önerilir (daha iyi sonuçlar için)
     /// </summary>
     [HttpGet("hotels/{hotelId:int}/details")]
     [AllowAnonymous]
@@ -805,6 +806,8 @@ public class SunHotelsController : ControllerBase
         [FromQuery] int adults = 2,
         [FromQuery] int children = 0,
         [FromQuery] string currency = "EUR",
+        [FromQuery] string? destinationId = null,
+        [FromQuery] string? resortId = null,
         [FromHeader(Name = "Accept-Language")] string? acceptLanguage = null,
         CancellationToken cancellationToken = default)
     {
@@ -824,8 +827,8 @@ public class SunHotelsController : ControllerBase
             var defaultVatRate = decimal.TryParse(defaultVatRateStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var vat) ? vat / 100 : 0m;
             var extraFee = decimal.TryParse(extraFeeStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var ef) ? ef : 0m;
 
-            // Get live hotel data
-            var result = await _sunHotelsService.GetHotelDetailsAsync(hotelId, checkIn, checkOut, adults, children, currency, cancellationToken);
+            // Get live hotel data with destination context (Python best practice)
+            var result = await _sunHotelsService.GetHotelDetailsAsync(hotelId, checkIn, checkOut, adults, children, currency, destinationId, resortId, cancellationToken);
 
             if (result == null)
                 return NotFound(new { message = $"Hotel {hotelId} not found or not available for the selected dates" });

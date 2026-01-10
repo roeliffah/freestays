@@ -75,7 +75,9 @@ public static class DependencyInjection
         services.AddHttpClient<ISunHotelsService, SunHotelsService>()
             .ConfigureHttpClient(client =>
             {
-                client.Timeout = TimeSpan.FromMinutes(5); // SunHotels API yavaş olabilir, 5 dakika timeout
+                // ✅ FIX: 60 saniye timeout (Python httpx.Timeout(60.0) standardı)
+                // SunHotels SearchV3 yavaş olabilir ama 60s makul bir limit
+                client.Timeout = TimeSpan.FromSeconds(60);
             });
         services.AddScoped<ISunHotelsCacheService, SunHotelsCacheService>();
 

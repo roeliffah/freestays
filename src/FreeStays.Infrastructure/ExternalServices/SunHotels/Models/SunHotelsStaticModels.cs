@@ -236,6 +236,7 @@ public class SunHotelsPreBookRequestV3
     public decimal SearchPrice { get; set; }
     public bool BlockSuperDeal { get; set; }
     public bool ShowPriceBreakdown { get; set; } = true;
+    public int PaymentMethodId { get; set; }
 }
 
 /// <summary>

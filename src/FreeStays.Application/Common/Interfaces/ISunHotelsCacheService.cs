@@ -52,6 +52,12 @@ public interface ISunHotelsCacheService
     Task<List<SunHotelsHotelCache>> GetAllHotelsAsync(string language = "en", CancellationToken cancellationToken = default);
     Task<SunHotelsHotelCache?> GetHotelByIdAsync(int externalId, string language = "en", CancellationToken cancellationToken = default);
     Task<Dictionary<int, SunHotelsHotelCache>> GetHotelsByIdsAsync(IEnumerable<int> hotelIds, string language = "en", CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// DB'den direkt otelleri çek (cache bypass) - Fallback için kullanılır
+    /// </summary>
+    Task<Dictionary<int, SunHotelsHotelCache>> GetHotelsByIdsFromDbAsync(IEnumerable<int> hotelIds, string language = "en", CancellationToken cancellationToken = default);
+
     Task<Dictionary<int, SunHotelsResortCache>> GetResortsByIdsAsync(IEnumerable<int> resortIds, string language = "en", CancellationToken cancellationToken = default);
     Task<Dictionary<int, SunHotelsMealCache>> GetMealsByIdsAsync(IEnumerable<int> mealIds, string language = "en", CancellationToken cancellationToken = default);
     Task<Dictionary<int, SunHotelsRoomTypeCache>> GetRoomTypesByIdsAsync(IEnumerable<int> roomTypeIds, string language = "en", CancellationToken cancellationToken = default);

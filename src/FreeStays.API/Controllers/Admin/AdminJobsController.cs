@@ -36,9 +36,9 @@ public class AdminJobsController : ControllerBase
         try
         {
             _logger.LogInformation("Manual sync started for all SunHotels static data by {User}", User.Identity?.Name);
-            
+
             await _syncJob.SyncAllStaticDataAsync();
-            
+
             return Ok(new
             {
                 success = true,
@@ -69,9 +69,9 @@ public class AdminJobsController : ControllerBase
         try
         {
             _logger.LogInformation("Manual basic sync started for SunHotels by {User}", User.Identity?.Name);
-            
+
             await _syncJob.SyncBasicDataAsync();
-            
+
             return Ok(new
             {
                 success = true,
@@ -143,7 +143,7 @@ public class AdminJobsController : ControllerBase
         try
         {
             var monitoringApi = JobStorage.Current.GetMonitoringApi();
-            
+
             // Processing jobs
             var processingJobs = monitoringApi.ProcessingJobs(0, 100)
                 .Where(j => j.Value?.Job?.Type == typeof(SunHotelsStaticDataSyncJob))
@@ -209,10 +209,10 @@ public class AdminJobsController : ControllerBase
         try
         {
             // Hangfire 1.8+ için TriggerJob kullan
-            #pragma warning disable CS0618
+#pragma warning disable CS0618
             RecurringJob.Trigger(jobId);
-            #pragma warning restore CS0618
-            
+#pragma warning restore CS0618
+
             _logger.LogInformation("Recurring job {JobId} triggered by {User}", jobId, User.Identity?.Name);
 
             return Ok(new
@@ -229,6 +229,40 @@ public class AdminJobsController : ControllerBase
             {
                 success = false,
                 message = $"Recurring job '{jobId}' not found or error occurred",
+                error = ex.Message
+            });
+        }
+    }
+
+    /// <summary>
+    /// Tüm mevcut recurring job'ları sil (cleanup)
+    /// </summary>
+    [HttpDelete("recurring/cleanup")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult CleanupAllRecurringJobs()
+    {
+        try
+        {
+            _logger.LogInformation("Cleaning up all recurring jobs by {User}", User.Identity?.Name);
+
+            RecurringJob.RemoveIfExists("sunhotels-static-data-sync");
+            RecurringJob.RemoveIfExists("sunhotels-basic-data-sync");
+
+            return Ok(new
+            {
+                success = true,
+                message = "All recurring jobs removed successfully",
+                removedJobs = new[] { "sunhotels-static-data-sync", "sunhotels-basic-data-sync" },
+                timestamp = DateTime.UtcNow
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error cleaning up recurring jobs");
+            return StatusCode(500, new
+            {
+                success = false,
+                message = "Error occurred while cleaning up jobs",
                 error = ex.Message
             });
         }

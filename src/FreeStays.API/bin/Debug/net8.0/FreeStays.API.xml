@@ -200,6 +200,11 @@
             Recurring job'ı manuel tetikle
             </summary>
         </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminJobsController.CleanupAllRecurringJobs">
+            <summary>
+            Tüm mevcut recurring job'ları sil (cleanup)
+            </summary>
+        </member>
         <member name="M:FreeStays.API.Controllers.Admin.AdminPagesController.GetPages(System.Nullable{System.Boolean})">
             <summary>
             Tüm statik sayfaları listele
@@ -757,6 +762,12 @@
             Otel detaylarını getir
             </summary>
         </member>
+        <member name="M:FreeStays.API.Controllers.HotelsController.GetHotelBySunHotelsId(System.Int32,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Int32,System.Int32,System.String,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            SunHotels otel detayları (id SunHotels hotelId'dir)
+            Frontend bu endpoint'e SunHotels ID gönderir. Tarihler opsiyoneldir.
+            </summary>
+        </member>
         <member name="M:FreeStays.API.Controllers.HotelsController.GetFeaturedHotels(System.Int32)">
             <summary>
             Öne çıkan otelleri getir
@@ -775,6 +786,11 @@
         <member name="M:FreeStays.API.Controllers.HotelsController.GetRoomAvailability(System.Guid,System.DateTime,System.DateTime,System.Int32,System.Int32)">
             <summary>
             Oda müsaitliğini kontrol et
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.HotelsController.GetSunHotelsRoomAvailability(System.Int32,System.DateTime,System.DateTime,System.Int32,System.Int32,System.String,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            SunHotels oda müsaitliği (id SunHotels hotelId)
             </summary>
         </member>
         <member name="M:FreeStays.API.Controllers.MediaController.Upload(Microsoft.AspNetCore.Http.IFormFile,System.String,System.String)">
@@ -883,6 +899,12 @@
             <param name="acceptLanguage">Dil kodu (Accept-Language header'dan)</param>
             <param name="cancellationToken"></param>
         </member>
+        <member name="M:FreeStays.API.Controllers.PublicHotelsController.SearchHotelsPublic(System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Int32,System.Int32,System.String,System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Decimal},System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Public otel arama (SunHotels Search V3): destinationId, type (accommodationTypes), themeIds, resortIds gibi filtrelerle.
+            Tip değerleri: resort, hotel, apart, villa. Birden fazla tip virgülle ayrılabilir.
+            </summary>
+        </member>
         <member name="M:FreeStays.API.Controllers.PublicHotelsController.GetPopularDestinations(System.String,System.Int32,System.String,System.Threading.CancellationToken)">
             <summary>
             Ülke bazlı popüler destinasyonları getirir (dil bazlı)
@@ -924,7 +946,13 @@
             JSON array string'i List&lt;string&gt;'e parse eder
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:FreeStays.API.Controllers.PublicHotelsController.FixImageUrls(System.Collections.Generic.List{System.String})" -->
+        <member name="M:FreeStays.API.Controllers.PublicHotelsController.FixImageUrls(System.Collections.Generic.List{System.String})">
+            <summary>
+            SunHotels resim URL'lerini düzgün formata dönüştürür
+            http://xml.sunhotels.net/15/GetImage.aspx?id=78713614 
+            → https://hotelimages.sunhotels.net/HotelInfo/hotelImage.aspx?id=78713614&amp;full=1
+            </summary>
+        </member>
         <member name="M:FreeStays.API.Controllers.PublicSettingsController.GetPublicSiteSettings">
             <summary>
             Frontend için genel site ayarlarını getir (anonim erişim)
@@ -1113,9 +1141,10 @@
             Otel arama - Canlı fiyatlar ve müsaitlik (V3)
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetHotelDetails(System.Int32,System.DateTime,System.DateTime,System.Int32,System.Int32,System.String,System.String,System.Threading.CancellationToken)">
+        <member name="M:FreeStays.API.Controllers.SunHotelsController.GetHotelDetails(System.Int32,System.DateTime,System.DateTime,System.Int32,System.Int32,System.String,System.String,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Otel detayları - Canlı fiyat ve müsaitlik
+            ÖNEMLİ: destinationId veya resortId parametrelerinden en az biri önerilir (daha iyi sonuçlar için)
             </summary>
         </member>
         <member name="M:FreeStays.API.Controllers.SunHotelsController.PreBook(FreeStays.Infrastructure.ExternalServices.SunHotels.Models.SunHotelsPreBookRequestV3,System.Threading.CancellationToken)">

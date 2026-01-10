@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Xml.Linq;
 using FreeStays.Application.Common.Interfaces;
+using FreeStays.Domain.Entities.Cache;
 using FreeStays.Domain.Exceptions;
 using FreeStays.Domain.Interfaces;
 using FreeStays.Infrastructure.ExternalServices.SunHotels.Models;
@@ -439,14 +440,49 @@ public class SunHotelsService : ISunHotelsService
                 parameters.Add("customerCountry", request.CustomerCountry);
             if (request.PaymentMethodId.HasValue)
                 parameters.Add("paymentMethodId", request.PaymentMethodId.Value.ToString());
+            // Accommodation types (hotel, apartment, villa, resort). If provided, include in parameters.
+            if (!string.IsNullOrEmpty(request.AccommodationTypes))
+                parameters.Add("accommodationTypes", request.AccommodationTypes);
 
             var response = await SendNonStaticRequestAsync("searchV3", parameters, cancellationToken);
+
+            // ✅ FIX 1: Error tag kontrolü (Python referans: if "<Error>" in response.text)
+            if (response.Contains("<Error>"))
+            {
+                _logger.LogError("SunHotels SearchV3 returned error. Checking for error details...");
+
+                // XML'den error mesajını parse et
+                try
+                {
+                    var errorDoc = XDocument.Parse(response);
+                    var errorMsg = errorDoc.Descendants("Error").FirstOrDefault()?.Value;
+                    _logger.LogError("SunHotels API Error: {ErrorMessage}", errorMsg ?? "Unknown error");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Could not parse error XML");
+                }
+
+                // Boş sonuç döndür (fallback sample hotels eklenebilir)
+                return new List<SunHotelsSearchResultV3>();
+            }
 
             var results = ParseSearchResultsV3(response);
             _logger.LogInformation("SearchHotelsV3Async - Parsed {Count} hotels from response", results.Count);
 
+            // ✅ FIX 2: Boş sonuç fallback (Python referans: if len(hotels) == 0: return sample_hotels)
+            if (results.Count == 0)
+            {
+                _logger.LogWarning("SunHotels SearchV3 returned 0 results for DestinationId: {DestinationId}, CheckIn: {CheckIn}, CheckOut: {CheckOut}",
+                    request.DestinationId, request.CheckIn.ToString("yyyy-MM-dd"), request.CheckOut.ToString("yyyy-MM-dd"));
+
+                // TODO: Gelecekte sample hotels eklenebilir (Vienna, Paris, Barcelona gibi popüler destinasyonlar)
+                // return GetSampleHotels(request);
+            }
+
             // Static datayı cache'den al ve doldur
-            await EnrichHotelsWithStaticDataAsync(results, request.Language, cancellationToken);
+            // ✅ Locale göz ardı: Her zaman İngilizce (Python referansı)
+            await EnrichHotelsWithStaticDataAsync(results, "en", cancellationToken);
 
             return results;
         }
@@ -457,25 +493,101 @@ public class SunHotelsService : ISunHotelsService
         }
     }
 
-    public async Task<SunHotelsSearchResultV3?> GetHotelDetailsAsync(int hotelId, DateTime checkIn, DateTime checkOut, int adults, int children = 0, string currency = "EUR", CancellationToken cancellationToken = default)
+    /// <summary>
+    /// Otel detaylarını getirir. ÖNEMLİ: destinationId veya resortId parametrelerinden en az biri verilmelidir.
+    /// Python server.py referansı: destinationID ile aramak, sadece hotelID ile aramaktan daha iyi sonuçlar verir.
+    /// </summary>
+    public async Task<SunHotelsSearchResultV3?> GetHotelDetailsAsync(
+        int hotelId,
+        DateTime checkIn,
+        DateTime checkOut,
+        int adults,
+        int children = 0,
+        string currency = "EUR",
+        string? destinationId = null,
+        string? resortId = null,
+        CancellationToken cancellationToken = default)
     {
         try
         {
             var request = new SunHotelsSearchRequestV3
             {
-                HotelIds = hotelId.ToString(),
-                DestinationId = "",
                 CheckIn = checkIn,
                 CheckOut = checkOut,
                 Adults = adults,
                 Children = children,
                 Currency = currency,
+                Language = "en", // ✅ Sabit İngilizce
                 ShowCoordinates = true,
                 ShowReviews = true,
                 ShowRoomTypeName = true
             };
 
+            // API sadece destination, destinationID, hotelIDs veya resortIDs'den BİRİNİ kabul eder
+            // Python mantığı: destinationID + hotelID filter > resortID + hotelID filter > sadece hotelID
+            // destinationID kullanmak daha iyi sonuçlar verir!
+            if (!string.IsNullOrEmpty(destinationId))
+            {
+                request.DestinationId = destinationId;
+                request.ResortIds = "";
+                request.HotelIds = ""; // API destinationID ile arama yapar, sonuçları hotelId'ye göre filtreleriz
+                _logger.LogInformation("Hotel details search: using destinationID={DestinationId}, will filter for hotel_id={HotelId}", destinationId, hotelId);
+            }
+            else if (!string.IsNullOrEmpty(resortId))
+            {
+                request.DestinationId = "";
+                request.ResortIds = resortId;
+                request.HotelIds = ""; // API resortID ile arama yapar, sonuçları hotelId'ye göre filtreleriz
+                _logger.LogInformation("Hotel details search: using resortID={ResortId}, will filter for hotel_id={HotelId}", resortId, hotelId);
+            }
+            else
+            {
+                // ✅ FALLBACK: Cache'ten otelin resortId'sini bulmaya çalış
+                _logger.LogWarning("Hotel details search: no destination/resort provided, trying to find from cache for hotel_id={HotelId}", hotelId);
+
+                try
+                {
+                    var cachedHotels = await _cacheService.GetAllHotelsAsync("en", cancellationToken);
+                    var cachedHotel = cachedHotels.FirstOrDefault(h => h.HotelId == hotelId);
+
+                    if (cachedHotel != null && cachedHotel.ResortId > 0)
+                    {
+                        request.DestinationId = "";
+                        request.ResortIds = cachedHotel.ResortId.ToString();
+                        request.HotelIds = "";
+                        _logger.LogInformation("Found resortID={ResortId} from cache for hotel_id={HotelId}", cachedHotel.ResortId, hotelId);
+                    }
+                    else
+                    {
+                        // Son çare: sadece hotelID (bazı oteller için boş sonuç dönebilir)
+                        request.DestinationId = "";
+                        request.ResortIds = "";
+                        request.HotelIds = hotelId.ToString();
+                        _logger.LogWarning("Hotel not found in cache or no resortId, using hotelID={HotelId} only (may return empty)", hotelId);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error getting hotel from cache, falling back to hotelID only");
+                    request.DestinationId = "";
+                    request.ResortIds = "";
+                    request.HotelIds = hotelId.ToString();
+                }
+            }
+
             var results = await SearchHotelsV3Async(request, cancellationToken);
+
+            // destinationId veya resortId ile arama yaptıysak, sonuçları hotelId'ye göre filtrele
+            if (!string.IsNullOrEmpty(destinationId) || !string.IsNullOrEmpty(resortId))
+            {
+                var filteredResult = results.FirstOrDefault(h => h.HotelId == hotelId);
+                if (filteredResult == null)
+                {
+                    _logger.LogWarning("Hotel {HotelId} not found in results after filtering. Returning first result as fallback.", hotelId);
+                }
+                return filteredResult ?? results.FirstOrDefault();
+            }
+
             return results.FirstOrDefault();
         }
         catch (Exception ex)
@@ -545,6 +657,8 @@ public class SunHotelsService : ISunHotelsService
                 parameters.Add("childrenAges", request.ChildrenAges);
             if (!string.IsNullOrEmpty(request.CustomerCountry))
                 parameters.Add("customerCountry", request.CustomerCountry);
+            if (request.PaymentMethodId > 0)
+                parameters.Add("paymentMethodId", request.PaymentMethodId.ToString());
 
             var response = await SendNonStaticRequestAsync("preBookV3", parameters, cancellationToken);
             return ParsePreBookResultV3(response);
@@ -618,7 +732,7 @@ public class SunHotelsService : ISunHotelsService
             if (!string.IsNullOrEmpty(request.InvoiceRef))
                 parameters.Add("invoiceRef", request.InvoiceRef);
             if (request.CommissionAmount.HasValue)
-                parameters.Add("commissionAmount", request.CommissionAmount.Value.ToString(CultureInfo.InvariantCulture));
+                parameters.Add("commissionAmountInHotelCurrency", request.CommissionAmount.Value.ToString(CultureInfo.InvariantCulture));
             if (!string.IsNullOrEmpty(request.CustomerEmail))
                 parameters.Add("customerEmail", request.CustomerEmail);
 
@@ -1034,16 +1148,26 @@ public class SunHotelsService : ISunHotelsService
             var errorContent = await response.Content.ReadAsStringAsync(cancellationToken);
             _logger.LogError("SunHotels NonStatic API error - Status: {StatusCode}, Response: {Response}",
                 response.StatusCode, errorContent);
+            // SunHotels bazen 500 dönebiliyor; içeriği exception mesajına ekleyelim
+            throw new ExternalServiceException("SunHotels", $"NonStatic API returned {(int)response.StatusCode}: {errorContent}");
         }
 
-        response.EnsureSuccessStatusCode();
-
         var responseContent = await response.Content.ReadAsStringAsync(cancellationToken);
+
+        // ✅ İyileştirme: Daha fazla log detayı (debug için)
         _logger.LogInformation("SunHotels NonStatic API response length: {Length} characters", responseContent.Length);
 
-        // Response body'yi debug için log'la (ilk 2000 karakter)
-        var preview = responseContent.Length > 2000 ? responseContent.Substring(0, 2000) : responseContent;
-        _logger.LogInformation("SunHotels NonStatic API response preview: {Response}", preview);
+        // Error durumlarında tam response'u logla
+        if (responseContent.Contains("<Error>"))
+        {
+            _logger.LogError("SunHotels API Error Response (full): {Response}", responseContent);
+        }
+        else
+        {
+            // Başarılı yanıtlarda preview (ilk 3000 karakter)
+            var preview = responseContent.Length > 3000 ? responseContent.Substring(0, 3000) + "..." : responseContent;
+            _logger.LogDebug("SunHotels NonStatic API response preview: {Response}", preview);
+        }
 
         return responseContent;
     }
@@ -1742,9 +1866,14 @@ public class SunHotelsService : ISunHotelsService
                                                 var deadline = int.TryParse(policyElem.Element(ns + "deadline")?.Value, out var dl) ? dl : 0;
                                                 var percentage = decimal.TryParse(policyElem.Element(ns + "percentage")?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var pct) ? pct : 0;
 
+                                                // ✅ FIX: +22 gün buffer ekle (Python referans: freestays_deadline_hours = api_deadline_hours + (22 * 24))
+                                                // SunHotels API'den gelen deadline (saat cinsinden) kullanıcıya fazla riskli
+                                                // FreeStays olarak 22 gün ekstra süre veriyoruz
+                                                var freestaysDeadlineHours = deadline + (22 * 24); // +528 saat (22 gün)
+
                                                 room.CancellationPolicies.Add(new SunHotelsCancellationPolicy
                                                 {
-                                                    FromDate = DateTime.Now.AddHours(deadline), // Deadline saat cinsinden
+                                                    FromDate = DateTime.Now.AddHours(freestaysDeadlineHours),
                                                     Percentage = percentage,
                                                     FixedAmount = null,
                                                     NightsCharged = 0
@@ -2243,7 +2372,7 @@ public class SunHotelsService : ISunHotelsService
     /// Arama sonuçlarını static cache verileriyle zenginleştirir (name, description, vs.)
     /// Batch query kullanarak N+1 problemini önler
     /// </summary>
-    private async Task EnrichHotelsWithStaticDataAsync(List<SunHotelsSearchResultV3> hotels, string language, CancellationToken cancellationToken)
+    private async Task EnrichHotelsWithStaticDataAsync(List<SunHotelsSearchResultV3> hotels, string requestedLanguage, CancellationToken cancellationToken)
     {
         try
         {
@@ -2253,6 +2382,8 @@ public class SunHotelsService : ISunHotelsService
                 return;
             }
 
+            // ✅ Locale göz ardı: Her zaman İngilizce kullan (Python standardı)
+            var language = "en";
             _logger.LogInformation("EnrichHotelsWithStaticDataAsync - Enriching {Count} hotels with language {Language}", hotels.Count, language);
 
             // Tüm gerekli ID'leri topla
@@ -2274,77 +2405,119 @@ public class SunHotelsService : ISunHotelsService
             _logger.LogInformation("EnrichHotelsWithStaticDataAsync - Fetched {HotelCount} hotels, {ResortCount} resorts, {MealCount} meals, {RoomTypeCount} room types from cache (language: {Language})",
                 hotelsDict.Count, resortsDict.Count, mealsDict.Count, roomTypesDict.Count, language);
 
-            // Eğer otel data bulunmazsa fallback: İngilizce dilinde ara
+            // ✅ 3-KADEME FALLBACK (Python referansı): Cache → DB → API
             var missingHotelCount = hotelIds.Count - hotelsDict.Count;
-            if (missingHotelCount > 0 && language != "en")
+
+            // KADEME 2: Cache'de olmayan oteller için DB'ye bak (Python'da yok ama stabilite için iyi)
+            if (missingHotelCount > 0)
             {
-                _logger.LogWarning("EnrichHotelsWithStaticDataAsync - {MissingCount} hotels not found in {Language} language, falling back to 'en'",
-                    missingHotelCount, language);
+                _logger.LogInformation("EnrichHotelsWithStaticDataAsync - {Count} hotels missing in cache, checking DB...",
+                    missingHotelCount);
 
-                // İngilizce'de bulunamayan hotel'leri ara
-                var missingHotelIds = hotelIds.Where(id => !hotelsDict.ContainsKey(id)).ToList();
-                var fallbackHotelsDict = await _cacheService.GetHotelsByIdsAsync(missingHotelIds, "en", cancellationToken);
-
-                _logger.LogInformation("EnrichHotelsWithStaticDataAsync - Found {FallbackCount} hotels in English fallback", fallbackHotelsDict.Count);
-
-                // Fallback'ten bulunan hotel'leri dictionary'ye ekle
-                foreach (var kvp in fallbackHotelsDict)
+                try
                 {
-                    if (!hotelsDict.ContainsKey(kvp.Key))
+                    var missingHotelIds = hotelIds.Where(id => !hotelsDict.ContainsKey(id)).ToList();
+
+                    // DB'den statik otelleri çek (SunHotelsHotels tablosu)
+                    var dbHotels = await _cacheService.GetHotelsByIdsFromDbAsync(missingHotelIds, language, cancellationToken);
+
+                    foreach (var dbHotel in dbHotels)
                     {
-                        hotelsDict[kvp.Key] = kvp.Value;
+                        if (!hotelsDict.ContainsKey(dbHotel.Key))
+                        {
+                            hotelsDict[dbHotel.Key] = dbHotel.Value;
+                        }
                     }
+
+                    var dbFoundCount = dbHotels.Count;
+                    missingHotelCount = hotelIds.Count - hotelsDict.Count;
+
+                    _logger.LogInformation("EnrichHotelsWithStaticDataAsync - Found {Count} hotels in DB, {Remaining} still missing",
+                        dbFoundCount, missingHotelCount);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "DB fallback failed, will try API");
                 }
             }
 
-            // Aynı şekilde resort, meal ve roomtype için fallback
-            if (missingHotelCount > 0 && language != "en")
+            // KADEME 3: Hala eksik oteller varsa REAL-TIME API çağrısı (Python: _enrich_hotels_with_static_data)
+            if (missingHotelCount > 0)
             {
-                // Resort fallback
-                var missingResortIds = resortIds.Where(id => !resortsDict.ContainsKey(id)).ToList();
-                if (missingResortIds.Any())
-                {
-                    var fallbackResortsDict = await _cacheService.GetResortsByIdsAsync(missingResortIds, "en", cancellationToken);
-                    foreach (var kvp in fallbackResortsDict)
-                    {
-                        if (!resortsDict.ContainsKey(kvp.Key))
-                        {
-                            resortsDict[kvp.Key] = kvp.Value;
-                        }
-                    }
-                }
+                _logger.LogWarning("EnrichHotelsWithStaticDataAsync - {Count} hotels missing in cache. Fetching from API (batch 50)...",
+                    missingHotelCount);
 
-                // Meal fallback
-                var missingMealIds = mealIds.Where(id => !mealsDict.ContainsKey(id)).ToList();
-                if (missingMealIds.Any())
+                try
                 {
-                    var fallbackMealsDict = await _cacheService.GetMealsByIdsAsync(missingMealIds, "en", cancellationToken);
-                    foreach (var kvp in fallbackMealsDict)
-                    {
-                        if (!mealsDict.ContainsKey(kvp.Key))
-                        {
-                            mealsDict[kvp.Key] = kvp.Value;
-                        }
-                    }
-                }
+                    var missingHotelIds = hotelIds.Where(id => !hotelsDict.ContainsKey(id)).ToList();
+                    // Python referansı: _enrich_hotels_with_static_data() - GetStaticHotelsAndRooms batch (50'lik)
+                    const int apiBatchSize = 50;
+                    var apiFetchedCount = 0;
 
-                // Room type fallback
-                var missingRoomTypeIds = roomTypeIds.Where(id => !roomTypesDict.ContainsKey(id)).ToList();
-                if (missingRoomTypeIds.Any())
-                {
-                    var fallbackRoomTypesDict = await _cacheService.GetRoomTypesByIdsAsync(missingRoomTypeIds, "en", cancellationToken);
-                    foreach (var kvp in fallbackRoomTypesDict)
+                    for (int i = 0; i < missingHotelIds.Count; i += apiBatchSize)
                     {
-                        if (!roomTypesDict.ContainsKey(kvp.Key))
+                        var batchIds = missingHotelIds.Skip(i).Take(apiBatchSize).ToList();
+                        var hotelIdsParam = string.Join(",", batchIds);
+
+                        _logger.LogInformation("Fetching batch {BatchNumber} from GetStaticHotelsAndRooms API ({Count} hotels)",
+                            (i / apiBatchSize) + 1, batchIds.Count);
+
+                        // GetStaticHotelsAndRooms API çağrısı (SunHotels static API) - her zaman "en"
+                        var apiHotels = await GetStaticHotelsAndRoomsAsync(null, hotelIdsParam, null, "en", cancellationToken);
+
+                        foreach (var apiHotel in apiHotels)
                         {
-                            roomTypesDict[kvp.Key] = kvp.Value;
+                            if (!hotelsDict.ContainsKey(apiHotel.HotelId))
+                            {
+                                // API'den gelen oteli geçici cache dictionary'e ekle
+                                hotelsDict[apiHotel.HotelId] = new SunHotelsHotelCache
+                                {
+                                    HotelId = apiHotel.HotelId,
+                                    Name = apiHotel.Name,
+                                    Description = apiHotel.Description ?? "",
+                                    Address = apiHotel.Address ?? "",
+                                    City = apiHotel.City ?? "",
+                                    Country = apiHotel.Country ?? "",
+                                    CountryCode = apiHotel.CountryCode ?? "",
+                                    Category = apiHotel.Category,
+                                    Latitude = apiHotel.Latitude,
+                                    Longitude = apiHotel.Longitude,
+                                    Phone = apiHotel.Phone,
+                                    Email = apiHotel.Email,
+                                    Website = apiHotel.Website,
+                                    GiataCode = apiHotel.GiataCode,
+                                    ResortId = apiHotel.ResortId,
+                                    ResortName = apiHotel.ResortName,
+                                    ImageUrls = apiHotel.Images.Any()
+                                        ? System.Text.Json.JsonSerializer.Serialize(apiHotel.Images.Select(x => x.Url).ToList())
+                                        : "[]",
+                                    FeatureIds = apiHotel.FeatureIds.Any()
+                                        ? System.Text.Json.JsonSerializer.Serialize(apiHotel.FeatureIds)
+                                        : "[]",
+                                    ThemeIds = apiHotel.ThemeIds.Any()
+                                        ? System.Text.Json.JsonSerializer.Serialize(apiHotel.ThemeIds)
+                                        : "[]",
+                                    Language = "en" // ✅ Sabit İngilizce
+                                };
+                                apiFetchedCount++;
+                            }
+                        }
+
+                        // Rate limiting: 50 otel her seferde, biraz bekle
+                        if (i + apiBatchSize < missingHotelIds.Count)
+                        {
+                            await Task.Delay(500, cancellationToken); // 500ms throttle
                         }
                     }
+
+                    _logger.LogInformation("EnrichHotelsWithStaticDataAsync - Fetched {Count} hotels from real-time API", apiFetchedCount);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error fetching missing hotels from API. Continuing with cached data only.");
+                    // API hatası olsa bile cache'deki verilerle devam et
                 }
             }
-
-            _logger.LogInformation("EnrichHotelsWithStaticDataAsync - After fallback: {HotelCount} hotels, {ResortCount} resorts, {MealCount} meals, {RoomTypeCount} room types available",
-                hotelsDict.Count, resortsDict.Count, mealsDict.Count, roomTypesDict.Count);
 
             // Her otel için static datayı memory'den join et
             foreach (var hotel in hotels)

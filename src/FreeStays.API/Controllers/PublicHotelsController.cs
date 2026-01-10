@@ -134,6 +134,160 @@ public class PublicHotelsController : ControllerBase
 
     #endregion
 
+    #region Public Search (Search V3)
+
+    /// <summary>
+    /// Public otel arama (SunHotels Search V3): destinationId, type (accommodationTypes), themeIds, resortIds gibi filtrelerle.
+    /// Tip değerleri: resort, hotel, apart, villa. Birden fazla tip virgülle ayrılabilir.
+    /// </summary>
+    [HttpGet("hotels/search")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> SearchHotelsPublic(
+        [FromQuery] string? destinationId,
+        [FromQuery] string? destination,
+        [FromQuery] DateTime? checkIn,
+        [FromQuery] DateTime? checkOut,
+        [FromQuery] int adults = 2,
+        [FromQuery] int children = 0,
+        [FromQuery] string? resortIds = null,
+        [FromQuery(Name = "themeIds")] string? themeIds = null,
+        [FromQuery(Name = "themeId")] string? themeId = null, // alias: tekil param da destekle
+        [FromQuery] string? featureIds = null,
+        [FromQuery] int? minStarRating = null,
+        [FromQuery] decimal? maxPrice = null,
+        [FromQuery] string? type = null,
+        [FromHeader(Name = "Accept-Language")] string? acceptLanguage = null,
+        CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var language = ParseLanguage(acceptLanguage);
+            // Tarihler için basit default: 30-60 gün sonrası
+            var ci = checkIn ?? DateTime.Today.AddDays(30);
+            var co = checkOut ?? DateTime.Today.AddDays(37);
+
+            // destinationId yoksa, verilen destination adından cache üzerinden bulmaya çalış
+            string? resolvedDestinationId = destinationId;
+            if (string.IsNullOrWhiteSpace(resolvedDestinationId) && !string.IsNullOrWhiteSpace(destination))
+            {
+                var allDestinations = await _cacheService.GetAllDestinationsAsync(cancellationToken);
+                var match = allDestinations
+                    .FirstOrDefault(d => d.Name.Equals(destination, StringComparison.OrdinalIgnoreCase) ||
+                                         (d.Name.Contains(destination, StringComparison.OrdinalIgnoreCase)));
+                resolvedDestinationId = match?.DestinationId.ToString();
+            }
+
+            if (string.IsNullOrWhiteSpace(resolvedDestinationId))
+            {
+                return BadRequest(new { message = "destinationId veya destination adı gerekli" });
+            }
+
+            // type → accommodationTypes normalize
+            // kabul edilen değerler: hotel, apartment, villa, resort
+            string? accommodationTypes = null;
+            if (!string.IsNullOrWhiteSpace(type))
+            {
+                var types = type.Split(',')
+                    .Select(t => t.Trim().ToLowerInvariant())
+                    .Select(t => t switch
+                    {
+                        "apart" => "apartment",
+                        "apartment" => "apartment",
+                        "hotel" => "hotel",
+                        "villa" => "villa",
+                        "resort" => "resort",
+                        _ => null
+                    })
+                    .Where(t => t != null)
+                    .Distinct();
+
+                accommodationTypes = string.Join(",", types);
+            }
+
+            // themeIds alias: themeId
+            var resolvedThemeIds = !string.IsNullOrWhiteSpace(themeIds)
+                ? themeIds
+                : themeId;
+
+            var request = new SunHotelsSearchRequestV3
+            {
+                DestinationId = resolvedDestinationId!,
+                Destination = destination,
+                CheckIn = ci,
+                CheckOut = co,
+                NumberOfRooms = 1,
+                Adults = adults,
+                Children = children,
+                Currency = "EUR",
+                Language = "en", // Her zaman İngilizce
+                B2C = true,
+                ResortIds = resortIds,
+                ThemeIds = resolvedThemeIds,
+                FeatureIds = featureIds,
+                MinStarRating = minStarRating,
+                MaxPrice = maxPrice,
+                AccommodationTypes = accommodationTypes,
+                SortBy = "price",
+                SortOrder = "asc",
+                ShowCoordinates = true,
+                ShowReviews = true,
+                ShowRoomTypeName = true,
+                ExcludeSharedRooms = false,
+                ExcludeSharedFacilities = false
+            };
+
+            _logger.LogInformation("Public search V3: destinationId={DestinationId}, destination={Destination}, checkIn={CheckIn}, checkOut={CheckOut}, adults={Adults}, children={Children}, types={Types}, resortIds={ResortIds}, themeIds={ThemeIds}",
+                request.DestinationId, request.Destination, request.CheckIn, request.CheckOut, request.Adults, request.Children, request.AccommodationTypes, request.ResortIds, request.ThemeIds);
+
+            var results = await _sunHotelsService.SearchHotelsV3Async(request, cancellationToken);
+
+            var response = results.Select(h => new
+            {
+                id = h.HotelId,
+                name = h.Name,
+                description = h.Description,
+                stars = h.Category,
+                city = h.City,
+                country = h.Country,
+                address = h.Address,
+                resort = new { id = h.ResortId, name = h.ResortName },
+                location = new { latitude = h.Latitude, longitude = h.Longitude },
+                images = FixImageUrls(h.ImageUrls),
+                minPrice = h.MinPrice,
+                originalPrice = h.MinPrice,
+                currency = h.Currency,
+                reviewScore = h.ReviewScore,
+                reviewCount = h.ReviewCount,
+                featureIds = h.FeatureIds,
+                themeIds = h.ThemeIds,
+                // ✅ Frontend'in otel detayına giderken kullanması için
+                destinationId = resolvedDestinationId,
+                resortId = h.ResortId.ToString()
+            }).ToList();
+
+            return Ok(new
+            {
+                total = response.Count,
+                checkIn = ci.ToString("yyyy-MM-dd"),
+                checkOut = co.ToString("yyyy-MM-dd"),
+                destinationId = resolvedDestinationId,
+                destination,
+                type = accommodationTypes,
+                resortIds,
+                themeIds,
+                featureIds,
+                language,
+                hotels = response
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error in public hotel search");
+            return StatusCode(500, new { message = "Otel arama sırasında hata oluştu", error = ex.Message });
+        }
+    }
+
+    #endregion
     #region Popular Destinations
 
     /// <summary>
@@ -518,6 +672,7 @@ public class PublicHotelsController : ControllerBase
                             location = new { latitude = hotel.Latitude, longitude = hotel.Longitude },
                             images = FixImageUrls(hotel.ImageUrls),
                             minPrice = finalPrice,
+                            originalPrice = basePrice,
                             currency = hotel.Currency,
                             reviewScore = hotel.ReviewScore,
                             reviewCount = hotel.ReviewCount,
@@ -619,7 +774,7 @@ public class PublicHotelsController : ControllerBase
     /// <summary>
     /// SunHotels resim URL'lerini düzgün formata dönüştürür
     /// http://xml.sunhotels.net/15/GetImage.aspx?id=78713614 
-    /// → https://hotelimages.sunhotels.net/HotelInfo/hotelImage.aspx?id=78713614&full=1
+    /// → https://hotelimages.sunhotels.net/HotelInfo/hotelImage.aspx?id=78713614&amp;full=1
     /// </summary>
     private static List<string> FixImageUrls(List<string>? imageUrls)
     {

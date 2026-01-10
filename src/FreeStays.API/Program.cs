@@ -171,14 +171,21 @@ try
 {
     Log.Information("🚀 Configuring Hangfire with PostgreSQL storage...");
 
+    // ✅ Npgsql bağlantı havuzunu optimize et
+    var connectionStringBuilder = new Npgsql.NpgsqlConnectionStringBuilder(defaultConnectionString)
+    {
+        MaxPoolSize = 20,              // ✅ Max concurrent connections for Hangfire
+        MinPoolSize = 5,               // ✅ Min idle connections
+        CommandTimeout = 30,           // ✅ Command timeout (seconds)
+        Timeout = 15,                  // ✅ Connection open timeout (seconds)
+        KeepAlive = 30,                // ✅ Keep alive interval (seconds) for idle connections
+        Multiplexing = false,          // ✅ Multiplexing false (keepalive ile uyumsuz)
+        NoResetOnClose = false         // ✅ Reset connection when returned to pool
+    };
+
     builder.Services.AddHangfire(config =>
     {
-        config.UsePostgreSqlStorage(defaultConnectionString, new Hangfire.PostgreSql.PostgreSqlStorageOptions
-        {
-            QueuePollInterval = TimeSpan.FromSeconds(15),      // ✅ Reduce DB polling
-            InvisibilityTimeout = TimeSpan.FromMinutes(5),     // ✅ Job visibility timeout
-            PrepareSchemaIfNecessary = true                    // ✅ Auto-create schema
-        });
+        config.UsePostgreSqlStorage(connectionStringBuilder.ToString());
         config.UseSimpleAssemblyNameTypeSerializer();
         config.UseRecommendedSerializerSettings();
     });
@@ -210,6 +217,9 @@ builder.Services.AddHangfireServer(options =>
     options.HeartbeatInterval = TimeSpan.FromSeconds(30);
     options.ServerCheckInterval = TimeSpan.FromSeconds(30);
     options.StopTimeout = TimeSpan.FromSeconds(30);
+
+    // ✅ Connection pool recovery settings
+    options.ServerTimeout = TimeSpan.FromMinutes(1);     // ✅ Server heartbeat timeout
 });
 
 // Swagger
@@ -375,22 +385,20 @@ app.UseHangfireDashboard(builder.Configuration["Hangfire:DashboardPath"] ?? "/ha
     DashboardTitle = "FreeStays Background Jobs"
 });
 
-// Register Recurring Jobs
-// SunHotels Static Data Sync - Her gün gece yarısı çalışır
-RecurringJob.AddOrUpdate<FreeStays.Infrastructure.BackgroundJobs.SunHotelsStaticDataSyncJob>(
-    "sunhotels-static-data-sync",
-    job => job.SyncAllStaticDataAsync(),
-    Cron.Daily(3, 0), // Her gün saat 03:00'te çalışır
-    new RecurringJobOptions { TimeZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/Istanbul") }
-);
-
-// SunHotels Basic Data Sync - Her 6 saatte bir (hızlı güncelleme)
-RecurringJob.AddOrUpdate<FreeStays.Infrastructure.BackgroundJobs.SunHotelsStaticDataSyncJob>(
-    "sunhotels-basic-data-sync",
-    job => job.SyncBasicDataAsync(),
-    "0 */6 * * *", // Her 6 saatte bir
-    new RecurringJobOptions { TimeZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/Istanbul") }
-);
+// ⚠️ RECURRING JOB'LAR DEVRE DIŞI
+// Job'ları frontend admin panel'den manuel olarak oluşturun ve yönetin
+// 
+// Frontend Endpoints:
+// - POST   /api/v1/admin/jobs/sync-static-data/schedule (job oluştur + zamanla)
+// - POST   /api/v1/admin/jobs/sync-basic-data/schedule (job oluştur + zamanla)
+// - GET    /api/v1/admin/hangfire/recurring-jobs (job listesi)
+// - POST   /api/v1/admin/hangfire/recurring-jobs/{jobId}/trigger (manuel çalıştır)
+// - PUT    /api/v1/admin/hangfire/recurring-jobs/{jobId}/schedule (zamanlama değiştir)
+// - DELETE /api/v1/admin/hangfire/recurring-jobs/{jobId} (job'ı sil)
+//
+// NEDEN KAPALI?
+// - RecurringJob.AddOrUpdate() bazen uygulama başlatıldığında job'ı tetikliyor
+// - Frontend'den tam kontrol için job'lar manuel oluşturulmalı
 
 // Health Check Endpoint
 app.MapHealthChecks("/health");

@@ -293,6 +293,28 @@ public class SunHotelsCacheService : ISunHotelsCacheService
         return hotels.ToDictionary(h => h.HotelId, h => h);
     }
 
+    /// <summary>
+    /// DB'den direkt otelleri çek (cache bypass) - 3-kademe fallback için (Python referansı)
+    /// Cache'de olmayan oteller için kullanılır, API çağrısı yapmadan önce DB'ye bakar
+    /// </summary>
+    public async Task<Dictionary<int, SunHotelsHotelCache>> GetHotelsByIdsFromDbAsync(IEnumerable<int> hotelIds, string language = "en", CancellationToken cancellationToken = default)
+    {
+        var ids = hotelIds.ToList();
+        if (!ids.Any()) return new Dictionary<int, SunHotelsHotelCache>();
+
+        _logger.LogInformation("GetHotelsByIdsFromDbAsync - Fetching {Count} hotels directly from DB (bypass cache), language: {Language}",
+            ids.Count, language);
+
+        var hotels = await _context.SunHotelsHotels
+            .Where(h => h.Language == language && ids.Contains(h.HotelId))
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+
+        _logger.LogInformation("GetHotelsByIdsFromDbAsync - Found {Count}/{Total} hotels in database", hotels.Count, ids.Count);
+
+        return hotels.ToDictionary(h => h.HotelId, h => h);
+    }
+
     public async Task<Dictionary<int, SunHotelsResortCache>> GetResortsByIdsAsync(IEnumerable<int> resortIds, string language = "en", CancellationToken cancellationToken = default)
     {
         var ids = resortIds.ToList();

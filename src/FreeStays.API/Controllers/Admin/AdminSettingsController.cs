@@ -41,19 +41,24 @@ public class AdminSettingsController : BaseApiController
             profitMargin = decimal.TryParse(settingsDict.GetValueOrDefault("profitMargin", "10"), out var margin) ? margin : 10m,
             defaultVatRate = decimal.TryParse(settingsDict.GetValueOrDefault("defaultVatRate", "20"), out var vat) ? vat : 20m,
             extraFee = decimal.TryParse(settingsDict.GetValueOrDefault("extraFee", "0"), out var extra) ? extra : 0m,
+            discountRate = decimal.TryParse(settingsDict.GetValueOrDefault("discountRate", "0"), out var discount) ? discount : 0m,
             // Coupon Prices
             oneTimeCouponPrice = decimal.TryParse(settingsDict.GetValueOrDefault("oneTimePriceEUR", "19.99"), out var oneTimePrice) ? oneTimePrice : 19.99m,
             annualCouponPrice = decimal.TryParse(settingsDict.GetValueOrDefault("annualPriceEUR", "99.99"), out var annualPrice) ? annualPrice : 99.99m,
+            // Stripe Payment Settings
+            stripePublicKey = settingsDict.GetValueOrDefault("stripePublicKey", ""),
+            stripeSecretKey = settingsDict.GetValueOrDefault("stripeSecretKey", ""),
+            stripeWebhookSecret = settingsDict.GetValueOrDefault("stripeWebhookSecret", ""),
             // Affiliate Programs
             excursionsActive = settingsDict.GetValueOrDefault("excursionsActive", "false") == "true",
-            excursionsAffiliateCode = settingsDict.GetValueOrDefault("excursionsAffiliateCode", null),
-            excursionsWidgetCode = settingsDict.GetValueOrDefault("excursionsWidgetCode", null),
+            excursionsAffiliateCode = settingsDict.GetValueOrDefault("excursionsAffiliateCode", ""),
+            excursionsWidgetCode = settingsDict.GetValueOrDefault("excursionsWidgetCode", ""),
             carRentalActive = settingsDict.GetValueOrDefault("carRentalActive", "false") == "true",
-            carRentalAffiliateCode = settingsDict.GetValueOrDefault("carRentalAffiliateCode", null),
-            carRentalWidgetCode = settingsDict.GetValueOrDefault("carRentalWidgetCode", null),
+            carRentalAffiliateCode = settingsDict.GetValueOrDefault("carRentalAffiliateCode", ""),
+            carRentalWidgetCode = settingsDict.GetValueOrDefault("carRentalWidgetCode", ""),
             flightBookingActive = settingsDict.GetValueOrDefault("flightBookingActive", "false") == "true",
-            flightBookingAffiliateCode = settingsDict.GetValueOrDefault("flightBookingAffiliateCode", null),
-            flightBookingWidgetCode = settingsDict.GetValueOrDefault("flightBookingWidgetCode", null),
+            flightBookingAffiliateCode = settingsDict.GetValueOrDefault("flightBookingAffiliateCode", ""),
+            flightBookingWidgetCode = settingsDict.GetValueOrDefault("flightBookingWidgetCode", ""),
             // Statik Sayfalar
             privacyPolicy = settingsDict.GetValueOrDefault("privacyPolicy", ""),
             termsOfService = settingsDict.GetValueOrDefault("termsOfService", ""),
@@ -61,11 +66,11 @@ public class AdminSettingsController : BaseApiController
             // Sosyal Medya Linkleri
             social = new
             {
-                facebook = settingsDict.GetValueOrDefault("facebook", null),
-                twitter = settingsDict.GetValueOrDefault("twitter", null),
-                instagram = settingsDict.GetValueOrDefault("instagram", null),
-                linkedin = settingsDict.GetValueOrDefault("linkedin", null),
-                youtube = settingsDict.GetValueOrDefault("youtube", null)
+                facebook = settingsDict.GetValueOrDefault("facebook", ""),
+                twitter = settingsDict.GetValueOrDefault("twitter", ""),
+                instagram = settingsDict.GetValueOrDefault("instagram", ""),
+                linkedin = settingsDict.GetValueOrDefault("linkedin", ""),
+                youtube = settingsDict.GetValueOrDefault("youtube", "")
             }
         });
     }
@@ -104,12 +109,22 @@ public class AdminSettingsController : BaseApiController
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "defaultVatRate", Value = request.DefaultVatRate.Value.ToString(), Group = "site" });
         if (request.ExtraFee.HasValue)
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "extraFee", Value = request.ExtraFee.Value.ToString(), Group = "site" });
+        if (request.DiscountRate.HasValue)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "discountRate", Value = request.DiscountRate.Value.ToString(), Group = "site" });
 
         // Coupon Prices
         if (request.OneTimeCouponPrice.HasValue)
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "oneTimePriceEUR", Value = request.OneTimeCouponPrice.Value.ToString(), Group = "coupons" });
         if (request.AnnualCouponPrice.HasValue)
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "annualPriceEUR", Value = request.AnnualCouponPrice.Value.ToString(), Group = "coupons" });
+
+        // Stripe Payment Settings
+        if (request.StripePublicKey != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "stripePublicKey", Value = request.StripePublicKey, Group = "payment" });
+        if (request.StripeSecretKey != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "stripeSecretKey", Value = request.StripeSecretKey, Group = "payment" });
+        if (request.StripeWebhookSecret != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "stripeWebhookSecret", Value = request.StripeWebhookSecret, Group = "payment" });
 
         // Affiliate Programs
         if (request.ExcursionsActive.HasValue)
@@ -189,19 +204,19 @@ public class AdminSettingsController : BaseApiController
             FacebookPixelId: settingsDict.GetValueOrDefault("facebookPixelId", ""),
             RobotsTxt: settingsDict.GetValueOrDefault("robotsTxt", "User-agent: *\nAllow: /"),
             SitemapEnabled: settingsDict.GetValueOrDefault("sitemapEnabled", "true") == "true",
-            OrganizationName: settingsDict.GetValueOrDefault("organizationName", null),
-            OrganizationUrl: settingsDict.GetValueOrDefault("organizationUrl", null),
-            OrganizationLogo: settingsDict.GetValueOrDefault("organizationLogo", null),
-            OrganizationDescription: settingsDict.GetValueOrDefault("organizationDescription", null),
-            OrganizationSocialProfiles: ParseJsonArray(settingsDict.GetValueOrDefault("organizationSocialProfiles", null)),
-            WebsiteName: settingsDict.GetValueOrDefault("websiteName", null),
-            WebsiteUrl: settingsDict.GetValueOrDefault("websiteUrl", null),
-            WebsiteSearchActionTarget: settingsDict.GetValueOrDefault("websiteSearchActionTarget", null),
-            ContactPhone: settingsDict.GetValueOrDefault("contactPhone", null),
-            ContactEmail: settingsDict.GetValueOrDefault("contactEmail", null),
-            BusinessAddress: settingsDict.GetValueOrDefault("businessAddress", null),
-            TwitterSite: settingsDict.GetValueOrDefault("twitterSite", null),
-            TwitterCreator: settingsDict.GetValueOrDefault("twitterCreator", null)
+            OrganizationName: settingsDict.GetValueOrDefault("organizationName", ""),
+            OrganizationUrl: settingsDict.GetValueOrDefault("organizationUrl", ""),
+            OrganizationLogo: settingsDict.GetValueOrDefault("organizationLogo", ""),
+            OrganizationDescription: settingsDict.GetValueOrDefault("organizationDescription", ""),
+            OrganizationSocialProfiles: ParseJsonArray(settingsDict.GetValueOrDefault("organizationSocialProfiles", "")),
+            WebsiteName: settingsDict.GetValueOrDefault("websiteName", ""),
+            WebsiteUrl: settingsDict.GetValueOrDefault("websiteUrl", ""),
+            WebsiteSearchActionTarget: settingsDict.GetValueOrDefault("websiteSearchActionTarget", ""),
+            ContactPhone: settingsDict.GetValueOrDefault("contactPhone", ""),
+            ContactEmail: settingsDict.GetValueOrDefault("contactEmail", ""),
+            BusinessAddress: settingsDict.GetValueOrDefault("businessAddress", ""),
+            TwitterSite: settingsDict.GetValueOrDefault("twitterSite", ""),
+            TwitterCreator: settingsDict.GetValueOrDefault("twitterCreator", "")
         );
 
         return Ok(response);
@@ -859,9 +874,14 @@ public record UpdateSiteSettingsRequest(
     decimal? ProfitMargin,
     decimal? DefaultVatRate,
     decimal? ExtraFee,
+    decimal? DiscountRate,
     // Coupon Prices
     decimal? OneTimeCouponPrice,
     decimal? AnnualCouponPrice,
+    // Stripe Payment Settings
+    string? StripePublicKey,
+    string? StripeSecretKey,
+    string? StripeWebhookSecret,
     // Affiliate Programs
     bool? ExcursionsActive,
     string? ExcursionsAffiliateCode,
