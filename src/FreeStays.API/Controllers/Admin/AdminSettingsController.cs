@@ -45,14 +45,6 @@ public class AdminSettingsController : BaseApiController
             // Coupon Prices
             oneTimeCouponPrice = decimal.TryParse(settingsDict.GetValueOrDefault("oneTimePriceEUR", "19.99"), out var oneTimePrice) ? oneTimePrice : 19.99m,
             annualCouponPrice = decimal.TryParse(settingsDict.GetValueOrDefault("annualPriceEUR", "99.99"), out var annualPrice) ? annualPrice : 99.99m,
-            // Stripe Payment Settings
-            stripePublicKey = settingsDict.GetValueOrDefault("stripePublicKey", ""),
-            stripeSecretKey = settingsDict.GetValueOrDefault("stripeSecretKey", ""),
-            stripeWebhookSecret = settingsDict.GetValueOrDefault("stripeWebhookSecret", ""),
-            stripeTestMode = settingsDict.GetValueOrDefault("stripeTestMode", "true") == "true",
-            stripeTestPublicKey = settingsDict.GetValueOrDefault("stripeTestPublicKey", ""),
-            stripeTestSecretKey = settingsDict.GetValueOrDefault("stripeTestSecretKey", ""),
-            stripeTestWebhookSecret = settingsDict.GetValueOrDefault("stripeTestWebhookSecret", ""),
             // Affiliate Programs
             excursionsActive = settingsDict.GetValueOrDefault("excursionsActive", "false") == "true",
             excursionsAffiliateCode = settingsDict.GetValueOrDefault("excursionsAffiliateCode", ""),
@@ -121,22 +113,6 @@ public class AdminSettingsController : BaseApiController
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "oneTimePriceEUR", Value = request.OneTimeCouponPrice.Value.ToString(), Group = "coupons" });
         if (request.AnnualCouponPrice.HasValue)
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "annualPriceEUR", Value = request.AnnualCouponPrice.Value.ToString(), Group = "coupons" });
-
-        // Stripe Payment Settings
-        if (request.StripePublicKey != null)
-            await Mediator.Send(new UpdateSiteSettingCommand { Key = "stripePublicKey", Value = request.StripePublicKey, Group = "payment" });
-        if (request.StripeSecretKey != null)
-            await Mediator.Send(new UpdateSiteSettingCommand { Key = "stripeSecretKey", Value = request.StripeSecretKey, Group = "payment" });
-        if (request.StripeWebhookSecret != null)
-            await Mediator.Send(new UpdateSiteSettingCommand { Key = "stripeWebhookSecret", Value = request.StripeWebhookSecret, Group = "payment" });
-        if (request.StripeTestMode.HasValue)
-            await Mediator.Send(new UpdateSiteSettingCommand { Key = "stripeTestMode", Value = request.StripeTestMode.Value.ToString().ToLower(), Group = "payment" });
-        if (request.StripeTestPublicKey != null)
-            await Mediator.Send(new UpdateSiteSettingCommand { Key = "stripeTestPublicKey", Value = request.StripeTestPublicKey, Group = "payment" });
-        if (request.StripeTestSecretKey != null)
-            await Mediator.Send(new UpdateSiteSettingCommand { Key = "stripeTestSecretKey", Value = request.StripeTestSecretKey, Group = "payment" });
-        if (request.StripeTestWebhookSecret != null)
-            await Mediator.Send(new UpdateSiteSettingCommand { Key = "stripeTestWebhookSecret", Value = request.StripeTestWebhookSecret, Group = "payment" });
 
         // Affiliate Programs
         if (request.ExcursionsActive.HasValue)
@@ -890,14 +866,6 @@ public record UpdateSiteSettingsRequest(
     // Coupon Prices
     decimal? OneTimeCouponPrice,
     decimal? AnnualCouponPrice,
-    // Stripe Payment Settings
-    string? StripePublicKey,
-    string? StripeSecretKey,
-    string? StripeWebhookSecret,
-    bool? StripeTestMode,
-    string? StripeTestPublicKey,
-    string? StripeTestSecretKey,
-    string? StripeTestWebhookSecret,
     // Affiliate Programs
     bool? ExcursionsActive,
     string? ExcursionsAffiliateCode,

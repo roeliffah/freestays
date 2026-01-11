@@ -16,6 +16,9 @@ public class PublicSettingsController : BaseApiController
         var settings = await Mediator.Send(new GetSiteSettingsQuery());
         var settingsDict = settings.ToDictionary(s => s.Key, s => s.Value);
 
+        // Get payment settings (Stripe) from PaymentSettings table
+        var paymentSettings = await Mediator.Send(new GetPaymentSettingsQuery());
+
         return Ok(new
         {
             // Site Temel Bilgileri
@@ -51,10 +54,11 @@ public class PublicSettingsController : BaseApiController
             annualCouponPrice = decimal.TryParse(settingsDict.GetValueOrDefault("annualPriceEUR", "99.99"), out var annualPrice) ? annualPrice : 99.99m,
 
             // Stripe Payment (Public Key Only - test or live based on mode)
-            stripeTestMode = settingsDict.GetValueOrDefault("stripeTestMode") == "true",
-            stripePublicKey = settingsDict.GetValueOrDefault("stripeTestMode") == "true"
-                ? (settingsDict.GetValueOrDefault("stripeTestPublicKey") ?? "")
-                : (settingsDict.GetValueOrDefault("stripePublicKey") ?? ""),
+            stripeTestMode = paymentSettings?.IsLive == false,
+            stripePublicKey = paymentSettings?.IsLive == false
+                ? (paymentSettings?.TestModePublicKey ?? "")
+                : (paymentSettings?.LiveModePublicKey ?? ""),
+            stripeTestPublicKey = paymentSettings?.TestModePublicKey ?? "",
 
             // Pricing Information
             profitMargin = decimal.TryParse(settingsDict.GetValueOrDefault("profitMargin", "10"), out var margin) ? margin : 10m,
