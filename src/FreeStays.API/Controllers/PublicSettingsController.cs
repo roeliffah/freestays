@@ -50,8 +50,11 @@ public class PublicSettingsController : BaseApiController
             oneTimeCouponPrice = decimal.TryParse(settingsDict.GetValueOrDefault("oneTimePriceEUR", "19.99"), out var oneTimePrice) ? oneTimePrice : 19.99m,
             annualCouponPrice = decimal.TryParse(settingsDict.GetValueOrDefault("annualPriceEUR", "99.99"), out var annualPrice) ? annualPrice : 99.99m,
 
-            // Stripe Payment (Public Key Only)
-            stripePublicKey = settingsDict.GetValueOrDefault("stripePublicKey", ""),
+            // Stripe Payment (Public Key Only - test or live based on mode)
+            stripeTestMode = settingsDict.GetValueOrDefault("stripeTestMode") == "true",
+            stripePublicKey = settingsDict.GetValueOrDefault("stripeTestMode") == "true"
+                ? (settingsDict.GetValueOrDefault("stripeTestPublicKey") ?? "")
+                : (settingsDict.GetValueOrDefault("stripePublicKey") ?? ""),
 
             // Pricing Information
             profitMargin = decimal.TryParse(settingsDict.GetValueOrDefault("profitMargin", "10"), out var margin) ? margin : 10m,

@@ -49,6 +49,10 @@ public class AdminSettingsController : BaseApiController
             stripePublicKey = settingsDict.GetValueOrDefault("stripePublicKey", ""),
             stripeSecretKey = settingsDict.GetValueOrDefault("stripeSecretKey", ""),
             stripeWebhookSecret = settingsDict.GetValueOrDefault("stripeWebhookSecret", ""),
+            stripeTestMode = settingsDict.GetValueOrDefault("stripeTestMode", "true") == "true",
+            stripeTestPublicKey = settingsDict.GetValueOrDefault("stripeTestPublicKey", ""),
+            stripeTestSecretKey = settingsDict.GetValueOrDefault("stripeTestSecretKey", ""),
+            stripeTestWebhookSecret = settingsDict.GetValueOrDefault("stripeTestWebhookSecret", ""),
             // Affiliate Programs
             excursionsActive = settingsDict.GetValueOrDefault("excursionsActive", "false") == "true",
             excursionsAffiliateCode = settingsDict.GetValueOrDefault("excursionsAffiliateCode", ""),
@@ -125,6 +129,14 @@ public class AdminSettingsController : BaseApiController
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "stripeSecretKey", Value = request.StripeSecretKey, Group = "payment" });
         if (request.StripeWebhookSecret != null)
             await Mediator.Send(new UpdateSiteSettingCommand { Key = "stripeWebhookSecret", Value = request.StripeWebhookSecret, Group = "payment" });
+        if (request.StripeTestMode.HasValue)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "stripeTestMode", Value = request.StripeTestMode.Value.ToString().ToLower(), Group = "payment" });
+        if (request.StripeTestPublicKey != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "stripeTestPublicKey", Value = request.StripeTestPublicKey, Group = "payment" });
+        if (request.StripeTestSecretKey != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "stripeTestSecretKey", Value = request.StripeTestSecretKey, Group = "payment" });
+        if (request.StripeTestWebhookSecret != null)
+            await Mediator.Send(new UpdateSiteSettingCommand { Key = "stripeTestWebhookSecret", Value = request.StripeTestWebhookSecret, Group = "payment" });
 
         // Affiliate Programs
         if (request.ExcursionsActive.HasValue)
@@ -882,6 +894,10 @@ public record UpdateSiteSettingsRequest(
     string? StripePublicKey,
     string? StripeSecretKey,
     string? StripeWebhookSecret,
+    bool? StripeTestMode,
+    string? StripeTestPublicKey,
+    string? StripeTestSecretKey,
+    string? StripeTestWebhookSecret,
     // Affiliate Programs
     bool? ExcursionsActive,
     string? ExcursionsAffiliateCode,
