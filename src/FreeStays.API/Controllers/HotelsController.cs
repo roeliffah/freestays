@@ -86,8 +86,16 @@ public class HotelsController : BaseApiController
             .Select(t => new { id = t.ThemeId, name = t.Name })
             .ToList();
 
+        // Boş oda listesi durumunda mesaj ekle
+        string? message = null;
+        if (result.Rooms == null || result.Rooms.Count == 0)
+        {
+            message = "Seçili tarihler için oda bulunamadı. Lütfen farklı tarihler deneyin.";
+        }
+
         return Ok(new
         {
+            message,
             result.HotelId,
             result.Name,
             result.Description,
@@ -197,9 +205,17 @@ public class HotelsController : BaseApiController
         if (result == null)
             return NotFound(new { message = $"SunHotels hotel {hotelId} not found for selected dates" });
 
+        // Boş oda listesi durumunda mesaj ekle
+        string? message = null;
+        if (result.Rooms == null || result.Rooms.Count == 0)
+        {
+            message = "Seçili tarihler için oda bulunamadı. Lütfen farklı tarihler deneyin.";
+        }
+
         // Oda bilgileri SunHotelsSearchResultV3 içinde Rooms olarak dönüyor
         return Ok(new
         {
+            message,
             hotelId,
             checkIn = checkIn.ToString("yyyy-MM-dd"),
             checkOut = checkOut.ToString("yyyy-MM-dd"),

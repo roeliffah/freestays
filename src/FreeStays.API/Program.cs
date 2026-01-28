@@ -46,6 +46,9 @@ builder.Host.UseSerilog();
 // Add services to the container
 builder.Services.AddControllers();
 
+// ✅ HttpClient Factory for typed clients
+builder.Services.AddHttpClient();
+
 // JWT Settings
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>()!;
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
@@ -171,21 +174,28 @@ try
 {
     Log.Information("🚀 Configuring Hangfire with PostgreSQL storage...");
 
-    // ✅ Npgsql bağlantı havuzunu optimize et
+    // ✅ Npgsql bağlantı havuzunu optimize et - Remote DB için daha uzun timeout'lar
     var connectionStringBuilder = new Npgsql.NpgsqlConnectionStringBuilder(defaultConnectionString)
     {
         MaxPoolSize = 20,              // ✅ Max concurrent connections for Hangfire
-        MinPoolSize = 5,               // ✅ Min idle connections
-        CommandTimeout = 30,           // ✅ Command timeout (seconds)
-        Timeout = 15,                  // ✅ Connection open timeout (seconds)
-        KeepAlive = 30,                // ✅ Keep alive interval (seconds) for idle connections
+        MinPoolSize = 2,               // ✅ Min idle connections (reduced for development)
+        CommandTimeout = 120,          // ✅ Command timeout (seconds) - 2 minutes for remote DB
+        Timeout = 60,                  // ✅ Connection open timeout (seconds) - 1 minute
+        KeepAlive = 60,                // ✅ Keep alive interval (seconds) for idle connections
         Multiplexing = false,          // ✅ Multiplexing false (keepalive ile uyumsuz)
         NoResetOnClose = false         // ✅ Reset connection when returned to pool
     };
 
     builder.Services.AddHangfire(config =>
     {
-        config.UsePostgreSqlStorage(connectionStringBuilder.ToString());
+        config.UsePostgreSqlStorage(connectionStringBuilder.ToString(), new Hangfire.PostgreSql.PostgreSqlStorageOptions
+        {
+            DistributedLockTimeout = TimeSpan.FromMinutes(5),  // ✅ Lock timeout - 5 minutes for remote DB
+            QueuePollInterval = TimeSpan.FromSeconds(30),      // ✅ Queue polling interval - less aggressive
+            InvisibilityTimeout = TimeSpan.FromMinutes(60),    // ✅ Job visibility timeout - 1 hour
+            PrepareSchemaIfNecessary = true,                   // ✅ Auto-create schema
+            SchemaName = "hangfire"                            // ✅ Explicit schema name
+        });
         config.UseSimpleAssemblyNameTypeSerializer();
         config.UseRecommendedSerializerSettings();
     });

@@ -33,51 +33,8 @@ public class AdminController : BaseApiController
 
     #endregion
 
-    #region Bookings Management
-
-    /// <summary>
-    /// Tüm rezervasyonları listele
-    /// </summary>
-    [HttpGet("bookings")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAllBookings(
-        [FromQuery] int page = 1,
-        [FromQuery] int pageSize = 20,
-        [FromQuery] BookingStatus? status = null,
-        [FromQuery] BookingType? type = null,
-        [FromQuery] DateTime? fromDate = null,
-        [FromQuery] DateTime? toDate = null)
-    {
-        var result = await Mediator.Send(new GetAllBookingsQuery
-        {
-            Page = page,
-            PageSize = pageSize,
-            Status = status,
-            Type = type,
-            FromDate = fromDate,
-            ToDate = toDate
-        });
-        return Ok(result);
-    }
-
-    /// <summary>
-    /// Rezervasyon durumunu güncelle
-    /// </summary>
-    [HttpPatch("bookings/{id}/status")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateBookingStatus(Guid id, [FromBody] UpdateBookingStatusRequest request)
-    {
-        var result = await Mediator.Send(new UpdateBookingStatusCommand
-        {
-            Id = id,
-            Status = request.Status,
-            Notes = request.Notes
-        });
-        return Ok(result);
-    }
-
-    #endregion
+    // NOTE: Bookings Management moved to AdminBookingsController
+    // See: /api/v1/admin/bookings/* endpoints
 
     #region Coupons Management
 

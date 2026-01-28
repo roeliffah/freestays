@@ -25,6 +25,13 @@ public class PaymentSettingRepository : Repository<PaymentSetting>, IPaymentSett
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<PaymentSetting?> GetActiveSingleAsync(CancellationToken cancellationToken = default)
+    {
+        return await _dbSet
+            .Where(p => p.IsActive)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
+
     public async Task<PaymentSetting?> GetActiveLiveProviderAsync(CancellationToken cancellationToken = default)
     {
         return await _dbSet

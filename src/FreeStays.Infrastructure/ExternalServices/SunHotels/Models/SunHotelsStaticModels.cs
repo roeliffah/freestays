@@ -259,6 +259,11 @@ public class SunHotelsPreBookResultV3
     public DateTime? EarliestNonFreeCancellationDateLocal { get; set; }
     public string? HotelNotes { get; set; }
     public string? RoomNotes { get; set; }
+
+    // Error handling
+    public string? Error { get; set; }
+    public string? ErrorCode { get; set; }
+    public bool HasError => !string.IsNullOrEmpty(Error);
 }
 
 /// <summary>
@@ -353,21 +358,34 @@ public class SunHotelsBookResultV3
     public string HotelAddress { get; set; } = string.Empty;
     public string? HotelPhone { get; set; }
     public string RoomType { get; set; } = string.Empty;
+    public string? EnglishRoomType { get; set; }
     public int MealId { get; set; }
     public string MealName { get; set; } = string.Empty;
+    public string? MealLabel { get; set; }
+    public string? EnglishMeal { get; set; }
+    public string? EnglishMealLabel { get; set; }
     public DateTime CheckIn { get; set; }
     public DateTime CheckOut { get; set; }
     public int NumberOfRooms { get; set; }
     public decimal TotalPrice { get; set; }
+    public List<decimal> Prices { get; set; } = new();
     public string Currency { get; set; } = string.Empty;
     public DateTime BookingDate { get; set; }
+    public string? BookingDateTimezone { get; set; }
     public string? Voucher { get; set; }
     public string? YourRef { get; set; }
     public string? InvoiceRef { get; set; }
+    public string? BookedBy { get; set; }
     public List<SunHotelsCancellationPolicy> CancellationPolicies { get; set; } = new();
+    public List<string> CancellationPolicyTexts { get; set; } = new();
     public DateTime? EarliestNonFreeCancellationDateCET { get; set; }
     public DateTime? EarliestNonFreeCancellationDateLocal { get; set; }
     public string? ErrorMessage { get; set; }
+
+    /// <summary>
+    /// Raw XML response from SunHotels API (for debugging)
+    /// </summary>
+    public string? RawXmlResponse { get; set; }
 }
 
 #endregion

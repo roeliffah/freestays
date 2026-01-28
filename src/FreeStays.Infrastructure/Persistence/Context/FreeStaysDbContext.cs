@@ -24,6 +24,7 @@ public class FreeStaysDbContext : DbContext
     public DbSet<Coupon> Coupons => Set<Coupon>();
     public DbSet<ExternalServiceConfig> ExternalServiceConfigs => Set<ExternalServiceConfig>();
     public DbSet<ReferralEarning> ReferralEarnings => Set<ReferralEarning>();
+    public DbSet<FailedPayment> FailedPayments => Set<FailedPayment>();
 
     // Admin & CMS Entities
     public DbSet<Translation> Translations => Set<Translation>();
@@ -35,6 +36,7 @@ public class FreeStaysDbContext : DbContext
     public DbSet<FeaturedHotel> FeaturedHotels => Set<FeaturedHotel>();
     public DbSet<FeaturedDestination> FeaturedDestinations => Set<FeaturedDestination>();
     public DbSet<EmailTemplate> EmailTemplates => Set<EmailTemplate>();
+    public DbSet<EmailSetting> EmailSettings => Set<EmailSetting>();
     public DbSet<SiteSetting> SiteSettings => Set<SiteSetting>();
     public DbSet<SeoSetting> SeoSettings => Set<SeoSetting>();
     public DbSet<PaymentSetting> PaymentSettings => Set<PaymentSetting>();

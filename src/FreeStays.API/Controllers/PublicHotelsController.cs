@@ -166,8 +166,10 @@ public class PublicHotelsController : ControllerBase
             var ci = checkIn ?? DateTime.Today.AddDays(30);
             var co = checkOut ?? DateTime.Today.AddDays(37);
 
-            // destinationId yoksa, verilen destination adından cache üzerinden bulmaya çalış
+            // destinationId yoksa, verilen destination adından veya resortIds'den bulmaya çalış
             string? resolvedDestinationId = destinationId;
+
+            // 1. Önce destination tablosundan ara
             if (string.IsNullOrWhiteSpace(resolvedDestinationId) && !string.IsNullOrWhiteSpace(destination))
             {
                 var allDestinations = await _cacheService.GetAllDestinationsAsync(cancellationToken);
@@ -177,9 +179,39 @@ public class PublicHotelsController : ControllerBase
                 resolvedDestinationId = match?.DestinationId.ToString();
             }
 
-            if (string.IsNullOrWhiteSpace(resolvedDestinationId))
+            // 2. Destination tablosunda bulunamadıysa, resort tablosundan ara (Fethiye, Alanya gibi resort isimleri için)
+            if (string.IsNullOrWhiteSpace(resolvedDestinationId) && !string.IsNullOrWhiteSpace(destination))
             {
-                return BadRequest(new { message = "destinationId veya destination adı gerekli" });
+                var allResorts = await _cacheService.GetAllResortsAsync("en", cancellationToken);
+                var resortMatch = allResorts
+                    .FirstOrDefault(r => r.Name.Equals(destination, StringComparison.OrdinalIgnoreCase) ||
+                                         r.Name.Contains(destination, StringComparison.OrdinalIgnoreCase));
+                if (resortMatch != null)
+                {
+                    resolvedDestinationId = resortMatch.DestinationId;
+                    _logger.LogInformation("Destination '{Destination}' found as resort, using destinationId: {DestinationId}", destination, resolvedDestinationId);
+                }
+            }
+
+            // 3. Hala bulunamadıysa ve resortIds verilmişse, ilk resort'un destinationId'sini kullan
+            if (string.IsNullOrWhiteSpace(resolvedDestinationId) && !string.IsNullOrWhiteSpace(resortIds))
+            {
+                var firstResortIdStr = resortIds.Split(',').FirstOrDefault()?.Trim();
+                if (int.TryParse(firstResortIdStr, out var firstResortId))
+                {
+                    var resort = await _cacheService.GetResortByIdAsync(firstResortId, "en", cancellationToken);
+                    if (resort != null)
+                    {
+                        resolvedDestinationId = resort.DestinationId;
+                        _logger.LogInformation("Using destinationId {DestinationId} from resortId {ResortId}", resolvedDestinationId, firstResortId);
+                    }
+                }
+            }
+
+            // resortIds verilmişse destinationId zorunlu değil, aksi halde gerekli
+            if (string.IsNullOrWhiteSpace(resolvedDestinationId) && string.IsNullOrWhiteSpace(resortIds))
+            {
+                return BadRequest(new { message = "destinationId, destination adı veya resortIds gerekli" });
             }
 
             // type → accommodationTypes normalize
@@ -209,10 +241,14 @@ public class PublicHotelsController : ControllerBase
                 ? themeIds
                 : themeId;
 
+            // SunHotels API sadece şunlardan birini kabul eder: destination, destinationID, hotelIDs veya resortIDs
+            // Eğer resortIds verilmişse, destinationId gönderme
+            var useResortIds = !string.IsNullOrWhiteSpace(resortIds);
+
             var request = new SunHotelsSearchRequestV3
             {
-                DestinationId = resolvedDestinationId!,
-                Destination = destination,
+                DestinationId = useResortIds ? null : resolvedDestinationId,
+                Destination = useResortIds ? null : null, // destination string de gönderilmemeli
                 CheckIn = ci,
                 CheckOut = co,
                 NumberOfRooms = 1,
@@ -237,7 +273,7 @@ public class PublicHotelsController : ControllerBase
             };
 
             _logger.LogInformation("Public search V3: destinationId={DestinationId}, destination={Destination}, checkIn={CheckIn}, checkOut={CheckOut}, adults={Adults}, children={Children}, types={Types}, resortIds={ResortIds}, themeIds={ThemeIds}",
-                request.DestinationId, request.Destination, request.CheckIn, request.CheckOut, request.Adults, request.Children, request.AccommodationTypes, request.ResortIds, request.ThemeIds);
+                request.DestinationId ?? "(using resortIds)", destination, request.CheckIn, request.CheckOut, request.Adults, request.Children, request.AccommodationTypes, request.ResortIds, request.ThemeIds);
 
             var results = await _sunHotelsService.SearchHotelsV3Async(request, cancellationToken);
 

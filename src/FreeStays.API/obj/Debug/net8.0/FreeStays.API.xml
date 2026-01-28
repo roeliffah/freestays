@@ -4,6 +4,85 @@
         <name>FreeStays.API</name>
     </assembly>
     <members>
+        <member name="T:FreeStays.API.Controllers.Admin.AdminBookingsController">
+            <summary>
+            Admin Booking Management - Rezervasyon yönetimi
+            - Başarısız SunHotels rezervasyonlarını yeniden gönderme
+            - Stripe üzerinden iade işlemleri
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminBookingsController.GetAll(System.Nullable{FreeStays.Domain.Enums.BookingStatus},System.Nullable{FreeStays.Domain.Enums.BookingType},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.String,System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Tüm rezervasyonları listeler (filtreleme ile)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminBookingsController.GetFailedConfirmations(System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Ödeme alınmış ama SunHotels rezervasyonu başarısız olan rezervasyonları listeler
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminBookingsController.GetById(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Rezervasyon detayını getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminBookingsController.RetrySunHotelsBooking(System.Guid,FreeStays.API.Controllers.Admin.RetrySunHotelsRequest,System.Threading.CancellationToken)">
+            <summary>
+            Başarısız SunHotels rezervasyonunu yeniden gönderir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminBookingsController.RefundBooking(System.Guid,FreeStays.API.Controllers.Admin.RefundRequest,System.Threading.CancellationToken)">
+            <summary>
+            Stripe üzerinden tam veya kısmi iade yapar
+            İptal politikasını kontrol ederek uyarı verir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminBookingsController.GetRefundStatus(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Rezervasyonun iade durumunu kontrol eder
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminBookingsController.CancelSunHotelsBooking(System.Guid,FreeStays.API.Controllers.Admin.CancelSunHotelsRequest,System.Threading.CancellationToken)">
+            <summary>
+            SunHotels rezervasyonunu iptal eder
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminBookingsController.GetStats(System.Threading.CancellationToken)">
+            <summary>
+            Rezervasyon istatistiklerini getirir
+            </summary>
+        </member>
+        <member name="P:FreeStays.API.Controllers.Admin.RefundRequest.Amount">
+            <summary>
+            İade tutarı. Null ise tam iade yapılır.
+            </summary>
+        </member>
+        <member name="P:FreeStays.API.Controllers.Admin.RefundRequest.Reason">
+            <summary>
+            İade sebebi: duplicate, fraudulent, requested_by_customer
+            </summary>
+        </member>
+        <member name="P:FreeStays.API.Controllers.Admin.RefundRequest.AdminNote">
+            <summary>
+            Admin notu
+            </summary>
+        </member>
+        <member name="P:FreeStays.API.Controllers.Admin.RefundRequest.SendRefundEmail">
+            <summary>
+            Müşteriye iade emaili gönderilsin mi?
+            </summary>
+        </member>
+        <member name="P:FreeStays.API.Controllers.Admin.RefundRequest.ForceRefund">
+            <summary>
+            Non-refundable rezervasyonlarda iade zorla yapılsın mı?
+            true ise politikaya rağmen iade yapılır (zarar ederiz)
+            </summary>
+        </member>
+        <member name="P:FreeStays.API.Controllers.Admin.CancelSunHotelsRequest.ProcessRefund">
+            <summary>
+            İptal sonrası otomatik iade yapılsın mı?
+            </summary>
+        </member>
         <member name="M:FreeStays.API.Controllers.Admin.AdminCustomersController.GetCustomers(System.Int32,System.Int32,System.String,System.Nullable{System.Boolean},System.String,System.Boolean)">
             <summary>
             Tüm müşterileri listele
@@ -27,6 +106,47 @@
         <member name="M:FreeStays.API.Controllers.Admin.AdminCustomersController.GetCustomerBookings(System.Guid,System.Int32,System.Int32)">
             <summary>
             Müşterinin rezervasyonlarını getir
+            </summary>
+        </member>
+        <member name="T:FreeStays.API.Controllers.Admin.AdminFailedPaymentsController">
+            <summary>
+            After-Sale: Başarısız ödemelerin yönetimi
+            Python: failed_payments collection karşılığı
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminFailedPaymentsController.GetAll(System.String,System.String,System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Tüm başarısız ödemeleri listeler
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminFailedPaymentsController.GetStats(System.Threading.CancellationToken)">
+            <summary>
+            İstatistikleri getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminFailedPaymentsController.GetById(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Başarısız ödeme detayını getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminFailedPaymentsController.SendFollowUpEmail(System.Guid,FreeStays.API.Controllers.Admin.SendFollowUpRequest,System.Threading.CancellationToken)">
+            <summary>
+            Manuel follow-up email gönderir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminFailedPaymentsController.UpdateStatus(System.Guid,FreeStays.API.Controllers.Admin.UpdateStatusRequest,System.Threading.CancellationToken)">
+            <summary>
+            Durumu günceller
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminFailedPaymentsController.GetAfterSaleSettings(System.Threading.CancellationToken)">
+            <summary>
+            AfterSale ayarlarını getirir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminFailedPaymentsController.UpdateAfterSaleSettings(FreeStays.API.Controllers.Admin.AfterSaleSettingsDto,System.Threading.CancellationToken)">
+            <summary>
+            AfterSale ayarlarını günceller
             </summary>
         </member>
         <member name="M:FreeStays.API.Controllers.Admin.AdminFaqsController.GetAllFaqs">
@@ -200,6 +320,11 @@
             Recurring job'ı manuel tetikle
             </summary>
         </member>
+        <member name="M:FreeStays.API.Controllers.Admin.AdminJobsController.SchedulePopularDestinationsWarmup(System.String,System.Int32)">
+            <summary>
+            Popüler destinasyon warmup için nightly recurring job oluştur/güncelle
+            </summary>
+        </member>
         <member name="M:FreeStays.API.Controllers.Admin.AdminJobsController.CleanupAllRecurringJobs">
             <summary>
             Tüm mevcut recurring job'ları sil (cleanup)
@@ -275,19 +400,19 @@
             Ödeme bağlantısını test et
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.GetSmtpSettings">
+        <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.GetEmailSettings(FreeStays.Domain.Interfaces.IEmailSettingRepository)">
             <summary>
-            SMTP ayarlarını getir
+            Email ayarlarını getir
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.UpdateSmtpSettings(FreeStays.API.Controllers.Admin.UpdateSmtpSettingsRequest)">
+        <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.UpdateEmailSettings(FreeStays.API.Controllers.Admin.UpdateEmailSettingsRequest,FreeStays.Domain.Interfaces.IEmailSettingRepository,FreeStays.Domain.Interfaces.IUnitOfWork)">
             <summary>
-            SMTP ayarlarını güncelle
+            Email ayarlarını güncelle
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.TestSmtpConnection(FreeStays.API.Controllers.Admin.TestSmtpConnectionRequest)">
+        <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.TestEmailConnection(FreeStays.API.Controllers.Admin.TestEmailConnectionRequest,FreeStays.Application.Common.Interfaces.IEmailService)">
             <summary>
-            SMTP bağlantısını test et
+            Email bağlantısını test et
             </summary>
         </member>
         <member name="M:FreeStays.API.Controllers.Admin.AdminSettingsController.GetSocialSettings">
@@ -535,16 +660,6 @@
             Dashboard istatistikleri, son rezervasyonlar ve popüler destinasyonlar
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.AdminController.GetAllBookings(System.Int32,System.Int32,System.Nullable{FreeStays.Domain.Enums.BookingStatus},System.Nullable{FreeStays.Domain.Enums.BookingType},System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
-            <summary>
-            Tüm rezervasyonları listele
-            </summary>
-        </member>
-        <member name="M:FreeStays.API.Controllers.AdminController.UpdateBookingStatus(System.Guid,FreeStays.API.Controllers.UpdateBookingStatusRequest)">
-            <summary>
-            Rezervasyon durumunu güncelle
-            </summary>
-        </member>
         <member name="M:FreeStays.API.Controllers.AdminController.GetAllCoupons(System.Int32,System.Int32,System.Nullable{System.Boolean})">
             <summary>
             Tüm kuponları listele
@@ -670,6 +785,11 @@
             Rezervasyonu iptal et
             </summary>
         </member>
+        <member name="M:FreeStays.API.Controllers.BookingsController.GetVoucherData(System.String)">
+            <summary>
+            Rezervasyon voucher verilerini getir (bookingNumber ile)
+            </summary>
+        </member>
         <member name="M:FreeStays.API.Controllers.CarsController.SearchCars(FreeStays.API.Controllers.SearchCarsRequest)">
             <summary>
             Araç ara
@@ -750,6 +870,155 @@
         <member name="M:FreeStays.API.Controllers.FlightsController.GetPopularRoutes(System.Int32)">
             <summary>
             Popüler rotaları getir
+            </summary>
+        </member>
+        <member name="T:FreeStays.API.Controllers.HotelBookingsController">
+            <summary>
+            Otel rezervasyon akışı (Prebook → Payment → BookV3)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.HotelBookingsController.PreBook(FreeStays.API.Controllers.HotelBookingsController.HotelPreBookRequest,System.Threading.CancellationToken)">
+            <summary>
+            Ön-rezervasyon (Fiyat ve vergi bilgisini kontrol et)
+            Frontend: Oda seçiminden sonra çağrılıyor, Stripe payment intent oluşturuluyor
+            Misafir kullanıcılar da rezervasyon yapabilir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.HotelBookingsController.ConfirmBooking(FreeStays.API.Controllers.HotelBookingsController.HotelBookConfirmRequest,System.Threading.CancellationToken)">
+            <summary>
+            Ödemeden sonra nihai rezervasyon (BookV3)
+            Webhook'tan veya PreBookCode ile çağrılıyor
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.HotelBookingsController.GenerateAdultGuestList(System.Int32,System.String,System.String)">
+            <summary>
+            PreBook'taki Adults sayısına göre guest listesi oluşturur
+            İlk guest gerçek bilgi, diğerleri dummy
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.HotelBookingsController.CreateCheckoutSession(FreeStays.API.Controllers.HotelBookingsController.HotelCheckoutRequest,System.Threading.CancellationToken)">
+            <summary>
+            Stripe Checkout Session oluştur (PreBook + Checkout)
+            Frontend: Kullanıcı rezervasyon başlattığında çağrılır
+            Misafir kullanıcılar da rezervasyon yapabilir
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.HotelBookingsController.GetCheckoutSessionStatus(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Checkout session durumunu kontrol et (Success page için)
+            Frontend success sayfasında session_id ile bu endpoint'i çağırır
+            </summary>
+        </member>
+        <member name="T:FreeStays.API.Controllers.HotelBookingsController.GuestDto">
+            <summary>
+            Guest bilgisi (yetişkin)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.HotelBookingsController.GuestDto.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Guest bilgisi (yetişkin)
+            </summary>
+        </member>
+        <member name="T:FreeStays.API.Controllers.HotelBookingsController.ChildDto">
+            <summary>
+            Çocuk guest bilgisi
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.HotelBookingsController.ChildDto.#ctor(System.String,System.String,System.Int32)">
+            <summary>
+            Çocuk guest bilgisi
+            </summary>
+        </member>
+        <member name="T:FreeStays.API.Controllers.HotelBookingsController.ContactInfoDto">
+            <summary>
+            İletişim bilgileri
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.HotelBookingsController.ContactInfoDto.#ctor(System.String,System.String)">
+            <summary>
+            İletişim bilgileri
+            </summary>
+        </member>
+        <member name="T:FreeStays.API.Controllers.HotelBookingsController.HotelPreBookRequest">
+            <summary>
+            PreBook isteği - README formatına uygun
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.HotelBookingsController.HotelPreBookRequest.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.DateTime,System.DateTime,System.Int32,System.Int32,System.Int32,System.String,System.Nullable{System.Int32},System.String,System.String,System.String,System.Decimal,System.Boolean,System.Collections.Generic.List{FreeStays.API.Controllers.HotelBookingsController.GuestDto},System.Collections.Generic.List{FreeStays.API.Controllers.HotelBookingsController.ChildDto},FreeStays.API.Controllers.HotelBookingsController.ContactInfoDto,System.String,System.String,System.String,System.String)">
+            <summary>
+            PreBook isteği - README formatına uygun
+            </summary>
+        </member>
+        <member name="T:FreeStays.API.Controllers.HotelBookingsController.HotelPreBookResponse">
+            <summary>
+            PreBook yanıtı - README formatına uygun
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.HotelBookingsController.HotelPreBookResponse.#ctor(System.Boolean,System.Guid,System.String,System.Decimal,System.Decimal,System.String,System.Boolean,System.Nullable{System.Decimal},System.DateTime,System.String,System.String,System.String,System.Collections.Generic.List{FreeStays.API.Controllers.HotelBookingsController.FeeDto},System.String)">
+            <summary>
+            PreBook yanıtı - README formatına uygun
+            </summary>
+        </member>
+        <member name="T:FreeStays.API.Controllers.HotelBookingsController.HotelCheckoutRequest">
+            <summary>
+            Checkout Session isteği - README formatına uygun
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.HotelBookingsController.HotelCheckoutRequest.#ctor(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.DateTime,System.DateTime,System.Int32,System.Int32,System.Int32,System.String,System.String,System.String,System.String,System.Decimal,System.Boolean,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.String,System.Nullable{System.Int32},System.String,System.String,System.String)">
+            <summary>
+            Checkout Session isteği - README formatına uygun
+            </summary>
+        </member>
+        <member name="T:FreeStays.API.Controllers.HotelBookingsController.CheckoutSessionResponse">
+            <summary>
+            Checkout Session yanıtı - README formatına uygun
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.HotelBookingsController.CheckoutSessionResponse.#ctor(System.Boolean,System.String,System.String,System.Nullable{System.Guid},System.String,System.Nullable{System.Decimal},System.String,System.String)">
+            <summary>
+            Checkout Session yanıtı - README formatına uygun
+            </summary>
+        </member>
+        <member name="T:FreeStays.API.Controllers.HotelBookingsController.HotelBookConfirmRequest">
+            <summary>
+            Booking onaylama isteği - README formatına uygun
+            PreBookCode veya BookingId ile çalışır
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.HotelBookingsController.HotelBookConfirmRequest.#ctor(System.String,System.Nullable{System.Guid},System.String)">
+            <summary>
+            Booking onaylama isteği - README formatına uygun
+            PreBookCode veya BookingId ile çalışır
+            </summary>
+        </member>
+        <member name="T:FreeStays.API.Controllers.HotelBookingsController.VoucherDto">
+            <summary>
+            Voucher bilgisi
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.HotelBookingsController.VoucherDto.#ctor(System.String,System.String)">
+            <summary>
+            Voucher bilgisi
+            </summary>
+        </member>
+        <member name="T:FreeStays.API.Controllers.HotelBookingsController.HotelBookConfirmResponse">
+            <summary>
+            Booking onaylama yanıtı - README formatına uygun
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.HotelBookingsController.HotelBookConfirmResponse.#ctor(System.Boolean,System.String,System.String,System.String,System.String,FreeStays.API.Controllers.HotelBookingsController.VoucherDto,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Decimal},System.String,System.String)">
+            <summary>
+            Booking onaylama yanıtı - README formatına uygun
+            </summary>
+        </member>
+        <member name="T:FreeStays.API.Controllers.HotelBookingsController.CheckoutSessionStatusResponse">
+            <summary>
+            Checkout Session Status yanıtı - Success page için
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.HotelBookingsController.CheckoutSessionStatusResponse.#ctor(System.String,System.String,System.String,System.Boolean,System.Boolean,System.Nullable{System.Guid},System.String,System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.String,System.String,System.Nullable{System.Decimal},System.String,System.String,System.Nullable{System.DateTime},System.String)">
+            <summary>
+            Checkout Session Status yanıtı - Success page için
             </summary>
         </member>
         <member name="M:FreeStays.API.Controllers.HotelsController.SearchHotels(FreeStays.Application.Features.Hotels.Queries.SearchHotelsQuery)">
@@ -850,22 +1119,51 @@
         </member>
         <member name="M:FreeStays.API.Controllers.PaymentsController.InitiatePayment(FreeStays.API.Controllers.InitiatePaymentRequest)">
             <summary>
-            Ödeme başlat
+            Ödeme başlat (PaymentIntent oluştur)
+            Authentication gerektirmez - verification token veya user auth ile çalışır
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.PaymentsController.GetPaymentStatus(System.Guid)">
+        <member name="M:FreeStays.API.Controllers.PaymentsController.GetCheckoutSessionStatus(System.String,System.Threading.CancellationToken)">
             <summary>
-            Ödeme durumunu kontrol et
+            Checkout Session durumunu kontrol et (Success page için)
+            Frontend success sayfasında session_id ile bu endpoint'i çağırır
+            Ödeme başarılıysa ve booking hala Pending ise otomatik SunHotels confirm yapılır
             </summary>
         </member>
-        <member name="M:FreeStays.API.Controllers.PaymentsController.RefundPayment(System.Guid,FreeStays.API.Controllers.RefundRequest)">
+        <member name="M:FreeStays.API.Controllers.PaymentsController.GetStatusMessage(System.Boolean,System.Boolean,FreeStays.Domain.Entities.Booking)">
+            <summary>
+            Ödeme durumuna göre kullanıcıya gösterilecek mesaj
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.PaymentsController.ConfirmHotelBookingAsync(FreeStays.Domain.Entities.Booking,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Otel rezervasyonunu SunHotels ile onaylama (BookV3)
+            Raw SQL kullanarak güncelleme yapılır (EF tracking sorunlarını önler)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.PaymentsController.SendConfirmationEmailAsync(FreeStays.Domain.Entities.Booking,System.String,System.String,System.String,System.String,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Rezervasyon onay emaili gönder
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.PaymentsController.GenerateConfirmationEmailHtml(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Collections.Generic.List{System.String},System.String)">
+            <summary>
+            Rezervasyon onay emaili HTML içeriği oluştur
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.PaymentsController.GenerateAdultGuestList(System.Int32,System.String,System.String)">
+            <summary>
+            Adult guest listesi oluştur
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.PaymentsController.RefundPayment(System.String,FreeStays.API.Controllers.RefundRequest)">
             <summary>
             Ödeme iade et
             </summary>
         </member>
         <member name="M:FreeStays.API.Controllers.PaymentsController.GetPaymentHistory(System.Int32,System.Int32)">
             <summary>
-            Ödeme geçmişi
+            Ödeme geçmişini getir
             </summary>
         </member>
         <member name="T:FreeStays.API.Controllers.PublicHomePageController">
@@ -1217,6 +1515,34 @@
             SunHotels resim URL'lerini düzgün formata dönüştürür
             http://xml.sunhotels.net/15/GetImage.aspx?id=78713614 
             → https://hotelimages.sunhotels.net/HotelInfo/hotelImage.aspx?id=78713614&amp;full=1
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.WebhooksController.HandleCheckoutSessionCompletedAsync(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            README: checkout.session.completed event handler
+            Stripe Checkout başarılı olduğunda çağrılır
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.WebhooksController.HandleCheckoutSessionExpiredAsync(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            After-Sale: Checkout session süresi dolduğunda çağrılır
+            Müşteri ödeme yapmadan session'ı kapattı
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.WebhooksController.HandleAsyncPaymentFailedAsync(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            After-Sale: Async ödeme başarısız olduğunda çağrılır (SEPA, Bancontact vb.)
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.WebhooksController.StoreFailedPaymentAsync(System.Collections.Generic.Dictionary{System.String,System.Object},System.String)">
+            <summary>
+            Başarısız ödemeyi kaydeder ve after-sale takibi için saklar
+            Python: handle_failed_payment() karşılığı
+            </summary>
+        </member>
+        <member name="M:FreeStays.API.Controllers.WebhooksController.TrySendAfterSaleEmailAsync(FreeStays.Domain.Entities.FailedPayment)">
+            <summary>
+            After-sale ayarları aktifse otomatik follow-up email gönderir
             </summary>
         </member>
         <member name="M:FreeStays.API.Services.IFileUploadService.UploadFileAsync(Microsoft.AspNetCore.Http.IFormFile,System.String,System.Threading.CancellationToken)">

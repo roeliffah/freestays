@@ -846,6 +846,29 @@ public class SunHotelsController : ControllerBase
             // Fix image URLs
             var fixedImages = FixImageUrls(result.ImageUrls);
 
+            // Get room images from static cache (Python best practice: enrich rooms with static data)
+            var cachedRooms = await _cacheService.GetRoomsByHotelAsync(hotelId, language, cancellationToken);
+            var roomImagesMap = cachedRooms
+                .GroupBy(r => r.RoomTypeId)
+                .ToDictionary(
+                    g => g.Key,
+                    g =>
+                    {
+                        var room = g.FirstOrDefault();
+                        if (room == null || string.IsNullOrEmpty(room.ImageUrls) || room.ImageUrls == "[]")
+                            return new List<string>();
+                        try
+                        {
+                            var images = System.Text.Json.JsonSerializer.Deserialize<List<string>>(room.ImageUrls);
+                            return FixImageUrls(images ?? new List<string>());
+                        }
+                        catch
+                        {
+                            return new List<string>();
+                        }
+                    }
+                );
+
             // Calculate room prices and build room details
             var roomsWithDetails = result.Rooms?.Select(room =>
             {
@@ -858,6 +881,9 @@ public class SunHotelsController : ControllerBase
                 var nights = (checkOut - checkIn).Days;
                 var pricePerNight = nights > 0 ? roomFinalPrice / nights : roomFinalPrice;
 
+                // Get room images from cache map (Python: enrich_rooms_with_static_data)
+                var roomImages = roomImagesMap.TryGetValue(room.RoomTypeId, out var imgs) ? imgs : new List<string>();
+
                 return new
                 {
                     roomId = room.RoomId,
@@ -865,6 +891,7 @@ public class SunHotelsController : ControllerBase
                     roomTypeName = room.RoomTypeName,
                     name = room.Name,
                     description = room.Description,
+                    images = roomImages, // 🆕 Oda resimleri
                     mealId = room.MealId,
                     mealName = room.MealName,
                     price = new
@@ -1020,11 +1047,13 @@ public class SunHotelsController : ControllerBase
     {
         try
         {
-            _logger.LogInformation("Creating prebook for hotel {HotelId}", request.HotelId);
+            _logger.LogInformation("Creating prebook for hotel {HotelId}, Adults={Adults}, Children={Children}",
+                request.HotelId, request.Adults, request.Children);
 
             var result = await _sunHotelsService.PreBookV3Async(request, cancellationToken);
 
-            _logger.LogInformation("Prebook created with code: {PreBookCode}", result.PreBookCode);
+            _logger.LogInformation("Prebook created with code: {PreBookCode}, Adults was: {Adults}",
+                result.PreBookCode, request.Adults);
             return Ok(result);
         }
         catch (Exception ex)
@@ -1043,7 +1072,16 @@ public class SunHotelsController : ControllerBase
     {
         try
         {
-            _logger.LogInformation("Creating booking with prebook code: {PreBookCode}", request.PreBookCode);
+            _logger.LogInformation("Frontend BookV3 Request: PreBookCode={PreBookCode}, Adults={Adults}, Children={Children}, AdultGuestCount={AdultGuestCount}, ChildGuestCount={ChildGuestCount}",
+                request.PreBookCode, request.Adults, request.Children, request.AdultGuests.Count, request.ChildrenGuests.Count);
+
+            if (request.AdultGuests.Count > 0)
+            {
+                for (int i = 0; i < request.AdultGuests.Count; i++)
+                {
+                    _logger.LogInformation("  AdultGuest{Index}: {FirstName} {LastName}", i + 1, request.AdultGuests[i].FirstName, request.AdultGuests[i].LastName);
+                }
+            }
 
             var result = await _sunHotelsService.BookV3Async(request, cancellationToken);
 

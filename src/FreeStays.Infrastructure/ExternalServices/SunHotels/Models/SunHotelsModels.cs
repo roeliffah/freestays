@@ -98,9 +98,42 @@ public class SunHotelsBookResult
     public string Message { get; set; } = string.Empty;
 }
 
+/// <summary>
+/// SunHotels CancelBooking API yanıt modeli
+/// </summary>
 public class SunHotelsCancelResult
 {
     public bool Success { get; set; }
+    public int Code { get; set; }
     public string Message { get; set; } = string.Empty;
-    public decimal? RefundAmount { get; set; }
+    public List<CancellationPaymentMethod> PaymentMethods { get; set; } = new();
+}
+
+/// <summary>
+/// İptal ödeme yöntemi detayları
+/// </summary>
+public class CancellationPaymentMethod
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public List<CancellationFee> CancellationFees { get; set; } = new();
+    public List<CancellationInfo> Cancellations { get; set; } = new();
+}
+
+/// <summary>
+/// İptal ücreti
+/// </summary>
+public class CancellationFee
+{
+    public decimal Amount { get; set; }
+    public string Currency { get; set; } = string.Empty;
+}
+
+/// <summary>
+/// İptal bilgisi
+/// </summary>
+public class CancellationInfo
+{
+    public string Type { get; set; } = string.Empty;
+    public string PolicyText { get; set; } = string.Empty;
 }

@@ -36,6 +36,9 @@ public static class DatabaseSeeder
             // Seed Email Templates
             await SeedEmailTemplatesAsync(context, logger);
 
+            // Seed Email Settings (SMTP)
+            await SeedEmailSettingsAsync(context, logger);
+
             // Seed Site Settings
             await SeedSiteSettingsAsync(context, logger);
 
@@ -194,6 +197,35 @@ public static class DatabaseSeeder
         await context.SaveChangesAsync();
 
         logger.LogInformation("Email templates seeded: {Count} templates", templates.Count);
+    }
+
+    private static async Task SeedEmailSettingsAsync(FreeStaysDbContext context, ILogger logger)
+    {
+        if (await context.EmailSettings.AnyAsync())
+        {
+            logger.LogInformation("Email settings already exist, skipping...");
+            return;
+        }
+
+        var emailSetting = new EmailSetting
+        {
+            Id = Guid.NewGuid(),
+            SmtpHost = "",
+            SmtpPort = 587,
+            SmtpUsername = "",
+            SmtpPassword = "",
+            FromEmail = "noreply@freestays.com",
+            FromName = "FreeStays",
+            UseSsl = true,
+            IsActive = false, // Admin tarafından yapılandırılana kadar pasif
+            IsDefault = true,
+            CreatedAt = DateTime.UtcNow
+        };
+
+        await context.EmailSettings.AddAsync(emailSetting);
+        await context.SaveChangesAsync();
+
+        logger.LogInformation("Default email settings seeded (inactive - requires configuration)");
     }
 
     private static async Task SeedSiteSettingsAsync(FreeStaysDbContext context, ILogger logger)

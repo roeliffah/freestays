@@ -1,5 +1,7 @@
 using FreeStays.Infrastructure.BackgroundJobs;
 using Hangfire;
+using Hangfire.Common;
+using Hangfire.States;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,13 +17,16 @@ namespace FreeStays.API.Controllers.Admin;
 public class AdminJobsController : ControllerBase
 {
     private readonly SunHotelsStaticDataSyncJob _syncJob;
+    private readonly PopularDestinationWarmupJob _popularWarmupJob;
     private readonly ILogger<AdminJobsController> _logger;
 
     public AdminJobsController(
         SunHotelsStaticDataSyncJob syncJob,
+        PopularDestinationWarmupJob popularWarmupJob,
         ILogger<AdminJobsController> logger)
     {
         _syncJob = syncJob;
+        _popularWarmupJob = popularWarmupJob;
         _logger = logger;
     }
 
@@ -235,6 +240,33 @@ public class AdminJobsController : ControllerBase
     }
 
     /// <summary>
+    /// Popüler destinasyon warmup için nightly recurring job oluştur/güncelle
+    /// </summary>
+    [HttpPost("recurring/popular-destinations/schedule")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult SchedulePopularDestinationsWarmup([FromQuery] string cron = "0 3 * * *", [FromQuery] int maxCount = 50)
+    {
+        // Default: her gece 03:00
+        var jobId = "popular-destinations-warmup";
+
+        // Recurring job: PopularDestinationWarmupJob.WarmActiveFeaturedDestinationsAsync(maxCount)
+        RecurringJob.AddOrUpdate<PopularDestinationWarmupJob>(jobId,
+            j => j.WarmActiveFeaturedDestinationsAsync(maxCount, null), cron);
+
+        _logger.LogInformation("Scheduled recurring warmup job {JobId} with cron '{Cron}', maxCount={MaxCount}", jobId, cron, maxCount);
+
+        return Ok(new
+        {
+            success = true,
+            jobId,
+            cron,
+            maxCount,
+            message = "Popular destinations warmup scheduled",
+            timestamp = DateTime.UtcNow
+        });
+    }
+
+    /// <summary>
     /// Tüm mevcut recurring job'ları sil (cleanup)
     /// </summary>
     [HttpDelete("recurring/cleanup")]
@@ -247,12 +279,13 @@ public class AdminJobsController : ControllerBase
 
             RecurringJob.RemoveIfExists("sunhotels-static-data-sync");
             RecurringJob.RemoveIfExists("sunhotels-basic-data-sync");
+            RecurringJob.RemoveIfExists("popular-destinations-warmup");
 
             return Ok(new
             {
                 success = true,
                 message = "All recurring jobs removed successfully",
-                removedJobs = new[] { "sunhotels-static-data-sync", "sunhotels-basic-data-sync" },
+                removedJobs = new[] { "sunhotels-static-data-sync", "sunhotels-basic-data-sync", "popular-destinations-warmup" },
                 timestamp = DateTime.UtcNow
             });
         }

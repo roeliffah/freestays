@@ -73,9 +73,12 @@ namespace FreeStays.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
+
+                    b.Property<string>("VerificationToken")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -958,6 +961,55 @@ namespace FreeStays.Infrastructure.Migrations
                     b.ToTable("destinations", (string)null);
                 });
 
+            modelBuilder.Entity("FreeStays.Domain.Entities.EmailSetting", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FromEmail")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("FromName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("SmtpHost")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SmtpPassword")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("SmtpPort")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("SmtpUsername")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("UseSsl")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmailSettings");
+                });
+
             modelBuilder.Entity("FreeStays.Domain.Entities.EmailTemplate", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1067,6 +1119,74 @@ namespace FreeStays.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("external_service_configs", (string)null);
+                });
+
+            modelBuilder.Entity("FreeStays.Domain.Entities.FailedPayment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid?>("BookingId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CheckIn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("CheckOut")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ContactReason")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ContactedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CustomerEmail")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CustomerName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FailureType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("HotelName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Metadata")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SessionId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookingId");
+
+                    b.ToTable("FailedPayments");
                 });
 
             modelBuilder.Entity("FreeStays.Domain.Entities.Faq", b =>
@@ -1582,6 +1702,15 @@ namespace FreeStays.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("booking_id");
 
+                    b.Property<decimal>("CancellationPercentage")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("CancellationPolicies")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CancellationPolicyText")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CheckIn")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("check_in");
@@ -1594,6 +1723,17 @@ namespace FreeStays.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("children");
 
+                    b.Property<string>("ConfirmationCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("ConfirmationCode");
+
+                    b.Property<bool>("ConfirmationEmailSent")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("ConfirmationEmailSentAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
@@ -1602,6 +1742,12 @@ namespace FreeStays.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
                         .HasColumnName("external_booking_id");
+
+                    b.Property<int>("ExternalHotelId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("FreeCancellationDeadline")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("GuestEmail")
                         .HasMaxLength(256)
@@ -1613,13 +1759,51 @@ namespace FreeStays.Infrastructure.Migrations
                         .HasColumnType("character varying(200)")
                         .HasColumnName("guest_name");
 
-                    b.Property<Guid>("HotelId")
+                    b.Property<string>("GuestPhone")
+                        .HasColumnType("text");
+
+                    b.Property<string>("HotelAddress")
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("HotelId")
                         .HasColumnType("uuid")
                         .HasColumnName("hotel_id");
 
-                    b.Property<string>("RoomTypeId")
+                    b.Property<string>("HotelNotes")
+                        .HasColumnType("text");
+
+                    b.Property<string>("HotelPhone")
+                        .HasColumnType("text");
+
+                    b.Property<string>("InvoiceRef")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsRefundable")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsSuperDeal")
+                        .HasColumnType("boolean");
+
+                    b.Property<decimal?>("MaxRefundableAmount")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("MealId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("MealName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PreBookCode")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("PreBookCode");
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RoomTypeId")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
+                        .HasColumnType("integer")
                         .HasColumnName("room_type_id");
 
                     b.Property<string>("RoomTypeName")
@@ -1631,9 +1815,15 @@ namespace FreeStays.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("special_requests");
 
+                    b.Property<DateTime?>("SunHotelsBookingDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
+
+                    b.Property<string>("Voucher")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -2454,8 +2644,7 @@ namespace FreeStays.Infrastructure.Migrations
                     b.HasOne("FreeStays.Domain.Entities.User", "User")
                         .WithMany("Bookings")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Coupon");
 
@@ -2493,6 +2682,15 @@ namespace FreeStays.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FreeStays.Domain.Entities.FailedPayment", b =>
+                {
+                    b.HasOne("FreeStays.Domain.Entities.Booking", "Booking")
+                        .WithMany()
+                        .HasForeignKey("BookingId");
+
+                    b.Navigation("Booking");
                 });
 
             modelBuilder.Entity("FreeStays.Domain.Entities.FaqTranslation", b =>
@@ -2572,8 +2770,7 @@ namespace FreeStays.Infrastructure.Migrations
                     b.HasOne("FreeStays.Domain.Entities.Hotel", "Hotel")
                         .WithMany("HotelBookings")
                         .HasForeignKey("HotelId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Booking");
 

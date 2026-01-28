@@ -7,5 +7,6 @@ public enum BookingStatus
     Cancelled = 2,
     Completed = 3,
     Failed = 4,
-    Refunded = 5
+    Refunded = 5,
+    ConfirmationFailed = 6  // Ödeme alındı ama SunHotels rezervasyonu başarısız oldu
 }

@@ -109,21 +109,50 @@ public class HangfireManagementController : BaseApiController
     /// Recurring job'ın cron expression'ını günceller
     /// </summary>
     [HttpPut("recurring-jobs/{jobId}/schedule")]
-    public IActionResult UpdateJobSchedule(string jobId, [FromBody] UpdateScheduleRequest request)
+    public IActionResult UpdateJobSchedule(string jobId, [FromBody] UpdateScheduleRequest? request)
     {
         try
         {
+            if (request == null)
+            {
+                return BadRequest(new
+                {
+                    error = "Body is required. Send JSON with cronExpression, timeZone, maxCount",
+                    example = new { cronExpression = "0 3 * * *", timeZone = "Europe/Istanbul", maxCount = 50 }
+                });
+            }
+
+            if (string.IsNullOrWhiteSpace(request.CronExpression))
+            {
+                return BadRequest(new
+                {
+                    error = "cronExpression is required (e.g. '0 3 * * *')."
+                });
+            }
+
+            var cron = request.CronExpression.Trim();
+            var timeZoneId = string.IsNullOrWhiteSpace(request.TimeZone) ? "Europe/Istanbul" : request.TimeZone;
+
+            TimeZoneInfo tz;
+            try
+            {
+                tz = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId!);
+            }
+            catch (Exception tzEx)
+            {
+                return BadRequest(new { error = $"Invalid timeZone '{timeZoneId}': {tzEx.Message}" });
+            }
+
+            var maxCount = request.MaxCount ?? 50;
+
             // Job'ı yeniden kaydet - bu mevcut job'ı günceller
             if (jobId == "sunhotels-static-data-sync")
             {
                 RecurringJob.AddOrUpdate<Infrastructure.BackgroundJobs.SunHotelsStaticDataSyncJob>(
                     jobId,
                     job => job.SyncAllStaticDataAsync(),
-                    request.CronExpression,
-                    new RecurringJobOptions
-                    {
-                        TimeZone = TimeZoneInfo.FindSystemTimeZoneById(request.TimeZone ?? "Europe/Istanbul")
-                    }
+                    cron,
+                    new RecurringJobOptions { TimeZone = tz }
                 );
             }
             else if (jobId == "sunhotels-basic-data-sync")
@@ -131,11 +160,17 @@ public class HangfireManagementController : BaseApiController
                 RecurringJob.AddOrUpdate<Infrastructure.BackgroundJobs.SunHotelsStaticDataSyncJob>(
                     jobId,
                     job => job.SyncBasicDataAsync(),
-                    request.CronExpression,
-                    new RecurringJobOptions
-                    {
-                        TimeZone = TimeZoneInfo.FindSystemTimeZoneById(request.TimeZone ?? "Europe/Istanbul")
-                    }
+                    cron,
+                    new RecurringJobOptions { TimeZone = tz }
+                );
+            }
+            else if (jobId == "popular-destinations-warmup")
+            {
+                RecurringJob.AddOrUpdate<Infrastructure.BackgroundJobs.PopularDestinationWarmupJob>(
+                    jobId,
+                    job => job.WarmActiveFeaturedDestinationsAsync(maxCount, null),
+                    cron,
+                    new RecurringJobOptions { TimeZone = tz }
                 );
             }
             else
@@ -143,9 +178,9 @@ public class HangfireManagementController : BaseApiController
                 return BadRequest(new { error = "Unknown job ID" });
             }
 
-            _logger.LogInformation("Job schedule updated: {JobId} -> {Cron}", jobId, request.CronExpression);
+            _logger.LogInformation("Job schedule updated: {JobId} -> {Cron}", jobId, cron);
 
-            return Ok(new { message = "Schedule updated successfully", jobId, cron = request.CronExpression });
+            return Ok(new { message = "Schedule updated successfully", jobId, cron, maxCount });
         }
         catch (Exception ex)
         {
@@ -434,4 +469,5 @@ public class UpdateScheduleRequest
 {
     public string CronExpression { get; set; } = string.Empty;
     public string? TimeZone { get; set; }
+    public int? MaxCount { get; set; }
 }

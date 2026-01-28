@@ -11,7 +11,7 @@ public class BookingRepository : Repository<Booking>, IBookingRepository
     public BookingRepository(FreeStaysDbContext context) : base(context)
     {
     }
-    
+
     public async Task<IReadOnlyList<Booking>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         return await _dbSet
@@ -24,7 +24,7 @@ public class BookingRepository : Repository<Booking>, IBookingRepository
             .OrderByDescending(b => b.CreatedAt)
             .ToListAsync(cancellationToken);
     }
-    
+
     public async Task<Booking?> GetWithDetailsAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _dbSet
@@ -38,7 +38,35 @@ public class BookingRepository : Repository<Booking>, IBookingRepository
             .Include(b => b.Coupon)
             .FirstOrDefaultAsync(b => b.Id == id, cancellationToken);
     }
-    
+
+    public async Task<Booking?> GetByIdWithDetailsAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await GetWithDetailsAsync(id, cancellationToken);
+    }
+
+    public async Task<Booking?> GetByPaymentIntentIdAsync(string paymentIntentId, CancellationToken cancellationToken = default)
+    {
+        return await _dbSet
+            .Include(b => b.User)
+            .Include(b => b.HotelBooking)
+                .ThenInclude(hb => hb!.Hotel)
+            .Include(b => b.Payment)
+            .FirstOrDefaultAsync(b => b.Payment != null && b.Payment.StripePaymentIntentId == paymentIntentId, cancellationToken);
+    }
+
+    public async Task<Booking?> GetByPreBookCodeAsync(string preBookCode, CancellationToken cancellationToken = default)
+    {
+        return await _dbSet
+            .Include(b => b.User)
+            .Include(b => b.HotelBooking)
+                .ThenInclude(hb => hb!.Hotel)
+            .Include(b => b.FlightBooking)
+            .Include(b => b.CarRental)
+            .Include(b => b.Payment)
+            .Include(b => b.Coupon)
+            .FirstOrDefaultAsync(b => b.HotelBooking != null && b.HotelBooking.PreBookCode == preBookCode, cancellationToken);
+    }
+
     public async Task<IReadOnlyList<Booking>> GetByStatusAsync(BookingStatus status, CancellationToken cancellationToken = default)
     {
         return await _dbSet
@@ -47,7 +75,7 @@ public class BookingRepository : Repository<Booking>, IBookingRepository
             .OrderByDescending(b => b.CreatedAt)
             .ToListAsync(cancellationToken);
     }
-    
+
     public async Task<IReadOnlyList<Booking>> GetRecentBookingsAsync(int count, CancellationToken cancellationToken = default)
     {
         return await _dbSet

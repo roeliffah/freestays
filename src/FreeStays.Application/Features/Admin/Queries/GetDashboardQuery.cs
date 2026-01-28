@@ -82,8 +82,12 @@ public class GetDashboardQueryHandler : IRequestHandler<GetDashboardQuery, Dashb
 
         foreach (var booking in bookings)
         {
-            // User bilgisini al
-            var user = await _customerRepository.GetByIdAsync(booking.UserId, cancellationToken);
+            // User bilgisini al (misafir rezervasyonlarında UserId null olabilir)
+            Domain.Entities.Customer? user = null;
+            if (booking.UserId.HasValue)
+            {
+                user = await _customerRepository.GetByIdAsync(booking.UserId.Value, cancellationToken);
+            }
 
             // Hotel/Service adını belirle
             string serviceName = booking.Type switch
@@ -94,10 +98,15 @@ public class GetDashboardQueryHandler : IRequestHandler<GetDashboardQuery, Dashb
                 _ => "Unknown"
             };
 
+            // Misafir kullanıcı için HotelBooking'deki GuestName kullan
+            var customerName = user?.User?.Name
+                ?? booking.HotelBooking?.GuestName
+                ?? "Misafir";
+
             recentBookings.Add(new RecentBooking
             {
                 Id = booking.Id.ToString(),
-                Customer = user?.User?.Name ?? "Unknown",
+                Customer = customerName,
                 Type = booking.Type.ToString().ToLower(),
                 Hotel = serviceName,
                 Amount = booking.TotalPrice,

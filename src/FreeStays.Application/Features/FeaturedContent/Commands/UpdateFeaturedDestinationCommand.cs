@@ -1,4 +1,5 @@
 using FluentValidation;
+using FreeStays.Application.Common.Interfaces;
 using FreeStays.Application.DTOs.FeaturedContent;
 using FreeStays.Domain.Exceptions;
 using FreeStays.Domain.Interfaces;
@@ -24,11 +25,13 @@ public class UpdateFeaturedDestinationCommandHandler : IRequestHandler<UpdateFea
 {
     private readonly IFeaturedDestinationRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IPopularDestinationWarmupService _warmupService;
 
-    public UpdateFeaturedDestinationCommandHandler(IFeaturedDestinationRepository repository, IUnitOfWork unitOfWork)
+    public UpdateFeaturedDestinationCommandHandler(IFeaturedDestinationRepository repository, IUnitOfWork unitOfWork, IPopularDestinationWarmupService warmupService)
     {
         _repository = repository;
         _unitOfWork = unitOfWork;
+        _warmupService = warmupService;
     }
 
     public async Task<FeaturedDestinationDto> Handle(UpdateFeaturedDestinationCommand request, CancellationToken cancellationToken)
@@ -71,6 +74,9 @@ public class UpdateFeaturedDestinationCommandHandler : IRequestHandler<UpdateFea
             destination.ValidUntil = request.Data.ValidUntil;
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+        // ✅ Admin güncellemesi sonrası: destinasyon için cache warmup'ı tetikle
+        await _warmupService.WarmDestinationAsync(destination.DestinationId, cancellationToken);
 
         return new FeaturedDestinationDto
         {

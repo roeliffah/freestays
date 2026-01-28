@@ -45,7 +45,7 @@ public class CreateHotelBookingCommandHandler : IRequestHandler<CreateHotelBooki
     private readonly ICouponRepository _couponRepository;
     private readonly ICurrentUserService _currentUserService;
     private readonly IUnitOfWork _unitOfWork;
-    
+
     public CreateHotelBookingCommandHandler(
         IBookingRepository bookingRepository,
         IHotelRepository hotelRepository,
@@ -59,25 +59,25 @@ public class CreateHotelBookingCommandHandler : IRequestHandler<CreateHotelBooki
         _currentUserService = currentUserService;
         _unitOfWork = unitOfWork;
     }
-    
+
     public async Task<Guid> Handle(CreateHotelBookingCommand request, CancellationToken cancellationToken)
     {
         if (!_currentUserService.UserId.HasValue)
             throw new UnauthorizedException();
-        
+
         var hotel = await _hotelRepository.GetByIdAsync(request.HotelId, cancellationToken);
         if (hotel == null)
             throw new NotFoundException("Hotel", request.HotelId);
-        
+
         var totalPrice = request.TotalPrice;
         decimal couponDiscount = 0;
         Coupon? coupon = null;
-        
+
         if (!string.IsNullOrEmpty(request.CouponCode))
         {
             coupon = await _couponRepository.GetByCodeAsync(request.CouponCode, cancellationToken);
-            if (coupon != null && coupon.IsActive && 
-                coupon.ValidFrom <= DateTime.UtcNow && 
+            if (coupon != null && coupon.IsActive &&
+                coupon.ValidFrom <= DateTime.UtcNow &&
                 coupon.ValidUntil >= DateTime.UtcNow)
             {
                 if (coupon.DiscountType == DiscountType.Percentage)
@@ -88,12 +88,12 @@ public class CreateHotelBookingCommandHandler : IRequestHandler<CreateHotelBooki
                 {
                     couponDiscount = coupon.DiscountValue;
                 }
-                
+
                 totalPrice -= couponDiscount;
                 coupon.UsedCount++;
             }
         }
-        
+
         var booking = new Booking
         {
             Id = Guid.NewGuid(),
@@ -106,14 +106,16 @@ public class CreateHotelBookingCommandHandler : IRequestHandler<CreateHotelBooki
             CouponId = coupon?.Id,
             CouponDiscount = couponDiscount
         };
-        
+
         var hotelBooking = new HotelBooking
         {
             Id = Guid.NewGuid(),
             BookingId = booking.Id,
             HotelId = request.HotelId,
-            RoomTypeId = request.RoomTypeId,
+            RoomId = 0, // Default - should be set from UI
+            RoomTypeId = int.TryParse(request.RoomTypeId, out var roomTypeId) ? roomTypeId : 0,
             RoomTypeName = request.RoomTypeName,
+            MealId = 0, // Default - should be set from UI
             CheckIn = request.CheckIn,
             CheckOut = request.CheckOut,
             Adults = request.Adults,
@@ -122,12 +124,12 @@ public class CreateHotelBookingCommandHandler : IRequestHandler<CreateHotelBooki
             GuestEmail = request.GuestEmail,
             SpecialRequests = request.SpecialRequests
         };
-        
+
         booking.HotelBooking = hotelBooking;
-        
+
         await _bookingRepository.AddAsync(booking, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
-        
+
         return booking.Id;
     }
 }

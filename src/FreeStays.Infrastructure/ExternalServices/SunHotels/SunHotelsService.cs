@@ -1,11 +1,14 @@
+using System.Diagnostics;
 using System.Globalization;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using System.Xml.Linq;
 using FreeStays.Application.Common.Interfaces;
 using FreeStays.Domain.Entities.Cache;
 using FreeStays.Domain.Exceptions;
 using FreeStays.Domain.Interfaces;
+using FreeStays.Infrastructure.Caching;
 using FreeStays.Infrastructure.ExternalServices.SunHotels.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -19,10 +22,12 @@ public class SunHotelsService : ISunHotelsService
     private readonly ILogger<SunHotelsService> _logger;
     private readonly IExternalServiceConfigRepository _serviceConfigRepository;
     private readonly ISunHotelsCacheService _cacheService;
-    private bool _configLoaded = false;
+    private readonly SunHotelsRedisCacheService _redisCache;
+    private volatile bool _configLoaded = false;
+    private readonly SemaphoreSlim _configLoadLock = new(1, 1);
 
-    private string _nonStaticApiUrl = "http://xml.sunhotels.net/15/PostGet/NonStaticXMLAPI.asmx";
-    private string _staticApiUrl = "http://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx";
+    private string _nonStaticApiUrl = "https://xml.sunhotels.net/15/PostGet/NonStaticXMLAPI.asmx";
+    private string _staticApiUrl = "https://xml.sunhotels.net/15/PostGet/StaticXMLAPI.asmx";
     private const string NonStaticLanguage = "en";
     private const string NonStaticCurrency = "EUR";
 
@@ -31,13 +36,15 @@ public class SunHotelsService : ISunHotelsService
         IOptions<SunHotelsConfig> config,
         ILogger<SunHotelsService> logger,
         IExternalServiceConfigRepository serviceConfigRepository,
-        ISunHotelsCacheService cacheService)
+        ISunHotelsCacheService cacheService,
+        SunHotelsRedisCacheService redisCache)
     {
         _httpClient = httpClient;
         _config = config.Value;
         _logger = logger;
         _serviceConfigRepository = serviceConfigRepository;
         _cacheService = cacheService;
+        _redisCache = redisCache;
 
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
     }
@@ -46,8 +53,12 @@ public class SunHotelsService : ISunHotelsService
     {
         if (_configLoaded) return;
 
+        // Thread-safe config yükleme (double-checked locking)
+        await _configLoadLock.WaitAsync(cancellationToken);
         try
         {
+            if (_configLoaded) return; // İkinci kontrol (lock aldıktan sonra)
+
             var dbConfig = await _serviceConfigRepository.GetByServiceNameAsync("SunHotels", cancellationToken);
 
             if (dbConfig != null && dbConfig.IsActive)
@@ -95,6 +106,10 @@ public class SunHotelsService : ISunHotelsService
             _logger.LogError(ex, "Failed to load SunHotels configuration from database, using default config");
             _configLoaded = true; // Don't try to load again
         }
+        finally
+        {
+            _configLoadLock.Release();
+        }
     }
 
     #region Static Data Methods
@@ -102,6 +117,14 @@ public class SunHotelsService : ISunHotelsService
     public async Task<List<SunHotelsDestination>> GetDestinationsAsync(string? language = "en", CancellationToken cancellationToken = default)
     {
         await EnsureConfigLoadedAsync(cancellationToken);
+
+        // ✅ Redis cache kontrolü
+        var cachedDestinations = await _redisCache.GetDestinationsAsync(language ?? "en", cancellationToken);
+        if (cachedDestinations != null)
+        {
+            _logger.LogInformation("Destinations loaded from Redis cache (Language: {Language})", language);
+            return cachedDestinations;
+        }
 
         try
         {
@@ -115,7 +138,12 @@ public class SunHotelsService : ISunHotelsService
             };
 
             var response = await SendStaticRequestAsync("GetDestinations", parameters, cancellationToken);
-            return ParseDestinations(response);
+            var destinations = ParseDestinations(response);
+
+            // ✅ Redis'e kaydet
+            await _redisCache.SetDestinationsAsync(destinations, language ?? "en", cancellationToken);
+
+            return destinations;
         }
         catch (Exception ex)
         {
@@ -127,6 +155,15 @@ public class SunHotelsService : ISunHotelsService
     public async Task<List<SunHotelsResort>> GetResortsAsync(string? destinationId = null, string? language = "en", CancellationToken cancellationToken = default)
     {
         await EnsureConfigLoadedAsync(cancellationToken);
+
+        // ✅ Redis cache kontrolü
+        var cachedResorts = await _redisCache.GetResortsAsync(destinationId, language ?? "en", cancellationToken);
+        if (cachedResorts != null)
+        {
+            _logger.LogInformation("Resorts loaded from Redis cache (DestinationId: {DestinationId}, Language: {Language})",
+                destinationId ?? "all", language);
+            return cachedResorts;
+        }
 
         try
         {
@@ -141,7 +178,12 @@ public class SunHotelsService : ISunHotelsService
             };
 
             var response = await SendStaticRequestAsync("GetResorts", parameters, cancellationToken);
-            return ParseResorts(response);
+            var resorts = ParseResorts(response);
+
+            // ✅ Redis'e kaydet
+            await _redisCache.SetResortsAsync(resorts, destinationId, language ?? "en", cancellationToken);
+
+            return resorts;
         }
         catch (Exception ex)
         {
@@ -316,14 +358,20 @@ public class SunHotelsService : ISunHotelsService
         string language = "en",
         CancellationToken cancellationToken = default)
     {
+        // ✅ Independent CTS: Do NOT link to request token - static fetch should complete
+        // even if client disconnects, so the result can be cached for subsequent requests
+        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(90));
+
         try
         {
+            var sw = Stopwatch.StartNew();
             _logger.LogInformation("Getting static hotels and rooms - Destination: {Destination}, HotelIds: {HotelIds}, ResortIds: {ResortIds}, Language: {Language}",
                 destination ?? "null", hotelIds ?? "null", resortIds ?? "null", language);
 
             var parameters = new Dictionary<string, string>
             {
                 { "language", language },
+                { "destination", destination ?? string.Empty },  // ✅ API requires destination even if empty
                 { "hotelIds", hotelIds ?? string.Empty },
                 { "resortIds", resortIds ?? string.Empty },
                 { "accommodationTypes", string.Empty },
@@ -331,14 +379,17 @@ public class SunHotelsService : ISunHotelsService
                 { "sortOrder", string.Empty },
                 { "exactDestinationMatch", string.Empty }
             };
-            if (!string.IsNullOrEmpty(destination))
-                parameters.Add("destination", destination);
 
-            var response = await SendStaticRequestAsync("GetStaticHotelsAndRooms", parameters, cancellationToken);
+            var response = await SendStaticRequestAsync("GetStaticHotelsAndRooms", parameters, cts.Token);
             var hotels = ParseStaticHotels(response);
 
-            _logger.LogInformation("Successfully retrieved {Count} hotels from SunHotels", hotels.Count);
+            _logger.LogInformation("Successfully retrieved {Count} hotels from SunHotels in {ElapsedMs} ms", hotels.Count, sw.ElapsedMilliseconds);
             return hotels;
+        }
+        catch (TaskCanceledException tce)
+        {
+            _logger.LogWarning(tce, "SunHotels static fetch timed out or was canceled (timeout 90s, userCanceled={UserCanceled})", cancellationToken.IsCancellationRequested);
+            throw new ExternalServiceException("SunHotels", "Static fetch canceled or timed out", tce);
         }
         catch (Exception ex)
         {
@@ -380,6 +431,32 @@ public class SunHotelsService : ISunHotelsService
     public async Task<List<SunHotelsSearchResultV3>> SearchHotelsV3Async(SunHotelsSearchRequestV3 request, CancellationToken cancellationToken = default)
     {
         await EnsureConfigLoadedAsync(cancellationToken);
+
+        // ✅ Redis cache kontrolü (sadece temel aramalar için - filtreler olmadan)
+        // Not: HotelIds, ResortIds, ThemeIds gibi filtreler varsa cache kullanma
+        var useCache = string.IsNullOrEmpty(request.HotelIds) &&
+                      string.IsNullOrEmpty(request.ResortIds) &&
+                      string.IsNullOrEmpty(request.ThemeIds) &&
+                      string.IsNullOrEmpty(request.FeatureIds) &&
+                      !request.MinPrice.HasValue &&
+                      !request.MaxPrice.HasValue;
+
+        if (useCache)
+        {
+            var cachedResults = await _redisCache.GetHotelSearchAsync(
+                request.DestinationId,
+                request.CheckIn,
+                request.CheckOut,
+                request.Adults,
+                request.Children,
+                cancellationToken);
+
+            if (cachedResults != null && cachedResults.Any())
+            {
+                _logger.LogInformation("Hotel search results loaded from Redis cache ({Count} hotels)", cachedResults.Count);
+                return cachedResults;
+            }
+        }
 
         try
         {
@@ -484,6 +561,19 @@ public class SunHotelsService : ISunHotelsService
             // ✅ Locale göz ardı: Her zaman İngilizce (Python referansı)
             await EnrichHotelsWithStaticDataAsync(results, "en", cancellationToken);
 
+            // ✅ Redis'e kaydet (sadece filtresiz aramalar için)
+            if (useCache && results.Any())
+            {
+                await _redisCache.SetHotelSearchAsync(
+                    results,
+                    request.DestinationId,
+                    request.CheckIn,
+                    request.CheckOut,
+                    request.Adults,
+                    request.Children,
+                    cancellationToken);
+            }
+
             return results;
         }
         catch (Exception ex)
@@ -542,20 +632,37 @@ public class SunHotelsService : ISunHotelsService
             }
             else
             {
-                // ✅ FALLBACK: Cache'ten otelin resortId'sini bulmaya çalış
-                _logger.LogWarning("Hotel details search: no destination/resort provided, trying to find from cache for hotel_id={HotelId}", hotelId);
+                // ✅ FALLBACK: Cache'ten otelin destinationId veya resortId'sini bulmaya çalış
+                _logger.LogInformation("Hotel details search: no destination/resort provided, looking up from static cache for hotel_id={HotelId}", hotelId);
 
                 try
                 {
-                    var cachedHotels = await _cacheService.GetAllHotelsAsync("en", cancellationToken);
-                    var cachedHotel = cachedHotels.FirstOrDefault(h => h.HotelId == hotelId);
+                    // Önce otel cache'inden oteli al
+                    var cachedHotel = await _cacheService.GetHotelByIdAsync(hotelId, "en", cancellationToken);
 
                     if (cachedHotel != null && cachedHotel.ResortId > 0)
                     {
-                        request.DestinationId = "";
-                        request.ResortIds = cachedHotel.ResortId.ToString();
-                        request.HotelIds = "";
-                        _logger.LogInformation("Found resortID={ResortId} from cache for hotel_id={HotelId}", cachedHotel.ResortId, hotelId);
+                        // Resort'tan destinationId'yi al (daha iyi sonuçlar verir)
+                        var cachedResort = await _cacheService.GetResortByIdAsync(cachedHotel.ResortId, "en", cancellationToken);
+
+                        if (cachedResort != null && !string.IsNullOrEmpty(cachedResort.DestinationId))
+                        {
+                            // DestinationId varsa onu kullan (en iyi yöntem)
+                            request.DestinationId = cachedResort.DestinationId;
+                            request.ResortIds = "";
+                            request.HotelIds = "";
+                            _logger.LogInformation("Found destinationID={DestinationId} from static cache (via resort {ResortId}) for hotel_id={HotelId}",
+                                cachedResort.DestinationId, cachedHotel.ResortId, hotelId);
+                        }
+                        else
+                        {
+                            // DestinationId yoksa resortId kullan
+                            request.DestinationId = "";
+                            request.ResortIds = cachedHotel.ResortId.ToString();
+                            request.HotelIds = "";
+                            _logger.LogInformation("Found resortID={ResortId} from static cache for hotel_id={HotelId} (no destinationId available)",
+                                cachedHotel.ResortId, hotelId);
+                        }
                     }
                     else
                     {
@@ -563,12 +670,12 @@ public class SunHotelsService : ISunHotelsService
                         request.DestinationId = "";
                         request.ResortIds = "";
                         request.HotelIds = hotelId.ToString();
-                        _logger.LogWarning("Hotel not found in cache or no resortId, using hotelID={HotelId} only (may return empty)", hotelId);
+                        _logger.LogWarning("Hotel {HotelId} not found in static cache or no resortId, using hotelID only (may return empty)", hotelId);
                     }
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Error getting hotel from cache, falling back to hotelID only");
+                    _logger.LogError(ex, "Error getting hotel from static cache, falling back to hotelID only");
                     request.DestinationId = "";
                     request.ResortIds = "";
                     request.HotelIds = hotelId.ToString();
@@ -583,12 +690,112 @@ public class SunHotelsService : ISunHotelsService
                 var filteredResult = results.FirstOrDefault(h => h.HotelId == hotelId);
                 if (filteredResult == null)
                 {
-                    _logger.LogWarning("Hotel {HotelId} not found in results after filtering. Returning first result as fallback.", hotelId);
+                    _logger.LogWarning("Hotel {HotelId} not found in results after filtering with destinationId={DestinationId}/resortId={ResortId}. Trying cache...", hotelId, destinationId, resortId);
+
+                    // Boş oda durumunda cache'den otel bilgisini al ve boş oda listesiyle döndür
+                    try
+                    {
+                        var cachedHotels = await _cacheService.GetAllHotelsAsync("en", cancellationToken);
+                        var cachedHotel = cachedHotels.FirstOrDefault(h => h.HotelId == hotelId);
+                        if (cachedHotel != null)
+                        {
+                            _logger.LogInformation("Hotel {HotelId} found in cache with no available rooms for selected dates", hotelId);
+
+                            // Cache'teki oteli SearchV3'ün döneceği formata çevir (oda listesi boş)
+                            var hotelWithNoRooms = new SunHotelsSearchResultV3
+                            {
+                                HotelId = cachedHotel.HotelId,
+                                Name = cachedHotel.Name,
+                                Description = cachedHotel.Description,
+                                Category = cachedHotel.Category,
+                                City = cachedHotel.City,
+                                Country = cachedHotel.Country,
+                                CountryCode = cachedHotel.CountryCode,
+                                Address = cachedHotel.Address,
+                                ResortId = cachedHotel.ResortId,
+                                ResortName = cachedHotel.ResortName,
+                                Latitude = cachedHotel.Latitude ?? 0,
+                                Longitude = cachedHotel.Longitude ?? 0,
+                                ImageUrls = (JsonSerializer.Deserialize<List<string>>(cachedHotel.ImageUrls) ?? new List<string>()),
+                                Currency = request.Currency,
+                                MinPrice = 0,
+                                Rooms = new List<SunHotelsRoomV3>() // Boş oda listesi
+                            };
+
+                            // FeatureIds ve ThemeIds string'i int listesine çevir
+                            var featureIds = JsonSerializer.Deserialize<List<int>>(cachedHotel.FeatureIds) ?? new List<int>();
+                            var themeIds = JsonSerializer.Deserialize<List<int>>(cachedHotel.ThemeIds) ?? new List<int>();
+                            hotelWithNoRooms.FeatureIds = featureIds;
+                            hotelWithNoRooms.ThemeIds = themeIds;
+
+                            return hotelWithNoRooms;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning(ex, "Could not load hotel from cache for {HotelId}", hotelId);
+                    }
+
+                    return null;
                 }
-                return filteredResult ?? results.FirstOrDefault();
+                // Boş oda durumunda otel bilgisini döndür (Rooms boş list olacak)
+                return filteredResult;
             }
 
-            return results.FirstOrDefault();
+            // Sadece hotelIds ile arama yapıldıysa ilk (ve tek) sonucu döndür
+            var result = results.FirstOrDefault();
+            // Boş oda durumunda da otel bilgisini döndür, null döndürme
+            if (result == null)
+            {
+                _logger.LogWarning("Hotel {HotelId} not found in search results, trying cache fallback", hotelId);
+
+                // HotelIds-only search'te boş sonuç dönerse, cache'ten otel al
+                try
+                {
+                    var cachedHotels = await _cacheService.GetAllHotelsAsync("en", cancellationToken);
+                    var cachedHotel = cachedHotels.FirstOrDefault(h => h.HotelId == hotelId);
+                    if (cachedHotel != null)
+                    {
+                        _logger.LogInformation("Hotel {HotelId} found in cache as fallback for hotelIds-only search", hotelId);
+
+                        // Cache'teki oteli SearchV3'ün döneceği formata çevir (oda listesi boş)
+                        var hotelWithNoRooms = new SunHotelsSearchResultV3
+                        {
+                            HotelId = cachedHotel.HotelId,
+                            Name = cachedHotel.Name,
+                            Description = cachedHotel.Description,
+                            Category = cachedHotel.Category,
+                            City = cachedHotel.City,
+                            Country = cachedHotel.Country,
+                            CountryCode = cachedHotel.CountryCode,
+                            Address = cachedHotel.Address,
+                            ResortId = cachedHotel.ResortId,
+                            ResortName = cachedHotel.ResortName,
+                            Latitude = cachedHotel.Latitude ?? 0,
+                            Longitude = cachedHotel.Longitude ?? 0,
+                            ImageUrls = (JsonSerializer.Deserialize<List<string>>(cachedHotel.ImageUrls) ?? new List<string>()),
+                            Currency = request.Currency,
+                            MinPrice = 0,
+                            Rooms = new List<SunHotelsRoomV3>() // Boş oda listesi
+                        };
+
+                        // FeatureIds ve ThemeIds string'i int listesine çevir
+                        var featureIds = JsonSerializer.Deserialize<List<int>>(cachedHotel.FeatureIds) ?? new List<int>();
+                        var themeIds = JsonSerializer.Deserialize<List<int>>(cachedHotel.ThemeIds) ?? new List<int>();
+                        hotelWithNoRooms.FeatureIds = featureIds;
+                        hotelWithNoRooms.ThemeIds = themeIds;
+
+                        return hotelWithNoRooms;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Could not load hotel from cache for hotelIds-only search for {HotelId}", hotelId);
+                }
+
+                return null;
+            }
+            return result;
         }
         catch (Exception ex)
         {
@@ -633,34 +840,45 @@ public class SunHotelsService : ISunHotelsService
 
         try
         {
+            // SunHotels PreBookV3 API (Python backend'den alınan çalışan mantık):
+            // roomId kullanılırken hotelId, roomtypeId, blockSuperDeal BOŞ STRING olarak gönderilmeli
+            // searchPrice CENT formatında olmalı (örn: 100.50 EUR -> 10050)
+
+            _logger.LogInformation("PreBookV3 request - HotelId: {HotelId}, RoomId: {RoomId}, RoomTypeId: {RoomTypeId}",
+                request.HotelId, request.RoomId, request.RoomTypeId);
+
+            // searchPrice'ı cent'e çevir (Python'daki gibi: int(search_price * 100))
+            var searchPriceInCents = (int)Math.Round(request.SearchPrice * 100);
+
             var parameters = new Dictionary<string, string>
             {
-                { "hotelId", request.HotelId.ToString() },
-                { "roomId", request.RoomId.ToString() },
-                { "roomtypeId", request.RoomTypeId.ToString() },
-                { "mealId", request.MealId.ToString() },
+                { "currency", NonStaticCurrency },
+                { "language", NonStaticLanguage },
                 { "checkInDate", request.CheckIn.ToString("yyyy-MM-dd") },
                 { "checkOutDate", request.CheckOut.ToString("yyyy-MM-dd") },
                 { "rooms", request.Rooms.ToString() },
                 { "adults", request.Adults.ToString() },
                 { "children", request.Children.ToString() },
+                { "childrenAges", request.ChildrenAges ?? "" },
                 { "infant", request.Infant.ToString() },
-                { "currency", NonStaticCurrency },
-                { "language", NonStaticLanguage },
+                { "mealId", request.MealId.ToString() },
+                { "customerCountry", request.CustomerCountry ?? "NL" },
                 { "b2c", request.B2C ? "1" : "0" },
-                { "searchPrice", request.SearchPrice.ToString(CultureInfo.InvariantCulture) },
-                { "blockSuperDeal", request.BlockSuperDeal ? "1" : "0" },
-                { "showPriceBreakdown", request.ShowPriceBreakdown ? "1" : "0" }
+                { "searchPrice", searchPriceInCents.ToString() },
+                { "roomId", request.RoomId.ToString() },
+                { "hotelId", "" },           // BOŞ - roomId kullanılırken
+                { "roomtypeId", "" },        // BOŞ - roomId kullanılırken  
+                { "blockSuperDeal", "" },    // BOŞ - roomId kullanılırken
+                { "showPriceBreakdown", "1" }
             };
 
-            if (!string.IsNullOrEmpty(request.ChildrenAges))
-                parameters.Add("childrenAges", request.ChildrenAges);
-            if (!string.IsNullOrEmpty(request.CustomerCountry))
-                parameters.Add("customerCountry", request.CustomerCountry);
             if (request.PaymentMethodId > 0)
                 parameters.Add("paymentMethodId", request.PaymentMethodId.ToString());
 
-            var response = await SendNonStaticRequestAsync("preBookV3", parameters, cancellationToken);
+            _logger.LogInformation("PreBookV3 sending (Python style): roomId={RoomId}, hotelId='', roomtypeId='', blockSuperDeal='', searchPrice={SearchPrice} cents",
+                request.RoomId, searchPriceInCents);
+
+            var response = await SendNonStaticRequestAsync("PreBookV3", parameters, cancellationToken);
             return ParsePreBookResultV3(response);
         }
         catch (Exception ex)
@@ -703,8 +921,20 @@ public class SunHotelsService : ISunHotelsService
     {
         await EnsureConfigLoadedAsync(cancellationToken);
 
+        // PreBookCode zorunlu - boş ise API eski session kullanır ve hatalı parametre ister
+        if (string.IsNullOrWhiteSpace(request.PreBookCode))
+        {
+            throw new ArgumentException("PreBookCode boş olamaz. Önce PreBookV3 yapılmalı.", nameof(request.PreBookCode));
+        }
+
         try
         {
+            _logger.LogInformation("BookV3 Request: PreBookCode={PreBookCode}, Adults={Adults}, Children={Children}, AdultGuestCount={AdultGuestCount}, ChildGuestCount={ChildGuestCount}",
+                request.PreBookCode, request.Adults, request.Children, request.AdultGuests.Count, request.ChildrenGuests.Count);
+
+            // PaymentMethodId: 1 = Invoice, 2 = Pay at hotel (0 kabul edilmiyor)
+            var paymentMethodId = request.PaymentMethodId > 0 ? request.PaymentMethodId : 1; // Default: Invoice
+
             var parameters = new Dictionary<string, string>
             {
                 { "preBookCode", request.PreBookCode },
@@ -719,53 +949,116 @@ public class SunHotelsService : ISunHotelsService
                 { "currency", NonStaticCurrency },
                 { "language", NonStaticLanguage },
                 { "email", request.Email },
+                { "yourRef", request.YourRef ?? "FREESTAYS" },
+                { "specialRequest", request.SpecialRequest ?? "" },
                 { "b2c", request.B2C ? "1" : "0" },
-                { "paymentMethodId", request.PaymentMethodId.ToString() }
+                { "paymentMethodId", paymentMethodId.ToString() },
+                // SunHotels API tüm parametreleri zorunlu olarak bekler - boş olsalar bile gönderilmeli
+                { "customerCountry", request.CustomerCountry ?? "" },
+                { "invoiceRef", request.InvoiceRef ?? "" },
+                { "commissionAmountInHotelCurrency", request.CommissionAmount?.ToString(CultureInfo.InvariantCulture) ?? "" },
+                { "customerEmail", request.CustomerEmail ?? request.Email } // customerEmail yoksa email kullan
             };
 
-            if (!string.IsNullOrEmpty(request.YourRef))
-                parameters.Add("yourRef", request.YourRef);
-            if (!string.IsNullOrEmpty(request.SpecialRequest))
-                parameters.Add("specialRequest", request.SpecialRequest);
-            if (!string.IsNullOrEmpty(request.CustomerCountry))
-                parameters.Add("customerCountry", request.CustomerCountry);
-            if (!string.IsNullOrEmpty(request.InvoiceRef))
-                parameters.Add("invoiceRef", request.InvoiceRef);
-            if (request.CommissionAmount.HasValue)
-                parameters.Add("commissionAmountInHotelCurrency", request.CommissionAmount.Value.ToString(CultureInfo.InvariantCulture));
-            if (!string.IsNullOrEmpty(request.CustomerEmail))
-                parameters.Add("customerEmail", request.CustomerEmail);
+            // Add adult guests - SunHotels API her zaman 9 yetişkin parametresi bekler
+            // Kullanılmayanlar için boş string gönderilmeli
+            _logger.LogInformation("BookV3: request.Adults={Adults}, AdultGuests.Count={Count}", request.Adults, request.AdultGuests.Count);
 
-            // Add adult guests
-            for (int i = 0; i < request.AdultGuests.Count && i < 9; i++)
+            // SunHotels API'si oda kapasitesine göre parametre sayısı bekleyebilir
+            // Güvenli yaklaşım: 9 yetişkin için parametre gönder (kullanılmayanlar boş string)
+            for (int i = 0; i < 9; i++)
             {
-                var guest = request.AdultGuests[i];
-                parameters.Add($"adultGuest{i + 1}FirstName", guest.FirstName);
-                parameters.Add($"adultGuest{i + 1}LastName", guest.LastName);
+                if (i < request.AdultGuests.Count)
+                {
+                    // Gerçek guest bilgisi var
+                    var guest = request.AdultGuests[i];
+                    parameters.Add($"adultGuest{i + 1}FirstName", guest.FirstName ?? "Guest");
+                    parameters.Add($"adultGuest{i + 1}LastName", guest.LastName ?? "User");
+                }
+                else if (i < request.Adults)
+                {
+                    // Yeterli guest bilgisi yok ama Adults sayısı içinde - dummy guest ekle
+                    parameters.Add($"adultGuest{i + 1}FirstName", "Guest");
+                    parameters.Add($"adultGuest{i + 1}LastName", $"User{i + 1}");
+                    _logger.LogWarning("BookV3: adultGuest{Index} için bilgi yok, dummy değer kullanılıyor", i + 1);
+                }
+                else
+                {
+                    // Adults sayısının dışında - boş string gönder (SunHotels API'nin beklediği davranış)
+                    parameters.Add($"adultGuest{i + 1}FirstName", "");
+                    parameters.Add($"adultGuest{i + 1}LastName", "");
+                }
             }
 
-            // Add child guests
-            for (int i = 0; i < request.ChildrenGuests.Count && i < 9; i++)
+            // Add child guests - SunHotels API 9 çocuk parametresi bekler
+            // API format: childrenGuest1FirstName, childrenGuest1LastName, childrenGuestAge1
+            for (int i = 0; i < 9; i++)
             {
-                var child = request.ChildrenGuests[i];
-                parameters.Add($"childGuest{i + 1}FirstName", child.FirstName);
-                parameters.Add($"childGuest{i + 1}LastName", child.LastName);
-                parameters.Add($"childGuest{i + 1}Age", child.Age.ToString());
+                if (i < request.ChildrenGuests.Count)
+                {
+                    var child = request.ChildrenGuests[i];
+                    parameters.Add($"childrenGuest{i + 1}FirstName", child.FirstName ?? "Child");
+                    parameters.Add($"childrenGuest{i + 1}LastName", child.LastName ?? "User");
+                    parameters.Add($"childrenGuestAge{i + 1}", child.Age.ToString());
+                }
+                else if (i < request.Children)
+                {
+                    // Children sayısı içinde ama bilgi yok - dummy değer
+                    parameters.Add($"childrenGuest{i + 1}FirstName", "Child");
+                    parameters.Add($"childrenGuest{i + 1}LastName", $"User{i + 1}");
+                    parameters.Add($"childrenGuestAge{i + 1}", "5"); // Varsayılan yaş
+                    _logger.LogWarning("BookV3: childrenGuest{Index} için bilgi yok, dummy değer kullanılıyor", i + 1);
+                }
+                else
+                {
+                    // Children sayısının dışında - boş string gönder
+                    parameters.Add($"childrenGuest{i + 1}FirstName", "");
+                    parameters.Add($"childrenGuest{i + 1}LastName", "");
+                    parameters.Add($"childrenGuestAge{i + 1}", "");
+                }
             }
 
-            // Add credit card if provided
+            // Credit card parametreleri - SunHotels API her zaman bu parametreleri bekler (boş olsalar bile)
             if (request.CreditCard != null)
             {
-                parameters.Add("creditCardType", request.CreditCard.CardType);
-                parameters.Add("creditCardNumber", request.CreditCard.CardNumber);
-                parameters.Add("creditCardHolder", request.CreditCard.CardHolder);
-                parameters.Add("creditCardCVV2", request.CreditCard.CVV);
-                parameters.Add("creditCardExpYear", request.CreditCard.ExpYear);
-                parameters.Add("creditCardExpMonth", request.CreditCard.ExpMonth);
+                parameters.Add("creditCardType", request.CreditCard.CardType ?? "");
+                parameters.Add("creditCardNumber", request.CreditCard.CardNumber ?? "");
+                parameters.Add("creditCardHolder", request.CreditCard.CardHolder ?? "");
+                parameters.Add("creditCardCVV2", request.CreditCard.CVV ?? "");
+                parameters.Add("creditCardExpYear", request.CreditCard.ExpYear ?? "");
+                parameters.Add("creditCardExpMonth", request.CreditCard.ExpMonth ?? "");
+            }
+            else
+            {
+                // Credit card bilgisi yok - boş parametreler gönder
+                parameters.Add("creditCardType", "");
+                parameters.Add("creditCardNumber", "");
+                parameters.Add("creditCardHolder", "");
+                parameters.Add("creditCardCVV2", "");
+                parameters.Add("creditCardExpYear", "");
+                parameters.Add("creditCardExpMonth", "");
             }
 
-            var response = await SendNonStaticRequestAsync("bookV3", parameters, cancellationToken);
-            return ParseBookResultV3(response);
+            // Log tüm adult guest parametrelerini
+            _logger.LogInformation("BookV3 Parameters - PreBookCode={PreBookCode}, Adults={Adults}, adultGuest parametreleri:",
+                request.PreBookCode, request.Adults);
+            foreach (var param in parameters.Where(p => p.Key.Contains("adultGuest")))
+            {
+                _logger.LogInformation("  {Key}={Value}", param.Key, param.Value);
+            }
+
+            var response = await SendNonStaticRequestAsync("BookV3", parameters, cancellationToken);
+            var result = ParseBookResultV3(response);
+
+            // SunHotels hata döndürdüyse exception fırlat
+            if (!result.Success || string.IsNullOrEmpty(result.BookingNumber))
+            {
+                var errorMessage = result.ErrorMessage ?? "Booking failed - no booking number returned";
+                _logger.LogError("SunHotels BookV3 failed - ErrorMessage: {ErrorMessage}", errorMessage);
+                throw new ExternalServiceException("SunHotels", $"Booking failed: {errorMessage}");
+            }
+
+            return result;
         }
         catch (Exception ex)
         {
@@ -782,11 +1075,11 @@ public class SunHotelsService : ISunHotelsService
         {
             var parameters = new Dictionary<string, string>
             {
-                { "bookingnumber", bookingId },
+                { "bookingID", bookingId },
                 { "language", language }
             };
 
-            var response = await SendNonStaticRequestAsync("cancelBooking", parameters, cancellationToken);
+            var response = await SendNonStaticRequestAsync("CancelBooking", parameters, cancellationToken);
             return ParseCancelResult(response);
         }
         catch (Exception ex)
@@ -1094,37 +1387,39 @@ public class SunHotelsService : ISunHotelsService
 
     #region Private Helper Methods
 
-    private string BuildRequestUrl(string baseUrl, string method, Dictionary<string, string> parameters)
-    {
-        var sb = new StringBuilder($"{baseUrl}/{method}?");
-        sb.Append($"userName={_config.Username}");
-        sb.Append($"&password={_config.Password}");
-
-        foreach (var param in parameters)
-        {
-            sb.Append($"&{param.Key}={param.Value}");
-        }
-
-        return sb.ToString();
-    }
-
     private async Task<string> SendStaticRequestAsync(string method, Dictionary<string, string> parameters, CancellationToken cancellationToken)
     {
-        var url = BuildRequestUrl(_staticApiUrl, method, parameters);
+        var url = $"{_staticApiUrl}/{method}";
         _logger.LogInformation("Sending static request to SunHotels: {Method} - URL: {Url}", method, url);
 
-        var response = await _httpClient.GetAsync(url, cancellationToken);
+        // Username ve password ekle
+        var allParameters = new Dictionary<string, string>(parameters)
+        {
+            { "userName", _config.Username },
+            { "password", _config.Password }
+        };
+
+        // POST ile form-encoded data gönder
+        var content = new FormUrlEncodedContent(allParameters);
+        var response = await _httpClient.PostAsync(url, content, cancellationToken);
 
         if (!response.IsSuccessStatusCode)
         {
             var errorContent = await response.Content.ReadAsStringAsync(cancellationToken);
-            _logger.LogError("SunHotels API error - Status: {StatusCode}, Response: {Response}",
+            _logger.LogError("SunHotels Static API error - Status: {StatusCode}, Response: {Response}",
                 response.StatusCode, errorContent);
+            throw new ExternalServiceException("SunHotels", $"Static API returned {(int)response.StatusCode}: {errorContent}");
         }
 
-        response.EnsureSuccessStatusCode();
+        var responseContent = await response.Content.ReadAsStringAsync(cancellationToken);
 
-        return await response.Content.ReadAsStringAsync(cancellationToken);
+        // Error durumlarında log
+        if (responseContent.Contains("<Error>"))
+        {
+            _logger.LogError("SunHotels Static API Error Response: {Response}", responseContent);
+        }
+
+        return responseContent;
     }
 
     private async Task<string> SendNonStaticRequestAsync(string method, Dictionary<string, string> parameters, CancellationToken cancellationToken)
@@ -1184,19 +1479,29 @@ public class SunHotelsService : ISunHotelsService
         {
             var doc = XDocument.Parse(xmlResponse);
             XNamespace ns = "http://xml.sunhotels.net/15/";
+
+            // ✅ Namespace fallback: önce namespace ile, yoksa namespace'siz dene
             var destinationElements = doc.Descendants(ns + "Destination");
+            if (!destinationElements.Any())
+            {
+                destinationElements = doc.Descendants("Destination");
+            }
 
             foreach (var elem in destinationElements)
             {
+                // Helper: namespace veya namespace'siz element oku
+                string GetValue(string elementName) =>
+                    elem.Element(ns + elementName)?.Value ?? elem.Element(elementName)?.Value ?? "";
+
                 destinations.Add(new SunHotelsDestination
                 {
-                    Id = elem.Element(ns + "destination_id")?.Value ?? "",
-                    Code = elem.Element(ns + "DestinationCode")?.Value ?? "",
-                    Name = elem.Element(ns + "DestinationName")?.Value ?? "",
-                    Country = elem.Element(ns + "CountryName")?.Value ?? "",
-                    CountryCode = elem.Element(ns + "CountryCode")?.Value ?? "",
-                    CountryId = elem.Element(ns + "CountryId")?.Value ?? "",
-                    TimeZone = elem.Element(ns + "TimeZone")?.Value ?? ""
+                    Id = GetValue("destination_id"),
+                    Code = GetValue("DestinationCode"),
+                    Name = GetValue("DestinationName"),
+                    Country = GetValue("CountryName"),
+                    CountryCode = GetValue("CountryCode"),
+                    CountryId = GetValue("CountryId"),
+                    TimeZone = GetValue("TimeZone")
                 });
             }
 
@@ -1964,43 +2269,113 @@ public class SunHotelsService : ISunHotelsService
     {
         var result = new SunHotelsPreBookResultV3();
 
+        // Log raw XML for debugging - INFO level to see in production
+        _logger.LogInformation("PreBookV3 Raw XML Response: {XmlResponse}", xmlResponse);
+
         try
         {
             var doc = XDocument.Parse(xmlResponse);
-            var preBookElem = doc.Descendants("preBookResult").FirstOrDefault() ?? doc.Root;
+
+            // Log all element names for debugging
+            var allElements = doc.Descendants().Select(e => e.Name.LocalName).Distinct().ToList();
+            _logger.LogInformation("PreBookV3 XML Elements found: {Elements}", string.Join(", ", allElements));
+
+            // SunHotels hata kontrolü - hem namespace'li hem namespace'siz
+            var errorElem = doc.Descendants().FirstOrDefault(e => e.Name.LocalName.Equals("error", StringComparison.OrdinalIgnoreCase));
+            if (errorElem != null)
+            {
+                var errorCode = errorElem.Descendants().FirstOrDefault(e => e.Name.LocalName.Equals("errorId", StringComparison.OrdinalIgnoreCase))?.Value
+                    ?? errorElem.Descendants().FirstOrDefault(e => e.Name.LocalName.Equals("code", StringComparison.OrdinalIgnoreCase))?.Value ?? "Unknown";
+                var errorMessage = errorElem.Descendants().FirstOrDefault(e => e.Name.LocalName.Equals("errorMessage", StringComparison.OrdinalIgnoreCase))?.Value
+                    ?? errorElem.Descendants().FirstOrDefault(e => e.Name.LocalName.Equals("message", StringComparison.OrdinalIgnoreCase))?.Value ?? errorElem.Value;
+                _logger.LogError("SunHotels PreBookV3 returned error - Code: {ErrorCode}, Message: {ErrorMessage}", errorCode, errorMessage);
+                result.Error = errorMessage;
+                result.ErrorCode = errorCode;
+                return result;
+            }
+
+            // PreBookResult element'i bul - preBookResult veya preBookResultWithTaxAndFees olabilir
+            var preBookElem = doc.Descendants().FirstOrDefault(e =>
+                e.Name.LocalName.Equals("preBookResult", StringComparison.OrdinalIgnoreCase) ||
+                e.Name.LocalName.Equals("preBookResultWithTaxAndFees", StringComparison.OrdinalIgnoreCase))
+                ?? doc.Root;
+
+            _logger.LogInformation("PreBookV3 preBookElem found: {Found}, Name: {Name}",
+                preBookElem != null, preBookElem?.Name.LocalName ?? "null");
 
             if (preBookElem != null)
             {
-                result.PreBookCode = preBookElem.Element("preBookCode")?.Value ?? "";
-                result.TotalPrice = decimal.TryParse(preBookElem.Element("totalPrice")?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var price) ? price : 0;
-                result.NetPrice = decimal.TryParse(preBookElem.Element("netPrice")?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var netPrice) ? netPrice : 0;
-                result.TaxAmount = decimal.TryParse(preBookElem.Element("tax")?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var tax) ? tax : null;
-                result.FeeAmount = decimal.TryParse(preBookElem.Element("fee")?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var fee) ? fee : null;
-                result.Currency = preBookElem.Element("currency")?.Value ?? "EUR";
-                result.ExpiresAt = DateTime.UtcNow.AddMinutes(30);
-                result.PriceChanged = preBookElem.Element("priceChanged")?.Value?.ToLower() == "true";
-                result.OriginalPrice = decimal.TryParse(preBookElem.Element("originalPrice")?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var origPrice) ? origPrice : null;
-                result.HotelNotes = preBookElem.Element("hotelNotes")?.Value;
-                result.RoomNotes = preBookElem.Element("roomNotes")?.Value;
+                // Namespace-agnostic, case-insensitive element lookup helper
+                string GetElementValue(string localName) =>
+                    preBookElem.Descendants().FirstOrDefault(e => e.Name.LocalName.Equals(localName, StringComparison.OrdinalIgnoreCase))?.Value;
 
-                if (DateTime.TryParse(preBookElem.Element("earliestNonFreeCancellationDateCET")?.Value, out var cancelDateCet))
+                XElement GetElement(string localName) =>
+                    preBookElem.Descendants().FirstOrDefault(e => e.Name.LocalName.Equals(localName, StringComparison.OrdinalIgnoreCase));
+
+                // PreBookCode - hem "preBookCode" hem "PreBookCode" olabilir
+                result.PreBookCode = GetElementValue("PreBookCode") ?? "";
+
+                // Price element'ini al - SunHotels V3'te fiyat CENT cinsinden geliyor
+                // <Price currency="EUR">59430</Price> = 594.30 EUR
+                var priceElem = GetElement("Price");
+                if (priceElem != null)
+                {
+                    if (decimal.TryParse(priceElem.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var priceInCents))
+                    {
+                        result.TotalPrice = priceInCents / 100m; // Cent'ten EUR'a çevir
+                    }
+                    result.Currency = priceElem.Attribute("currency")?.Value ?? "EUR";
+                }
+                else
+                {
+                    // Fallback: totalPrice element'i dene
+                    result.TotalPrice = decimal.TryParse(GetElementValue("totalPrice"), NumberStyles.Any, CultureInfo.InvariantCulture, out var price) ? price : 0;
+                    result.Currency = GetElementValue("currency") ?? "EUR";
+                }
+
+                result.NetPrice = decimal.TryParse(GetElementValue("netPrice"), NumberStyles.Any, CultureInfo.InvariantCulture, out var netPrice) ? netPrice : 0;
+
+                // Tax element'i - xsi:nil="true" olabilir
+                var taxElem = GetElement("Tax");
+                if (taxElem != null && taxElem.Attribute(XNamespace.Get("http://www.w3.org/2001/XMLSchema-instance") + "nil")?.Value != "true")
+                {
+                    result.TaxAmount = decimal.TryParse(taxElem.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var tax) ? tax / 100m : null;
+                }
+
+                result.FeeAmount = decimal.TryParse(GetElementValue("fee"), NumberStyles.Any, CultureInfo.InvariantCulture, out var fee) ? fee / 100m : null;
+
+                _logger.LogInformation("PreBookV3 Parsed values - PreBookCode: {PreBookCode}, TotalPrice: {TotalPrice}, Currency: {Currency}",
+                    result.PreBookCode, result.TotalPrice, result.Currency);
+                result.ExpiresAt = DateTime.UtcNow.AddMinutes(30);
+                result.PriceChanged = GetElementValue("priceChanged")?.ToLower() == "true";
+                result.OriginalPrice = decimal.TryParse(GetElementValue("originalPrice"), NumberStyles.Any, CultureInfo.InvariantCulture, out var origPrice) ? origPrice / 100m : null;
+
+                // Notes parsing - hotel ve room notes
+                var notes = preBookElem.Descendants().Where(e => e.Name.LocalName.Equals("Note", StringComparison.OrdinalIgnoreCase)).ToList();
+                if (notes.Any())
+                {
+                    var allNoteTexts = notes.Select(n => n.Descendants().FirstOrDefault(e => e.Name.LocalName.Equals("text", StringComparison.OrdinalIgnoreCase))?.Value).Where(t => !string.IsNullOrEmpty(t));
+                    result.HotelNotes = string.Join("\n", allNoteTexts);
+                }
+
+                if (DateTime.TryParse(GetElementValue("earliestNonFreeCancellationDateCET"), out var cancelDateCet))
                     result.EarliestNonFreeCancellationDateCET = cancelDateCet;
-                if (DateTime.TryParse(preBookElem.Element("earliestNonFreeCancellationDateLocal")?.Value, out var cancelDateLocal))
+                if (DateTime.TryParse(GetElementValue("earliestNonFreeCancellationDateLocal"), out var cancelDateLocal))
                     result.EarliestNonFreeCancellationDateLocal = cancelDateLocal;
 
-                // Parse price breakdown
-                foreach (var priceElem in preBookElem.Descendants("priceBreakdown"))
+                // Parse price breakdown - namespace agnostic
+                foreach (var breakdownElem in preBookElem.Descendants().Where(e => e.Name.LocalName.Equals("priceBreakdown", StringComparison.OrdinalIgnoreCase)))
                 {
                     result.PriceBreakdown.Add(new SunHotelsPriceBreakdown
                     {
-                        Date = DateTime.TryParse(priceElem.Element("date")?.Value, out var date) ? date : DateTime.MinValue,
-                        Price = decimal.TryParse(priceElem.Element("price")?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var bPrice) ? bPrice : 0,
-                        Currency = priceElem.Element("currency")?.Value ?? "EUR"
+                        Date = DateTime.TryParse(breakdownElem.Descendants().FirstOrDefault(e => e.Name.LocalName.Equals("date", StringComparison.OrdinalIgnoreCase))?.Value, out var date) ? date : DateTime.MinValue,
+                        Price = decimal.TryParse(breakdownElem.Descendants().FirstOrDefault(e => e.Name.LocalName.Equals("price", StringComparison.OrdinalIgnoreCase))?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var bPrice) ? bPrice / 100m : 0,
+                        Currency = breakdownElem.Attribute("currency")?.Value ?? "EUR"
                     });
                 }
 
-                // Parse cancellation policies
-                foreach (var policyElem in preBookElem.Descendants("cancellationPolicy"))
+                // Parse cancellation policies - namespace agnostic
+                foreach (var policyElem in preBookElem.Descendants().Where(e => e.Name.LocalName.Equals("cancellationPolicy", StringComparison.OrdinalIgnoreCase)))
                 {
                     result.CancellationPolicies.Add(ParseCancellationPolicy(policyElem));
                 }
@@ -2008,7 +2383,7 @@ public class SunHotelsService : ISunHotelsService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error parsing pre-book V3 result XML");
+            _logger.LogError(ex, "Error parsing pre-book V3 result XML: {XmlResponse}", xmlResponse);
         }
 
         return result;
@@ -2044,43 +2419,124 @@ public class SunHotelsService : ISunHotelsService
     {
         var result = new SunHotelsBookResultV3();
 
+        // RAW XML'i logla
+        _logger.LogWarning("=== SUNHOTELS BOOKV3 RAW XML RESPONSE ===");
+        _logger.LogWarning("{RawXml}", xmlResponse);
+        _logger.LogWarning("=== END SUNHOTELS BOOKV3 RAW XML ===");
+
+        // Raw XML'i result'a kaydet
+        result.RawXmlResponse = xmlResponse;
+
         try
         {
             var doc = XDocument.Parse(xmlResponse);
-            var bookElem = doc.Descendants("bookResult").FirstOrDefault() ?? doc.Root;
 
-            if (bookElem != null)
+            // Namespace'i handle et
+            XNamespace ns = "http://xml.sunhotels.net/15/";
+
+            // ÖNCELİKLE Error element'ini kontrol et
+            var errorElem = doc.Descendants(ns + "Error").FirstOrDefault()
+                         ?? doc.Descendants("Error").FirstOrDefault();
+            if (errorElem != null)
             {
-                result.BookingNumber = bookElem.Element("bookingnumber")?.Value;
-                result.Success = !string.IsNullOrEmpty(result.BookingNumber);
-                result.HotelId = int.TryParse(bookElem.Element("hotelId")?.Value, out var hotelId) ? hotelId : 0;
-                result.HotelName = bookElem.Element("hotelName")?.Value ?? "";
-                result.HotelAddress = bookElem.Element("hotelAddress")?.Value ?? "";
-                result.HotelPhone = bookElem.Element("hotelPhone")?.Value;
-                result.RoomType = bookElem.Element("roomType")?.Value ?? "";
-                result.MealId = int.TryParse(bookElem.Element("mealId")?.Value, out var mealId) ? mealId : 0;
-                result.MealName = bookElem.Element("mealName")?.Value ?? "";
-                result.CheckIn = DateTime.TryParse(bookElem.Element("checkIn")?.Value, out var checkIn) ? checkIn : DateTime.MinValue;
-                result.CheckOut = DateTime.TryParse(bookElem.Element("checkOut")?.Value, out var checkOut) ? checkOut : DateTime.MinValue;
-                result.NumberOfRooms = int.TryParse(bookElem.Element("numberOfRooms")?.Value, out var rooms) ? rooms : 0;
-                result.TotalPrice = decimal.TryParse(bookElem.Element("totalPrice")?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var price) ? price : 0;
-                result.Currency = bookElem.Element("currency")?.Value ?? "EUR";
-                result.BookingDate = DateTime.TryParse(bookElem.Element("bookingDate")?.Value, out var bookingDate) ? bookingDate : DateTime.UtcNow;
-                result.Voucher = bookElem.Element("voucher")?.Value;
-                result.YourRef = bookElem.Element("yourRef")?.Value;
-                result.InvoiceRef = bookElem.Element("invoiceRef")?.Value;
-                result.ErrorMessage = bookElem.Element("error")?.Value;
+                var errorType = errorElem.Element(ns + "ErrorType")?.Value
+                             ?? errorElem.Element("ErrorType")?.Value ?? "Unknown";
+                var errorMessage = errorElem.Element(ns + "Message")?.Value
+                                ?? errorElem.Element("Message")?.Value ?? "Unknown error";
 
-                if (DateTime.TryParse(bookElem.Element("earliestNonFreeCancellationDateCET")?.Value, out var cancelDateCet))
+                _logger.LogError("SunHotels BookV3 returned error - Type: {ErrorType}, Message: {ErrorMessage}", errorType, errorMessage);
+
+                result.Success = false;
+                result.ErrorMessage = errorMessage;
+                return result; // Hata durumunda booking bilgilerini parse etme
+            }
+
+            var bookResultElem = doc.Descendants(ns + "bookResult").FirstOrDefault()
+                              ?? doc.Descendants("bookResult").FirstOrDefault();
+            var bookingElem = bookResultElem?.Descendants(ns + "booking").FirstOrDefault()
+                           ?? bookResultElem?.Descendants("booking").FirstOrDefault()
+                           ?? doc.Descendants(ns + "booking").FirstOrDefault()
+                           ?? doc.Descendants("booking").FirstOrDefault()
+                           ?? doc.Root;
+
+            if (bookingElem != null)
+            {
+                // Log all elements for debugging
+                _logger.LogInformation("BookV3 Booking Element children: {Children}",
+                    string.Join(", ", bookingElem.Elements().Select(e => e.Name.LocalName)));
+
+                // SunHotels XML element isimleri (API dokümantasyonuna göre)
+                result.BookingNumber = GetElementValue(bookingElem, ns, "bookingnumber");
+                result.Success = !string.IsNullOrEmpty(result.BookingNumber);
+
+                // hotel.id, hotel.name gibi noktalı isimler
+                result.HotelId = int.TryParse(GetElementValue(bookingElem, ns, "hotel.id"), out var hotelId) ? hotelId : 0;
+                result.HotelName = GetElementValue(bookingElem, ns, "hotel.name") ?? "";
+                result.HotelAddress = GetElementValue(bookingElem, ns, "hotel.address") ?? "";
+                result.HotelPhone = GetElementValue(bookingElem, ns, "hotel.phone");
+
+                result.RoomType = GetElementValue(bookingElem, ns, "room.type") ?? "";
+                result.EnglishRoomType = GetElementValue(bookingElem, ns, "room.englishType");
+                result.NumberOfRooms = int.TryParse(GetElementValue(bookingElem, ns, "numberofrooms"), out var rooms) ? rooms : 0;
+
+                result.MealId = int.TryParse(GetElementValue(bookingElem, ns, "mealId"), out var mealId) ? mealId : 0;
+                result.MealName = GetElementValue(bookingElem, ns, "meal") ?? "";
+                result.MealLabel = GetElementValue(bookingElem, ns, "mealLabel");
+                result.EnglishMeal = GetElementValue(bookingElem, ns, "englishMeal");
+                result.EnglishMealLabel = GetElementValue(bookingElem, ns, "englishMealLabel");
+
+                result.CheckIn = DateTime.TryParse(GetElementValue(bookingElem, ns, "checkindate"), out var checkIn) ? checkIn : DateTime.MinValue;
+                result.CheckOut = DateTime.TryParse(GetElementValue(bookingElem, ns, "checkoutdate"), out var checkOut) ? checkOut : DateTime.MinValue;
+
+                result.Currency = GetElementValue(bookingElem, ns, "currency") ?? "EUR";
+                result.BookingDate = DateTime.TryParse(GetElementValue(bookingElem, ns, "bookingdate"), out var bookingDate) ? bookingDate : DateTime.UtcNow;
+                result.BookingDateTimezone = GetElementValue(bookingElem, ns, "bookingdate.timezone");
+
+                result.Voucher = GetElementValue(bookingElem, ns, "voucher");
+                result.YourRef = GetElementValue(bookingElem, ns, "yourref");
+                result.InvoiceRef = GetElementValue(bookingElem, ns, "invoiceref");
+                result.BookedBy = GetElementValue(bookingElem, ns, "bookedBy");
+
+                result.ErrorMessage = GetElementValue(bookingElem, ns, "error");
+
+                if (DateTime.TryParse(GetElementValue(bookingElem, ns, "earliestNonFreeCancellationDate.CET"), out var cancelDateCet))
                     result.EarliestNonFreeCancellationDateCET = cancelDateCet;
-                if (DateTime.TryParse(bookElem.Element("earliestNonFreeCancellationDateLocal")?.Value, out var cancelDateLocal))
+                if (DateTime.TryParse(GetElementValue(bookingElem, ns, "earliestNonFreeCancellationDate.Local"), out var cancelDateLocal))
                     result.EarliestNonFreeCancellationDateLocal = cancelDateLocal;
 
-                // Parse cancellation policies
-                foreach (var policyElem in bookElem.Descendants("cancellationPolicy"))
+                // Parse prices
+                var pricesElem = bookingElem.Descendants(ns + "prices").FirstOrDefault()
+                              ?? bookingElem.Descendants("prices").FirstOrDefault();
+                if (pricesElem != null)
                 {
-                    result.CancellationPolicies.Add(ParseCancellationPolicy(policyElem));
+                    foreach (var priceElem in pricesElem.Elements())
+                    {
+                        if (decimal.TryParse(priceElem.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var priceVal))
+                        {
+                            result.Prices.Add(priceVal);
+                        }
+                    }
+                    result.TotalPrice = result.Prices.Sum();
                 }
+
+                // Parse cancellation policies
+                var cancellationPoliciesElems = bookingElem.Descendants(ns + "cancellationpolicies")
+                    .Concat(bookingElem.Descendants("cancellationpolicies"));
+                foreach (var policyElem in cancellationPoliciesElems)
+                {
+                    var text = GetElementValue(policyElem, ns, "text");
+                    if (!string.IsNullOrEmpty(text))
+                    {
+                        result.CancellationPolicyTexts.Add(text);
+                    }
+                }
+
+                _logger.LogInformation("BookV3 Parsed - BookingNumber={BookingNumber}, HotelId={HotelId}, HotelName={HotelName}, Success={Success}",
+                    result.BookingNumber, result.HotelId, result.HotelName, result.Success);
+            }
+            else
+            {
+                _logger.LogWarning("BookV3 - No booking element found in XML response");
             }
         }
         catch (Exception ex)
@@ -2091,29 +2547,110 @@ public class SunHotelsService : ISunHotelsService
         return result;
     }
 
+    private string? GetElementValue(XElement parent, XNamespace ns, string localName)
+    {
+        return parent.Element(ns + localName)?.Value
+            ?? parent.Element(localName)?.Value;
+    }
+
     private SunHotelsCancelResult ParseCancelResult(string xmlResponse)
     {
         var result = new SunHotelsCancelResult();
 
         try
         {
-            var doc = XDocument.Parse(xmlResponse);
-            var cancelElem = doc.Descendants("cancelResult").FirstOrDefault() ?? doc.Root;
+            _logger.LogWarning("=== SUNHOTELS CANCEL RAW XML RESPONSE ===\n{Response}\n=== END CANCEL XML ===", xmlResponse);
 
-            if (cancelElem != null)
+            var doc = XDocument.Parse(xmlResponse);
+            XNamespace ns = "http://xml.sunhotels.net/15/";
+
+            // Root element'i bul (result)
+            var resultElem = doc.Root;
+            if (resultElem == null)
             {
-                result.Success = cancelElem.Element("status")?.Value?.ToLower() == "success"
-                              || cancelElem.Element("cancelled")?.Value?.ToLower() == "true";
-                result.Message = cancelElem.Element("message")?.Value ?? "";
-                if (decimal.TryParse(cancelElem.Element("refundAmount")?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var refund))
-                {
-                    result.RefundAmount = refund;
-                }
+                result.Message = "Empty response from SunHotels";
+                return result;
             }
+
+            // Code element'ini kontrol et
+            var codeValue = resultElem.Element(ns + "Code")?.Value ?? resultElem.Element("Code")?.Value;
+            if (int.TryParse(codeValue, out var code))
+            {
+                result.Code = code;
+                // Code 0 = başarılı iptal
+                result.Success = code == 0;
+            }
+
+            // CancellationPaymentMethod element'lerini parse et
+            var paymentMethods = resultElem.Elements(ns + "CancellationPaymentMethod")
+                .Concat(resultElem.Elements("CancellationPaymentMethod"));
+
+            foreach (var pmElem in paymentMethods)
+            {
+                var pm = new CancellationPaymentMethod
+                {
+                    Id = int.TryParse(pmElem.Attribute("id")?.Value, out var pmId) ? pmId : 0,
+                    Name = pmElem.Attribute("name")?.Value ?? ""
+                };
+
+                // Cancellation fee'leri parse et
+                var feeElements = pmElem.Elements(ns + "cancellationfee")
+                    .Concat(pmElem.Elements("cancellationfee"));
+
+                foreach (var feeElem in feeElements)
+                {
+                    var fee = new CancellationFee
+                    {
+                        Currency = feeElem.Attribute("currency")?.Value ?? "EUR"
+                    };
+
+                    // Fee tutarı element içinde veya attribute olarak olabilir
+                    var feeAmountStr = feeElem.Value ?? feeElem.Attribute("amount")?.Value;
+                    if (decimal.TryParse(feeAmountStr, NumberStyles.Any, CultureInfo.InvariantCulture, out var feeAmount))
+                    {
+                        fee.Amount = feeAmount;
+                    }
+
+                    pm.CancellationFees.Add(fee);
+                }
+
+                // Cancellation info'ları parse et
+                var cancellationElements = pmElem.Elements(ns + "cancellation")
+                    .Concat(pmElem.Elements("cancellation"));
+
+                foreach (var cancelElem in cancellationElements)
+                {
+                    var cancelInfo = new CancellationInfo
+                    {
+                        Type = cancelElem.Attribute("type")?.Value ?? "",
+                        PolicyText = cancelElem.Descendants("text").FirstOrDefault()?.Value ?? ""
+                    };
+
+                    pm.Cancellations.Add(cancelInfo);
+                }
+
+                result.PaymentMethods.Add(pm);
+            }
+
+            // Eğer PaymentMethod varsa başarılı sayılır
+            if (result.PaymentMethods.Count > 0)
+            {
+                result.Success = true;
+                result.Message = "Booking cancelled successfully";
+            }
+            else if (result.Code != 0)
+            {
+                result.Success = false;
+                result.Message = $"Cancellation failed with code: {result.Code}";
+            }
+
+            _logger.LogInformation("CancelBooking Parsed - Code={Code}, Success={Success}, PaymentMethods={Count}",
+                result.Code, result.Success, result.PaymentMethods.Count);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error parsing cancel result XML");
+            result.Message = $"Error parsing response: {ex.Message}";
         }
 
         return result;
@@ -2506,7 +3043,7 @@ public class SunHotelsService : ISunHotelsService
                         // Rate limiting: 50 otel her seferde, biraz bekle
                         if (i + apiBatchSize < missingHotelIds.Count)
                         {
-                            await Task.Delay(500, cancellationToken); // 500ms throttle
+                            await Task.Delay(500); // 500ms throttle - no cancellation token
                         }
                     }
 
